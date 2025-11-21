@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeekHeron</title>
+    <style>
+        /* --- 全局设置 (回归极简) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* 经典的 Helvetica 风格，硬朗、现代 */
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            transition: opacity 0.3s;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        /* --- 背景层 --- */
+        #galaxy-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* 渐变遮罩：还原最初的设计，左侧纯黑，右侧透出星系 */
+        .overlay-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #000 35%, rgba(0,0,0,0.6) 60%, transparent 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            z-index: 100;
+            font-size: 14px;
+            font-weight: 700; /* 加粗 */
+            text-transform: uppercase; /* 全大写 */
+        }
+
+        .logo {
+            font-size: 24px;
+            letter-spacing: 4px; /* SpaceX 风格的大间距 */
+            font-weight: 800;
+            margin-right: 40px;
+            color: #fff;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            font-size: 13px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* 还原原本的倒计时风格 */
+        .header-right {
+            font-family: monospace;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* --- 主视觉区域 --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 12%;
+            z-index: 10;
+        }
+
+        .content {
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 60px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            color: #fff;
+            /* 简单的淡入 */
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        p.subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #ddd; /* 纯净的灰白色 */
+            margin-bottom: 40px;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease-out 0.3s backwards;
+        }
+
+        /* --- 经典的幽灵按钮 --- */
+        .btn {
+            display: inline-block;
+            border: 2px solid #fff;
+            padding: 14px 40px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-out 0.6s backwards;
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; justify-content: center; }
+            .logo { margin-right: 0; }
+            nav, .header-right { display: none; }
+            
+            .hero {
+                padding-left: 20px;
+                padding-right: 20px;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .overlay-gradient {
+                background: linear-gradient(to top, #000 30%, rgba(0,0,0,0.5) 60%, transparent 100%);
+            }
+
+            h1 { font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+
+    <div class="overlay-gradient"></div>
+
+    <header>
+        <div class="logo">GeekHeron</div> 
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li> 
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="tech.html">前沿科技</a></li>
+                <li><a href="about.html">关于博主</a></li> 
+            </ul>
+        </nav>
+        <div class="header-right" id="clock">
+             T+00: 00: 00
+        </div>
+    </header>
+
+    <main class="hero">
+        <div class="content">
+            <h1>洞察技术背后的<br>逻辑与力量</h1>
+            <p class="subtitle">
+                GeekHeron 追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。在喧嚣中寻找理性的声音。
+            </p>
+            <a href="article.html" class="btn">
+                开始阅读
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // --- 时钟模块脚本 (修改点 2: 新增脚本) ---
+        function updateClock() {
+            const now = new Date();
+            
+            // 获取当前时间的小时、分钟、秒
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            
+            // 格式化数字：确保始终是两位数
+            const formatTime = (unit) => String(unit).padStart(2, '0');
+
+            const formattedHours = formatTime(hours);
+            const formattedMinutes = formatTime(minutes);
+            const formattedSeconds = formatTime(seconds);
+            
+            // 构建最终显示字符串 (T+HH: MM: SS)
+            const timeString = `T+${formattedHours}: ${formattedMinutes}: ${formattedSeconds}`;
+            
+            // 更新 DOM 元素的内容
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = timeString;
+            }
+        }
+
+        // 首次调用并设置每秒更新一次
+        updateClock();
+        setInterval(updateClock, 1000); 
+
+        // --- 粒子动画脚本 (保持不变) ---
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        const particles = [];
+        const numParticles = 4000; 
+        const fieldOfView = 300; 
+
+        // 颜色回归纯净的太空色系（白、灰、冷蓝）
+        const colors = [
+            '255, 255, 255', 
+            '200, 200, 200', 
+            '160, 180, 255'  
+        ];
+
+        class Particle {
+            constructor() {
+                this.x = (Math.random() - 0.5) * width * 2.5; 
+                this.y = (Math.random() - 0.5) * height * 2.5; 
+                this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
+                this.radius = Math.random() * 1.2 + 0.2; 
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                // 旋转速度稍微调快一点点，增加宏大感
+                let cosZ = Math.cos(0.0005);
+                let sinZ = Math.sin(0.0005);
+                
+                let tempX = this.x;
+                let tempY = this.y;
+                
+                this.x = tempX * cosZ - tempY * sinZ;
+                this.y = tempX * sinZ + tempY * cosZ;
+
+                this.z -= 0.2; 
+
+                if (this.z < -fieldOfView) {
+                    this.z += fieldOfView * 2;
+                    // 重置位置防止空洞
+                    this.x = (Math.random() - 0.5) * width * 2.5;
+                    this.y = (Math.random() - 0.5) * height * 2.5;
+                }
+            }
+
+            draw() {
+                const perspective = fieldOfView / (fieldOfView + this.z);
+                const projectedX = (this.x * perspective) + width / 2;
+                const projectedY = (this.y * perspective) + height / 2;
+                const projectedRadius = this.radius * perspective;
+                const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
+
+                if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
+                    ctx.beginPath();
+                    ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${opacity})`;
+                    ctx.fill();
+                }
+            }
+        }
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < numParticles; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        initParticles();
+        animate();
+    </script>
+</body>
+</html>

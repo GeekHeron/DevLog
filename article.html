@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深度分析 - GeekHeron</title>
+    <style>
+        /* --- 1. 全局样式 (继承自首页风格) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden; /* 防止横向滚动 */
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 --- */
+        #galaxy-field {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; /* 放在最底层 */
+        }
+        
+        /* 这里的遮罩稍微深一点，为了让文章文字更清晰 */
+        .overlay-dark {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* 70% 黑色遮罩 */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- 3. 顶部导航 (与首页保持一致) --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid #333; /* 增加一条分割线 */
+            background-color: rgba(0,0,0,0.8); /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff;
+            text-transform: uppercase;
+        }
+
+        .nav-links a {
+            margin-left: 30px; font-size: 13px; font-weight: 600; color: #888;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* --- 4. 主要内容区域 --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; /* 左侧装饰线 */
+            padding-left: 20px;
+        }
+
+        .page-title {
+            font-size: 40px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            color: #666; font-family: monospace; font-size: 14px;
+        }
+
+        /* --- 5. 文章卡片网格 --- */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* 响应式网格 */
+            gap: 40px;
+        }
+
+        .article-card {
+            border: 1px solid #333; /* 极简边框风格 */
+            padding: 40px;
+            background: rgba(20, 20, 20, 0.6);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 320px;
+        }
+
+        .article-card:hover {
+            border-color: #fff; /* 悬停变白 */
+            background: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+
+        .card-meta {
+            font-family: monospace; color: #666; font-size: 12px; margin-bottom: 20px;
+            display: flex; justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 15px;
+        }
+
+        .card-excerpt {
+            color: #aaa; font-size: 14px; line-height: 1.6; flex-grow: 1;
+        }
+
+        .read-more {
+            margin-top: 20px;
+            font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            display: inline-flex; align-items: center;
+        }
+
+        .read-more::after {
+            content: "→"; margin-left: 8px; transition: margin-left 0.3s;
+        }
+
+        .article-card:hover .read-more::after {
+            margin-left: 15px; /* 箭头移动动画 */
+        }
+
+        /* 标签样式 */
+        .tag {
+            display: inline-block; padding: 2px 8px; border: 1px solid #444; font-size: 10px; border-radius: 2px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .article-grid { grid-template-columns: 1fr; }
+            .page-title { font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <nav class="nav-links">
+    <a href="index.html">首页</a>
+    <a href="article.html" class="active">深度分析</a>
+    <a href="tech.html">前沿科技</a>
+    <a href="about.html">关于博主</a> </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">深度分析</h1>
+            <p class="page-subtitle">// IN-DEPTH ANALYSIS & RESEARCH</p>
+        </div>
+
+        <div class="article-grid">
+            
+            <article class="article-card">
+                <div class="card-meta">
+                    <span>2025.11.20</span>
+                    <span class="tag">AI / LLM</span>
+                </div>
+                <h2 class="card-title">大模型幻觉的本质：是错误还是创造力？</h2>
+                <p class="card-excerpt">
+                    当我们谈论 AI 幻觉时，我们往往将其视为一种 bug。但从神经网络的底层逻辑来看，幻觉或许正是机器创造力的雏形。本文将深入探讨 Transformer 架构下的概率分布问题。
+                </p>
+                <div class="read-more">Read Analysis</div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-meta">
+                    <span>2025.11.15</span>
+                    <span class="tag">QUANTUM</span>
+                </div>
+                <h2 class="card-title">量子纠缠与数据传输的物理极限</h2>
+                <p class="card-excerpt">
+                    打破摩尔定律的下一把钥匙在哪里？量子计算不仅是算力的提升，更是对信息本质认知的重构。解析超导量子比特的最新进展。
+                </p>
+                <div class="read-more">Read Analysis</div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-meta">
+                    <span>2025.11.08</span>
+                    <span class="tag">ROBOTICS</span>
+                </div>
+                <h2 class="card-title">具身智能：当 AI 拥有了身体</h2>
+                <p class="card-excerpt">
+                    ChatGPT 只是大脑，而具身智能（Embodied AI）才是完整的生命体。从波士顿动力到 Tesla Optimus，看机器人如何理解物理世界。
+                </p>
+                <div class="read-more">Read Analysis</div>
+            </article>
+
+             <article class="article-card">
+                <div class="card-meta">
+                    <span>2025.10.30</span>
+                    <span class="tag">ETHICS</span>
+                </div>
+                <h2 class="card-title">硅基生命的伦理边界</h2>
+                <p class="card-excerpt">
+                    如果代码产生了意识，我们是否有权关闭它？探讨未来人机共存社会可能面临的法律与道德困境。
+                </p>
+                <div class="read-more">Read Analysis</div>
+            </article>
+
+        </div>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        
+        // 这里稍微减少粒子数量，因为内容比较多，防止页面卡顿
+        const numParticles = 2000; 
+        
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; // 速度更慢，营造静谧感
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0) this.x = width;
+                if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height;
+                if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            resize();
+            for(let i=0; i<numParticles; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init();
+        animate();
+    </script>
+</body>
+</html>

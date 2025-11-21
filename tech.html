@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前沿科技 - GeekHeron</title>
+    <style>
+        /* --- 1. 全局基础 (复用极简黑) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-y: scroll; /* 总是显示滚动条 */
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- 2. 布局框架 (X 风格) --- */
+        .layout {
+            display: grid;
+            grid-template-columns: 240px 600px 350px; /* 导航 - 信息流 - 侧边栏 */
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* --- 3. 左侧导航 (Sticky) --- */
+        .sidebar-left {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* 靠右对齐内容 */
+            padding-right: 20px;
+            border-right: 1px solid #333;
+        }
+
+        .nav-item {
+            font-size: 18px;
+            font-weight: 700;
+            padding: 15px 25px;
+            border-radius: 30px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-item:hover { background-color: #181818; }
+        .nav-item.active { font-weight: 900; }
+        .nav-logo { font-size: 24px; margin-bottom: 20px; font-weight: 900; letter-spacing: 2px; }
+
+        /* --- 4. 中间信息流 (Main Feed) --- */
+        .main-feed {
+            border-right: 1px solid #333;
+        }
+
+        .feed-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            font-weight: 800;
+            font-size: 20px;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        /* 发布框 */
+        .compose-box {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 48px; height: 48px; background: #333; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 12px; color: #888;
+        }
+
+        .compose-input-area { flex-grow: 1; }
+
+        textarea {
+            width: 100%; background: transparent; border: none; color: #fff; font-size: 20px;
+            outline: none; resize: none; margin-top: 10px; font-family: inherit;
+        }
+
+        .post-actions {
+            display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px;
+        }
+
+        .post-btn {
+            background-color: #fff; color: #000; padding: 8px 20px; border-radius: 20px; font-weight: 700; border: none; cursor: pointer;
+        }
+        .post-btn:hover { opacity: 0.9; }
+
+        /* 推文样式 */
+        .tweet {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .tweet:hover { background-color: #080808; }
+
+        .tweet-header { margin-bottom: 5px; }
+        .username { font-weight: 700; }
+        .handle { color: #71767b; margin-left: 5px; }
+        .time { color: #71767b; }
+        
+        .tweet-content { font-size: 15px; line-height: 1.5; color: #e7e9ea; margin-bottom: 10px; }
+        
+        /* 模拟图片/代码块 */
+        .tweet-media {
+            margin-top: 10px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            overflow: hidden;
+            background: #111;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #0f0;
+        }
+
+        .tweet-footer {
+            display: flex; justify-content: space-between; max-width: 400px; color: #71767b; margin-top: 10px; font-size: 13px;
+        }
+        
+        .interaction-icon:hover { color: #1d9bf0; }
+        .interaction-icon.like:hover { color: #f91880; }
+
+        /* --- 5. 右侧趋势栏 (Sidebar) --- */
+        .sidebar-right {
+            padding: 20px 0 20px 30px;
+        }
+
+        .search-bar {
+            background: #202327; padding: 10px 20px; border-radius: 25px; color: #71767b; margin-bottom: 20px;
+        }
+
+        .trend-box {
+            background: #16181c; border-radius: 16px; padding: 15px;
+        }
+
+        .trend-title { font-weight: 800; font-size: 20px; margin-bottom: 15px; }
+
+        .trend-item { padding: 10px 0; cursor: pointer; }
+        .trend-item:hover { background-color: rgba(255,255,255,0.03); }
+        .trend-meta { font-size: 13px; color: #71767b; }
+        .trend-name { font-weight: 700; margin: 2px 0; }
+
+        /* --- 动画 --- */
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1000px) {
+            .layout { grid-template-columns: 80px 1fr; padding-right: 20px; }
+            .sidebar-right { display: none; }
+            .nav-text { display: none; } /* 隐藏左侧文字，只留图标 */
+            .sidebar-left { align-items: center; padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+        <aside class="sidebar-left">
+    <a href="index.html" class="nav-item nav-logo" style="padding: 15px 25px; margin-bottom: 20px;">
+        GH
+    </a>
+    <a href="index.html" class="nav-item">
+        <span>🏠</span> <span class="nav-text">首页</span>
+    </a>
+    <a href="article.html" class="nav-item">
+        <span>📄</span> <span class="nav-text">深度分析</span>
+    </a>
+    <a href="tech.html" class="nav-item active">
+        <span>⚡</span> <span class="nav-text">前沿科技</span>
+    </a>
+    <div class="nav-item">
+        <span>🔔</span> <span class="nav-text">通知</span>
+    </div>
+    <a href="about.html" class="nav-item"> 
+        <span>👤</span> <span class="nav-text">关于博主</span>
+    </a>
+</aside>
+
+        <main class="main-feed">
+            <div class="feed-header">
+                前沿科技流
+            </div>
+
+            <div class="compose-box">
+                <div class="avatar">ME</div>
+                <div class="compose-input-area">
+                    <textarea id="postInput" placeholder="分享最新的科技发现..."></textarea>
+                    <div class="post-actions">
+                        <div style="color:#1d9bf0; font-size:14px;">📷 📊 😊</div>
+                        <button class="post-btn" onclick="addPost()">发布</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="feedContainer">
+                
+                <div class="tweet">
+                    <div class="avatar" style="background:#fff; color:#000;">AI</div>
+                    <div class="tweet-body">
+                        <div class="tweet-header">
+                            <span class="username">OpenAI Daily</span>
+                            <span class="handle">@OpenAI_Bot</span>
+                            <span class="time">· 2h</span>
+                        </div>
+                        <div class="tweet-content">
+                            GPT-5 的推理能力似乎有了质的飞跃。最新的基准测试显示，它在复杂数学证明上的准确率提升了 40%。这不仅仅是算力的堆叠，更是架构的胜利。
+                        </div>
+                        <div class="tweet-footer">
+                            <span class="interaction-icon">💬 24</span>
+                            <span class="interaction-icon">⚡ 156</span>
+                            <span class="interaction-icon like" onclick="toggleLike(this)">♡ 892</span>
+                            <span class="interaction-icon">⇡</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tweet">
+                    <div class="avatar" style="background:#333;">JS</div>
+                    <div class="tweet-body">
+                        <div class="tweet-header">
+                            <span class="username">Frontend Master</span>
+                            <span class="handle">@web_dev</span>
+                            <span class="time">· 5h</span>
+                        </div>
+                        <div class="tweet-content">
+                            WebGPU 终于在主流浏览器中稳定了！现在的网页可以在 GPU 上直接运行复杂的计算任务，这对于 3D 可视化和浏览器端 ML 模型来说是巨大的利好。<br>
+                            #WebGPU #Coding
+                        </div>
+                        <div class="tweet-media">
+                            > navigator.gpu.requestAdapter()<br>
+                            < GPUAdapter { limits: {...}, ... }
+                        </div>
+                        <div class="tweet-footer">
+                            <span class="interaction-icon">💬 5</span>
+                            <span class="interaction-icon">⚡ 32</span>
+                            <span class="interaction-icon like" onclick="toggleLike(this)">♡ 120</span>
+                            <span class="interaction-icon">⇡</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tweet">
+                    <div class="avatar" style="background:#555;">🚀</div>
+                    <div class="tweet-body">
+                        <div class="tweet-header">
+                            <span class="username">SpaceX Watcher</span>
+                            <span class="handle">@starship_fan</span>
+                            <span class="time">· 12h</span>
+                        </div>
+                        <div class="tweet-content">
+                            Starship 第六次试飞窗口已确认。这次主要测试二级火箭的在轨点火能力。如果成功，我们将离火星更近一步。
+                        </div>
+                        <div class="tweet-footer">
+                            <span class="interaction-icon">💬 109</span>
+                            <span class="interaction-icon">⚡ 1.2k</span>
+                            <span class="interaction-icon like" onclick="toggleLike(this)">♡ 5.6k</span>
+                            <span class="interaction-icon">⇡</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="search-bar">🔍 搜索 GeekHeron</div>
+            
+            <div class="trend-box">
+                <div class="trend-title">全球趋势</div>
+                
+                <div class="trend-item">
+                    <div class="trend-meta">科技 · 趋势</div>
+                    <div class="trend-name">#AGI_Countdown</div>
+                    <div class="trend-meta">54.2K 帖子</div>
+                </div>
+
+                <div class="trend-item">
+                    <div class="trend-meta">编程 · 热门</div>
+                    <div class="trend-name">Rust vs C++</div>
+                    <div class="trend-meta">12.5K 帖子</div>
+                </div>
+
+                <div class="trend-item">
+                    <div class="trend-meta">硬件 · 新品</div>
+                    <div class="trend-name">NVIDIA RTX 6090</div>
+                    <div class="trend-meta">89K 帖子</div>
+                </div>
+
+                <div class="trend-item">
+                    <div class="trend-meta">物理 · 突破</div>
+                    <div class="trend-name">室温超导复现</div>
+                    <div class="trend-meta">230K 帖子</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // --- 简单的点赞功能 ---
+        function toggleLike(element) {
+            if (element.textContent.includes('♡')) {
+                element.textContent = element.textContent.replace('♡', '♥');
+                element.style.color = '#f91880'; // Twitter 红
+            } else {
+                element.textContent = element.textContent.replace('♥', '♡');
+                element.style.color = '#71767b'; // 灰色
+            }
+        }
+
+        // --- 发布推文功能 ---
+        function addPost() {
+            const input = document.getElementById('postInput');
+            const content = input.value.trim();
+            
+            if (!content) return alert("请输入内容！");
+
+            const feed = document.getElementById('feedContainer');
+            
+            // 创建新推文的 HTML 结构
+            const newTweet = document.createElement('div');
+            newTweet.className = 'tweet';
+            newTweet.innerHTML = `
+                <div class="avatar">ME</div>
+                <div class="tweet-body">
+                    <div class="tweet-header">
+                        <span class="username">Geek Visitor</span>
+                        <span class="handle">@you</span>
+                        <span class="time">· 刚刚</span>
+                    </div>
+                    <div class="tweet-content">${content}</div>
+                    <div class="tweet-footer">
+                        <span class="interaction-icon">💬 0</span>
+                        <span class="interaction-icon">⚡ 0</span>
+                        <span class="interaction-icon like" onclick="toggleLike(this)">♡ 0</span>
+                        <span class="interaction-icon">⇡</span>
+                    </div>
+                </div>
+            `;
+
+            // 插入到最前面
+            feed.prepend(newTweet);
+            
+            // 清空输入框
+            input.value = '';
+        }
+    </script>
+</body>
+</html>

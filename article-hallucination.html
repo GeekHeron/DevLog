@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大模型幻觉的本质 - GeekHeron</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* --- 1. 全局样式 (保持不变) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #ccc; /* 正文颜色稍微调暗，减少对比度疲劳 */
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8; /* 增加行高 */
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 (保持不变) --- */
+        #galaxy-field {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+        .overlay-dark {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); /* 遮罩加深，为了阅读体验 */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- 3. 顶部导航 (保持不变) --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* --- 4. 文章详情页样式 (新增) --- */
+        .container {
+            max-width: 800px; /* 限制阅读宽度 */
+            margin: 0 auto;
+            padding: 80px 20px 150px; /* 底部多留白 */
+            position: relative;
+            z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 40px;
+        }
+
+        .article-meta {
+            font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px;
+        }
+        
+        .tag {
+            display: inline-block; padding: 2px 8px; border: 1px solid #444; 
+            font-size: 12px; border-radius: 2px; margin-left: 10px; color: #888;
+        }
+
+        .article-title {
+            font-size: 42px; font-weight: 700; letter-spacing: -1px; 
+            color: #fff; line-height: 1.3; margin-bottom: 20px;
+        }
+
+        /* 正文排版 */
+        .article-content h2 {
+            font-size: 28px; color: #fff; margin-top: 60px; margin-bottom: 25px;
+            border-left: 4px solid #fff; padding-left: 15px;
+        }
+
+        .article-content h3 {
+            font-size: 22px; color: #eee; margin-top: 40px; margin-bottom: 20px;
+        }
+
+        .article-content p {
+            margin-bottom: 25px; font-size: 18px; text-align: justify;
+        }
+
+        .article-content ul {
+            margin-bottom: 30px; padding-left: 20px;
+        }
+        
+        .article-content li {
+            margin-bottom: 10px; list-style-type: square; color: #bbb;
+        }
+
+        .article-content strong {
+            color: #fff; font-weight: 600;
+        }
+
+        /* 数学公式容器 */
+        .math-block {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+            font-family: "Times New Roman", serif;
+            border: 1px solid #333;
+        }
+
+        .back-btn {
+            display: inline-block; margin-top: 80px;
+            font-size: 14px; color: #666; border: 1px solid #333;
+            padding: 10px 20px; transition: 0.3s;
+        }
+        .back-btn:hover { border-color: #fff; color: #fff; }
+
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .article-title { font-size: 30px; }
+            .article-content p { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="tech.html">前沿科技</a>
+            <a href="about.html">关于博主</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2025.11.20</span>
+                <span class="tag">AI / LLM</span>
+                <span class="tag">DEEP DIVE</span>
+            </div>
+            <h1 class="article-title">大模型幻觉的本质：<br>是错误还是创造力？</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto;">
+                当我们谈论 AI 幻觉时，我们往往将其视为一种 bug。但从神经网络的底层逻辑来看，幻觉或许正是机器创造力的雏形。
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. 并不是“胡说八道”，而是“概率的冒险”</h2>
+            <p>在 Transformer 架构下，模型并不像数据库那样“存储”事实，它存储的是<strong>概率分布</strong>。</p>
+            <p>当我们输入“秦始皇不仅统一了六国，还……”时，模型在进行下一词预测（Next Token Prediction）。它在巨大的高维空间中寻找下一个最合理的词。</p>
+            <ul>
+                <li><strong>事实（Fact）：</strong> 往往对应着概率分布中最高的那个峰值（Peak），比如“修筑了长城”。</li>
+                <li><strong>幻觉（Hallucination）：</strong> 则往往发生在模型选择了概率略低、但逻辑上依然通顺的路径，比如“发明了电灯”。</li>
+            </ul>
+            
+            <p>从数学公式上看，模型生成序列 $Y = (y_1, y_2, ..., y_n)$ 的概率是：</p>
+            <div class="math-block">
+                $$P(Y|X) = \prod_{t=1}^{n} P(y_t | y_{<t}, X)$$
+            </div>
+            <p>所谓的“幻觉”，本质上是模型在采样（Sampling）过程中，为了追求多样性（Diversity）而偏离了最大似然估计。<strong>如果模型永远只选择概率最高的词，它的回答将极其枯燥、重复且死板。</strong></p>
+
+            <h2>2. 温度：调节“严谨”与“疯癫”的旋钮</h2>
+            <p>这就引入了一个关键参数：<strong>Temperature（温度）</strong>。</p>
+            <ul>
+                <li><strong>低温度 ($T \to 0$)：</strong> 模型变得保守，只敢说它在训练数据中见过最多次的组合。这时，它是<strong>严谨的记录员</strong>，幻觉很少，但创造力为零。</li>
+                <li><strong>高温度 ($T > 1$)：</strong> 模型被允许去探索概率分布的“长尾”（Long Tail）。它开始将风马牛不相及的概念连接起来。这时，它是<strong>疯狂的诗人</strong>。</li>
+            </ul>
+            <p><strong>核心观点：</strong> 创造力的本质，就是“意料之外，情理之中”。人类的灵感往往也是大脑神经元的一次“错误连接”或“跳跃性联想”。因此，<strong>幻觉并非系统的故障，而是系统在尝试创造时的副产品。</strong></p>
+
+            <h2>3. 压缩与有损还原：记忆的模糊地带</h2>
+            <p>特德·姜（Ted Chiang）曾将 ChatGPT 比作“网上所有文本的模糊图像（Blurry JPEG）”。Transformer 模型将海量的人类知识压缩到了权重矩阵中。这种压缩是<strong>有损的（Lossy）</strong>。</p>
+            <p>当模型试图还原某个具体事实（例如某篇冷门论文的第三作者）时，由于“有损压缩”，它丢失了精确的像素，只保留了轮廓。于是，它利用其强大的逻辑推理能力（泛化能力）去“脑补”丢失的像素。</p>
+            <p>这种“脑补”能力，在写科幻小说时被称为“想象力”，而在写医疗报告时则被称为“致命的幻觉”。</p>
+
+            <h2>4. 既然无法消除，不如“驾驭”</h2>
+            <p>如果我们承认幻觉是创造力的孪生兄弟，那么工程上的目标就不应该是“彻底消灭幻觉”（因为那意味着扼杀模型的泛化能力），而是<strong>“控制幻觉的发生场景”</strong>。</p>
+            <ul>
+                <li><strong>RAG (检索增强生成)：</strong> 给模型一本“参考书”，强迫它在回答事实性问题时先查阅资料。这是用外挂知识库来约束内部的概率发散。</li>
+                <li><strong>思维链 (Chain of Thought)：</strong> 让模型展示推理过程，迫使其概率分布收敛到逻辑自洽的路径上。</li>
+            </ul>
+
+            <h2>5. 结论：机器的“梦境”</h2>
+            <p>人类在做梦时，大脑切断了感官输入，内部神经元自由放电，产生荒诞的幻觉。但许多伟大的科学发现和艺术灵感正源于梦境或白日梦。</p>
+            <p>AI 的幻觉，就是机器的“梦”。当我们指责 AI “产生幻觉”时，我们其实是在指责它<strong>在一个需要唯物主义（事实）的场合，表现出了唯心主义（创造）的特质。</strong></p>
+            <p>理解了这一点，我们才能真正理解 Transformer：它不是一个只会搜索的搜索引擎，它是一个基于概率的生成引擎。<strong>它的天性是生成，准确性只是人类强加给它的约束。</strong></p>
+
+        </article>
+
+        <a href="article.html" class="back-btn">← 返回文章列表</a>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000; 
+        
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2;
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0) this.x = width;
+                if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height;
+                if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            resize();
+            for(let i=0; i<numParticles; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init();
+        animate();
+    </script>
+</body>
+</html>

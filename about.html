@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于博主 - GeekHeron</title>
     <style>
-        /* --- 1. 全局样式 (与首页一致) --- */
+        /* --- 1. 全局样式 --- */
+        :root {
+            --accent-color: #fff;
+            --secondary-color: #888;
+            --bg-color: #000;
+            --card-bg: rgba(20, 20, 20, 0.6);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #000;
+            background-color: var(--bg-color);
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
@@ -18,134 +25,137 @@
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-        /* --- 2. 背景特效层 (复用首页) --- */
+        /* --- 2. 背景特效层 --- */
         #galaxy-field {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
         
         .overlay-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at top left, rgba(20,20,20,0.8), #000 90%);
-            z-index: 0;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 20%, rgba(30,30,40,0.4), #000 95%);
+            z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. 导航栏 (保持统一) --- */
+        /* --- 3. 导航栏 --- */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 50px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(5px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px; position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px); background: rgba(0,0,0,0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo {
-            font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff;
-            text-transform: uppercase;
-        }
-
-        .nav-links a {
-            margin-left: 30px; font-size: 13px; font-weight: 600; color: #888;
-        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
         /* --- 4. 页面布局 --- */
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 80px 20px;
-            position: relative;
-            z-index: 10;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 80px;
+            max-width: 1100px; margin: 0 auto; padding: 100px 20px;
+            position: relative; z-index: 10;
+            display: grid; grid-template-columns: 320px 1fr; gap: 80px;
             align-items: start;
         }
 
-        /* 左侧：个人概况 */
+        /* --- 左侧：个人概况 --- */
         .profile-section {
-            position: sticky;
-            top: 120px;
+            position: sticky; top: 120px;
+            text-align: center; /* 左侧居中对齐看起来更有气场 */
         }
 
-        /* 头像样式更新 */
+        .avatar-container {
+            width: 180px; height: 180px; margin: 0 auto 30px;
+            position: relative;
+        }
+
         .avatar-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%; /* 圆形头像 */
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.3);
-            box-shadow: 0 0 20px rgba(255,255,255,0.1);
-            margin-bottom: 30px;
-            display: block;
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            /* 呼吸光效 */
+            box-shadow: 0 0 0 rgba(255,255,255,0);
+            animation: pulse-glow 3s infinite;
         }
 
-        .profile-name {
-            font-size: 32px; font-weight: 700; margin-bottom: 10px; letter-spacing: -1px;
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0); }
         }
 
+        .profile-name { font-size: 36px; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; }
+        .profile-id { font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px; }
+        
         .profile-title {
-            font-size: 14px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 40px;
-            border-left: 2px solid #fff; padding-left: 15px;
+            font-size: 12px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; 
+            margin-bottom: 40px; line-height: 1.6;
         }
 
         .contact-btn {
-            display: inline-block;
-            border: 1px solid #fff;
-            padding: 12px 30px;
-            font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            display: inline-block; background: #fff; color: #000;
+            padding: 14px 35px; border-radius: 50px;
+            font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+            transition: all 0.3s ease; cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,255,255,0.15);
         }
-        .contact-btn:hover { background: #fff; color: #000; }
-
-        /* 右侧：详细内容 */
-        .content-section {
-            border-left: 1px solid rgba(255,255,255,0.1);
-            padding-left: 80px;
+        .contact-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
         }
 
-        .section-block { margin-bottom: 80px; }
-
+        /* --- 右侧：详细内容 --- */
+        .content-section { padding-top: 10px; }
+        .section-block { margin-bottom: 90px; }
         .section-title {
-            font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px;
-            font-weight: 700;
+            font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 3px; 
+            margin-bottom: 30px; font-weight: 800; display: flex; align-items: center;
+        }
+        .section-title::after {
+            content: ''; height: 1px; background: #222; flex-grow: 1; margin-left: 20px;
         }
 
-        .bio-text {
-            font-size: 18px; line-height: 1.8; color: #ddd; margin-bottom: 20px; font-weight: 300;
+        /* 终端打字机特效 */
+        .terminal-box {
+            background: rgba(20,20,20,0.8); border: 1px solid #333;
+            padding: 25px; border-radius: 4px; font-family: monospace;
+            margin-bottom: 20px; color: #ddd; font-size: 14px; line-height: 1.8;
         }
+        .cursor { display: inline-block; width: 8px; height: 15px; background: #fff; animation: blink 1s infinite; vertical-align: middle; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .bio-text { font-size: 18px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
+
+        /* 技能条 (带动画) */
+        .skill-item { margin-bottom: 30px; }
+        .skill-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
+        .skill-track {
+            width: 100%; height: 4px; background: #222; border-radius: 2px; overflow: hidden;
+        }
+        .skill-bar {
+            height: 100%; background: #fff; width: 0; /* 初始宽度为0，靠JS触发动画 */
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* 垂直时间轴 */
+        .timeline { border-left: 2px solid #222; padding-left: 40px; margin-left: 10px; }
+        .history-item { margin-bottom: 50px; position: relative; }
+        /* 时间轴圆点 */
+        .history-item::before {
+            content: ''; position: absolute; left: -47px; top: 5px;
+            width: 12px; height: 12px; background: #000; border: 2px solid #666;
+            border-radius: 50%; transition: 0.3s;
+        }
+        .history-item:hover::before { border-color: #fff; background: #fff; }
         
-        /* 技能条 (极简风格) */
-        .skill-item { margin-bottom: 25px; }
-        .skill-name { font-size: 13px; font-weight: 600; margin-bottom: 10px; display: block; }
-        .progress-bar {
-            width: 100%; height: 2px; background: rgba(255,255,255,0.1);
-            position: relative;
-        }
-        .progress-fill {
-            height: 100%; background: #fff; position: absolute; top: 0; left: 0;
-        }
+        .history-year { font-size: 12px; color: #666; margin-bottom: 8px; font-family: monospace; }
+        .history-role { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .history-desc { font-size: 15px; color: #999; line-height: 1.6; }
 
-        /* 经历列表 */
-        .history-item { margin-bottom: 40px; position: relative; }
-        .history-year { font-size: 12px; color: #666; margin-bottom: 5px; font-family: monospace; }
-        .history-role { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
-        .history-desc { font-size: 14px; color: #aaa; line-height: 1.6; }
-
-        /* 响应式适配 */
-        @media (max-width: 800px) {
-            .container { grid-template-columns: 1fr; gap: 50px; padding-top: 40px; }
-            .profile-section { position: static; text-align: center; }
-            .avatar-image { margin: 0 auto 30px; }
-            .profile-title { border-left: none; padding-left: 0; }
-            .content-section { border-left: none; padding-left: 0; }
+        /* 移动端适配 */
+        @media (max-width: 850px) {
+            .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
+            .profile-section { position: relative; top: 0; }
+            .section-title::after { display: none; }
+            .timeline { margin-left: 0; padding-left: 30px; }
+            .history-item::before { left: -36px; }
         }
     </style>
 </head>
@@ -167,22 +177,32 @@
     <main class="container">
         
         <aside class="profile-section">
-            <img src="image_3.png" alt="Geek Heron Avatar" class="avatar-image">
+            <div class="avatar-container">
+                <img src="image_3.png" alt="Geek Heron" class="avatar-image">
+            </div>
             <h1 class="profile-name">Geek Heron</h1>
-            <p class="profile-title">Full Stack Engineer<br>& AI Researcher</p>
-            
-            <a href="mailto:hello@geekheron.com" class="contact-btn">Get in Touch</a>
+            <p class="profile-id">@geek_heron</p>
+            <p class="profile-title">
+                Full Stack Engineer<br>
+                & AGI Philosophy Researcher
+            </p>
+            <a href="mailto:geek.jianfeng@gmail.com" class="contact-btn">Initiate Contact</a>
         </aside>
 
         <div class="content-section">
             
             <section class="section-block">
-                <h3 class="section-title">01 / Introduction</h3>
-                <p class="bio-text">
-                    这不仅是一个博客，而是我思维的数字投影。
-                </p>
+                <h3 class="section-title">01 / System Log</h3>
+                
+                <div class="terminal-box">
+                    <span style="color: #666;">> </span><span id="typewriter"></span><span class="cursor"></span>
+                </div>
+
                 <p class="bio-text">
                     我专注于探索人类认知的边界与机器智能的奇点。从底层算法到宏观哲学，我试图在混乱的代码与物理定律中，寻找那条贯穿过去与未来的逻辑主线。
+                </p>
+                <p class="bio-text">
+                    这不仅是一个博客，而是我思维的数字投影（Digital Projection）。在这里，我不追求流量，只追求思想的“信噪比”。
                 </p>
             </section>
 
@@ -190,34 +210,59 @@
                 <h3 class="section-title">02 / Expertise</h3>
                 
                 <div class="skill-item">
-                    <span class="skill-name">Artificial Intelligence / LLM Fine-tuning</span>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 92%"></div></div>
+                    <div class="skill-header">
+                        <span>AI / LLM Fine-tuning / RAG</span>
+                        <span>92%</span>
+                    </div>
+                    <div class="skill-track"><div class="skill-bar" data-width="92%"></div></div>
                 </div>
                 
                 <div class="skill-item">
-                    <span class="skill-name">Full Stack Development (React/Node/Rust)</span>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 85%"></div></div>
+                    <div class="skill-header">
+                        <span>Full Stack (React / Node / Python)</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="skill-track"><div class="skill-bar" data-width="85%"></div></div>
                 </div>
                 
                 <div class="skill-item">
-                    <span class="skill-name">Data Visualization & WebGL</span>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div>
+                    <div class="skill-header">
+                        <span>WebGL / Creative Coding</span>
+                        <span>70%</span>
+                    </div>
+                    <div class="skill-track"><div class="skill-bar" data-width="70%"></div></div>
+                </div>
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span>Quantum Computing Theory</span>
+                        <span>60%</span>
+                    </div>
+                    <div class="skill-track"><div class="skill-bar" data-width="60%"></div></div>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">03 / History</h3>
+                <h3 class="section-title">03 / Timeline</h3>
                 
-                <div class="history-item">
-                    <div class="history-year">2025 - Present</div>
-                    <h4 class="history-role">Independent Researcher</h4>
-                    <p class="history-desc">创立 GeekHeron，专注于 AGI 伦理研究与技术科普写作。</p>
-                </div>
+                <div class="timeline">
+                    <div class="history-item">
+                        <div class="history-year">2025 - Present</div>
+                        <h4 class="history-role">Independent Researcher</h4>
+                        <p class="history-desc">创立 GeekHeron，专注于 AGI 伦理研究与技术科普写作。探索硅基生命在未来社会的法律与道德边界。</p>
+                    </div>
 
-                <div class="history-item">
-                    <div class="history-year">2022 - 2024</div>
-                    <h4 class="history-role">Senior Algo Engineer</h4>
-                    <p class="history-desc">曾任职于 TechGiant 核心架构组，负责分布式训练系统的优化，将模型训练效率提升 40%。</p>
+                    <div class="history-item">
+                        <div class="history-year">2022 - 2024</div>
+                        <h4 class="history-role">Senior Algo Engineer @ TechGiant</h4>
+                        <p class="history-desc">任职于核心架构组，负责超大规模分布式训练系统的优化。设计并实现了一套基于 Ring-AllReduce 的通信机制，将模型训练效率提升 40%。</p>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-year">2019 - 2022</div>
+                        <h4 class="history-role">Full Stack Developer</h4>
+                        <p class="history-desc">参与开发了多个获得红点奖的 WebGL 交互项目。深入研究前端渲染性能优化。</p>
+                    </div>
                 </div>
             </section>
 
@@ -225,79 +270,90 @@
     </main>
 
     <script>
+        // --- 1. 背景粒子特效 (复用之前的逻辑) ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
-
         let width, height;
         const particles = [];
-        const numParticles = 3000; 
+        const numParticles = 2000; // 粒子数量适中
         const fieldOfView = 300; 
-
-        const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
 
         class Particle {
             constructor() {
-                this.x = (Math.random() - 0.5) * width * 2.5; 
-                this.y = (Math.random() - 0.5) * height * 2.5; 
+                this.x = (Math.random() - 0.5) * width * 2; 
+                this.y = (Math.random() - 0.5) * height * 2; 
                 this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
-                this.radius = Math.random() * 1.2 + 0.2; 
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.radius = Math.random() * 1.5; 
+                this.alpha = Math.random() * 0.5 + 0.2;
             }
-
             update() {
-                let cosZ = Math.cos(0.0005);
-                let sinZ = Math.sin(0.0005);
-                let tempX = this.x;
-                let tempY = this.y;
-                this.x = tempX * cosZ - tempY * sinZ;
-                this.y = tempX * sinZ + tempY * cosZ;
-                this.z -= 0.2; 
+                this.z -= 0.3; // 稍微调慢速度，营造深邃感
                 if (this.z < -fieldOfView) {
                     this.z += fieldOfView * 2;
-                    this.x = (Math.random() - 0.5) * width * 2.5;
-                    this.y = (Math.random() - 0.5) * height * 2.5;
+                    this.x = (Math.random() - 0.5) * width * 2;
+                    this.y = (Math.random() - 0.5) * height * 2;
                 }
             }
-
             draw() {
                 const perspective = fieldOfView / (fieldOfView + this.z);
                 const projectedX = (this.x * perspective) + width / 2;
                 const projectedY = (this.y * perspective) + height / 2;
-                const projectedRadius = this.radius * perspective;
-                const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
-
+                const scale = perspective;
                 if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
+                    ctx.fillStyle = `rgba(255,255,255,${this.alpha * scale})`;
                     ctx.beginPath();
-                    ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${this.color}, ${opacity})`;
+                    ctx.arc(projectedX, projectedY, this.radius * scale, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
         }
 
         function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
         }
-        
-        window.addEventListener('resize', () => { resize(); initParticles(); });
-        
-        function initParticles() {
-            particles.length = 0;
-            for (let i = 0; i < numParticles; i++) { particles.push(new Particle()); }
-        }
-
         function animate() {
             ctx.clearRect(0, 0, width, height);
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
+        
+        window.addEventListener('resize', () => { resize(); particles.length=0; init(); });
+        function init() { for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        resize(); init(); animate();
 
-        resize();
-        initParticles();
-        animate();
+
+        // --- 2. 页面交互脚本 ---
+        
+        // A. 终端打字效果
+        const textToType = "Executing logic trace... Identity verified: GeekHeron. Welcome to my digital cortex.";
+        const typeWriterElement = document.getElementById('typewriter');
+        let i = 0;
+        function typeWriter() {
+            if (i < textToType.length) {
+                typeWriterElement.innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, 40); // 打字速度
+            }
+        }
+
+        // B. 技能条动画 (当页面加载后执行)
+        function animateSkills() {
+            const bars = document.querySelectorAll('.skill-bar');
+            bars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                // 稍微延迟一下，让用户看清动画
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
+            });
+        }
+
+        // 页面加载完成后触发
+        window.onload = function() {
+            typeWriter();
+            animateSkills();
+        };
     </script>
 </body>
 </html>

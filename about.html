@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于博主 - GeekHeron</title>
     <style>
-        /* --- 1. 全局样式 --- */
+        /* --- 1. 全局样式 (保持原样) --- */
         :root {
             --accent-color: #fff;
             --secondary-color: #888;
@@ -59,7 +59,7 @@
         /* --- 左侧：个人概况 --- */
         .profile-section {
             position: sticky; top: 120px;
-            text-align: center; /* 左侧居中对齐看起来更有气场 */
+            text-align: center;
         }
 
         .avatar-container {
@@ -130,7 +130,7 @@
             width: 100%; height: 4px; background: #222; border-radius: 2px; overflow: hidden;
         }
         .skill-bar {
-            height: 100%; background: #fff; width: 0; /* 初始宽度为0，靠JS触发动画 */
+            height: 100%; background: #fff; width: 0; 
             transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
@@ -181,12 +181,12 @@
                 <img src="image_3.png" alt="Geek Heron" class="avatar-image">
             </div>
             <h1 class="profile-name">Geek Heron</h1>
-            <p class="profile-id">@geek_heron</p>
+            <p class="profile-id">@王鉴锋</p>
             <p class="profile-title">
-                Full Stack Engineer<br>
-                & AGI Philosophy Researcher
+                AI Full Stack Engineer<br>
+                & DevOps Specialist
             </p>
-            <a href="mailto:geek.jianfeng@gmail.com" class="contact-btn">Initiate Contact</a>
+            <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Initiate Contact</a>
         </aside>
 
         <div class="content-section">
@@ -199,10 +199,10 @@
                 </div>
 
                 <p class="bio-text">
-                    我专注于探索人类认知的边界与机器智能的奇点。从底层算法到宏观哲学，我试图在混乱的代码与物理定律中，寻找那条贯穿过去与未来的逻辑主线。
+                    我不满足于单纯的代码实现，更关注系统整体的稳定性与商业闭环。作为一个实战派的问题解决者（Problem Solver），我致力于将 LLM 大模型能力与高可用架构相结合。
                 </p>
                 <p class="bio-text">
-                    这不仅是一个博客，而是我思维的数字投影（Digital Projection）。在这里，我不追求流量，只追求思想的“信噪比”。
+                    从底层 Linux 内核调优到上层 AI Agent 编排，从自动化运维到商业化 SaaS 平台构建。凡事有交代，件件有着落，是我对技术的承诺。
                 </p>
             </section>
 
@@ -211,34 +211,34 @@
                 
                 <div class="skill-item">
                     <div class="skill-header">
-                        <span>AI / LLM Fine-tuning / RAG</span>
-                        <span>92%</span>
+                        <span>AI Application (RAG / Prompt Eng / DeepSeek)</span>
+                        <span>95%</span>
                     </div>
-                    <div class="skill-track"><div class="skill-bar" data-width="92%"></div></div>
+                    <div class="skill-track"><div class="skill-bar" data-width="95%"></div></div>
                 </div>
                 
                 <div class="skill-item">
                     <div class="skill-header">
-                        <span>Full Stack (React / Node / Python)</span>
+                        <span>Linux / Nginx / Docker / Automation</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-track"><div class="skill-bar" data-width="90%"></div></div>
+                </div>
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span>Python Full Stack (Flask / Gevent)</span>
+                        <span>88%</span>
+                    </div>
+                    <div class="skill-track"><div class="skill-bar" data-width="88%"></div></div>
+                </div>
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span>System Architecture / High Availability</span>
                         <span>85%</span>
                     </div>
                     <div class="skill-track"><div class="skill-bar" data-width="85%"></div></div>
-                </div>
-                
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span>WebGL / Creative Coding</span>
-                        <span>70%</span>
-                    </div>
-                    <div class="skill-track"><div class="skill-bar" data-width="70%"></div></div>
-                </div>
-                
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span>Quantum Computing Theory</span>
-                        <span>60%</span>
-                    </div>
-                    <div class="skill-track"><div class="skill-bar" data-width="60%"></div></div>
                 </div>
             </section>
 
@@ -247,21 +247,40 @@
                 
                 <div class="timeline">
                     <div class="history-item">
-                        <div class="history-year">2025 - Present</div>
-                        <h4 class="history-role">Independent Researcher</h4>
-                        <p class="history-desc">创立 GeekHeron，专注于 AGI 伦理研究与技术科普写作。探索硅基生命在未来社会的法律与道德边界。</p>
+                        <div class="history-year">2025.07 - Present</div>
+                        <h4 class="history-role">Independent Full Stack Architect - Fuxi Engine</h4>
+                        <p class="history-desc">
+                            独立开发 AI 驱动的商业化分析平台“伏羲引擎”。<br>
+                            • <strong>架构设计：</strong> 采用 Flask + Gunicorn + Gevent 架构，解决 Render 平台 OOM 问题，配合 Supervisor 实现毫秒级容灾。<br>
+                            • <strong>核心技术：</strong> 实现 RAG 知识库与 DeepSeek 模型深度集成，解决 Nginx 504 超时问题，支持 SSE 流式“打字机”输出。<br>
+                            • <strong>商业闭环：</strong> 独立设计 Token 计费与卡密系统，实现业务逻辑解耦。
+                        </p>
                     </div>
 
                     <div class="history-item">
-                        <div class="history-year">2022 - 2024</div>
-                        <h4 class="history-role">Senior Algo Engineer @ TechGiant</h4>
-                        <p class="history-desc">任职于核心架构组，负责超大规模分布式训练系统的优化。设计并实现了一套基于 Ring-AllReduce 的通信机制，将模型训练效率提升 40%。</p>
+                        <div class="history-year">2024.03 - 2025.07</div>
+                        <h4 class="history-role">Ops Engineer @ Shenzhen Fengcai</h4>
+                        <p class="history-desc">
+                            负责 50+ 台 Linux 服务器集群管理与自动化运维。<br>
+                            • 引入 Python/Shell 自动化脚本替代 40% 人工巡检工作。<br>
+                            • 部署 Zabbix/Prometheus 监控体系，通过内核调优保障系统 SLA > 99.9%。
+                        </p>
                     </div>
 
                     <div class="history-item">
-                        <div class="history-year">2019 - 2022</div>
-                        <h4 class="history-role">Full Stack Developer</h4>
-                        <p class="history-desc">参与开发了多个获得红点奖的 WebGL 交互项目。深入研究前端渲染性能优化。</p>
+                        <div class="history-year">2020.10 - 2023.12</div>
+                        <h4 class="history-role">Ops Engineer @ Shenzhen Kemin Sensor</h4>
+                        <p class="history-desc">
+                            负责企业 IT 基础设施标准化管理。<br>
+                            • 深度理解 TCP/IP 协议，负责 VLAN 划分与内网丢包诊断。<br>
+                            • 建立标准化 IT 服务工单流程 (SOP)，利用脚本提升资产盘点效率。
+                        </p>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-year">2017 - 2020</div>
+                        <h4 class="history-role">Education @ FJCCP</h4>
+                        <p class="history-desc">福建船政交通职业学院 / 航海技术</p>
                     </div>
                 </div>
             </section>
@@ -270,12 +289,12 @@
     </main>
 
     <script>
-        // --- 1. 背景粒子特效 (复用之前的逻辑) ---
+        // --- 1. 背景粒子特效 (保持不变) ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
         const particles = [];
-        const numParticles = 2000; // 粒子数量适中
+        const numParticles = 2000; 
         const fieldOfView = 300; 
 
         class Particle {
@@ -287,7 +306,7 @@
                 this.alpha = Math.random() * 0.5 + 0.2;
             }
             update() {
-                this.z -= 0.3; // 稍微调慢速度，营造深邃感
+                this.z -= 0.3; 
                 if (this.z < -fieldOfView) {
                     this.z += fieldOfView * 2;
                     this.x = (Math.random() - 0.5) * width * 2;
@@ -325,31 +344,29 @@
 
         // --- 2. 页面交互脚本 ---
         
-        // A. 终端打字效果
-        const textToType = "Executing logic trace... Identity verified: GeekHeron. Welcome to my digital cortex.";
+        // A. 终端打字效果 (文案更新)
+        const textToType = "Loading Fuxi Engine modules... Identity confirmed: Wang Jianfeng. System ready.";
         const typeWriterElement = document.getElementById('typewriter');
         let i = 0;
         function typeWriter() {
             if (i < textToType.length) {
                 typeWriterElement.innerHTML += textToType.charAt(i);
                 i++;
-                setTimeout(typeWriter, 40); // 打字速度
+                setTimeout(typeWriter, 40); 
             }
         }
 
-        // B. 技能条动画 (当页面加载后执行)
+        // B. 技能条动画
         function animateSkills() {
             const bars = document.querySelectorAll('.skill-bar');
             bars.forEach(bar => {
                 const width = bar.getAttribute('data-width');
-                // 稍微延迟一下，让用户看清动画
                 setTimeout(() => {
                     bar.style.width = width;
                 }, 300);
             });
         }
 
-        // 页面加载完成后触发
         window.onload = function() {
             typeWriter();
             animateSkills();

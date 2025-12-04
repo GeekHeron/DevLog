@@ -6,350 +6,421 @@
     <title>前沿科技 - GeekHeron</title>
     <style>
         /* =========================================
-           1. CSS 变量与重置 (Design Tokens)
+           1. Design Tokens & Global
            ========================================= */
         :root {
-            --bg-color: #000000;
-            --text-main: #ffffff;
-            --text-sec: #888888;
-            --text-muted: #666666;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --glass-bg: rgba(0, 0, 0, 0.8);
-            --glass-blur: 10px;
-            --accent-color: #ffffff;
-            --like-color: #f91880;
-            --code-color: #0f0;
-            --code-bg: #111;
-            --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            --bg-dark: #050505;
+            --card-bg: rgba(20, 20, 25, 0.65);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --accent-cyan: #00f3ff;
+            --accent-purple: #bc13fe;
+            --accent-green: #0aff60;
+            --glass-blur: 16px;
+            --font-main: "Inter", "Helvetica Neue", Arial, sans-serif;
+            --font-mono: "JetBrains Mono", "Fira Code", monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: var(--font-stack);
-            background-color: var(--bg-color);
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
             color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
-            line-height: 1.5;
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
-        button { font-family: inherit; }
+        
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
 
         /* =========================================
-           2. 背景特效 (Background System)
+           2. Background FX
            ========================================= */
         #galaxy-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
-        
-        .overlay-vignette {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* =========================================
-           3. 导航栏 (Navigation) - 已修复
-           ========================================= */
-        .site-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            border-bottom: 1px solid var(--border-color);
-            background-color: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            height: 80px;
-        }
-
-        .logo {
-            font-size: 24px; font-weight: 800; letter-spacing: 4px; color: var(--text-main);
-            text-transform: uppercase;
-        }
-
-        .nav-menu { display: flex; gap: 30px; }
-        .nav-link { font-size: 13px; font-weight: 600; color: var(--text-sec); position: relative; }
-        .nav-link:hover, .nav-link.active { color: var(--text-main); }
-        
-        /* 激活状态下划线 */
-        .nav-link.active::after {
-            content: ''; position: absolute; bottom: -30px; left: 0; width: 100%; height: 2px; background: var(--text-main);
+        .overlay-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            z-index: -1; pointer-events: none;
         }
 
         /* =========================================
-           4. 布局容器 (Layout)
+           3. Header (Consistent)
            ========================================= */
-        .main-content {
-            max-width: 700px; 
-            margin: 0 auto;
-            padding: 60px 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .page-intro {
-            margin-bottom: 40px;
-            border-left: 4px solid var(--accent-color);
-            padding-left: 20px;
-        }
-
-        .page-intro h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
-        .page-intro p { color: var(--text-muted); font-family: monospace; font-size: 14px; }
-
-        /* =========================================
-           5. 发布器组件 (Composer)
-           ========================================= */
-        .composer {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid #333;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(5px);
-            display: flex;
-            gap: 15px;
-        }
-
-        .avatar {
-            width: 48px; height: 48px; 
-            background: #333; border-radius: 50%; 
-            flex-shrink: 0;
-            display: grid; place-items: center;
-            font-size: 12px; font-weight: 700; color: #aaa; 
-            border: 1px solid #444;
-            user-select: none;
-        }
-
-        .composer-body { flex-grow: 1; }
-
-        .composer-input {
-            width: 100%; background: transparent; border: none; color: var(--text-main);
-            font-size: 18px; outline: none; resize: none; 
-            margin-top: 10px; min-height: 50px;
-            font-family: inherit;
-        }
-        
-        .composer-actions {
+        header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;
+            padding: 20px 40px; position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(20px); background: rgba(0,0,0,0.6);
+            border-bottom: 1px solid var(--card-border);
         }
-
-        .tool-icons span { margin-right: 15px; cursor: pointer; opacity: 0.7; transition: 0.2s; font-size: 18px; }
-        .tool-icons span:hover { opacity: 1; transform: scale(1.1); }
-
-        .btn-post {
-            background-color: var(--text-main); color: var(--bg-color);
-            padding: 8px 24px; border-radius: 20px;
-            font-weight: 700; border: none; cursor: pointer;
-            transition: opacity 0.2s;
+        .logo { font-size: 22px; font-weight: 800; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #666; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .nav-links a.active::after {
+            content: ''; position: absolute; bottom: -24px; left: 0; width: 100%; height: 2px;
+            background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);
         }
-        .btn-post:hover { opacity: 0.9; }
-        .btn-post:active { transform: scale(0.98); }
 
         /* =========================================
-           6. 推文流组件 (Feed Stream)
+           4. Main Layout (Grid System)
            ========================================= */
-        .tweet {
-            padding: 25px 0;
-            border-bottom: 1px solid #333;
-            display: flex;
-            gap: 15px;
-            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 40px 20px;
+            display: grid; grid-template-columns: 240px 1fr 280px; gap: 30px;
+            align-items: start;
         }
-        .tweet:last-child { border-bottom: none; }
 
-        .tweet-meta { margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-        .tweet-name { font-weight: 700; color: #eee; }
-        .tweet-handle, .tweet-time { color: var(--text-muted); font-size: 14px; }
+        /* --- Left Sidebar: Filters --- */
+        .sidebar-left { position: sticky; top: 100px; }
+        .filter-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; font-weight: 700; }
         
-        .tweet-text { font-size: 16px; color: #ddd; white-space: pre-wrap; line-height: 1.6; }
-
-        .tweet-attachment {
-            margin-top: 12px; border-radius: 12px; border: 1px solid #333;
-            background: var(--code-bg); padding: 15px;
-            font-family: "Consolas", "Monaco", monospace; font-size: 13px; color: var(--code-color);
-            overflow-x: auto;
+        .filter-btn {
+            display: flex; align-items: center; gap: 10px;
+            width: 100%; padding: 12px 15px; margin-bottom: 8px;
+            background: transparent; border: 1px solid transparent; border-radius: 8px;
+            color: var(--text-muted); font-size: 14px; font-weight: 500; cursor: pointer;
+            transition: all 0.2s; text-align: left;
         }
-
-        .tweet-actions {
-            display: flex; justify-content: space-between; max-width: 400px;
-            color: var(--text-muted); margin-top: 12px; font-size: 13px;
+        .filter-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .filter-btn.active {
+            background: rgba(0, 243, 255, 0.1); border-color: rgba(0, 243, 255, 0.3); color: var(--accent-cyan);
         }
+        .filter-btn i { font-style: normal; font-size: 16px; width: 20px; text-align: center; }
+
+        /* --- Center: Feed --- */
+        .feed-area { position: relative; }
+
+        /* Composer (Terminal Style) */
+        .composer-box {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 20px; margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            position: relative; overflow: hidden;
+        }
+        .composer-box::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-cyan);
+        }
+        .cmd-line { display: flex; gap: 10px; font-family: var(--font-mono); font-size: 14px; margin-bottom: 10px; color: var(--accent-green); }
+        .cmd-input {
+            width: 100%; background: transparent; border: none; color: #fff;
+            font-family: inherit; font-size: 15px; outline: none; resize: none; min-height: 40px;
+        }
+        .composer-footer { display: flex; justify-content: flex-end; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        .btn-submit {
+            background: var(--accent-cyan); color: #000; border: none;
+            padding: 6px 20px; border-radius: 4px; font-weight: 700; font-size: 12px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.2s;
+        }
+        .btn-submit:hover { box-shadow: 0 0 15px var(--accent-cyan); transform: scale(1.05); }
+
+        /* Feed Cards */
+        .tech-card {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 25px; margin-bottom: 20px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative; overflow: hidden;
+        }
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        /* Tag Badge */
+        .card-tag {
+            position: absolute; top: 20px; right: 20px;
+            font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .tag-ai { background: rgba(188, 19, 254, 0.15); color: var(--accent-purple); border: 1px solid rgba(188, 19, 254, 0.3); }
+        .tag-dev { background: rgba(10, 255, 96, 0.15); color: var(--accent-green); border: 1px solid rgba(10, 255, 96, 0.3); }
+        .tag-hardware { background: rgba(255, 165, 0, 0.15); color: orange; border: 1px solid rgba(255, 165, 0, 0.3); }
+
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 8px; background: #333; object-fit: cover; border: 1px solid #555; }
+        .user-info h4 { font-size: 15px; font-weight: 700; color: #fff; }
+        .user-info span { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+
+        .card-content { font-size: 15px; line-height: 1.6; color: #ddd; margin-bottom: 15px; }
         
-        .action-item { 
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; 
-            padding: 5px 8px; border-radius: 20px; margin-left: -8px;
+        .code-block {
+            background: #080808; border: 1px solid #222; border-radius: 6px;
+            padding: 12px; font-family: var(--font-mono); font-size: 12px; color: #aaa;
+            margin-top: 10px; overflow-x: auto; position: relative;
         }
-        .action-item:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
+        .code-block::before { content: 'CODE'; position: absolute; top: 5px; right: 8px; font-size: 9px; color: #444; }
+
+        .card-stats {
+            display: flex; gap: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 12px; color: var(--text-muted);
+        }
+        .stat-item { cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px; }
+        .stat-item:hover { color: #fff; }
+
+        /* --- Right Sidebar: Widgets --- */
+        .sidebar-right { position: sticky; top: 100px; }
         
-        .action-item.liked { color: var(--like-color); }
-        .action-item.liked .icon-heart::before { content: "♥"; }
-        .icon-heart::before { content: "♡"; font-size: 16px; }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .widget {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 20px; margin-bottom: 20px;
         }
+        .widget-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; }
 
-        @media (max-width: 768px) {
-            .site-header { padding: 15px 20px; }
-            .nav-links a { margin-left: 15px; }
-            .main-content { padding: 40px 15px; }
-            .tweet { gap: 10px; }
-            .avatar { width: 40px; height: 40px; }
+        /* Trending List */
+        .trend-item { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; cursor: pointer; }
+        .trend-item:hover .trend-name { color: var(--accent-cyan); }
+        .trend-name { font-weight: 600; color: #ccc; transition: 0.2s; }
+        .trend-vol { font-family: var(--font-mono); color: #555; font-size: 11px; }
+
+        /* System Monitor */
+        .sys-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: #888; font-family: var(--font-mono); }
+        .progress-bar { width: 100%; height: 4px; background: #222; border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent-green); animation: pulse-width 2s infinite; }
+        @keyframes pulse-width { 0% { width: 40%; } 50% { width: 60%; } 100% { width: 40%; } }
+
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar-left, .sidebar-right { display: none; } /* Mobile hide sidebars for simplicity */
         }
     </style>
 </head>
 <body>
 
     <canvas id="galaxy-canvas"></canvas>
-    <div class="overlay-vignette"></div>
+    <div class="overlay-grid"></div>
 
-    <header class="site-header">
+    <header>
         <a href="index.html" class="logo">GeekHeron</a>
-        <nav class="nav-menu">
-            <a href="index.html" class="nav-link">首页</a>
-            <a href="article.html" class="nav-link">深度分析</a>
-            <a href="tech.html" class="nav-link active">前沿科技</a>
-            <a href="about.html" class="nav-link">关于博主</a>
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html">深度分析</a>
+            <a href="tech.html" class="active">前沿科技</a>
+            <a href="about.html">关于博主</a>
         </nav>
     </header>
 
-    <main class="main-content">
-        <div class="page-intro">
-            <h1>前沿科技流</h1>
-            <p>// LATEST TECH FEED & THOUGHTS</p>
-        </div>
+    <main class="container">
+        
+        <aside class="sidebar-left">
+            <div class="filter-title">Data Stream Filter</div>
+            <button class="filter-btn active" data-filter="all"><i>💠</i> 全部动态 (All)</button>
+            <button class="filter-btn" data-filter="ai"><i>🧠</i> 人工智能 (AI)</button>
+            <button class="filter-btn" data-filter="dev"><i>💻</i> 开发技术 (Dev)</button>
+            <button class="filter-btn" data-filter="crypto"><i>⛓️</i> 区块链 (Crypto)</button>
+            <button class="filter-btn" data-filter="hardware"><i>🔋</i> 硬核硬件 (Hard)</button>
+        </aside>
 
-        <div class="composer">
-            <div class="avatar">ME</div>
-            <div class="composer-body">
-                <textarea id="postInput" class="composer-input" placeholder="分享最新的科技发现..."></textarea>
-                <div class="composer-actions">
-                    <div class="tool-icons">
-                        <span title="Add Image">📷</span>
-                        <span title="Add Poll">📊</span>
-                        <span title="Add Emoji">😊</span>
-                    </div>
-                    <button id="postBtn" class="btn-post">发布</button>
+        <section class="feed-area">
+            
+            <div class="composer-box">
+                <div class="cmd-line">
+                    <span>root@geekheron:~#</span>
+                    <span>./publish_thought.sh</span>
+                </div>
+                <textarea id="postInput" class="cmd-input" placeholder="Enter system log or observation..."></textarea>
+                <div class="composer-footer">
+                    <button id="postBtn" class="btn-submit">Execute</button>
                 </div>
             </div>
-        </div>
 
-        <div id="feed-container"></div>
+            <div id="feed-container">
+                </div>
+            
+        </section>
+
+        <aside class="sidebar-right">
+            
+            <div class="widget">
+                <div class="widget-title">Trending Topics</div>
+                <div class="trend-item">
+                    <span class="trend-name">#DeepSeek-R1</span>
+                    <span class="trend-vol">12.4k posts</span>
+                </div>
+                <div class="trend-item">
+                    <span class="trend-name">#Nvidia_H200</span>
+                    <span class="trend-vol">8.1k posts</span>
+                </div>
+                <div class="trend-item">
+                    <span class="trend-name">#Quantum_Leap</span>
+                    <span class="trend-vol">4.2k posts</span>
+                </div>
+                <div class="trend-item">
+                    <span class="trend-name">#Linux_6.12</span>
+                    <span class="trend-vol">2.8k posts</span>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-title">System Status</div>
+                <div class="sys-row"><span>CPU Load</span><span>34%</span></div>
+                <div class="progress-bar" style="margin-bottom:10px;"><div class="progress-fill" style="width:34%; animation-delay:0s;"></div></div>
+                
+                <div class="sys-row"><span>Memory</span><span>62%</span></div>
+                <div class="progress-bar" style="margin-bottom:10px;"><div class="progress-fill" style="width:62%; background:var(--accent-cyan); animation-delay:0.5s;"></div></div>
+                
+                <div class="sys-row"><span>Network</span><span>1.2 Gbps</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:80%; background:var(--accent-purple); animation-delay:1s;"></div></div>
+            </div>
+
+        </aside>
+
     </main>
 
     <script>
+        // --- 1. 背景星空逻辑 (保留但简化) ---
         class Starfield {
-            constructor(canvasId, particleCount = 1200) {
-                this.canvas = document.getElementById(canvasId);
+            constructor(id) {
+                this.canvas = document.getElementById(id);
                 this.ctx = this.canvas.getContext('2d');
-                this.particles = [];
-                this.count = particleCount;
-                this.width = 0;
-                this.height = 0;
-                this.init();
+                this.resize();
+                this.stars = Array(800).fill().map(() => this.createStar());
                 this.animate();
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => this.init(), 100);
-                });
+                window.addEventListener('resize', () => this.resize());
             }
-            init() {
-                this.width = window.innerWidth;
-                this.height = window.innerHeight;
-                this.canvas.width = this.width;
-                this.canvas.height = this.height;
-                this.particles = [];
-                for(let i = 0; i < this.count; i++) this.particles.push(this.createParticle());
-            }
-            createParticle() {
+            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
+            createStar() {
                 return {
-                    x: Math.random() * this.width, y: Math.random() * this.height,
-                    vx: (Math.random() - 0.5) * 0.15, vy: (Math.random() - 0.5) * 0.15,
-                    size: Math.random() * 1.5, alpha: Math.random() * 0.5 + 0.1
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    size: Math.random() * 1.2,
+                    speed: Math.random() * 0.2 + 0.05
                 };
             }
             animate() {
-                this.ctx.clearRect(0, 0, this.width, this.height);
-                this.particles.forEach(p => {
-                    p.x += p.vx; p.y += p.vy;
-                    if(p.x < 0) p.x = this.width; if(p.x > this.width) p.x = 0;
-                    if(p.y < 0) p.y = this.height; if(p.y > this.height) p.y = 0;
-                    this.ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
-                    this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); this.ctx.fill();
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = "#fff";
+                this.stars.forEach(s => {
+                    s.y -= s.speed;
+                    if(s.y < 0) s.y = this.canvas.height;
+                    this.ctx.globalAlpha = Math.random() * 0.5 + 0.3;
+                    this.ctx.beginPath();
+                    this.ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                    this.ctx.fill();
                 });
-                requestAnimationFrame(this.animate.bind(this));
+                requestAnimationFrame(() => this.animate());
             }
         }
+        new Starfield('galaxy-canvas');
 
-        class FeedManager {
-            constructor(containerId) {
-                this.container = document.getElementById(containerId);
-                this.input = document.getElementById('postInput');
-                this.btn = document.getElementById('postBtn');
-                this.initialData = [
-                    { id: 1, username: "OpenAI Daily", handle: "@OpenAI_Bot", avatar: "AI", avatarBg: "#fff", avatarColor: "#000", time: "2h", content: "GPT-5 的推理能力似乎有了质的飞跃。最新的基准测试显示，它在复杂数学证明上的准确率提升了 40%。这不仅仅是算力的堆叠，更是架构的胜利。", stats: { comments: 24, reposts: 156, likes: 892 } },
-                    { id: 2, username: "Frontend Master", handle: "@web_dev", avatar: "JS", avatarBg: "#333", avatarColor: "#f7df1e", time: "5h", content: "WebGPU 终于在主流浏览器中稳定了！现在的网页可以在 GPU 上直接运行复杂的计算任务，这对于 3D 可视化和浏览器端 ML 模型来说是巨大的利好。\n#WebGPU #Coding", attachment: "> navigator.gpu.requestAdapter()\n< GPUAdapter { limits: {...}, ... }", stats: { comments: 5, reposts: 32, likes: 120 } },
-                    { id: 3, username: "SpaceX Watcher", handle: "@starship_fan", avatar: "🚀", avatarBg: "#555", avatarColor: "#fff", time: "12h", content: "Starship 第六次试飞窗口已确认。这次主要测试二级火箭的在轨点火能力。如果成功，我们将离火星更近一步。", stats: { comments: 109, reposts: "1.2k", likes: "5.6k" } }
-                ];
-                this.renderInitial();
-                this.bindEvents();
+        // --- 2. 动态数据流逻辑 ---
+        
+        const feedData = [
+            {
+                id: 1, type: 'ai',
+                name: 'DeepMind Lab', handle: '@GoogleAI', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=1',
+                content: 'Gemini 2.0 Pro 的多模态理解能力令人震惊。我们在测试中发现，它不仅能看懂复杂的电路图，还能指出其中的设计缺陷。AGI 的曙光？',
+                code: null,
+                stats: { likes: 1240, comments: 89 }
+            },
+            {
+                id: 2, type: 'dev',
+                name: 'Kernel Hacker', handle: '@torvalds_fan', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=2',
+                content: '终于把服务器迁移到了 Rust 写的 HTTP 框架。内存占用降低了 60%，而且再也不用担心空指针异常了。Rewrite everything in Rust!',
+                code: 'fn main() {\n  println!("Hello, robust world!");\n}',
+                stats: { likes: 512, comments: 45 }
+            },
+            {
+                id: 3, type: 'hardware',
+                name: 'Silicon Watch', handle: '@chip_news', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=3',
+                content: '台积电 2nm 工艺良率超出预期。这意味着明年的 GPU 算力可能会再次翻倍。AI 模型训练的成本将进一步降低。',
+                code: null,
+                stats: { likes: 892, comments: 120 }
+            },
+            {
+                id: 4, type: 'crypto',
+                name: 'DeFi Scout', handle: '@web3_observer', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=4',
+                content: 'ZK-Rollup 二层网络的 TPS 实测突破 5000。以太坊扩容方案之争似乎有了定论。',
+                code: null,
+                stats: { likes: 230, comments: 12 }
             }
-            createTweetHTML(data) {
-                const attachmentHTML = data.attachment ? `<div class="tweet-attachment">${data.attachment}</div>` : '';
-                return `
-                    <div class="tweet" data-id="${data.id}">
-                        <div class="avatar" style="background:${data.avatarBg}; color:${data.avatarColor};">${data.avatar}</div>
-                        <div class="tweet-body" style="flex:1">
-                            <div class="tweet-meta"><span class="tweet-name">${data.username}</span><span class="tweet-handle">${data.handle}</span><span class="tweet-time">· ${data.time}</span></div>
-                            <div class="tweet-text">${data.content}</div>
-                            ${attachmentHTML}
-                            <div class="tweet-actions">
-                                <span class="action-item">💬 ${data.stats.comments || 0}</span><span class="action-item">⚡ ${data.stats.reposts || 0}</span>
-                                <span class="action-item btn-like"><i class="icon-heart"></i> <span class="like-count">${data.stats.likes || 0}</span></span>
-                                <span class="action-item">⇡</span>
+        ];
+
+        const container = document.getElementById('feed-container');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        // 渲染卡片函数
+        function renderFeed(filter = 'all') {
+            container.innerHTML = '';
+            const filteredData = filter === 'all' ? feedData : feedData.filter(item => item.type === filter);
+            
+            filteredData.forEach(item => {
+                // 标签颜色逻辑
+                let tagClass = 'tag-ai';
+                if(item.type === 'dev') tagClass = 'tag-dev';
+                if(item.type === 'hardware') tagClass = 'tag-hardware';
+
+                const html = `
+                    <div class="tech-card">
+                        <span class="card-tag ${tagClass}">${item.type}</span>
+                        <div class="card-header">
+                            <img src="${item.avatar}" class="user-avatar">
+                            <div class="user-info">
+                                <h4>${item.name}</h4>
+                                <span>${item.handle}</span>
                             </div>
                         </div>
-                    </div>`;
-            }
-            renderInitial() { this.initialData.forEach(post => { this.container.insertAdjacentHTML('beforeend', this.createTweetHTML(post)); }); }
-            bindEvents() {
-                this.btn.addEventListener('click', () => this.handlePost());
-                this.input.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') this.handlePost(); });
-                this.container.addEventListener('click', (e) => { const likeBtn = e.target.closest('.btn-like'); if (likeBtn) this.toggleLike(likeBtn); });
-            }
-            handlePost() {
-                const text = this.input.value.trim();
-                if (!text) return;
-                const newPostData = { id: Date.now(), username: "Geek Visitor", handle: "@you", avatar: "ME", avatarBg: "#1d9bf0", avatarColor: "#fff", time: "刚刚", content: text.replace(/</g, "&lt;"), stats: { comments: 0, reposts: 0, likes: 0 } };
-                this.container.insertAdjacentHTML('afterbegin', this.createTweetHTML(newPostData));
-                this.input.value = ''; this.input.focus();
-            }
-            toggleLike(btnElement) {
-                btnElement.classList.toggle('liked');
-                const countSpan = btnElement.querySelector('.like-count');
-                let currentText = countSpan.textContent;
-                let isK = currentText.includes('k');
-                let count = parseFloat(currentText) || 0; 
-                if (!isK) {
-                    if (btnElement.classList.contains('liked')) { countSpan.textContent = count + 1; } 
-                    else { countSpan.textContent = Math.max(0, count - 1); }
-                }
-            }
+                        <div class="card-content">
+                            ${item.content}
+                            ${item.code ? `<div class="code-block">${item.code}</div>` : ''}
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">♡ ${item.stats.likes}</div>
+                            <div class="stat-item">💬 ${item.stats.comments}</div>
+                            <div class="stat-item">⚡ Share</div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
         }
-        document.addEventListener('DOMContentLoaded', () => { new Starfield('galaxy-canvas'); new FeedManager('feed-container'); });
+
+        // 初始化渲染
+        renderFeed();
+
+        // 过滤器点击事件
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderFeed(btn.dataset.filter);
+            });
+        });
+
+        // 发布交互 (模拟)
+        document.getElementById('postBtn').addEventListener('click', () => {
+            const input = document.getElementById('postInput');
+            if(!input.value.trim()) return;
+            
+            const newPost = {
+                id: Date.now(), type: 'dev',
+                name: 'Geek Heron', handle: '@admin', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=99',
+                content: input.value,
+                code: null,
+                stats: { likes: 0, comments: 0 }
+            };
+            feedData.unshift(newPost);
+            renderFeed(document.querySelector('.filter-btn.active').dataset.filter);
+            input.value = '';
+        });
+
     </script>
 </body>
 </html>

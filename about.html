@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于博主 - GeekHeron</title>
     <style>
-        /* --- 1. 全局样式 (保持原样) --- */
+        /* --- 1. 全局样式 --- */
         :root {
             --accent-color: #fff;
             --secondary-color: #888;
@@ -44,9 +44,24 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
         .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* 汉堡菜单样式 */
+        .hamburger {
+            display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative;
+        }
+        .hamburger span {
+            display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out;
+        }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
         /* --- 4. 页面布局 --- */
         .container {
@@ -70,7 +85,6 @@
         .avatar-image {
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
             border: 1px solid rgba(255,255,255,0.2);
-            /* 呼吸光效 */
             box-shadow: 0 0 0 rgba(255,255,255,0);
             animation: pulse-glow 3s infinite;
         }
@@ -137,7 +151,6 @@
         /* 垂直时间轴 */
         .timeline { border-left: 2px solid #222; padding-left: 40px; margin-left: 10px; }
         .history-item { margin-bottom: 50px; position: relative; }
-        /* 时间轴圆点 */
         .history-item::before {
             content: ''; position: absolute; left: -47px; top: 5px;
             width: 12px; height: 12px; background: #000; border: 2px solid #666;
@@ -149,8 +162,23 @@
         .history-role { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #fff; }
         .history-desc { font-size: 15px; color: #999; line-height: 1.6; }
 
-        /* 移动端适配 */
+        /* --- 移动端适配 (更新后) --- */
         @media (max-width: 850px) {
+            header { padding: 20px; justify-content: space-between; }
+            .hamburger { display: block; }
+            
+            /* 导航菜单改为全屏遮罩 */
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.active { transform: translateX(0); }
+            
+            .nav-links a { margin-left: 0; font-size: 24px; font-weight: 800; }
+
             .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
             .profile-section { position: relative; top: 0; }
             .section-title::after { display: none; }
@@ -166,11 +194,16 @@
 
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
+        
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+
         <nav class="nav-links">
-            <a href="index.html">首页</a>
-            <a href="article.html">深度分析</a>
-            <a href="tech.html">前沿科技</a>
-            <a href="about.html" class="active">关于博主</a>
+            <a href="index.html" onclick="toggleMenu()">首页</a>
+            <a href="article.html" onclick="toggleMenu()">深度分析</a>
+            <a href="tech.html" onclick="toggleMenu()">前沿科技</a>
+            <a href="about.html" class="active" onclick="toggleMenu()">关于博主</a>
         </nav>
     </header>
 
@@ -190,14 +223,11 @@
         </aside>
 
         <div class="content-section">
-            
             <section class="section-block">
                 <h3 class="section-title">01 / System Log</h3>
-                
                 <div class="terminal-box">
                     <span style="color: #666;">> </span><span id="typewriter"></span><span class="cursor"></span>
                 </div>
-
                 <p class="bio-text">
                     我不满足于单纯的代码实现，更关注系统整体的稳定性与商业闭环。作为一个实战派的问题解决者（Problem Solver），我致力于将 LLM 大模型能力与高可用架构相结合。
                 </p>
@@ -208,43 +238,26 @@
 
             <section class="section-block">
                 <h3 class="section-title">02 / Expertise</h3>
-                
                 <div class="skill-item">
-                    <div class="skill-header">
-                        <span>AI Application (RAG / Prompt Eng / DeepSeek)</span>
-                        <span>95%</span>
-                    </div>
+                    <div class="skill-header"><span>AI Application (RAG / Prompt Eng / DeepSeek)</span><span>95%</span></div>
                     <div class="skill-track"><div class="skill-bar" data-width="95%"></div></div>
                 </div>
-                
                 <div class="skill-item">
-                    <div class="skill-header">
-                        <span>Linux / Nginx / Docker / Automation</span>
-                        <span>90%</span>
-                    </div>
+                    <div class="skill-header"><span>Linux / Nginx / Docker / Automation</span><span>90%</span></div>
                     <div class="skill-track"><div class="skill-bar" data-width="90%"></div></div>
                 </div>
-                
                 <div class="skill-item">
-                    <div class="skill-header">
-                        <span>Python Full Stack (Flask / Gevent)</span>
-                        <span>88%</span>
-                    </div>
+                    <div class="skill-header"><span>Python Full Stack (Flask / Gevent)</span><span>88%</span></div>
                     <div class="skill-track"><div class="skill-bar" data-width="88%"></div></div>
                 </div>
-                
                 <div class="skill-item">
-                    <div class="skill-header">
-                        <span>System Architecture / High Availability</span>
-                        <span>85%</span>
-                    </div>
+                    <div class="skill-header"><span>System Architecture / High Availability</span><span>85%</span></div>
                     <div class="skill-track"><div class="skill-bar" data-width="85%"></div></div>
                 </div>
             </section>
 
             <section class="section-block">
                 <h3 class="section-title">03 / Timeline</h3>
-                
                 <div class="timeline">
                     <div class="history-item">
                         <div class="history-year">2025.07 - Present</div>
@@ -256,7 +269,6 @@
                             • <strong>商业闭环：</strong> 独立设计 Token 计费与卡密系统，实现业务逻辑解耦。
                         </p>
                     </div>
-
                     <div class="history-item">
                         <div class="history-year">2024.03 - 2025.07</div>
                         <h4 class="history-role">Ops Engineer @ Shenzhen Fengcai</h4>
@@ -266,7 +278,6 @@
                             • 部署 Zabbix/Prometheus 监控体系，通过内核调优保障系统 SLA > 99.9%。
                         </p>
                     </div>
-
                     <div class="history-item">
                         <div class="history-year">2020.10 - 2023.12</div>
                         <h4 class="history-role">Ops Engineer @ Shenzhen Kemin Sensor</h4>
@@ -276,7 +287,6 @@
                             • 建立标准化 IT 服务工单流程 (SOP)，利用脚本提升资产盘点效率。
                         </p>
                     </div>
-
                     <div class="history-item">
                         <div class="history-year">2017 - 2020</div>
                         <h4 class="history-role">Education @ FJCCP</h4>
@@ -289,7 +299,7 @@
     </main>
 
     <script>
-        // --- 1. 背景粒子特效 (保持不变) ---
+        // --- 1. 背景粒子特效 ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -327,24 +337,13 @@
             }
         }
 
-        function resize() {
-            width = window.innerWidth; height = window.innerHeight;
-            canvas.width = width; canvas.height = height;
-        }
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         window.addEventListener('resize', () => { resize(); particles.length=0; init(); });
         function init() { for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
         resize(); init(); animate();
 
-
         // --- 2. 页面交互脚本 ---
-        
-        // A. 终端打字效果 (文案更新)
         const textToType = "Loading Fuxi Engine modules... Identity confirmed: Wang Jianfeng. System ready.";
         const typeWriterElement = document.getElementById('typewriter');
         let i = 0;
@@ -356,21 +355,24 @@
             }
         }
 
-        // B. 技能条动画
         function animateSkills() {
             const bars = document.querySelectorAll('.skill-bar');
             bars.forEach(bar => {
                 const width = bar.getAttribute('data-width');
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
+                setTimeout(() => { bar.style.width = width; }, 300);
             });
         }
+        
+        // --- 3. 菜单切换脚本 (新增) ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
 
-        window.onload = function() {
-            typeWriter();
-            animateSkills();
-        };
+        window.onload = function() { typeWriter(); animateSkills(); };
     </script>
 </body>
 </html>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeekHeron</title>
     <style>
-        /* --- 全局设置 (回归极简) --- */
+        /* --- 全局设置 --- */
         * {
             margin: 0;
             padding: 0;
@@ -13,11 +13,10 @@
         }
 
         body {
-            /* 经典的 Helvetica 风格，硬朗、现代 */
             font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
             background-color: #000;
             color: #fff;
-            overflow: hidden;
+            overflow: hidden; /* 注意：如果菜单打开，可能需要临时允许滚动，但主页通常单屏 */
             height: 100vh;
             width: 100vw;
         }
@@ -42,7 +41,6 @@
             z-index: 0;
         }
 
-        /* 渐变遮罩：还原最初的设计，左侧纯黑，右侧透出星系 */
         .overlay-gradient {
             position: absolute;
             top: 0;
@@ -66,16 +64,17 @@
             padding: 30px 50px;
             z-index: 100;
             font-size: 14px;
-            font-weight: 700; /* 加粗 */
-            text-transform: uppercase; /* 全大写 */
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .logo {
             font-size: 24px;
-            letter-spacing: 4px; /* SpaceX 风格的大间距 */
+            letter-spacing: 4px;
             font-weight: 800;
             margin-right: 40px;
             color: #fff;
+            z-index: 102; /* 确保 Logo 在移动端菜单之上或之下，视设计而定，这里保持在顶层 */
         }
 
         nav ul {
@@ -90,11 +89,46 @@
             font-weight: 600;
         }
 
-        /* 还原原本的倒计时风格 */
         .header-right {
             font-family: monospace;
             font-size: 12px;
             color: #aaa;
+        }
+
+        /* --- 汉堡菜单按钮 (默认隐藏) --- */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 102; /* 必须高于全屏菜单 */
+            width: 30px;
+            height: 20px;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            position: absolute;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+
+        /* 汉堡菜单激活状态 (变成 X) */
+        .hamburger.active span:nth-child(1) {
+            top: 9px;
+            transform: rotate(45deg);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            top: 9px;
+            transform: rotate(-45deg);
         }
 
         /* --- 主视觉区域 --- */
@@ -119,20 +153,33 @@
             line-height: 1.1;
             letter-spacing: -1px;
             color: #fff;
-            /* 简单的淡入 */
             animation: fadeIn 1.5s ease-out;
         }
 
         p.subtitle {
             font-size: 18px;
             line-height: 1.6;
-            color: #ddd; /* 纯净的灰白色 */
+            color: #ddd;
             margin-bottom: 40px;
             font-weight: 300;
-            animation: fadeIn 1.5s ease-out 0.3s backwards;
+            min-height: 60px;
         }
 
-        /* --- 经典的幽灵按钮 --- */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #fff;
+            margin-left: 5px;
+            transform: translateY(3px);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         .btn {
             display: inline-block;
             border: 2px solid #fff;
@@ -144,7 +191,8 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            animation: fadeIn 1.5s ease-out 0.6s backwards;
+            opacity: 0; 
+            animation: fadeIn 1s ease-out 3s forwards; 
         }
 
         .btn:hover {
@@ -157,12 +205,96 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- 移动端适配 --- */
+        /* --- HUD 装饰 --- */
+        .hud-decoration {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            text-align: right;
+            font-family: monospace;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 11px;
+            z-index: 20;
+            pointer-events: none;
+            animation: fadeIn 2s ease-out 1s backwards;
+        }
+
+        .hud-line {
+            width: 120px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            margin-left: auto;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .hud-line::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -2px;
+            width: 5px;
+            height: 5px;
+            background: #fff;
+        }
+
+        .hud-data span {
+            display: block;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        /* --- 移动端适配 (核心修改) --- */
         @media (max-width: 768px) {
-            header { padding: 20px; justify-content: center; }
-            .logo { margin-right: 0; }
-            nav, .header-right { display: none; }
+            header { 
+                padding: 20px; 
+                /* 移除之前的 justify-content: center，保持两端对齐 */
+                justify-content: space-between; 
+            }
             
+            /* 显示汉堡按钮 */
+            .hamburger { display: block; }
+            
+            /* 隐藏右侧时间 */
+            .header-right { display: none; }
+            
+            /* 改造导航栏为全屏弹窗 */
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px); /* 毛玻璃效果 */
+                z-index: 101; /* 比 Logo 低，但比内容高 */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                
+                /* 默认移出屏幕 */
+                transform: translateX(100%);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            /* 激活状态：滑入 */
+            nav.active {
+                transform: translateX(0);
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 50px;
+                text-align: center;
+            }
+
+            nav ul li a {
+                font-size: 24px; /* 字体加大，方便点击 */
+                font-weight: 800;
+                letter-spacing: 2px;
+            }
+
             .hero {
                 padding-left: 20px;
                 padding-right: 20px;
@@ -175,25 +307,33 @@
             }
 
             h1 { font-size: 40px; }
+            .hud-decoration { display: none; }
         }
     </style>
 </head>
 <body>
 
     <canvas id="galaxy-field"></canvas>
-
     <div class="overlay-gradient"></div>
 
     <header>
         <div class="logo">GeekHeron</div> 
+        
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
         <nav>
             <ul>
-                <li><a href="index.html">首页</a></li> 
+                <li><a href="index.html" onclick="toggleMenu()">首页</a></li> 
                 <li><a href="article.html">深度分析</a></li>
                 <li><a href="tech.html">前沿科技</a></li>
                 <li><a href="about.html">关于博主</a></li> 
             </ul>
         </nav>
+        
         <div class="header-right" id="clock">
              T+00: 00: 00
         </div>
@@ -202,61 +342,75 @@
     <main class="hero">
         <div class="content">
             <h1>洞察技术背后的<br>逻辑与力量</h1>
-            <p class="subtitle">
-                GeekHeron 追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。在喧嚣中寻找理性的声音。
-            </p>
+            <p class="subtitle" id="typing-text"></p>
             <a href="article.html" class="btn">
                 开始阅读
             </a>
         </div>
     </main>
 
+    <div class="hud-decoration">
+        <div class="hud-line"></div>
+        <div class="hud-data">
+            <span>SYS.STATUS: ONLINE</span>
+            <span>MEM: 64TB / VISUAL: RETINA</span>
+            <span>LOC: 34.05N, 118.24W / GEO.SYNC</span>
+            <span id="fps-counter">FRAME: 60FPS</span>
+        </div>
+    </div>
+
     <script>
-        // --- 时钟模块脚本 (修改点 2: 新增脚本) ---
+        // --- 1. 移动端菜单逻辑 (新增) ---
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('nav');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        // --- 2. 时钟模块 ---
         function updateClock() {
             const now = new Date();
-            
-            // 获取当前时间的小时、分钟、秒
             let hours = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
-            
-            // 格式化数字：确保始终是两位数
             const formatTime = (unit) => String(unit).padStart(2, '0');
-
-            const formattedHours = formatTime(hours);
-            const formattedMinutes = formatTime(minutes);
-            const formattedSeconds = formatTime(seconds);
+            const timeString = `T+${formatTime(hours)}: ${formatTime(minutes)}: ${formatTime(seconds)}`;
             
-            // 构建最终显示字符串 (T+HH: MM: SS)
-            const timeString = `T+${formattedHours}: ${formattedMinutes}: ${formattedSeconds}`;
-            
-            // 更新 DOM 元素的内容
             const clockElement = document.getElementById('clock');
-            if (clockElement) {
-                clockElement.textContent = timeString;
+            if (clockElement) clockElement.textContent = timeString;
+        }
+        setInterval(updateClock, 1000); 
+        updateClock();
+
+        // --- 3. 打字机效果模块 ---
+        const textToType = "GeekHeron 追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。在喧嚣中寻找理性的声音。";
+        const typeElement = document.getElementById('typing-text');
+        let typeIndex = 0;
+
+        function typeWriter() {
+            if (typeIndex < textToType.length) {
+                typeElement.innerHTML = textToType.substring(0, typeIndex + 1) + '<span class="cursor"></span>';
+                typeIndex++;
+                const randomSpeed = Math.floor(Math.random() * 30) + 30; 
+                setTimeout(typeWriter, randomSpeed);
+            } else {
+                typeElement.innerHTML = textToType + '<span class="cursor"></span>';
             }
         }
+        setTimeout(typeWriter, 1200);
 
-        // 首次调用并设置每秒更新一次
-        updateClock();
-        setInterval(updateClock, 1000); 
-
-        // --- 粒子动画脚本 (保持不变) ---
+        // --- 4. 粒子与流星动画模块 (保持不变) ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
-
         let width, height;
         const particles = [];
         const numParticles = 4000; 
         const fieldOfView = 300; 
-
-        // 颜色回归纯净的太空色系（白、灰、冷蓝）
-        const colors = [
-            '255, 255, 255', 
-            '200, 200, 200', 
-            '160, 180, 255'  
-        ];
+        const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
 
         class Particle {
             constructor() {
@@ -266,35 +420,26 @@
                 this.radius = Math.random() * 1.2 + 0.2; 
                 this.color = colors[Math.floor(Math.random() * colors.length)];
             }
-
             update() {
-                // 旋转速度稍微调快一点点，增加宏大感
                 let cosZ = Math.cos(0.0005);
                 let sinZ = Math.sin(0.0005);
-                
                 let tempX = this.x;
                 let tempY = this.y;
-                
                 this.x = tempX * cosZ - tempY * sinZ;
                 this.y = tempX * sinZ + tempY * cosZ;
-
                 this.z -= 0.2; 
-
                 if (this.z < -fieldOfView) {
                     this.z += fieldOfView * 2;
-                    // 重置位置防止空洞
                     this.x = (Math.random() - 0.5) * width * 2.5;
                     this.y = (Math.random() - 0.5) * height * 2.5;
                 }
             }
-
             draw() {
                 const perspective = fieldOfView / (fieldOfView + this.z);
                 const projectedX = (this.x * perspective) + width / 2;
                 const projectedY = (this.y * perspective) + height / 2;
                 const projectedRadius = this.radius * perspective;
                 const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
-
                 if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
                     ctx.beginPath();
                     ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
@@ -304,32 +449,62 @@
             }
         }
 
+        class ShootingStar {
+            constructor() { this.reset(); this.active = false; }
+            reset() {
+                this.x = Math.random() * width + 200; 
+                this.y = Math.random() * height * 0.3 - 200; 
+                this.speed = Math.random() * 10 + 15;
+                this.len = Math.random() * 80 + 150;
+                this.size = Math.random() * 1 + 0.5;
+                this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
+                this.active = true;
+            }
+            update() {
+                if (!this.active) return;
+                this.x -= this.speed * Math.cos(this.angle);
+                this.y += this.speed * Math.sin(this.angle);
+                if (this.x < -this.len || this.y > height + this.len) this.active = false;
+            }
+            draw() {
+                if (!this.active) return;
+                const tailX = this.x + this.len * Math.cos(this.angle);
+                const tailY = this.y - this.len * Math.sin(this.angle);
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+                gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+                ctx.beginPath();
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.size;
+                ctx.lineCap = 'round';
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+            }
+        }
+
+        const meteors = [];
+        for(let i = 0; i < 3; i++) { meteors.push(new ShootingStar()); meteors[i].active = false; }
+
         function resize() {
             width = window.innerWidth;
             height = window.innerHeight;
             canvas.width = width;
             canvas.height = height;
         }
-        
-        window.addEventListener('resize', () => {
-            resize();
-            initParticles();
-        });
-
+        window.addEventListener('resize', () => { resize(); initParticles(); });
         function initParticles() {
             particles.length = 0;
-            for (let i = 0; i < numParticles; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
         }
-
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < numParticles; i++) {
-                particles[i].update();
-                particles[i].draw();
+            for (let i = 0; i < numParticles; i++) { particles[i].update(); particles[i].draw(); }
+            if (Math.random() < 0.008) {
+                const idleMeteor = meteors.find(m => !m.active);
+                if (idleMeteor) idleMeteor.reset();
             }
+            for(let m of meteors) { m.update(); m.draw(); }
             requestAnimationFrame(animate);
         }
 

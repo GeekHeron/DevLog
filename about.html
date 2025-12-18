@@ -89,6 +89,24 @@
             animation: pulse-glow 3s infinite;
         }
 
+        /* 图片加载失败时的默认样式 */
+        .avatar-image::before {
+            content: 'GH';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #333, #111);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 800;
+            color: #666;
+            border-radius: 50%;
+        }
+
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.1); }
             50% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
@@ -174,6 +192,7 @@
                 z-index: 101;
                 flex-direction: column; justify-content: center; align-items: center; gap: 40px;
                 transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
             }
             .nav-links.active { transform: translateX(0); }
             
@@ -200,10 +219,10 @@
         </div>
 
         <nav class="nav-links">
-            <a href="index.html" onclick="toggleMenu()">首页</a>
-            <a href="article.html" onclick="toggleMenu()">深度分析</a>
-            <a href="tech.html" onclick="toggleMenu()">前沿科技</a>
-            <a href="about.html" class="active" onclick="toggleMenu()">关于博主</a>
+            <a href="index.html" onclick="handleNavClick(event, 'index.html')">首页</a>
+            <a href="article.html" onclick="handleNavClick(event, 'article.html')">深度分析</a>
+            <a href="tech.html" onclick="handleNavClick(event, 'tech.html')">前沿科技</a>
+            <a href="about.html" class="active" onclick="handleNavClick(event, 'about.html')">关于博主</a>
         </nav>
     </header>
 
@@ -211,7 +230,7 @@
         
         <aside class="profile-section">
             <div class="avatar-container">
-                <img src="image_3.png" alt="Geek Heron" class="avatar-image">
+                <img src="image_3.png" alt="Geek Heron" class="avatar-image" onerror="handleImageError(this)">
             </div>
             <h1 class="profile-name">Geek Heron</h1>
             <p class="profile-id">@王鉴锋</p>
@@ -263,9 +282,9 @@
                         <div class="history-year">2025.07 - Present</div>
                         <h4 class="history-role">Independent Full Stack Architect - Fuxi Engine</h4>
                         <p class="history-desc">
-                            独立开发 AI 驱动的商业化分析平台“伏羲引擎”。<br>
+                            独立开发 AI 驱动的商业化分析平台"伏羲引擎"。<br>
                             • <strong>架构设计：</strong> 采用 Flask + Gunicorn + Gevent 架构，解决 Render 平台 OOM 问题，配合 Supervisor 实现毫秒级容灾。<br>
-                            • <strong>核心技术：</strong> 实现 RAG 知识库与 DeepSeek 模型深度集成，解决 Nginx 504 超时问题，支持 SSE 流式“打字机”输出。<br>
+                            • <strong>核心技术：</strong> 实现 RAG 知识库与 DeepSeek 模型深度集成，解决 Nginx 504 超时问题，支持 SSE 流式"打字机"输出。<br>
                             • <strong>商业闭环：</strong> 独立设计 Token 计费与卡密系统，实现业务逻辑解耦。
                         </p>
                     </div>
@@ -299,24 +318,38 @@
     </main>
 
     <script>
+        // --- 工具函数 ---
+        function handleImageError(img) {
+            console.warn('头像图片加载失败，使用默认样式');
+            img.style.display = 'none';
+        }
+
         // --- 1. 背景粒子特效 ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
-        const particles = [];
-        const numParticles = 2000; 
-        const fieldOfView = 300; 
+        let particles = [];
+        
+        // 根据设备性能调整粒子数量
+        function getParticleCount() {
+            const isMobile = window.innerWidth < 768;
+            const isLowPerf = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+            return isMobile ? 800 : (isLowPerf ? 1200 : 2000);
+        }
+
+        const fieldOfView = 300;
 
         class Particle {
             constructor() {
-                this.x = (Math.random() - 0.5) * width * 2; 
-                this.y = (Math.random() - 0.5) * height * 2; 
-                this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
-                this.radius = Math.random() * 1.5; 
+                this.x = (Math.random() - 0.5) * width * 2;
+                this.y = (Math.random() - 0.5) * height * 2;
+                this.z = (Math.random() * fieldOfView * 2) - fieldOfView;
+                this.radius = Math.random() * 1.5;
                 this.alpha = Math.random() * 0.5 + 0.2;
+                this.speed = 0.3;
             }
             update() {
-                this.z -= 0.3; 
+                this.z -= this.speed;
                 if (this.z < -fieldOfView) {
                     this.z += fieldOfView * 2;
                     this.x = (Math.random() - 0.5) * width * 2;
@@ -337,21 +370,80 @@
             }
         }
 
-        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
-        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        window.addEventListener('resize', () => { resize(); particles.length=0; init(); });
-        function init() { for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
-        resize(); init(); animate();
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
 
-        // --- 2. 页面交互脚本 ---
+        function initParticles() {
+            particles = [];
+            const particleCount = getParticleCount();
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // --- 2. 导航菜单控制 ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        let menuOpen = false;
+
+        function toggleMenu(forceClose = false) {
+            if (forceClose) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuOpen = false;
+            } else {
+                menuOpen = !menuOpen;
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            }
+        }
+
+        // 处理导航点击事件
+        function handleNavClick(event, pageUrl) {
+            event.preventDefault();
+            
+            // 关闭菜单
+            toggleMenu(true);
+            
+            // 检查是否是当前页面
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentPage === pageUrl) {
+                // 如果是当前页面，滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // 否则跳转到新页面
+                setTimeout(() => {
+                    window.location.href = pageUrl;
+                }, 300);
+            }
+        }
+
+        // --- 3. 页面特效 ---
         const textToType = "Loading Fuxi Engine modules... Identity confirmed: Wang Jianfeng. System ready.";
         const typeWriterElement = document.getElementById('typewriter');
         let i = 0;
+        let typingComplete = false;
+
         function typeWriter() {
             if (i < textToType.length) {
                 typeWriterElement.innerHTML += textToType.charAt(i);
                 i++;
-                setTimeout(typeWriter, 40); 
+                setTimeout(typeWriter, 40);
+            } else {
+                typingComplete = true;
             }
         }
 
@@ -359,20 +451,72 @@
             const bars = document.querySelectorAll('.skill-bar');
             bars.forEach(bar => {
                 const width = bar.getAttribute('data-width');
-                setTimeout(() => { bar.style.width = width; }, 300);
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
             });
         }
-        
-        // --- 3. 菜单切换脚本 (新增) ---
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        hamburger.addEventListener('click', toggleMenu);
 
-        window.onload = function() { typeWriter(); animateSkills(); };
+        // --- 4. 页面初始化 ---
+        function initPage() {
+            // 初始化粒子系统
+            resize();
+            initParticles();
+            animate();
+            
+            // 启动页面特效
+            typeWriter();
+            animateSkills();
+            
+            // 添加汉堡菜单事件监听
+            hamburger.addEventListener('click', () => toggleMenu());
+            
+            // 点击菜单外部关闭菜单
+            document.addEventListener('click', (event) => {
+                if (menuOpen && 
+                    !hamburger.contains(event.target) && 
+                    !navLinks.contains(event.target)) {
+                    toggleMenu(true);
+                }
+            });
+
+            // 点击菜单链接时关闭菜单
+            const navLinksElements = document.querySelectorAll('.nav-links a');
+            navLinksElements.forEach(link => {
+                link.addEventListener('click', () => toggleMenu(true));
+            });
+
+            // 监听页面可见性变化，暂停/恢复动画以节省资源
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    // 页面不可见时，减少粒子运动速度
+                    particles.forEach(p => p.speed = 0.05);
+                } else {
+                    // 页面可见时，恢复粒子运动速度
+                    particles.forEach(p => p.speed = 0.3);
+                }
+            });
+        }
+
+        // --- 5. 窗口大小变化处理 ---
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                resize();
+                initParticles();
+            }, 200);
+        });
+
+        // --- 6. 页面加载完成 ---
+        document.addEventListener('DOMContentLoaded', initPage);
+
+        // 备用加载方式
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
     </script>
 </body>
 </html>

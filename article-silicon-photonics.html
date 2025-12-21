@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>硅光子：光速打破“内存墙” - GeekHeron</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* --- 基础样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #ccc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 0; pointer-events: none;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px; border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* --- 文章容器 --- */
+        .container {
+            max-width: 800px; margin: 0 auto; padding: 80px 20px 150px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 40px;
+        }
+        .article-meta { font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px; }
+        .tag {
+            display: inline-block; padding: 2px 8px; border: 1px solid #444; 
+            font-size: 12px; border-radius: 2px; margin-left: 10px; color: #888;
+        }
+        .article-title {
+            font-size: 42px; font-weight: 700; letter-spacing: -1px; 
+            color: #fff; line-height: 1.3; margin-bottom: 20px;
+        }
+
+        /* --- 正文排版 --- */
+        .article-content h2 {
+            font-size: 28px; color: #fff; margin-top: 60px; margin-bottom: 25px;
+            /* 青蓝色，代表激光与冷酷的理性 */
+            border-left: 4px solid #00ccff; 
+            padding-left: 15px;
+        }
+        .article-content p { margin-bottom: 25px; font-size: 18px; text-align: justify; }
+        .article-content ul { margin-bottom: 30px; padding-left: 20px; }
+        .article-content li { margin-bottom: 10px; list-style-type: square; color: #bbb; }
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        .quote-block {
+            border-left: 2px solid #666; padding-left: 20px; margin: 30px 0;
+            font-style: italic; color: #888;
+        }
+
+        /* 数学公式容器 */
+        .math-block {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px;
+            margin: 30px 0; text-align: center; font-family: "Times New Roman", serif;
+            border: 1px solid #333;
+            overflow-x: auto;
+        }
+
+        .back-btn {
+            display: inline-block; margin-top: 80px;
+            font-size: 14px; color: #666; border: 1px solid #333;
+            padding: 10px 20px; transition: 0.3s;
+        }
+        .back-btn:hover { border-color: #fff; color: #fff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 15px 20px; gap: 15px; }
+            .nav-links { display: flex; width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+            .nav-links a { margin-left: 0; font-size: 14px; }
+            
+            .container { padding: 40px 20px 100px; }
+            .article-header { margin-bottom: 40px; padding-bottom: 30px; }
+            .article-title { font-size: 28px; line-height: 1.3; }
+            
+            .article-content h2 { font-size: 22px; margin-top: 40px; }
+            .article-content p { font-size: 17px; text-align: left; }
+            
+            .math-block { padding: 15px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="tech.html">前沿科技</a>
+            <a href="about.html">关于博主</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2025.12.20</span>
+                <span class="tag">CHIPS</span>
+                <span class="tag">PHOTONICS</span>
+            </div>
+            <h1 class="article-title">硅光子：<br>光速打破“内存墙”</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                当摩尔定律在微观层面停滞时，我们选择在宏观传输上弯道超车。用光子代替电子，是 AI 算力集群的必经之路。
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. 铜线的物理极限：电子的拥堵</h2>
+            <p>在过去的五十年里，我们一直在做一件事：把晶体管做小。但现在，我们遇到了一个新的敌人：<strong>互连（Interconnects）</strong>。</p>
+            <p>即使 GPU 的计算核心速度再快，数据也必须通过金属铜线进出芯片。当频率达到 GHz 级别时，铜线中的“集肤效应”会导致电阻急剧升高。电子在传输过程中大量转化为热能。目前，数据中心超过 30% 的电力并非用于“计算”，而是浪费在了“搬运数据”的路上。</p>
+            <div class="math-block">
+                $$ P_{loss} = I^2 R \quad \text{(Ohmic Heating)} $$
+            </div>
+            <p>这就是著名的<strong>内存墙（Memory Wall）</strong>：算力的增长速度远远超过了数据传输带宽的增长速度。如果不解决这个问题，H100 这样的超级芯片将有 90% 的时间在等待数据喂入。</p>
+
+            <h2>2. 为什么是光子？</h2>
+            <p>与电子不同，光子（Photon）是玻色子。它们没有质量，没有电荷，互不干扰，且传输过程中几乎不产热。最重要的是，利用<strong>波分复用（WDM）</strong>技术，我们可以在同一根光纤中，利用不同颜色的光同时传输上百路信号。</p>
+            
+            <p>这使得单根光纤的带宽潜力比铜线高出数个数量级。但在很长一段时间里，光器件（如激光器、调制器）体积巨大且昂贵，无法塞进芯片。</p>
+
+            <h2>3. 硅光子：把激光器刻在芯片上</h2>
+            <p><strong>硅光子技术（Silicon Photonics）</strong>的革命性在于，它利用成熟的 CMOS 半导体工艺，直接在硅片上蚀刻出纳米级的光波导、调制器和探测器。</p>
+            <p>这意味着我们可以像制造 CPU 一样，大规模、低成本地“印刷”光路。我们不再需要昂贵的分立光学元件，整个光学收发系统被压缩到了一枚硬币大小的芯片上。</p>
+
+            <h2>4. CPO：封装级的终极融合</h2>
+            <p>目前的趋势是走向<strong>CPO（Co-Packaged Optics，共封装光学）</strong>。以前，光模块是插在机柜面板上的，离 GPU 很远（几英寸），中间还得走铜线。</p>
+            
+            <p>而在 CPO 架构下，光学引擎被直接封装在 GPU 的基板上，距离计算核心仅几毫米。这极大地缩短了电信号的传输距离，将功耗降低了 50% 以上，同时实现了 Tbps 级别的超高带宽。</p>
+            <p>对于像 GPT-5 这样需要万卡集群训练的模型来说，CPO 是连接成千上万个 GPU 形成“超级算力大脑”的神经网络。</p>
+
+            <h2>5. 结语：电子做逻辑，光子做传输</h2>
+            <p>我们正在进入一个“混合计算”的时代。电子虽然在传输上效率低下，但它们擅长逻辑运算（晶体管开关）；光子虽然难以进行逻辑门操作，但它们是完美的搬运工。</p>
+            <p>未来的芯片，将是硅基逻辑与光基传输的完美结合。当光速成为数据流动的基准速度时，我们才真正触碰到了物理极限的边界。</p>
+
+        </article>
+
+        <a href="article.html" class="back-btn">← 返回文章列表</a>
+    </main>
+
+    <script>
+        /* 粒子背景动画 (保持统一) */
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+</body>
+</html>

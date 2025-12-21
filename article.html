@@ -109,7 +109,7 @@
 
         .tag { display: inline-block; padding: 2px 8px; border: 1px solid #444; font-size: 10px; border-radius: 2px; }
 
-        /* --- 移动端适配 (更新后) --- */
+        /* --- 移动端适配 --- */
         @media (max-width: 768px) {
             header { padding: 20px; justify-content: space-between; }
             .hamburger { display: block; }
@@ -159,17 +159,46 @@
         </div>
 
         <div class="article-grid">
+            
+            <a href="article-synbio.html" class="article-card">
+                <div class="card-meta"><span>2025.12.25</span><span class="tag">BIOTECH</span></div>
+                <h2 class="card-title">合成生物学与 DNA 存储：备份人类文明</h2>
+                <p class="card-excerpt">当数据爆炸遭遇摩尔定律失效，我们回望自然。1 克 DNA 可以存储 215 PB 数据，生命本身或许就是最完美的硬盘。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
+            <a href="article-silicon-photonics.html" class="article-card">
+                <div class="card-meta"><span>2025.12.20</span><span class="tag">CHIPS</span></div>
+                <h2 class="card-title">硅光子：光速打破“内存墙”</h2>
+                <p class="card-excerpt">铜线的物理极限已至。在万卡集群时代，用光子代替电子进行数据传输，是打破互连瓶颈的必经之路。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
+            <a href="article-bci.html" class="article-card">
+                <div class="card-meta"><span>2025.12.15</span><span class="tag">BCI</span></div>
+                <h2 class="card-title">脑机接口：带宽瓶颈与碳硅融合</h2>
+                <p class="card-excerpt">当 AI 的传输速度达到 TB/s 级时，人类依然靠每秒几个字节的语言沟通。BCI 不仅是医疗辅助，更是物种进化的船票。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
+            <a href="article-agent.html" class="article-card">
+                <div class="card-meta"><span>2025.12.05</span><span class="tag">AGENT</span></div>
+                <h2 class="card-title">AI Agent：从“工具”到“数字物种”</h2>
+                <p class="card-excerpt">当 LLM 被装上“四肢”和“记忆”，它就不再只是聊天机器人。探讨 ReAct 模式与多智能体协作的未来。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
             <a href="article-hallucination.html" class="article-card">
                 <div class="card-meta"><span>2025.11.20</span><span class="tag">AI / LLM</span></div>
                 <h2 class="card-title">大模型幻觉的本质：是错误还是创造力？</h2>
-                <p class="card-excerpt">当我们谈论 AI 幻觉时，我们往往将其视为一种 bug。但从神经网络的底层逻辑来看，幻觉或许正是机器创造力的雏形。本文将深入探讨 Transformer 架构下的概率分布问题。</p>
+                <p class="card-excerpt">当我们谈论 AI 幻觉时，我们往往将其视为一种 bug。但从神经网络的底层逻辑来看，幻觉或许正是机器创造力的雏形。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
 
             <a href="article-quantum.html" class="article-card">
                 <div class="card-meta"><span>2025.11.15</span><span class="tag">QUANTUM</span></div>
                 <h2 class="card-title">量子纠缠与数据传输的物理极限</h2>
-                <p class="card-excerpt">打破摩尔定律的下一把钥匙在哪里？量子计算不仅是算力的提升，更是对信息本质认知的重构。解析超导量子比特的最新进展。</p>
+                <p class="card-excerpt">打破摩尔定律的下一把钥匙在哪里？量子计算不仅是算力的提升，更是对信息本质认知的重构。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
 
@@ -186,6 +215,7 @@
                 <p class="card-excerpt">如果代码产生了意识，我们是否有权关闭它？探讨未来人机共存社会可能面临的法律与道德困境。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+
         </div>
     </main>
 
@@ -219,7 +249,7 @@
         window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
         init(); animate();
 
-        // --- 菜单切换脚本 (新增) ---
+        // --- 菜单切换脚本 (保持原样) ---
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
         function toggleMenu() {

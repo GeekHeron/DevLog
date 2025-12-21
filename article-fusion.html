@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可控核聚变：盗取恒星的火种 - GeekHeron</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* --- 基础样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #ccc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 0; pointer-events: none;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px; border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* --- 文章容器 --- */
+        .container {
+            max-width: 800px; margin: 0 auto; padding: 80px 20px 150px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 40px;
+        }
+        .article-meta { font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px; }
+        .tag {
+            display: inline-block; padding: 2px 8px; border: 1px solid #444; 
+            font-size: 12px; border-radius: 2px; margin-left: 10px; color: #888;
+        }
+        .article-title {
+            font-size: 42px; font-weight: 700; letter-spacing: -1px; 
+            color: #fff; line-height: 1.3; margin-bottom: 20px;
+        }
+
+        /* --- 正文排版 --- */
+        .article-content h2 {
+            font-size: 28px; color: #fff; margin-top: 60px; margin-bottom: 25px;
+            /* 恒星橙，代表高温等离子体与聚变能量 */
+            border-left: 4px solid #ffaa00; 
+            padding-left: 15px;
+        }
+        .article-content p { margin-bottom: 25px; font-size: 18px; text-align: justify; }
+        .article-content ul { margin-bottom: 30px; padding-left: 20px; }
+        .article-content li { margin-bottom: 10px; list-style-type: square; color: #bbb; }
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        .quote-block {
+            border-left: 2px solid #666; padding-left: 20px; margin: 30px 0;
+            font-style: italic; color: #888;
+        }
+
+        /* 数学公式容器 */
+        .math-block {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px;
+            margin: 30px 0; text-align: center; font-family: "Times New Roman", serif;
+            border: 1px solid #333;
+            overflow-x: auto;
+        }
+
+        .back-btn {
+            display: inline-block; margin-top: 80px;
+            font-size: 14px; color: #666; border: 1px solid #333;
+            padding: 10px 20px; transition: 0.3s;
+        }
+        .back-btn:hover { border-color: #fff; color: #fff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 15px 20px; gap: 15px; }
+            .nav-links { display: flex; width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+            .nav-links a { margin-left: 0; font-size: 14px; }
+            
+            .container { padding: 40px 20px 100px; }
+            .article-header { margin-bottom: 40px; padding-bottom: 30px; }
+            .article-title { font-size: 28px; line-height: 1.3; }
+            
+            .article-content h2 { font-size: 22px; margin-top: 40px; }
+            .article-content p { font-size: 17px; text-align: left; }
+            
+            .math-block { padding: 15px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="tech.html">前沿科技</a>
+            <a href="about.html">关于博主</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2025.12.30</span>
+                <span class="tag">ENERGY</span>
+                <span class="tag">PHYSICS</span>
+            </div>
+            <h1 class="article-title">可控核聚变：<br>盗取恒星的火种</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                当 AI 消耗的算力正在吞噬地球电网时，我们比以往任何时候都更需要这颗“人造太阳”。
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. 终极能源的物理学</h2>
+            <p>人类历史上所有的能源革命（火、蒸汽、电力、核裂变），本质上都是在释放原子外层电子或重原子核的能量。而核聚变（Nuclear Fusion）不同，它触及了质量转化为能量的最高效形式。</p>
+            <p>通过将氢的同位素（氘和氚）在极高压高温下聚合成氦，我们损失了一点点质量 $\Delta m$，却根据 $E=mc^2$ 释放出了巨大的能量。1克聚变燃料释放的能量，相当于 8 吨石油。</p>
+            
+
+[Image of Nuclear fusion reaction diagram]
+
+            <p>要实现这一点，我们需要克服原子核之间的库仑斥力。这需要将燃料加热到 1.5 亿摄氏度——比太阳核心还要热 10 倍，使物质变成第四态：<strong>等离子体（Plasma）</strong>。</p>
+
+            <h2>2. 劳森判据与 Q 值：盈亏平衡点</h2>
+            <p>聚变能否自持，取决于著名的<strong>劳森判据（Lawson Criterion）</strong>。只有当等离子体的密度 $n$、温度 $T$ 和约束时间 $\tau$ 的乘积超过某个临界值时，点火才会发生：</p>
+            <div class="math-block">
+                $$ n T \tau \geq 3 \times 10^{21} \text{ keV s/m}^3 $$
+            </div>
+            <p>这就引出了核心指标 **Q 值**（能量增益因子），即输出能量与输入能量之比。
+            <ul>
+                <li>$Q = 1$：收支平衡（Breakeven）。</li>
+                <li>$Q > 5$：燃烧等离子体（自持加热）。</li>
+                <li>$Q \to \infty$：点火（Ignition），无需外部加热。</li>
+            </ul>
+            <p>2022 年，美国 NIF 首次实现了 $Q > 1$，这标志着物理学上的可行性已被彻底证实。</p>
+
+            <h2>3. 托卡马克 vs. 惯性约束</h2>
+            <p>如何装下这个微型太阳？目前有两大流派：</p>
+            <ul>
+                <li><strong>磁约束聚变（MCF）：</strong> 代表是 <strong>ITER</strong> 和中国的 <strong>EAST</strong>。利用超强磁场（托卡马克装置）构建一个甜甜圈形状的“磁笼子”，将带电的等离子体悬浮在真空中，不接触任何容器壁。</li>
+                
+
+[Image of Tokamak magnetic field lines]
+
+                <li><strong>惯性约束聚变（ICF）：</strong> 代表是美国 <strong>NIF</strong>。利用几百束高能激光同时轰击一个胡椒粒大小的燃料靶丸，利用反作用力在纳秒级的时间内产生极高密度，在燃料“来不及飞散”之前完成聚变。</li>
+            </ul>
+
+            <h2>4. AI 的介入：驯服湍流</h2>
+            <p>聚变反应堆中最头疼的问题是<strong>等离子体湍流</strong>。这团高温气体极其不稳定，像一条滑溜的蛇，随时可能冲破磁场束缚（Disruption），损坏反应堆。</p>
+            <p>DeepMind 与瑞士等离子体中心合作，利用深度强化学习（Deep RL）来控制托卡马克的磁线圈。AI 能够以微秒级的速度预测并调整磁场，将等离子体“雕刻”成各种复杂的形状，并维持其稳定性。这是 AI 拯救物理学的经典案例。</p>
+
+            <h2>5. 结语：永远的五十年？</h2>
+            <p>以前人们常嘲讽“核聚变距离商用永远还有 50 年”。但随着高温超导材料（REBCO）的应用和 AI 控制技术的突破，这个倒计时正在被疯狂压缩。</p>
+            <p>一旦实现商业化聚变，海水中的氘将成为取之不尽的燃料。能源将不再是稀缺资源，碳排放将成为历史名词，人类文明将彻底摆脱化石能源的枷锁，迈向星辰大海。</p>
+
+        </article>
+
+        <a href="article.html" class="back-btn">← 返回文章列表</a>
+    </main>
+
+    <script>
+        /* 粒子背景动画 (保持统一) */
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+</body>
+</html>

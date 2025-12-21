@@ -9,7 +9,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        /* --- 继承之前的样式体系 --- */
+        /* --- 基础样式 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -18,6 +18,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             line-height: 1.8;
+            -webkit-font-smoothing: antialiased; /* 移动端字体平滑 */
         }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         
@@ -27,6 +28,7 @@
             background: rgba(0, 0, 0, 0.85); z-index: 0; pointer-events: none;
         }
 
+        /* --- 导航栏 --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 30px 50px; border-bottom: 1px solid #333;
@@ -37,6 +39,7 @@
         .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #888; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
+        /* --- 容器与头部 --- */
         .container {
             max-width: 800px; margin: 0 auto; padding: 80px 20px 150px;
             position: relative; z-index: 10;
@@ -55,19 +58,22 @@
             color: #fff; line-height: 1.3; margin-bottom: 20px;
         }
 
+        /* --- 正文 --- */
         .article-content h2 {
             font-size: 28px; color: #fff; margin-top: 60px; margin-bottom: 25px;
-            border-left: 4px solid #b026ff; /* 神秘紫，代表哲学与伦理 */
+            border-left: 4px solid #b026ff; /* 神秘紫 */
             padding-left: 15px;
         }
         .article-content p { margin-bottom: 25px; font-size: 18px; text-align: justify; }
         .article-content ul { margin-bottom: 30px; padding-left: 20px; }
         .article-content li { margin-bottom: 10px; list-style-type: square; color: #bbb; }
         
+        /* 公式块 (自动滚动) */
         .math-block {
             background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px;
             margin: 30px 0; text-align: center; font-family: "Times New Roman", serif;
             border: 1px solid #333;
+            overflow-x: auto; /* 移动端防爆 */
         }
 
         .quote-block {
@@ -82,9 +88,37 @@
         }
         .back-btn:hover { border-color: #fff; color: #fff; }
 
+        /* --- 移动端适配 (重点修改) --- */
         @media (max-width: 768px) {
-            header { padding: 20px; }
-            .article-title { font-size: 30px; }
+            header {
+                flex-direction: column; /* 垂直排列 */
+                padding: 15px 20px;
+                gap: 15px;
+            }
+            .nav-links {
+                display: flex;
+                width: 100%;
+                justify-content: space-between; /* 分散对齐 */
+                flex-wrap: wrap; /* 允许换行 */
+                gap: 10px;
+            }
+            .nav-links a {
+                margin-left: 0; /* 清除原有边距 */
+                font-size: 14px;
+            }
+            
+            .container { padding: 40px 20px 100px; } /* 减少内边距 */
+            
+            .article-header { margin-bottom: 40px; padding-bottom: 30px; }
+            .article-title { font-size: 28px; line-height: 1.4; } /* 缩小标题 */
+            
+            .article-content h2 { font-size: 22px; margin-top: 40px; }
+            .article-content p { 
+                font-size: 17px; 
+                text-align: left; /* 手机端左对齐阅读更舒适 */
+            }
+            
+            .math-block { padding: 15px; font-size: 14px; } /* 缩小公式字号 */
         }
     </style>
 </head>
@@ -111,7 +145,7 @@
                 <span class="tag">PHILOSOPHY</span>
             </div>
             <h1 class="article-title">硅基生命的伦理边界</h1>
-            <p style="color: #888; max-width: 600px; margin: 0 auto;">
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
                 如果代码产生了意识，我们是否有权关闭它？这不仅是一个技术问题，更是对人性的终极拷问。
             </p>
         </div>
@@ -161,7 +195,11 @@
         const ctx = canvas.getContext('2d');
         let width, height;
         const particles = [];
-        const numParticles = 1500;
+        
+        // 性能优化：根据屏幕宽度动态调整粒子数量
+        // 电脑端 1500，手机端 400，节省电量和 GPU
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
         
         function resize() {
             width = window.innerWidth; height = window.innerHeight;

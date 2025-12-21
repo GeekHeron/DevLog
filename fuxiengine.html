@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术架构拆解 - GeekHeron</title>
+    <style>
+        /* --- 1. 全局样式 (继承自 Works 页面) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); /* 比Works页面稍微深一点，方便阅读文字 */
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 4. 文章专用样式 --- */
+        .container {
+            max-width: 800px; /* 文章页面窄一点，便于阅读 */
+            margin: 0 auto;
+            padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 20px;
+        }
+
+        .page-title { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
+        .page-subtitle { color: #666; font-family: monospace; font-size: 14px; text-transform: uppercase; }
+
+        /* 文章内容排版 */
+        .article-content {
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .article-content h2 {
+            font-size: 24px;
+            color: #fff;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .article-content h3 {
+            font-size: 18px;
+            color: #ffd700; /* 金色高亮子标题 */
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .article-content p { margin-bottom: 20px; text-align: justify; }
+
+        .article-content ul { margin-left: 20px; margin-bottom: 25px; color: #bbb; }
+        .article-content li { margin-bottom: 10px; }
+
+        /* 代码块样式 */
+        .article-content code {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffd700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        .article-content pre {
+            background: #111;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+        
+        .article-content pre code {
+            background: transparent;
+            color: #aaa;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        /* 引用块 */
+        .article-content blockquote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ffd700;
+            padding: 20px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .back-btn {
+            display: inline-block; margin-top: 50px;
+            border-bottom: 1px solid #666; padding-bottom: 5px; color: #888;
+        }
+        .back-btn:hover { color: #fff; border-color: #fff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; justify-content: space-between; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 24px; font-weight: 800; color: #fff; }
+            .page-title { font-size: 28px; }
+            .article-content h2 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="index.html" onclick="toggleMenu()">首页</a>
+            <a href="article.html" class="active" onclick="toggleMenu()">深度分析</a>
+            <a href="works.html" onclick="toggleMenu()">作品展示</a>
+            <a href="about.html" onclick="toggleMenu()">关于博主</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="page-header">
+            <h1 class="page-title">伏羲引擎技术架构拆解</h1>
+            <p class="page-subtitle">// ARCHITECTURE & ENGINEERING · 2025</p>
+        </section>
+
+        <article class="article-content">
+            <blockquote>
+                <strong>摘要：</strong> 伏羲引擎 (Fuxi Engine) 是一个典型的 AI Native SaaS 产品。它并未简单地套用 LLM（大语言模型）壳子，而是构建了一个完整的“传统算法 + 生成式 AI”混合架构。本文将从前端交互、后端微服务、核心算法逻辑及支付网关集成四个维度，拆解其技术实现。
+            </blockquote>
+
+            <h2>1. 系统架构全景 (System Overview)</h2>
+            <p>项目采用经典的 <strong>B/S 架构</strong>，前后端分离设计。核心通过 RESTful API 进行数据交互，针对 AI 生成部分采用了 <strong>Server-Sent Events (SSE)</strong> 风格的流式传输技术，以确保在大模型推理时的秒级响应体验。</p>
+            <ul>
+                <li><strong>Frontend:</strong> Native HTML5/CSS3 + Vanilla ES6 JavaScript (追求极致轻量化与加载速度，无重型框架依赖)</li>
+                <li><strong>Backend:</strong> Python Flask + Gevent (高并发协程支持)</li>
+                <li><strong>Database:</strong> SQLite / SQLAlchemy (轻量级关系型数据存储，索引优化)</li>
+                <li><strong>AI Core:</strong> DeepSeek V3 (Via OpenAI Compatible API)</li>
+                <li><strong>Payments:</strong> Hybrid Gateway (Lemon Squeezy + Cryptomus Web3 + PayPal)</li>
+            </ul>
+
+            <h2>2. 核心模块拆解</h2>
+
+            <h3>2.1 命理数据数字化 (Digitization)</h3>
+            <p>这是系统的基石，也是区别于普通“算命 GPT”的核心壁垒。系统并非直接让 AI 瞎编，而是先进行严谨的数学推演。</p>
+            <p>在后端 <code>app.py</code> 中，我重构了完整的神煞字典库（包含天乙贵人、羊刃、桃花、孤辰寡宿等 50+ 种神煞逻辑）。通过多重映射表（Map-Reduce思想），实现了基于“年/月/日/时”四柱的交叉索引。</p>
+            <p>自主研发了 <code>BaziLogic</code> 类，通过加权打分法（Weighted Scoring System）计算命主能量，将模糊的传统概念转化为 <code>0.0-1.0</code> 的浮点数。</p>
+
+            <h3>2.2 AI 提示词工程 (Prompt Engineering)</h3>
+            <p>系统采用了 <strong>RAG (Retrieval-Augmented Generation)</strong> 的轻量化变体。在调用 LLM 之前，系统会将算法算出的“硬数据”（八字格局、五行强弱、核心神煞）动态注入到 System Prompt 中。</p>
+            <pre><code class="language-python"># 代码片段示意：动态 Context 构建
+base_info = f"""
+命主八字：{bazi_str}
+格局：{status} (喜 {xi_yong})
+神煞：{shensha_str}
+"""
+# 结合 VIP 逻辑的分层 Prompt 注入
+if is_vip:
+    instructions = "请扮演香港中环资深命理师..."
+else:
+    instructions = "请使用冷读术制造悬念..."</code></pre>
+
+            <h3>2.3 流式响应 (Streaming Response)</h3>
+            <p>为了解决 LLM 推理延迟带来的用户焦虑，前端放弃了传统的 <code>await fetch()</code> 等待模式。</p>
+            <ul>
+                <li><strong>后端实现：</strong>利用 Flask 的 <code>stream_with_context</code> 生成器，结合 DeepSeek 的 <code>stream=True</code> 参数，将 Token 实时推送到前端。</li>
+                <li><strong>前端实现：</strong>使用 <code>TextDecoder</code> 处理二进制流，并实现了一个打字机效果队列（Typewriter Queue），平滑处理网络抖动。</li>
+            </ul>
+
+            <h2>3. 全球支付网关集成</h2>
+            <p>本项目实现了一个复杂的<strong>聚合支付路由</strong>，旨在最大化全球转化率与抗审查能力。</p>
+            
+            <h3>3.1 混合支付策略</h3>
+            <p><strong>Fiat (法币)：</strong>集成 Lemon Squeezy 和 PayPal。利用 Lemon Squeezy 的 Hosted Checkout 简化税务合规；PayPal 作为兜底方案，通过 OAuth2 获取 Access Token 并二次验证订单状态。</p>
+            <p><strong>Web3 (加密货币)：</strong>集成 Cryptomus，支持 USDT (TRC20/ERC20) 支付。实现了基于 MD5 签名的安全校验机制。</p>
+
+            <h3>3.2 Webhook 安全闭环</h3>
+            <p>所有支付回调（Webhook）均实现了严格的安全校验，防止“伪造充值”攻击。</p>
+            <pre><code class="language-python"># 签名校验逻辑示例
+digest = hmac.new(
+    WEBHOOK_SECRET.encode(),
+    request_body,
+    hashlib.sha256
+).hexdigest()
+
+if not hmac.compare_digest(digest, signature):
+    abort(403) # 拒绝非法回调</code></pre>
+
+            <h2>4. 总结与展望</h2>
+            <p>伏羲引擎展示了如何用现代全栈技术重构传统领域。它不仅是一个 Web App，更是一套完整的 <strong>“数据输入 -> 算法清洗 -> AI 增强 -> 商业变现”</strong> 的闭环系统。</p>
+            <p>未来计划引入 <strong>Vector Database (向量数据库)</strong>，通过存储命理古籍（如《三命通会》、《滴天髓》）的 Embeddings，进一步提升 AI 解读的专业深度。</p>
+
+            <a href="works.html" class="back-btn">← 返回作品列表</a>
+        </article>
+    </div>
+
+    <script>
+        // --- 1. 背景动画 (复用逻辑) ---
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000; 
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+
+        // --- 2. 菜单逻辑 ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        
+        hamburger.addEventListener('click', toggleMenu);
+    </script>
+</body>
+</html>

@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>GeekHeron | 洞察技术背后的逻辑与力量</title>
-    <meta name="description" content="GeekHeron 追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。鹭栖数字潮汐，静观算力涌动。">
-    <meta name="keywords" content="GeekHeron, 科技博客, AI, 量子计算, 机器人, 技术分析, 算力">
+    <title>DevLog · 关于系统、AI 与判断的记录</title>
+    
+    <meta name="description" content="一个关于复杂系统、AI 应用与工程判断的个人博客，记录长期有效的思考，而非短期趋势。">
+    
+    <meta name="keywords" content="GeekHeron, 科技博客, AI, 量子计算, 机器人, 技术分析, 算力, 复杂系统, LLM, 工程判断">
     <link rel="canonical" href="https://geekheron.github.io/DevLog/">
     <meta name="robots" content="index, follow">
 
     <meta name="google-site-verification" content="在此处填入你的_GSC_验证码" />
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="GeekHeron - 鹭栖数字潮汐">
-    <meta property="og:description" content="追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。">
+    <meta property="og:title" content="DevLog · 关于系统、AI 与判断的记录">
+    <meta property="og:description" content="一个关于复杂系统、AI 应用与工程判断的个人博客，记录长期有效的思考，而非短期趋势。">
     <meta property="og:image" content="logo.png"> 
     <meta property="og:url" content="https://geekheron.github.io/DevLog/">
     <meta name="twitter:card" content="summary_large_image">
@@ -47,6 +49,20 @@
 
         a:hover {
             opacity: 0.7;
+        }
+
+        /* --- [新增] SEO 专用隐形样式 (SR-Only Pattern) --- */
+        /* 这种写法让谷歌爬虫能读到，但人类肉眼完全不可见，且不占用布局空间 */
+        .seo-visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         /* --- 背景层 --- */
@@ -345,6 +361,22 @@
             <p class="subtitle" id="typing-text"></p>
             <a href="article.html" class="btn">开始阅读</a>
         </div>
+        
+        <article class="seo-visually-hidden">
+            <h1>关于系统、AI 与判断的长期记录</h1>
+            <p>
+                这是一个个人技术与认知博客，持续记录我在复杂系统、AI 应用、
+                LLM 协作与工程判断中的思考与实践。
+            </p>
+            <p>
+                这里不讨论教程或趋势，而关注那些更难被量化的问题：
+                为什么系统会失败、哪些假设被高估、以及人在决策中真正承担的角色。
+            </p>
+            <p>
+                文章内容以判断为导向，强调可反驳性与长期有效性，
+                适合对技术、架构与决策质量有要求的读者。
+            </p>
+        </article>
     </main>
 
     <div class="hud-decoration">

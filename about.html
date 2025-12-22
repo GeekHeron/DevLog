@@ -133,9 +133,56 @@
             transition: all 0.3s ease; cursor: pointer;
             box-shadow: 0 5px 20px rgba(255,255,255,0.15);
         }
+        
         .contact-btn:hover { 
             transform: translateY(-2px); 
             box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+
+        /* 微信二维码样式 - 已优化居中 */
+        .wechat-qr-container {
+            margin: 30px auto 0; /* 上边距30px，左右自动居中 */
+            max-width: 200px;    /* 限制宽度，防止背景条过宽 */
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .wechat-qr-container:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .wechat-qr {
+            width: 100%;         /* 适应容器宽度 */
+            max-width: 120px;    /* 保持图片本身大小 */
+            height: auto;
+            border-radius: 4px;
+            filter: grayscale(20%); /* 保持暗色调风格 */
+            transition: filter 0.3s ease;
+        }
+
+        .wechat-qr-container:hover .wechat-qr {
+            filter: grayscale(0%);
+        }
+
+        .wechat-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        /* 移动端适配：在小屏幕上二维码居中显示 */
+        @media (max-width: 850px) {
+            .wechat-qr-container {
+                display: inline-block; /* 移动端可能需要特定显示方式 */
+                margin: 30px auto 0;
+            }
         }
 
         /* --- 右侧：详细内容 --- */
@@ -226,7 +273,7 @@
         <nav class="nav-links">
             <a href="index.html" onclick="handleNavClick(event, 'index.html')">首页</a>
             <a href="article.html" onclick="handleNavClick(event, 'article.html')">深度分析</a>
-	    <a href="works.html" onclick="handleNavClick(event, 'works.html')">作品展示</a>
+            <a href="works.html" onclick="handleNavClick(event, 'works.html')">作品展示</a>
             <a href="about.html" class="active" onclick="handleNavClick(event, 'about.html')">关于博主</a>
         </nav>
     </header>
@@ -244,6 +291,11 @@
                 & DevOps Specialist
             </p>
             <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Initiate Contact</a>
+            
+            <div class="wechat-qr-container">
+                <img src="wechat.png" alt="WeChat QR Code" class="wechat-qr">
+                <p class="wechat-label">Scan to Connect via WeChat</p>
+            </div>
         </aside>
 
         <div class="content-section">

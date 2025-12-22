@@ -9,6 +9,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于博主 - GeekHeron</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
     <style>
         /* --- 1. 全局样式 --- */
         :root {
@@ -49,7 +51,24 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
+        .logo { 
+    font-size: 24px; 
+    font-weight: 800; 
+    letter-spacing: 4px; 
+    color: #fff; 
+    text-transform: uppercase; 
+    z-index: 102;
+    /* 新增布局样式 */
+    display: flex; 
+    align-items: center; 
+    gap: 15px; /* 图片和文字的间距 */
+}
+
+.logo img {
+    height: 40px; /* 控制 Logo 高度，根据实际情况调整 */
+    width: auto;
+    border-radius: 4px; /* 可选：给 Logo 加一点圆角 */
+}
         .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 

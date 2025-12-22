@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta property="og:title" content="GeekHeron">
-    <meta property="og:description" content="鹭栖数字潮汐，静观算力涌动">
-    <meta property="og:image" content="logo.png"> 
-    <meta property="og:url" 	content="https://geekheron.github.io/DevLog/">
-    <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeekHeron</title>
+    
+    <title>GeekHeron | 洞察技术背后的逻辑与力量</title>
+    <meta name="description" content="GeekHeron 追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。鹭栖数字潮汐，静观算力涌动。">
+    <meta name="keywords" content="GeekHeron, 科技博客, AI, 量子计算, 机器人, 技术分析, 算力">
+    <link rel="canonical" href="https://geekheron.github.io/DevLog/">
+    <meta name="robots" content="index, follow">
+
+    <meta name="google-site-verification" content="在此处填入你的_GSC_验证码" />
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GeekHeron - 鹭栖数字潮汐">
+    <meta property="og:description" content="追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。">
+    <meta property="og:image" content="logo.png"> 
+    <meta property="og:url" content="https://geekheron.github.io/DevLog/">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    
     <style>
         /* --- 全局设置 --- */
         * {
@@ -68,31 +79,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px; /* 稍微减小内边距以适应图片 */
+            padding: 20px 50px;
             z-index: 100;
             font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            /* 增加玻璃拟态背景，让Logo在星空中更清晰（可选） */
             background: rgba(0, 0, 0, 0.2); 
             backdrop-filter: blur(2px);
         }
 
-        /* --- Logo 样式 (修改部分) --- */
         .logo {
-            display: flex;          /* 启用 Flex 布局 */
-            align-items: center;    /* 垂直居中 */
-            gap: 15px;              /* 图片和文字的间距 */
+            display: flex;
+            align-items: center;
+            gap: 15px;
             z-index: 102;
             color: #fff;
             text-decoration: none;
         }
 
         .logo img {
-            height: 50px;           /* 限制 Logo 高度 */
-            width: auto;            /* 宽度自适应 */
-            border-radius: 6px;     /* 轻微圆角 */
-            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3); /* 增加一点霓虹光晕呼应主题 */
+            height: 50px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
         }
 
         .logo span {
@@ -270,24 +279,11 @@
 
         /* --- 移动端适配 --- */
         @media (max-width: 768px) {
-            header { 
-                padding: 15px 20px; 
-                justify-content: space-between; 
-            }
-            
-            .logo img {
-                height: 40px; /* 移动端稍微缩小Logo */
-            }
-
-            .logo span {
-                font-size: 18px; /* 移动端文字变小 */
-                letter-spacing: 2px;
-            }
-            
+            header { padding: 15px 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
             .hamburger { display: block; }
-            
             .header-right { display: none; }
-            
             nav {
                 position: fixed;
                 top: 0;
@@ -295,7 +291,7 @@
                 width: 100%;
                 height: 100vh;
                 background: rgba(0, 0, 0, 0.95);
-                backdrop-filter: blur(10px); 
+                backdrop-filter: blur(100px); 
                 z-index: 101; 
                 display: flex;
                 flex-direction: column;
@@ -304,34 +300,11 @@
                 transform: translateX(100%);
                 transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
-
-            nav.active {
-                transform: translateX(0);
-            }
-
-            nav ul {
-                flex-direction: column;
-                gap: 50px;
-                text-align: center;
-            }
-
-            nav ul li a {
-                font-size: 24px; 
-                font-weight: 800;
-                letter-spacing: 2px;
-            }
-
-            .hero {
-                padding-left: 20px;
-                padding-right: 20px;
-                justify-content: center;
-                text-align: center;
-            }
-
-            .overlay-gradient {
-                background: linear-gradient(to top, #000 30%, rgba(0,0,0,0.5) 60%, transparent 100%);
-            }
-
+            nav.active { transform: translateX(0); }
+            nav ul { flex-direction: column; gap: 50px; text-align: center; }
+            nav ul li a { font-size: 24px; font-weight: 800; letter-spacing: 2px; }
+            .hero { padding-left: 20px; padding-right: 20px; justify-content: center; text-align: center; }
+            .overlay-gradient { background: linear-gradient(to top, #000 30%, rgba(0,0,0,0.5) 60%, transparent 100%); }
             h1 { font-size: 40px; }
             .hud-decoration { display: none; }
         }
@@ -363,18 +336,14 @@
             </ul>
         </nav>
         
-        <div class="header-right" id="clock">
-             T+00: 00: 00
-        </div>
+        <div class="header-right" id="clock">T+00: 00: 00</div>
     </header>
 
     <main class="hero">
         <div class="content">
             <h1>洞察技术背后的<br>逻辑与力量</h1>
             <p class="subtitle" id="typing-text"></p>
-            <a href="article.html" class="btn">
-                开始阅读
-            </a>
+            <a href="article.html" class="btn">开始阅读</a>
         </div>
     </main>
 
@@ -392,25 +361,18 @@
         // --- 1. 移动端菜单逻辑 ---
         const hamburger = document.querySelector('.hamburger');
         const nav = document.querySelector('nav');
-
         function toggleMenu() {
             hamburger.classList.toggle('active');
             nav.classList.toggle('active');
         }
-
         hamburger.addEventListener('click', toggleMenu);
 
         // --- 2. 时钟模块 ---
         function updateClock() {
             const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            let seconds = now.getSeconds();
             const formatTime = (unit) => String(unit).padStart(2, '0');
-            const timeString = `T+${formatTime(hours)}: ${formatTime(minutes)}: ${formatTime(seconds)}`;
-            
-            const clockElement = document.getElementById('clock');
-            if (clockElement) clockElement.textContent = timeString;
+            const timeString = `T+${formatTime(now.getHours())}: ${formatTime(now.getMinutes())}: ${formatTime(now.getSeconds())}`;
+            document.getElementById('clock').textContent = timeString;
         }
         setInterval(updateClock, 1000); 
         updateClock();
@@ -419,13 +381,11 @@
         const textToType = "GeekHeron 追踪全球前沿科技，深度解析 AI、量子计算与机器人的未来。在喧嚣中寻找理性的声音。";
         const typeElement = document.getElementById('typing-text');
         let typeIndex = 0;
-
         function typeWriter() {
             if (typeIndex < textToType.length) {
                 typeElement.innerHTML = textToType.substring(0, typeIndex + 1) + '<span class="cursor"></span>';
                 typeIndex++;
-                const randomSpeed = Math.floor(Math.random() * 30) + 30; 
-                setTimeout(typeWriter, randomSpeed);
+                setTimeout(typeWriter, Math.floor(Math.random() * 30) + 30);
             } else {
                 typeElement.innerHTML = textToType + '<span class="cursor"></span>';
             }
@@ -442,7 +402,8 @@
         const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
 
         class Particle {
-            constructor() {
+            constructor() { this.init(); }
+            init() {
                 this.x = (Math.random() - 0.5) * width * 2.5; 
                 this.y = (Math.random() - 0.5) * height * 2.5; 
                 this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
@@ -453,15 +414,10 @@
                 let cosZ = Math.cos(0.0005);
                 let sinZ = Math.sin(0.0005);
                 let tempX = this.x;
-                let tempY = this.y;
-                this.x = tempX * cosZ - tempY * sinZ;
-                this.y = tempX * sinZ + tempY * cosZ;
+                this.x = tempX * cosZ - this.y * sinZ;
+                this.y = tempX * sinZ + this.y * cosZ;
                 this.z -= 0.2; 
-                if (this.z < -fieldOfView) {
-                    this.z += fieldOfView * 2;
-                    this.x = (Math.random() - 0.5) * width * 2.5;
-                    this.y = (Math.random() - 0.5) * height * 2.5;
-                }
+                if (this.z < -fieldOfView) { this.z += fieldOfView * 2; }
             }
             draw() {
                 const perspective = fieldOfView / (fieldOfView + this.z);
@@ -505,15 +461,13 @@
                 ctx.beginPath();
                 ctx.strokeStyle = gradient;
                 ctx.lineWidth = this.size;
-                ctx.lineCap = 'round';
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(tailX, tailY);
                 ctx.stroke();
             }
         }
 
-        const meteors = [];
-        for(let i = 0; i < 3; i++) { meteors.push(new ShootingStar()); meteors[i].active = false; }
+        const meteors = [new ShootingStar(), new ShootingStar(), new ShootingStar()];
 
         function resize() {
             width = window.innerWidth;
@@ -528,15 +482,14 @@
         }
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < numParticles; i++) { particles[i].update(); particles[i].draw(); }
+            particles.forEach(p => { p.update(); p.draw(); });
             if (Math.random() < 0.008) {
-                const idleMeteor = meteors.find(m => !m.active);
-                if (idleMeteor) idleMeteor.reset();
+                const m = meteors.find(m => !m.active);
+                if (m) m.reset();
             }
-            for(let m of meteors) { m.update(); m.draw(); }
+            meteors.forEach(m => { m.update(); m.draw(); });
             requestAnimationFrame(animate);
         }
-
         resize();
         initParticles();
         animate();

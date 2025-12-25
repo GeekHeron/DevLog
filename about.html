@@ -1,40 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta property="og:title" content="关于博主 | GeekHeron">
-    <meta property="og:description" content="鹭栖数字潮汐，静观算力涌动">
+    <meta property="og:title" content="关于我 & 商业合作 | GeekHeron">
+    <meta property="og:description" content="协助企业与个人构建 AI 驱动的商业闭环系统。">
     <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
-    <meta property="og:url" 	content="https://geekheron.github.io/DevLog/">
+    <meta property="og:url" content="https://geekheron.github.io/DevLog/">
     <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于博主 - GeekHeron</title>
+    <title>关于 & 合作 - GeekHeron</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "王鉴锋",
-  "additionalName": "GeekHeron",
-  "image": "https://geekheron.github.io/DevLog/image_3.png",
-  "url": "https://geekheron.github.io/DevLog/about.html",
-  "jobTitle": "独立开发者 / 数字化博主",
-  "description": "鹭栖数字潮汐，静观算力涌动。",
-  "sameAs": [
-    "https://github.com/GeekHeron",
-    "https://x.com/GeekHeron",
-    "https://linkedin.com/in/geekheron"
-  ]
-}
-</script>
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "王鉴锋",
+      "additionalName": "GeekHeron",
+      "jobTitle": "AI 全栈架构师 / 独立开发者",
+      "url": "https://geekheron.github.io/DevLog/about.html",
+      "knowsAbout": ["AI Agent Development", "RAG Systems", "DevOps", "SaaS Architecture"]
+    }
+    </script>
     <style>
-        /* --- 1. 全局样式 --- */
+        /* --- 1. 全局样式 (保持统一) --- */
         :root {
             --accent-color: #fff;
-            --secondary-color: #888;
             --bg-color: #000;
             --card-bg: rgba(20, 20, 20, 0.6);
+            --gold: #ffd700;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,7 +43,7 @@
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-        /* --- 2. 背景特效层 --- */
+        /* --- 2. 背景特效 --- */
         #galaxy-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
@@ -64,42 +58,19 @@
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 30px 50px; position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(10px); background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px); background: rgba(0,0,0,0.8);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo { 
-    font-size: 24px; 
-    font-weight: 800; 
-    letter-spacing: 4px; 
-    color: #fff; 
-    text-transform: uppercase; 
-    z-index: 102;
-    /* 新增布局样式 */
-    display: flex; 
-    align-items: center; 
-    gap: 15px; /* 图片和文字的间距 */
-}
-
-.logo img {
-    height: 40px; /* 控制 Logo 高度，根据实际情况调整 */
-    width: auto;
-    border-radius: 4px; /* 可选：给 Logo 加一点圆角 */
-}
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
         .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-        /* 汉堡菜单样式 */
-        .hamburger {
-            display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative;
-        }
-        .hamburger span {
-            display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out;
-        }
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 9px; }
         .hamburger span:nth-child(3) { top: 18px; }
-        
         .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
@@ -112,40 +83,24 @@
             align-items: start;
         }
 
-        /* --- 左侧：个人概况 --- */
-        .profile-section {
-            position: sticky; top: 120px;
-            text-align: center;
-        }
+        /* --- 左侧：个人品牌 --- */
+        .profile-section { position: sticky; top: 120px; text-align: center; }
 
         .avatar-container {
-            width: 180px; height: 180px; margin: 0 auto 30px;
-            position: relative;
+            width: 180px; height: 180px; margin: 0 auto 30px; position: relative;
         }
 
         .avatar-image {
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
             border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 0 rgba(255,255,255,0);
             animation: pulse-glow 3s infinite;
         }
-
-        /* 图片加载失败时的默认样式 */
-        .avatar-image::before {
-            content: 'GH';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #333, #111);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 800;
-            color: #666;
-            border-radius: 50%;
+        
+        .avatar-image[style*="display: none"] + .avatar-fallback { display: flex; }
+        .avatar-fallback {
+            display: none; width: 100%; height: 100%; border-radius: 50%;
+            background: #111; align-items: center; justify-content: center;
+            font-size: 40px; font-weight: 800; color: #333; border: 1px solid #333;
         }
 
         @keyframes pulse-glow {
@@ -162,135 +117,102 @@
             margin-bottom: 40px; line-height: 1.6;
         }
 
-        .contact-btn {
-            display: inline-block; background: #fff; color: #000;
-            padding: 14px 35px; border-radius: 50px;
-            font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-            transition: all 0.3s ease; cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255,255,255,0.15);
-        }
+        /* 商业化按钮组 */
+        .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         
-        .contact-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        .contact-btn {
+            display: block; background: #fff; color: #000;
+            padding: 14px 0; border-radius: 4px;
+            font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+            transition: all 0.3s ease; cursor: pointer; text-align: center;
         }
+        .contact-btn:hover { background: #ddd; transform: translateY(-2px); }
+        
+        .secondary-btn {
+            display: block; background: transparent; color: #fff; border: 1px solid #333;
+            padding: 14px 0; border-radius: 4px;
+            font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+            transition: all 0.3s ease; cursor: pointer; text-align: center;
+        }
+        .secondary-btn:hover { border-color: #fff; }
 
-        /* 微信二维码样式 - 已优化居中 */
-        .wechat-qr-container {
-            margin: 30px auto 0; /* 上边距30px，左右自动居中 */
-            max-width: 200px;    /* 限制宽度，防止背景条过宽 */
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+        /* 微信模块 */
+        .wechat-box {
+            background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
         }
-
-        .wechat-qr-container:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .wechat-qr {
-            width: 100%;         /* 适应容器宽度 */
-            max-width: 120px;    /* 保持图片本身大小 */
-            height: auto;
-            border-radius: 4px;
-            filter: grayscale(20%); /* 保持暗色调风格 */
-            transition: filter 0.3s ease;
-        }
-
-        .wechat-qr-container:hover .wechat-qr {
-            filter: grayscale(0%);
-        }
-
-        .wechat-label {
-            font-size: 10px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        /* 移动端适配：在小屏幕上二维码居中显示 */
-        @media (max-width: 850px) {
-            .wechat-qr-container {
-                display: inline-block; /* 移动端可能需要特定显示方式 */
-                margin: 30px auto 0;
-            }
-        }
+        .wechat-box:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
+        .wechat-qr { width: 100%; max-width: 140px; border-radius: 4px; filter: grayscale(10%); }
+        .wechat-text { font-size: 10px; color: #888; margin-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
 
         /* --- 右侧：详细内容 --- */
         .content-section { padding-top: 10px; }
-        .section-block { margin-bottom: 90px; }
+        .section-block { margin-bottom: 80px; }
+        
         .section-title {
-            font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 3px; 
+            font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; 
             margin-bottom: 30px; font-weight: 800; display: flex; align-items: center;
         }
         .section-title::after {
-            content: ''; height: 1px; background: #222; flex-grow: 1; margin-left: 20px;
+            content: ''; height: 1px; background: #333; flex-grow: 1; margin-left: 20px;
         }
 
-        /* 终端打字机特效 */
+        /* 商业价值陈述 */
+        .value-prop {
+            font-size: 24px; font-weight: 700; line-height: 1.4; margin-bottom: 20px;
+        }
+        .bio-text { font-size: 16px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
+        .highlight { color: #fff; border-bottom: 1px dotted #666; }
+
+        /* 服务卡片 (新增) */
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
+        .service-card {
+            background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 25px;
+            transition: 0.3s;
+        }
+        .service-card:hover { border-color: #666; background: rgba(255,255,255,0.05); }
+        .service-icon { font-size: 20px; margin-bottom: 15px; color: #fff; }
+        .service-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .service-desc { font-size: 13px; color: #888; line-height: 1.6; }
+
+        /* 技术栈 */
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .tech-tag { 
+            padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px; 
+        }
+
+        /* 案例背书 (调整) */
+        .proof-box {
+            border-left: 3px solid var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.05), transparent);
+            padding: 20px; margin: 30px 0;
+        }
+        .proof-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; color: #fff; }
+        .proof-text { font-size: 13px; color: #aaa; }
+
+        /* 终端框保留 */
         .terminal-box {
-            background: rgba(20,20,20,0.8); border: 1px solid #333;
-            padding: 25px; border-radius: 4px; font-family: monospace;
-            margin-bottom: 20px; color: #ddd; font-size: 14px; line-height: 1.8;
-        }
-        .cursor { display: inline-block; width: 8px; height: 15px; background: #fff; animation: blink 1s infinite; vertical-align: middle; }
-        @keyframes blink { 50% { opacity: 0; } }
-
-        .bio-text { font-size: 18px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
-
-        /* 技能条 (带动画) */
-        .skill-item { margin-bottom: 30px; }
-        .skill-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
-        .skill-track {
-            width: 100%; height: 4px; background: #222; border-radius: 2px; overflow: hidden;
-        }
-        .skill-bar {
-            height: 100%; background: #fff; width: 0; 
-            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+            background: #0d0d0d; border: 1px solid #333; padding: 20px; 
+            font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
         }
 
-        /* 垂直时间轴 */
-        .timeline { border-left: 2px solid #222; padding-left: 40px; margin-left: 10px; }
-        .history-item { margin-bottom: 50px; position: relative; }
-        .history-item::before {
-            content: ''; position: absolute; left: -47px; top: 5px;
-            width: 12px; height: 12px; background: #000; border: 2px solid #666;
-            border-radius: 50%; transition: 0.3s;
-        }
-        .history-item:hover::before { border-color: #fff; background: #fff; }
-        
-        .history-year { font-size: 12px; color: #666; margin-bottom: 8px; font-family: monospace; }
-        .history-role { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #fff; }
-        .history-desc { font-size: 15px; color: #999; line-height: 1.6; }
-
-        /* --- 移动端适配 (更新后) --- */
+        /* 移动端适配 */
         @media (max-width: 850px) {
             header { padding: 20px; justify-content: space-between; }
             .hamburger { display: block; }
             
-            /* 导航菜单改为全屏遮罩 */
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
                 background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
                 z-index: 101;
                 flex-direction: column; justify-content: center; align-items: center; gap: 40px;
-                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transform: translateX(100%); transition: transform 0.4s;
                 display: flex;
             }
             .nav-links.active { transform: translateX(0); }
             
-            .nav-links a { margin-left: 0; font-size: 24px; font-weight: 800; }
-
             .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
             .profile-section { position: relative; top: 0; }
-            .section-title::after { display: none; }
-            .timeline { margin-left: 0; padding-left: 30px; }
-            .history-item::before { left: -36px; }
+            .services-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -301,16 +223,12 @@
 
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
-        
-        <div class="hamburger">
-            <span></span><span></span><span></span>
-        </div>
-
+        <div class="hamburger"><span></span><span></span><span></span></div>
         <nav class="nav-links">
-            <a href="index.html" onclick="handleNavClick(event, 'index.html')">首页</a>
-            <a href="article.html" onclick="handleNavClick(event, 'article.html')">深度分析</a>
-            <a href="works.html" onclick="handleNavClick(event, 'works.html')">作品展示</a>
-            <a href="about.html" class="active" onclick="handleNavClick(event, 'about.html')">关于博主</a>
+            <a href="index.html" onclick="toggleMenu()">首页</a>
+            <a href="article.html" onclick="toggleMenu()">深度分析</a>
+            <a href="works.html" onclick="toggleMenu()">作品展示</a>
+            <a href="about.html" class="active" onclick="toggleMenu()">关于 & 合作</a>
         </nav>
     </header>
 
@@ -318,91 +236,108 @@
         
         <aside class="profile-section">
             <div class="avatar-container">
-                <img src="image_3.png" alt="Geek Heron" class="avatar-image" onerror="handleImageError(this)">
+                <img src="image_3.png" alt="Wang Jianfeng" class="avatar-image" onerror="this.style.display='none'">
+                <div class="avatar-fallback">GH</div>
             </div>
             <h1 class="profile-name">Geek Heron</h1>
             <p class="profile-id">@王鉴锋</p>
             <p class="profile-title">
-                AI Full Stack Engineer<br>
-                & DevOps Specialist
+                独立开发者 / 技术合伙人<br>
+                构建高可用 AI 商业系统
             </p>
-            <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Initiate Contact</a>
             
-            <div class="wechat-qr-container">
-                <img src="wechat.png" alt="WeChat QR Code" class="wechat-qr">
-                <p class="wechat-label">Scan to Connect via WeChat</p>
+            <div class="cta-group">
+                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">发送商业邀约</a>
+                <a href="works.html" class="secondary-btn">查看落地案例</a>
+            </div>
+            
+            <div class="wechat-box">
+                <img src="wechat.png" alt="WeChat" class="wechat-qr">
+                <p class="wechat-text">WeChat: 业务咨询通道</p>
             </div>
         </aside>
 
         <div class="content-section">
+            
             <section class="section-block">
-                <h3 class="section-title">01 / System Log</h3>
+                <h3 class="section-title">01 / Why Work With Me</h3>
+                <h2 class="value-prop">不只是写代码，<br>而是交付可盈利的商业系统。</h2>
+                
+                <p class="bio-text">
+                    我是王鉴锋，一名全栈架构师与独立开发者。在 AI 浪潮下，技术壁垒正在消融，真正的壁垒在于<strong>工程化落地</strong>与<strong>商业闭环</strong>的构建。
+                </p>
+                <p class="bio-text">
+                    我擅长将复杂的 LLM（大语言模型）能力封装为稳定的企业级应用。从底层的 Linux 内核调优，到上层的 Agent 编排，我为您提供从 0 到 1 的技术兜底。
+                </p>
+
+                <div class="proof-box">
+                    <div class="proof-title">实战背书：伏羲引擎 (Fuxi Engine)</div>
+                    <div class="proof-text">
+                        我独立开发并运营的 SaaS 产品。成功解决了 Render 平台内存溢出、Nginx 超时、全球支付接入等工程难题，实现了 DeepSeek 模型与传统算法的深度融合与商业变现。
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">02 / Service Scope</h3>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">✦</div>
+                        <h4 class="service-name">AI 应用全案开发</h4>
+                        <p class="service-desc">基于 RAG 或 Agent 技术，定制开发企业级 AI 知识库、智能客服或垂直领域 SaaS。包含前端 UI、后端逻辑及模型微调。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">⚡</div>
+                        <h4 class="service-name">MVP 快速上线</h4>
+                        <p class="service-desc">面向创业者，在 2-4 周内将您的 idea 转化为可运行、可收费的产品。包含支付系统对接 (Stripe/USDT) 与 SEO 基础设置。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🛡️</div>
+                        <h4 class="service-name">高可用架构咨询</h4>
+                        <p class="service-desc">解决服务器负载过高、Python 应用内存泄漏、Docker 集群部署等疑难杂症。确保您的业务在流量洪峰下依然稳定。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">📝</div>
+                        <h4 class="service-name">Prompt 提示词工程</h4>
+                        <p class="service-desc">优化 LLM 输出质量，设计复杂的思维链 (CoT) 结构，让 AI 精准执行特定业务逻辑，减少幻觉。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">03 / Tech Stack</h3>
                 <div class="terminal-box">
-                    <span style="color: #666;">> </span><span id="typewriter"></span><span class="cursor"></span>
+                    <span style="color: #666;">$</span> <span id="typewriter"></span><span class="cursor">|</span>
                 </div>
-                <p class="bio-text">
-                    我不满足于单纯的代码实现，更关注系统整体的稳定性与商业闭环。作为一个实战派的问题解决者（Problem Solver），我致力于将 LLM 大模型能力与高可用架构相结合。
-                </p>
-                <p class="bio-text">
-                    从底层 Linux 内核调优到上层 AI Agent 编排，从自动化运维到商业化 SaaS 平台构建。凡事有交代，件件有着落，是我对技术的承诺。
-                </p>
-            </section>
-
-            <section class="section-block">
-                <h3 class="section-title">02 / Expertise</h3>
-                <div class="skill-item">
-                    <div class="skill-header"><span>AI Application (RAG / Prompt Eng / DeepSeek)</span><span>95%</span></div>
-                    <div class="skill-track"><div class="skill-bar" data-width="95%"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header"><span>Linux / Nginx / Docker / Automation</span><span>90%</span></div>
-                    <div class="skill-track"><div class="skill-bar" data-width="90%"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header"><span>Python Full Stack (Flask / Gevent)</span><span>88%</span></div>
-                    <div class="skill-track"><div class="skill-bar" data-width="88%"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header"><span>System Architecture / High Availability</span><span>85%</span></div>
-                    <div class="skill-track"><div class="skill-bar" data-width="85%"></div></div>
+                <div class="tech-tags">
+                    <span class="tech-tag" style="border-color: #fff; color: #fff;">DeepSeek / LLM</span>
+                    <span class="tech-tag" style="border-color: #fff; color: #fff;">Python Flask</span>
+                    <span class="tech-tag">Linux / Debian</span>
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">Gunicorn / Gevent</span>
+                    <span class="tech-tag">HTML5 / CSS3</span>
+                    <span class="tech-tag">Nginx Tuning</span>
+                    <span class="tech-tag">RAG Implementation</span>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">03 / Timeline</h3>
-                <div class="timeline">
-                    <div class="history-item">
-                        <div class="history-year">2025.07 - Present</div>
-                        <h4 class="history-role">Independent Full Stack Architect - Fuxi Engine</h4>
-                        <p class="history-desc">
-                            独立开发 AI 驱动的商业化分析平台"伏羲引擎"。<br>
-                            • <strong>架构设计：</strong> 采用 Flask + Gunicorn + Gevent 架构，解决 Render 平台 OOM 问题，配合 Supervisor 实现毫秒级容灾。<br>
-                            • <strong>核心技术：</strong> 实现 RAG 知识库与 DeepSeek 模型深度集成，解决 Nginx 504 超时问题，支持 SSE 流式"打字机"输出。<br>
-                            • <strong>商业闭环：</strong> 独立设计 Token 计费与卡密系统，实现业务逻辑解耦。
+                <h3 class="section-title">04 / Experience</h3>
+                <div style="border-left: 2px solid #333; padding-left: 30px;">
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025.07 - Present</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">独立全栈架构师 (Fuxi Engine)</h4>
+                        <p style="font-size: 14px; color: #999; line-height: 1.6;">
+                            • <strong>架构攻坚：</strong> 采用 Flask+Gevent 异步架构解决高并发下的 I/O 阻塞，实现 SSE 流式响应。<br>
+                            • <strong>商业系统：</strong> 独立设计 Token 计费体系与卡密分发系统，完成商业闭环。
                         </p>
                     </div>
-                    <div class="history-item">
-                        <div class="history-year">2024.03 - 2025.07</div>
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2024.03 - 2025.07</div>
                         <h4 class="history-role">Ops Engineer @ Shenzhen Fengcai</h4>
-                        <p class="history-desc">
-                            负责 50+ 台 Linux 服务器集群管理与自动化运维。<br>
-                            • 引入 Python/Shell 自动化脚本替代 40% 人工巡检工作。<br>
-                            • 部署 Zabbix/Prometheus 监控体系，通过内核调优保障系统 SLA > 99.9%。
+                        <p style="font-size: 14px; color: #999; line-height: 1.6;">
+                            • <strong>降本增效：</strong> 通过 Python 脚本自动化替代 40% 人工巡检，通过内核调优保障 SLA > 99.9%。
                         </p>
-                    </div>
-                    <div class="history-item">
-                        <div class="history-year">2020.10 - 2023.12</div>
-                        <h4 class="history-role">Ops Engineer @ Shenzhen Kemin Sensor</h4>
-                        <p class="history-desc">
-                            负责企业 IT 基础设施标准化管理。<br>
-                            • 深度理解 TCP/IP 协议，负责 VLAN 划分与内网丢包诊断。<br>
-                            • 建立标准化 IT 服务工单流程 (SOP)，利用脚本提升资产盘点效率。
-                        </p>
-                    </div>
-                    <div class="history-item">
-                        <div class="history-year">2017 - 2020</div>
-                        <h4 class="history-role">Education @ FJCCP</h4>
-                        <p class="history-desc">福建船政交通职业学院 / 航海技术</p>
                     </div>
                 </div>
             </section>
@@ -411,207 +346,57 @@
     </main>
 
     <script>
-        // --- 工具函数 ---
-        function handleImageError(img) {
-            console.warn('头像图片加载失败，使用默认样式');
-            img.style.display = 'none';
-        }
-
-        // --- 1. 背景粒子特效 ---
+        // --- 1. 背景粒子 (保持原样以维持视觉连贯性) ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
         let particles = [];
         
-        // 根据设备性能调整粒子数量
-        function getParticleCount() {
-            const isMobile = window.innerWidth < 768;
-            const isLowPerf = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-            return isMobile ? 800 : (isLowPerf ? 1200 : 2000);
-        }
-
-        const fieldOfView = 300;
-
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
         class Particle {
             constructor() {
                 this.x = (Math.random() - 0.5) * width * 2;
                 this.y = (Math.random() - 0.5) * height * 2;
-                this.z = (Math.random() * fieldOfView * 2) - fieldOfView;
-                this.radius = Math.random() * 1.5;
+                this.z = (Math.random() * 300 * 2) - 300;
                 this.alpha = Math.random() * 0.5 + 0.2;
-                this.speed = 0.3;
             }
             update() {
-                this.z -= this.speed;
-                if (this.z < -fieldOfView) {
-                    this.z += fieldOfView * 2;
-                    this.x = (Math.random() - 0.5) * width * 2;
-                    this.y = (Math.random() - 0.5) * height * 2;
-                }
+                this.z -= 0.3;
+                if (this.z < -300) { this.z += 600; this.x = (Math.random() - 0.5) * width * 2; this.y = (Math.random() - 0.5) * height * 2; }
             }
             draw() {
-                const perspective = fieldOfView / (fieldOfView + this.z);
-                const projectedX = (this.x * perspective) + width / 2;
-                const projectedY = (this.y * perspective) + height / 2;
+                const perspective = 300 / (300 + this.z);
+                const x = (this.x * perspective) + width / 2;
+                const y = (this.y * perspective) + height / 2;
                 const scale = perspective;
-                if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
+                if (x > 0 && x < width && y > 0 && y < height) {
                     ctx.fillStyle = `rgba(255,255,255,${this.alpha * scale})`;
-                    ctx.beginPath();
-                    ctx.arc(projectedX, projectedY, this.radius * scale, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.beginPath(); ctx.arc(x, y, 1.2 * scale, 0, Math.PI * 2); ctx.fill();
                 }
             }
         }
+        function initParticles() { particles = []; for(let i=0; i<800; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        resize(); initParticles(); animate();
 
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
-
-        function initParticles() {
-            particles = [];
-            const particleCount = getParticleCount();
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animate);
-        }
-
-        // --- 2. 导航菜单控制 ---
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        let menuOpen = false;
-
-        function toggleMenu(forceClose = false) {
-            if (forceClose) {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                menuOpen = false;
-            } else {
-                menuOpen = !menuOpen;
-                hamburger.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            }
-        }
-
-        // 处理导航点击事件
-        function handleNavClick(event, pageUrl) {
-            event.preventDefault();
-            
-            // 关闭菜单
-            toggleMenu(true);
-            
-            // 检查是否是当前页面
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            if (currentPage === pageUrl) {
-                // 如果是当前页面，滚动到顶部
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                // 否则跳转到新页面
-                setTimeout(() => {
-                    window.location.href = pageUrl;
-                }, 300);
-            }
-        }
-
-        // --- 3. 页面特效 ---
-        const textToType = "Loading Fuxi Engine modules... Identity confirmed: Wang Jianfeng. System ready.";
-        const typeWriterElement = document.getElementById('typewriter');
+        // --- 2. 打字机特效 (更新内容) ---
+        const textToType = "Loading core modules... AI Agents initialized. Business logic ready.";
+        const typeElement = document.getElementById('typewriter');
         let i = 0;
-        let typingComplete = false;
-
         function typeWriter() {
             if (i < textToType.length) {
-                typeWriterElement.innerHTML += textToType.charAt(i);
-                i++;
-                setTimeout(typeWriter, 40);
-            } else {
-                typingComplete = true;
+                typeElement.innerHTML += textToType.charAt(i);
+                i++; setTimeout(typeWriter, 50);
             }
         }
+        setTimeout(typeWriter, 500);
 
-        function animateSkills() {
-            const bars = document.querySelectorAll('.skill-bar');
-            bars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
-        }
-
-        // --- 4. 页面初始化 ---
-        function initPage() {
-            // 初始化粒子系统
-            resize();
-            initParticles();
-            animate();
-            
-            // 启动页面特效
-            typeWriter();
-            animateSkills();
-            
-            // 添加汉堡菜单事件监听
-            hamburger.addEventListener('click', () => toggleMenu());
-            
-            // 点击菜单外部关闭菜单
-            document.addEventListener('click', (event) => {
-                if (menuOpen && 
-                    !hamburger.contains(event.target) && 
-                    !navLinks.contains(event.target)) {
-                    toggleMenu(true);
-                }
-            });
-
-            // 点击菜单链接时关闭菜单
-            const navLinksElements = document.querySelectorAll('.nav-links a');
-            navLinksElements.forEach(link => {
-                link.addEventListener('click', () => toggleMenu(true));
-            });
-
-            // 监听页面可见性变化，暂停/恢复动画以节省资源
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    // 页面不可见时，减少粒子运动速度
-                    particles.forEach(p => p.speed = 0.05);
-                } else {
-                    // 页面可见时，恢复粒子运动速度
-                    particles.forEach(p => p.speed = 0.3);
-                }
-            });
-        }
-
-        // --- 5. 窗口大小变化处理 ---
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                resize();
-                initParticles();
-            }, 200);
-        });
-
-        // --- 6. 页面加载完成 ---
-        document.addEventListener('DOMContentLoaded', initPage);
-
-        // 备用加载方式
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPage);
-        } else {
-            initPage();
-        }
+        // --- 3. 菜单逻辑 ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); }
+        hamburger.addEventListener('click', toggleMenu);
     </script>
 </body>
-
 </html>
-

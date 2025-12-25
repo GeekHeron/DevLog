@@ -2,117 +2,211 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>获取伏羲引擎源码 - GeekHeron</title>
+    
+    <meta property="og:title" content="获取伏羲引擎源码 - GeekHeron">
     <link rel="icon" type="image/png" href="logo.png">
     <style>
-        /* --- 继承全局基础样式 --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* --- 1. 全局变量与重置 --- */
+        :root {
+            --primary-gold: #ffd700;
+            --primary-gold-hover: #e5c100;
+            --bg-dark: #000;
+            --card-bg: rgba(20, 20, 20, 0.75);
+            --card-border: rgba(255, 255, 255, 0.15);
+            --text-main: #fff;
+            --text-muted: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.5;
         }
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
 
-        /* --- 导航栏 (保持一致) --- */
+        /* --- 2. 导航栏 (响应式优化) --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 50px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            padding: 20px 5%; /* 使用百分比padding */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky; top: 0; z-index: 100;
         }
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .logo { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #fff; text-transform: uppercase; white-space: nowrap; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: var(--text-muted); letter-spacing: 1px; padding: 5px 0; }
         .nav-links a:hover { color: #fff; }
 
-        /* --- 页面特定样式 --- */
+        /* --- 3. 布局容器 --- */
         .container {
-            max-width: 1000px; margin: 0 auto; padding: 80px 20px;
+            max-width: 1100px; margin: 0 auto; padding: 80px 20px;
             position: relative; z-index: 10;
         }
 
-        .header-section { text-align: center; margin-bottom: 80px; }
-        .header-section h1 { font-size: 48px; font-weight: 700; margin-bottom: 20px; letter-spacing: -1px; }
-        .header-section p { color: #888; font-size: 18px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
-        .highlight { color: #ffd700; }
+        /* 头部文字区域 */
+        .header-section { text-align: center; margin-bottom: 60px; }
+        .header-section h1 { 
+            font-size: 48px; font-weight: 800; margin-bottom: 24px; 
+            letter-spacing: -1px; line-height: 1.2;
+        }
+        .header-section p { color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; }
+        .highlight { 
+            color: var(--primary-gold); 
+            display: inline-block; /* 防止断行太难看 */
+            background: linear-gradient(120deg, #ffd700, #ffec8b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        /* --- 定价卡片网格 --- */
+        /* --- 4. 定价卡片网格 (核心优化) --- */
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            align-items: center; /* 让中间卡片可以突出来 */
+            /* 调整为280px，适应小屏手机 */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            align-items: center; 
+            margin-bottom: 40px;
         }
 
         .pricing-card {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid #333;
-            padding: 40px;
-            border-radius: 4px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 40px 30px;
+            border-radius: 12px;
             position: relative;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .pricing-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
         }
 
-        /* 推荐款样式 */
+        /* 推荐款样式 (PC端) */
         .pricing-card.featured {
-            background: rgba(30, 30, 30, 0.9);
-            border: 1px solid #ffd700;
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+            background: rgba(30, 30, 30, 0.85);
+            border: 1px solid var(--primary-gold);
+            transform: scale(1.08); /* 稍微加大PC端缩放 */
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
             z-index: 2;
         }
+        
+        /* 推荐款悬停 */
+        .pricing-card.featured:hover {
+            transform: scale(1.08) translateY(-5px);
+        }
 
+        /* 标签 Badge */
         .tag-banner {
-            position: absolute; top: 0; left: 50%; transform: translateX(-50%) translateY(-50%);
-            background: #ffd700; color: #000;
-            padding: 5px 15px; font-size: 12px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px;
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--primary-gold); color: #000;
+            padding: 6px 16px; font-size: 12px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; border-radius: 20px;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
-        .price-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; margin-bottom: 30px; text-align: center; }
-        .plan-name { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 15px; }
-        .price-amount { font-size: 48px; font-weight: 700; color: #fff; }
-        .price-currency { font-size: 20px; vertical-align: super; color: #666; }
-        .price-period { font-size: 14px; color: #666; display: block; margin-top: 5px; }
+        /* 卡片内部元素 */
+        .price-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 25px; margin-bottom: 25px; text-align: center; }
+        .plan-name { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 10px; font-weight: 700; }
+        .price-amount { font-size: 42px; font-weight: 700; color: #fff; line-height: 1; }
+        .price-currency { font-size: 20px; vertical-align: top; margin-right: 4px; color: #888; }
+        .price-period { font-size: 13px; color: #666; display: block; margin-top: 8px; }
 
-        .feature-list { list-style: none; margin-bottom: 40px; }
+        .feature-list { list-style: none; margin-bottom: 35px; }
         .feature-list li {
-            margin-bottom: 15px; color: #ccc; font-size: 14px; display: flex; align-items: center; gap: 10px;
+            margin-bottom: 12px; color: #ccc; font-size: 14px; display: flex; align-items: start; gap: 12px; line-height: 1.4;
         }
-        .feature-list li.disabled { color: #444; text-decoration: line-through; }
-        .icon-check { color: #ffd700; font-weight: bold; }
-        .icon-x { color: #444; }
+        .feature-list li strong { color: #fff; font-weight: 600; }
+        .feature-list li.disabled { color: #555; }
+        .icon-check { color: var(--primary-gold); font-weight: bold; min-width: 16px; }
+        .icon-x { color: #444; min-width: 16px; text-align: center;}
 
+        /* 按钮样式优化 */
         .cta-btn {
-            display: block; width: 100%; padding: 18px 0;
-            text-align: center; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            border: 1px solid #fff; color: #fff; transition: 0.3s;
+            display: block; width: 100%; padding: 16px 0;
+            text-align: center; font-weight: 700; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.3); color: #fff; 
+            border-radius: 6px;
+            transition: all 0.3s;
             cursor: pointer;
+            background: transparent;
         }
-        .pricing-card.featured .cta-btn { background: #ffd700; border-color: #ffd700; color: #000; }
-        .cta-btn:hover { background: #fff; color: #000; }
-        .pricing-card.featured .cta-btn:hover { background: #e5c100; }
+        .cta-btn:hover { 
+            background: #fff; color: #000; border-color: #fff; 
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+        
+        /* 推荐款按钮 */
+        .pricing-card.featured .cta-btn { 
+            background: var(--primary-gold); 
+            border-color: var(--primary-gold); 
+            color: #000; 
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+        .pricing-card.featured .cta-btn:hover { 
+            background: var(--primary-gold-hover); 
+            border-color: var(--primary-gold-hover);
+            box-shadow: 0 4px 25px rgba(255, 215, 0, 0.4);
+        }
 
-        /* --- 常见问题 --- */
-        .faq-section { margin-top: 100px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px; }
-        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
-        .faq-item h4 { color: #fff; margin-bottom: 10px; }
-        .faq-item p { color: #888; font-size: 14px; line-height: 1.6; }
+        /* --- 5. 常见问题 (FAQ) --- */
+        .faq-section { margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px; }
+        .faq-title { text-align: center; font-size: 24px; margin-bottom: 40px; font-weight: 700; letter-spacing: 1px;}
+        
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .faq-item h4 { color: #eee; margin-bottom: 12px; font-size: 16px; line-height: 1.4;}
+        .faq-item p { color: var(--text-muted); font-size: 14px; line-height: 1.7; text-align: justify;}
 
-        /* 背景 */
+        /* 背景层 */
         #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .overlay-dark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 0; pointer-events: none; }
+        .overlay-dark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%); z-index: 0; pointer-events: none; }
+
+        /* --- 6. 移动端/平板 深度适配 (Media Queries) --- */
+        @media (max-width: 900px) {
+            /* 平板尺寸下取消大幅缩放，防止重叠 */
+            .pricing-card.featured { transform: scale(1.02); }
+            .pricing-card.featured:hover { transform: scale(1.02) translateY(-5px); }
+        }
 
         @media (max-width: 768px) {
-            .pricing-card.featured { transform: scale(1); margin: 20px 0; }
-            .faq-grid { grid-template-columns: 1fr; }
-            .header-section h1 { font-size: 32px; }
+            /* 导航调整 */
+            header { flex-direction: column; padding: 20px; gap: 15px; }
+            .nav-links { gap: 25px; width: 100%; justify-content: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
+            
+            /* 容器调整 */
+            .container { padding: 40px 20px; } /* 减小内边距 */
+            
+            /* 标题调整 */
+            .header-section { margin-bottom: 40px; }
+            .header-section h1 { font-size: 32px; margin-bottom: 15px; } /* 缩小字体 */
+            .header-section p { font-size: 15px; padding: 0 10px; }
+
+            /* 定价网格调整 */
+            .pricing-grid { gap: 20px; }
+            
+            /* 推荐卡片在手机端取消缩放，避免遮挡 */
+            .pricing-card.featured { 
+                transform: none !important; 
+                margin: 10px 0; 
+                border-width: 2px; /* 加粗边框以示区别 */
+            }
+            .pricing-card:hover { transform: none; }
+
+            /* FAQ 变为单列 */
+            .faq-grid { grid-template-columns: 1fr; gap: 30px; }
+            .faq-item p { text-align: left; }
         }
     </style>
 </head>
@@ -132,7 +226,7 @@
     <div class="container">
         <div class="header-section">
             <h1>构建属于你的 <br><span class="highlight">AI 命理 SaaS</span></h1>
-            <p>获取伏羲引擎 (Fuxi Engine) 完整源代码。不仅是代码，更是一套经过验证的“AI + 传统文化”变现闭环系统。</p>
+            <p>获取伏羲引擎 (Fuxi Engine) 完整源代码。<br>不仅是代码，更是一套经过验证的“AI + 传统文化”变现闭环系统。</p>
         </div>
 
         <div class="pricing-grid">
@@ -146,9 +240,9 @@
                     <li><span class="icon-check">✓</span> 完整前端代码 (HTML/CSS/JS)</li>
                     <li><span class="icon-check">✓</span> 基础后端逻辑 (Python/Flask)</li>
                     <li><span class="icon-check">✓</span> DeepSeek API 接入示例</li>
-                    <li><span class="icon-x">×</span> 核心 Prompt 调优文档</li>
-                    <li><span class="icon-x">×</span> 支付接口集成</li>
-                    <li><span class="icon-x">×</span> 远程部署支持</li>
+                    <li class="disabled"><span class="icon-x">×</span> 核心 Prompt 调优文档</li>
+                    <li class="disabled"><span class="icon-x">×</span> 支付接口集成</li>
+                    <li class="disabled"><span class="icon-x">×</span> 远程部署支持</li>
                 </ul>
                 <a href="mailto:your-email@example.com?subject=购买开发者版源码" class="cta-btn">联系购买</a>
             </div>
@@ -163,7 +257,7 @@
                 <ul class="feature-list">
                     <li><span class="icon-check">✓</span> <strong>全套前后端完整源码</strong></li>
                     <li><span class="icon-check">✓</span> <strong>商业化授权 (可收费运营)</strong></li>
-                    <li><span class="icon-check">✓</span> <strong>核心排盘算法 + Prompt 工程</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>核心排盘算法 + Prompt</strong></li>
                     <li><span class="icon-check">✓</span> 支付/用户系统集成源码</li>
                     <li><span class="icon-check">✓</span> Docker 容器化部署配置</li>
                     <li><span class="icon-check">✓</span> 1 个月技术咨询 & 协助部署</li>
@@ -190,60 +284,88 @@
         </div>
 
         <div class="faq-section">
-            <h3 style="text-align: center; font-size: 24px; margin-bottom: 30px;">常见问题 (FAQ)</h3>
+            <h3 class="faq-title">常见问题 (FAQ)</h3>
             <div class="faq-grid">
                 <div class="faq-item">
-                    <h4>我可以用这套源码做什么？</h4>
-                    <p>购买商业版后，您可以部署自己的命理网站、微信小程序后端或公众号服务，并向您的用户收取费用。您拥有完全的数据控制权。</p>
+                    <h4>Q: 我可以用这套源码做什么？</h4>
+                    <p>购买商业版后，您可以部署自己的命理网站、微信小程序后端或公众号服务，并向您的用户收取费用。您拥有完全的数据控制权，不再受制于第三方SaaS平台。</p>
                 </div>
                 <div class="faq-item">
-                    <h4>技术栈是什么？</h4>
-                    <p>后端采用 Python (Flask/FastAPI)，数据库使用 MySQL/SQLite，AI 部分深度集成了 DeepSeek 模型。前端为原生 HTML/JS，轻量且易于修改。</p>
+                    <h4>Q: 技术栈是什么？</h4>
+                    <p>后端采用 Python (Flask/FastAPI)，数据库使用 MySQL/SQLite，AI 部分深度集成了 DeepSeek 模型。前端为原生 HTML/JS，轻量且易于修改，无复杂打包流程。</p>
                 </div>
                 <div class="faq-item">
-                    <h4>不懂代码可以买吗？</h4>
-                    <p>如果您完全不懂技术，建议购买“商业版”并使用我们要提供的部署文档，或者直接联系我们进行“定制开发”全托管服务。</p>
+                    <h4>Q: 不懂代码可以买吗？</h4>
+                    <p>如果您完全不懂技术，建议购买“商业版”并使用我们要提供的保姆级部署文档。如果您不想折腾服务器，建议直接联系我们进行“定制开发”全托管服务。</p>
                 </div>
                 <div class="faq-item">
-                    <h4>购买流程是怎样的？</h4>
-                    <p>点击上方按钮发送邮件或添加微信，确认需求后通过支付宝/USDT 支付。确认到账后，我们将通过 GitHub 私有仓库权限或压缩包形式交付源码。</p>
+                    <h4>Q: 购买流程是怎样的？</h4>
+                    <p>点击上方按钮发送邮件或添加微信，确认需求后通过支付宝/USDT 支付。确认到账后，我们将通过 GitHub 私有仓库权限或加密压缩包形式交付源码。</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        /* 背景动画脚本 (保持一致) */
+        /* 背景动画脚本 - 保持不变，效果很好 */
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
         const particles = [];
-        const numParticles = 1500; 
+        const numParticles = 800; /* 略微减少粒子数提升移动端性能 */
         
-        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        function resize() { 
+            width = window.innerWidth; 
+            height = window.innerHeight; 
+            canvas.width = width; 
+            canvas.height = height; 
+        }
         
         class Particle {
             constructor() {
-                this.x = Math.random() * width; this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
-                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+                this.x = Math.random() * width; 
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; 
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; 
+                this.alpha = Math.random() * 0.5 + 0.1;
             }
             update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
-                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+                this.x += this.vx; 
+                this.y += this.vy;
+                if(this.x < 0) this.x = width; 
+                if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; 
+                if(this.y > height) this.y = 0;
             }
             draw() {
                 ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); 
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+                ctx.fill();
             }
         }
         
-        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
-        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        function init() { 
+            resize(); 
+            particles.length = 0; // 清空旧数组
+            for(let i=0; i<numParticles; i++) particles.push(new Particle()); 
+        }
         
-        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
-        init(); animate();
+        function animate() { 
+            ctx.clearRect(0, 0, width, height); 
+            particles.forEach(p => { p.update(); p.draw(); }); 
+            requestAnimationFrame(animate); 
+        }
+        
+        window.addEventListener('resize', () => { 
+            resize(); 
+            // 只有当粒子数量需要改变时才完全重置，这里简单处理为每次Resize都重置
+            init(); 
+        });
+        
+        init(); 
+        animate();
     </script>
 </body>
 </html>

@@ -86,6 +86,8 @@
             position: relative;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
             backdrop-filter: blur(5px);
+            display: flex; flex-direction: column;
+            height: 100%;
         }
         
         .pricing-card:hover {
@@ -118,7 +120,7 @@
         .price-currency { font-size: 20px; vertical-align: top; margin-right: 4px; color: #888; }
         .price-period { font-size: 13px; color: #666; display: block; margin-top: 8px; }
 
-        .feature-list { list-style: none; margin-bottom: 35px; }
+        .feature-list { list-style: none; margin-bottom: 35px; flex-grow: 1; }
         .feature-list li { margin-bottom: 12px; color: #ccc; font-size: 14px; display: flex; align-items: start; gap: 12px; line-height: 1.4; }
         .feature-list li strong { color: #fff; font-weight: 600; }
         .feature-list li.disabled { color: #555; }
@@ -160,7 +162,7 @@
         .faq-item h4 { color: #eee; margin-bottom: 12px; font-size: 16px; line-height: 1.4;}
         .faq-item p { color: var(--text-muted); font-size: 14px; line-height: 1.7; text-align: justify;}
 
-        /* --- 6. 微信弹窗样式 (新增) --- */
+        /* --- 6. 微信弹窗样式 --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
@@ -200,7 +202,7 @@
             border-radius: 8px;
             border: 2px solid #333;
             margin-bottom: 15px;
-            background: #fff; /* 防止透明图片在深色背景看不清 */
+            background: #fff;
             padding: 5px;
         }
         .wx-tip { font-size: 12px; color: var(--primary-gold); letter-spacing: 1px; }
@@ -252,54 +254,54 @@
         <div class="pricing-grid">
             <div class="pricing-card">
                 <div class="price-header">
-                    <div class="plan-name">Developer / 学习版</div>
+                    <div class="plan-name">Basic / 学习版</div>
                     <div class="price-amount"><span class="price-currency">¥</span>1,999</div>
-                    <span class="price-period">一次性买断</span>
+                    <span class="price-period">一次性买断 (仅限学习)</span>
                 </div>
                 <ul class="feature-list">
                     <li><span class="icon-check">✓</span> 完整前端代码 (HTML/CSS/JS)</li>
-                    <li><span class="icon-check">✓</span> 基础后端逻辑 (Python/Flask)</li>
+                    <li><span class="icon-check">✓</span> 基础后端框架 (Python/Flask)</li>
                     <li><span class="icon-check">✓</span> DeepSeek API 接入示例</li>
-                    <li class="disabled"><span class="icon-x">×</span> 核心 Prompt 调优文档</li>
-                    <li class="disabled"><span class="icon-x">×</span> 支付接口集成</li>
-                    <li class="disabled"><span class="icon-x">×</span> 远程部署支持</li>
+                    <li class="disabled"><span class="icon-x">×</span> 核心 BaziLogic 排盘算法</li>
+                    <li class="disabled"><span class="icon-x">×</span> 商业级支付网关集成</li>
+                    <li class="disabled"><span class="icon-x">×</span> 技术支持服务</li>
                 </ul>
                 <a href="#" class="cta-btn">联系购买</a>
             </div>
 
             <div class="pricing-card featured">
-                <div class="tag-banner">Most Popular / 最佳选择</div>
+                <div class="tag-banner">Best Value / 开发者首选</div>
                 <div class="price-header">
-                    <div class="plan-name">Commercial / 商业运营版</div>
+                    <div class="plan-name">Standard / 标准商业版</div>
                     <div class="price-amount"><span class="price-currency">¥</span>5,999</div>
-                    <span class="price-period">含商业授权 + 技术支持</span>
+                    <span class="price-period">含商业授权 + 核心算法</span>
                 </div>
                 <ul class="feature-list">
                     <li><span class="icon-check">✓</span> <strong>全套前后端完整源码</strong></li>
-                    <li><span class="icon-check">✓</span> <strong>商业化授权 (可收费运营)</strong></li>
-                    <li><span class="icon-check">✓</span> <strong>核心排盘算法 + Prompt</strong></li>
-                    <li><span class="icon-check">✓</span> 支付/用户系统集成源码</li>
-                    <li><span class="icon-check">✓</span> Docker 容器化部署配置</li>
-                    <li><span class="icon-check">✓</span> 1 个月技术咨询 & 协助部署</li>
+                    <li><span class="icon-check">✓</span> <strong>商业化运营授权 (无需分成)</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>核心排盘算法 + Prompt 工程</strong></li>
+                    <li><span class="icon-check">✓</span> 全球支付/用户系统集成</li>
+                    <li><span class="icon-check">✓</span> 标准 Docker 部署文档 (README)</li>
+                    <li class="disabled"><span class="icon-x">×</span> 1对1 远程部署/技术咨询</li>
                 </ul>
                 <a href="#" class="cta-btn">获取商业授权</a>
             </div>
 
             <div class="pricing-card">
                 <div class="price-header">
-                    <div class="plan-name">Enterprise / 定制开发</div>
-                    <div class="price-amount">Custom</div>
-                    <span class="price-period">按需求报价</span>
+                    <div class="plan-name">Enterprise / 尊享交付版</div>
+                    <div class="price-amount"><span class="price-currency">¥</span>12,999</div>
+                    <span class="price-period">含 1 个月技术服务</span>
                 </div>
                 <ul class="feature-list">
-                    <li><span class="icon-check">✓</span> 包含商业版所有权益</li>
-                    <li><span class="icon-check">✓</span> UI/UX 界面定制设计</li>
-                    <li><span class="icon-check">✓</span> 专属功能模块开发</li>
-                    <li><span class="icon-check">✓</span> 私有化服务器全托管</li>
-                    <li><span class="icon-check">✓</span> 品牌 Logo/版权信息去除</li>
-                    <li><span class="icon-check">✓</span> 长期技术顾问服务</li>
+                    <li><span class="icon-check">✓</span> 包含标准商业版所有代码</li>
+                    <li><span class="icon-check">✓</span> <strong>1对1 远程协助部署 (保障上线)</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>30天优先技术咨询 & Bug修复</strong></li>
+                    <li><span class="icon-check">✓</span> 支付参数配置 & 域名解析指导</li>
+                    <li><span class="icon-check">✓</span> 品牌 Logo 去除 / 简单 UI 微调</li>
+                    <li><span class="icon-check">✓</span> 专属微信 VIP 服务通道</li>
                 </ul>
-                <a href="#" class="cta-btn">咨询定制</a>
+                <a href="#" class="cta-btn">咨询交付</a>
             </div>
         </div>
 
@@ -307,20 +309,22 @@
             <h3 class="faq-title">常见问题 (FAQ)</h3>
             <div class="faq-grid">
                 <div class="faq-item">
-                    <h4>Q: 我可以用这套源码做什么？</h4>
-                    <p>购买商业版后，您可以部署自己的命理网站、微信小程序后端或公众号服务，并向您的用户收取费用。您拥有完全的数据控制权，不再受制于第三方SaaS平台。</p>
+                    <h4>Q: 标准商业版和尊享版有什么区别？</h4>
+                    <p>代码完全一致。区别在于<strong>服务</strong>：<br>
+                    - <strong>标准版 (¥5,999)</strong> 适合懂技术的开发者，提供完善的文档，您需要自行完成部署。<br>
+                    - <strong>尊享版 (¥12,999)</strong> 提供保姆级服务，我们协助您配置服务器、支付接口并确保网站上线，适合没有运维经验的客户。</p>
                 </div>
                 <div class="faq-item">
-                    <h4>Q: 技术栈是什么？</h4>
-                    <p>后端采用 Python (Flask/FastAPI)，数据库使用 MySQL/SQLite，AI 部分深度集成了 DeepSeek 模型。前端为原生 HTML/JS，轻量且易于修改，无复杂打包流程。</p>
+                    <h4>Q: 核心算法包含什么？</h4>
+                    <p>包含我们独家研发的 <code>BaziLogic</code> 类库，内置 50+ 种神煞计算、八字格局判断及能量加权打分算法。这是系统区别于普通“套壳 AI”的核心壁垒。</p>
                 </div>
                 <div class="faq-item">
-                    <h4>Q: 不懂代码可以买吗？</h4>
-                    <p>如果您完全不懂技术，建议购买“商业版”并使用我们要提供的保姆级部署文档。如果您不想折腾服务器，建议直接联系我们进行“定制开发”全托管服务。</p>
+                    <h4>Q: 购买后可以转卖代码吗？</h4>
+                    <p>不可以。购买获得的是“商业运营权”，您可以用来搭建网站收费，但严禁将源代码直接转售、开源或作为模板二次分发。每份授权均植入了数字水印。</p>
                 </div>
                 <div class="faq-item">
-                    <h4>Q: 购买流程是怎样的？</h4>
-                    <p>点击上方按钮或添加微信，确认需求后通过支付宝/USDT 支付。确认到账后，我们将通过 GitHub 私有仓库权限或加密压缩包形式交付源码。</p>
+                    <h4>Q: 交付流程是怎样的？</h4>
+                    <p>添加微信确认需求并支付后，标准版将直接通过 GitHub 私有仓库或加密包交付；尊享版将拉群对接，预约时间进行远程部署协助。</p>
                 </div>
             </div>
         </div>
@@ -330,7 +334,7 @@
         <div class="modal-box">
             <div class="modal-close" id="closeModal">&times;</div>
             <h3 class="modal-title">添加微信咨询</h3>
-            <p class="modal-desc">请备注您感兴趣的版本 (如：商业版)</p>
+            <p class="modal-desc">请备注您感兴趣的版本 (如：商业版/尊享版)</p>
             <img src="wechat.png" alt="微信二维码" class="wx-qrcode">
             <div class="wx-tip">SCAN QR CODE TO ADD WECHAT</div>
         </div>
@@ -392,25 +396,22 @@
         init(); 
         animate();
 
-        /* --- 弹窗逻辑 (新增) --- */
+        /* --- 弹窗逻辑 --- */
         const modal = document.getElementById('wechatModal');
         const closeBtn = document.getElementById('closeModal');
         const ctaBtns = document.querySelectorAll('.cta-btn');
 
-        // 为所有购买按钮添加点击事件
         ctaBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.preventDefault(); // 阻止默认链接跳转
-                modal.classList.add('active'); // 显示弹窗
+                e.preventDefault(); 
+                modal.classList.add('active'); 
             });
         });
 
-        // 关闭按钮逻辑
         closeBtn.addEventListener('click', () => {
             modal.classList.remove('active');
         });
 
-        // 点击遮罩层空白处关闭
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.classList.remove('active');
@@ -419,4 +420,3 @@
     </script>
 </body>
 </html>
-

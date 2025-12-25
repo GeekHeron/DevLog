@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取伏羲引擎源码 - GeekHeron</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        /* --- 继承全局基础样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        /* --- 导航栏 (保持一致) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover { color: #fff; }
+
+        /* --- 页面特定样式 --- */
+        .container {
+            max-width: 1000px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .header-section { text-align: center; margin-bottom: 80px; }
+        .header-section h1 { font-size: 48px; font-weight: 700; margin-bottom: 20px; letter-spacing: -1px; }
+        .header-section p { color: #888; font-size: 18px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .highlight { color: #ffd700; }
+
+        /* --- 定价卡片网格 --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            align-items: center; /* 让中间卡片可以突出来 */
+        }
+
+        .pricing-card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            padding: 40px;
+            border-radius: 4px;
+            position: relative;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* 推荐款样式 */
+        .pricing-card.featured {
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid #ffd700;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+            z-index: 2;
+        }
+
+        .tag-banner {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%) translateY(-50%);
+            background: #ffd700; color: #000;
+            padding: 5px 15px; font-size: 12px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .price-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; margin-bottom: 30px; text-align: center; }
+        .plan-name { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 15px; }
+        .price-amount { font-size: 48px; font-weight: 700; color: #fff; }
+        .price-currency { font-size: 20px; vertical-align: super; color: #666; }
+        .price-period { font-size: 14px; color: #666; display: block; margin-top: 5px; }
+
+        .feature-list { list-style: none; margin-bottom: 40px; }
+        .feature-list li {
+            margin-bottom: 15px; color: #ccc; font-size: 14px; display: flex; align-items: center; gap: 10px;
+        }
+        .feature-list li.disabled { color: #444; text-decoration: line-through; }
+        .icon-check { color: #ffd700; font-weight: bold; }
+        .icon-x { color: #444; }
+
+        .cta-btn {
+            display: block; width: 100%; padding: 18px 0;
+            text-align: center; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            border: 1px solid #fff; color: #fff; transition: 0.3s;
+            cursor: pointer;
+        }
+        .pricing-card.featured .cta-btn { background: #ffd700; border-color: #ffd700; color: #000; }
+        .cta-btn:hover { background: #fff; color: #000; }
+        .pricing-card.featured .cta-btn:hover { background: #e5c100; }
+
+        /* --- 常见问题 --- */
+        .faq-section { margin-top: 100px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px; }
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+        .faq-item h4 { color: #fff; margin-bottom: 10px; }
+        .faq-item p { color: #888; font-size: 14px; line-height: 1.6; }
+
+        /* 背景 */
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 0; pointer-events: none; }
+
+        @media (max-width: 768px) {
+            .pricing-card.featured { transform: scale(1); margin: 20px 0; }
+            .faq-grid { grid-template-columns: 1fr; }
+            .header-section h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <nav class="nav-links">
+            <a href="works.html">返回作品集</a>
+            <a href="about.html">联系我</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>构建属于你的 <br><span class="highlight">AI 命理 SaaS</span></h1>
+            <p>获取伏羲引擎 (Fuxi Engine) 完整源代码。不仅是代码，更是一套经过验证的“AI + 传统文化”变现闭环系统。</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="price-header">
+                    <div class="plan-name">Developer / 学习版</div>
+                    <div class="price-amount"><span class="price-currency">¥</span>1,999</div>
+                    <span class="price-period">一次性买断</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="icon-check">✓</span> 完整前端代码 (HTML/CSS/JS)</li>
+                    <li><span class="icon-check">✓</span> 基础后端逻辑 (Python/Flask)</li>
+                    <li><span class="icon-check">✓</span> DeepSeek API 接入示例</li>
+                    <li><span class="icon-x">×</span> 核心 Prompt 调优文档</li>
+                    <li><span class="icon-x">×</span> 支付接口集成</li>
+                    <li><span class="icon-x">×</span> 远程部署支持</li>
+                </ul>
+                <a href="mailto:your-email@example.com?subject=购买开发者版源码" class="cta-btn">联系购买</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="tag-banner">Most Popular / 最佳选择</div>
+                <div class="price-header">
+                    <div class="plan-name">Commercial / 商业运营版</div>
+                    <div class="price-amount"><span class="price-currency">¥</span>5,999</div>
+                    <span class="price-period">含商业授权 + 技术支持</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="icon-check">✓</span> <strong>全套前后端完整源码</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>商业化授权 (可收费运营)</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>核心排盘算法 + Prompt 工程</strong></li>
+                    <li><span class="icon-check">✓</span> 支付/用户系统集成源码</li>
+                    <li><span class="icon-check">✓</span> Docker 容器化部署配置</li>
+                    <li><span class="icon-check">✓</span> 1 个月技术咨询 & 协助部署</li>
+                </ul>
+                <a href="mailto:your-email@example.com?subject=购买商业运营版源码" class="cta-btn">获取商业授权</a>
+            </div>
+
+            <div class="pricing-card">
+                <div class="price-header">
+                    <div class="plan-name">Enterprise / 定制开发</div>
+                    <div class="price-amount">Custom</div>
+                    <span class="price-period">按需求报价</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="icon-check">✓</span> 包含商业版所有权益</li>
+                    <li><span class="icon-check">✓</span> UI/UX 界面定制设计</li>
+                    <li><span class="icon-check">✓</span> 专属功能模块开发</li>
+                    <li><span class="icon-check">✓</span> 私有化服务器全托管</li>
+                    <li><span class="icon-check">✓</span> 品牌 Logo/版权信息去除</li>
+                    <li><span class="icon-check">✓</span> 长期技术顾问服务</li>
+                </ul>
+                <a href="mailto:your-email@example.com?subject=咨询企业定制服务" class="cta-btn">咨询定制</a>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h3 style="text-align: center; font-size: 24px; margin-bottom: 30px;">常见问题 (FAQ)</h3>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>我可以用这套源码做什么？</h4>
+                    <p>购买商业版后，您可以部署自己的命理网站、微信小程序后端或公众号服务，并向您的用户收取费用。您拥有完全的数据控制权。</p>
+                </div>
+                <div class="faq-item">
+                    <h4>技术栈是什么？</h4>
+                    <p>后端采用 Python (Flask/FastAPI)，数据库使用 MySQL/SQLite，AI 部分深度集成了 DeepSeek 模型。前端为原生 HTML/JS，轻量且易于修改。</p>
+                </div>
+                <div class="faq-item">
+                    <h4>不懂代码可以买吗？</h4>
+                    <p>如果您完全不懂技术，建议购买“商业版”并使用我们要提供的部署文档，或者直接联系我们进行“定制开发”全托管服务。</p>
+                </div>
+                <div class="faq-item">
+                    <h4>购买流程是怎样的？</h4>
+                    <p>点击上方按钮发送邮件或添加微信，确认需求后通过支付宝/USDT 支付。确认到账后，我们将通过 GitHub 私有仓库权限或压缩包形式交付源码。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* 背景动画脚本 (保持一致) */
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 1500; 
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+</body>
+</html>

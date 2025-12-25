@@ -164,7 +164,7 @@
         .bio-text { font-size: 16px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
         .highlight { color: #fff; border-bottom: 1px dotted #666; }
 
-        /* 服务卡片 (新增) */
+        /* 服务卡片 */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
         .service-card {
             background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 25px;
@@ -181,7 +181,7 @@
             padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px; 
         }
 
-        /* 案例背书 (调整) */
+        /* 案例背书 */
         .proof-box {
             border-left: 3px solid var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.05), transparent);
             padding: 20px; margin: 30px 0;
@@ -189,7 +189,7 @@
         .proof-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; color: #fff; }
         .proof-text { font-size: 13px; color: #aaa; }
 
-        /* 终端框保留 */
+        /* 终端框 */
         .terminal-box {
             background: #0d0d0d; border: 1px solid #333; padding: 20px; 
             font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
@@ -210,6 +210,13 @@
             }
             .nav-links.active { transform: translateX(0); }
             
+            /* 手机端菜单字体加大 */
+            .nav-links a {
+                font-size: 24px; 
+                margin-left: 0;
+                font-weight: 700;
+            }
+
             .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
             .profile-section { position: relative; top: 0; }
             .services-grid { grid-template-columns: 1fr; }
@@ -311,7 +318,10 @@
                 </div>
                 <div class="tech-tags">
                     <span class="tech-tag" style="border-color: #fff; color: #fff;">DeepSeek / LLM</span>
-                    <span class="tech-tag" style="border-color: #fff; color: #fff;">Python Flask</span>
+                    <span class="tech-tag" style="border-color: #fff; color: #fff;">ChatGPT / OpenAI</span>
+                    <span class="tech-tag" style="border-color: #fff; color: #fff;">Gemini / Google</span>
+                    
+                    <span class="tech-tag">Python Flask</span>
                     <span class="tech-tag">Linux / Debian</span>
                     <span class="tech-tag">Docker</span>
                     <span class="tech-tag">Gunicorn / Gevent</span>
@@ -327,16 +337,20 @@
                     <div style="margin-bottom: 40px;">
                         <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025.07 - Present</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">独立全栈架构师 (Fuxi Engine)</h4>
-                        <p style="font-size: 14px; color: #999; line-height: 1.6;">
-                            • <strong>架构攻坚：</strong> 采用 Flask+Gevent 异步架构解决高并发下的 I/O 阻塞，实现 SSE 流式响应。<br>
-                            • <strong>商业系统：</strong> 独立设计 Token 计费体系与卡密分发系统，完成商业闭环。
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>SaaS 架构设计：</strong> 主导开发垂直领域 AI SaaS 平台，利用 <strong>Python Flask + Gevent + Redis</strong> 构建高并发异步架构，成功支撑日均 10k+ 请求。实现 SSE 流式响应，将首字延迟 (TTFT) 优化至 200ms 以内。<br>
+                            • <strong>AI 商业闭环：</strong> 独立设计并落地 Token 计费体系，集成 <strong>Stripe & USDT</strong> 混合支付网关，打通“用户订阅-API调用-成本核算”的全自动化流程。<br>
+                            • <strong>模型工程：</strong> 融合 DeepSeek V3 大模型与传统统计算法，通过 Prompt Engineering 与 RAG 技术显著提升垂直领域问答准确率，降低模型幻觉。
                         </p>
                     </div>
+                    
                     <div style="margin-bottom: 40px;">
                         <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2024.03 - 2025.07</div>
-                        <h4 class="history-role">Ops Engineer @ Shenzhen Fengcai</h4>
-                        <p style="font-size: 14px; color: #999; line-height: 1.6;">
-                            • <strong>降本增效：</strong> 通过 Python 脚本自动化替代 40% 人工巡检，通过内核调优保障 SLA > 99.9%。
+                        <h4 class="history-role">DevOps Engineer @ Shenzhen Fengcai</h4>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>基础设施自动化：</strong> 负责 Linux (Debian/CentOS) 服务器集群的运维管理。编写 Python/Shell 自动化脚本替代 40% 的人工巡检工作，显著降低运维人力成本。<br>
+                            • <strong>容器化与 CI/CD：</strong> 搭建基于 <strong>Docker + Jenkins/GitLab CI</strong> 的持续集成流水线，将应用部署时间缩短 60%，并确保了环境的一致性。<br>
+                            • <strong>高可用保障：</strong> 优化 Nginx 负载均衡策略与 Linux 内核参数，配合 Prometheus + Grafana 监控体系，保障核心业务在流量洪峰期间 SLA > 99.9%。
                         </p>
                     </div>
                 </div>
@@ -400,5 +414,3 @@
     </script>
 </body>
 </html>
-
-

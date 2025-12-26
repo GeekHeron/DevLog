@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta property="og:title" content="SellerCopilot 商业计划书">
+    <meta property="og:description" content="跨境电商AI垂直SaaS，基于RAG 2.0的Listing生成AI">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SellerCopilot 商业计划书 - 跨境电商Listing AI生成器</title>
+    <style>
+        /* --- 1. 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); 
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 4. 文章专用样式 --- */
+        .container {
+            max-width: 800px; 
+            margin: 0 auto;
+            padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 20px;
+        }
+
+        .page-title { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
+        .page-subtitle { color: #666; font-family: monospace; font-size: 14px; text-transform: uppercase; }
+
+        /* 文章内容排版 */
+        .article-content {
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .article-content h2 {
+            font-size: 24px;
+            color: #fff;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .article-content h3 {
+            font-size: 18px;
+            color: #ffd700; /* 金色高亮 */
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .article-content p { margin-bottom: 20px; text-align: justify; }
+
+        .article-content ul { margin-left: 20px; margin-bottom: 25px; color: #bbb; }
+        .article-content li { margin-bottom: 10px; }
+        
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        /* 表格样式适配 */
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .pricing-table th, .pricing-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .pricing-table th {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            font-weight: 600;
+        }
+        .pricing-table tr:last-child td { border-bottom: none; }
+
+        /* 引用块 */
+        .article-content blockquote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ffd700;
+            padding: 20px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .back-btn {
+            display: inline-block; margin-top: 50px;
+            border-bottom: 1px solid #666; padding-bottom: 5px; color: #888;
+        }
+        .back-btn:hover { color: #fff; border-color: #fff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; justify-content: space-between; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 24px; font-weight: 800; color: #fff; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="#" class="logo">SellerCopilot</a>
+        
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="#" class="active">商业计划</a>
+            <a href="SellerCopilot.html">技术架构</a>
+            <a href="about.html">联系我们</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="page-header">
+            <h1 class="page-title">SellerCopilot 商业计划书</h1>
+            <p class="page-subtitle">// BUSINESS PLAN · CROSS-BORDER E-COMMERCE AI</p>
+        </section>
+
+        <article class="article-content">
+            <blockquote>
+                <strong>1. 项目摘要 (Executive Summary)</strong><br><br>
+                SellerCopilot 是一款基于 RAG 2.0（检索增强生成）技术的跨境电商垂直AI工具。我们致力于解决中小卖家在Listing撰写中面临的“中式英语”、SEO埋词生硬及难以对标头部大卖（如Anker）的痛点。通过深度解析竞品URL、融合平台合规政策及实时关键词数据，SellerCopilot 能一键生成具备“大卖逻辑”的高转化率Listing，帮助卖家实现从“卖货思维”到“品牌思维”的跨越。
+            </blockquote>
+
+            <h2>2. 市场痛点与目标用户</h2>
+            
+            <h3>2.1 目标用户</h3>
+            <ul>
+                <li><strong>亚马逊美国站卖家：</strong> 如销售蓝牙耳机的“SoundWave Tech”，急需提升Listing的本土化程度。</li>
+                <li><strong>TikTok Shop东南亚站卖家：</strong> 如主营家居小物的“HomeBloom”，需要快速产出多语言内容。</li>
+            </ul>
+
+            <h3>2.2 核心痛点</h3>
+            <ul>
+                <li><strong>不懂逻辑 (Conversion Logic)：</strong> 无法识别高转化长尾词，文案停留在参数堆砌（如只写“wireless earbuds”而忽略“sports headphones”场景）。</li>
+                <li><strong>无法模仿大卖 (Benchmarking)：</strong> 面对Anker、Ulefone等头部品牌，缺乏结构化拆解能力，无法复制其Listing的“高级感”和转化逻辑。</li>
+                <li><strong>SEO难 (SEO Optimization)：</strong> 关键词埋词不自然，甚至出现五点描述未覆盖技术查词（如遗漏“sweatproof”或“60h battery”）的情况。</li>
+            </ul>
+
+            <h2>3. 产品解决方案</h2>
+            
+            <h3>3.1 核心理念：像大卖一样写 Listing</h3>
+            <ul>
+                <li><strong>竞品克隆生成：</strong> 能够接入Anker Soundcore Liberty 4 Neo等高品质Listing，自动生成风格一致、关键词合理、句式节奏匹配的仿写版Listing。</li>
+                <li><strong>转化逻辑重构：</strong> 支持独家“特征 -> 技术 -> 效果 -> 情感”的五点逻辑链，将参数转化为用户利益点（Benefits）。</li>
+            </ul>
+
+            <h3>3.2 核心功能</h3>
+            <ul>
+                <li><strong>Listing一键生成：</strong> 输入产品图/文字描述（如“USB-C快充移动电源, 20000mAh”），自动生成符合A9算法的标题、五点描述、Search Terms。</li>
+                <li><strong>多语言支持：</strong> 覆盖英、德、西、日等主流语种，并针对特定市场习惯优化。</li>
+                <li><strong>五点描述/Search Terms 优化：</strong> 自动遵循AIDA结构，Search Terms字段智能去重、剔除停用词。</li>
+            </ul>
+
+            <h3>核心差异化 (RAG 2.0)</h3>
+            <ul>
+                <li><strong>竞品URL解析：</strong> 输入竞品链接，自动提取其排版、五点结构、A+图文描述及Top 10流量关键词。</li>
+                <li><strong>黄金关键词探测：</strong> 从竞品页面提取真实带来流量的词组。</li>
+                <li><strong>违禁词实时拦截：</strong> 自动压制FDA禁止表述及侵权词汇。</li>
+            </ul>
+
+            <h2>4. 技术壁垒与架构</h2>
+            
+            <h3>4.1 核心引擎 (Backend & AI)</h3>
+            <ul>
+                <li><strong>LLM 模型：</strong> 以 DeepSeek V3 为主模型，针对Amazon Listing任务微调，相比GPT-4 Turbo成本降低83%，对“bullet point rhythm”优化更精准。</li>
+                <li><strong>RAG 流水线：</strong>
+                    <ul>
+                        <li>采集层：使用 Firecrawl 获取页面HTML，配合 Jina Reader 转为结构化Markdown。</li>
+                        <li>数据层：整合Amazon Brand Analytics高频词、Helium 10 Top 100 Search Terms。</li>
+                        <li>处理层：风格分析统计竞品句式特征，确保仿写高保真。</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>4.2 前端体验 (Frontend)</h3>
+            <ul>
+                <li><strong>极速响应：</strong> 基于 Next.js (App Router) 构建，首屏加载 &lt;300ms。</li>
+                <li><strong>可视化对比：</strong> 左侧显示竞品五点，右侧生成对应段落，提供直观对比。</li>
+                <li><strong>流式输出 (SSE)：</strong> Listing生成过程实时推送，降低用户等待焦虑。</li>
+            </ul>
+
+            <h2>5. 商业模式 (Business Model)</h2>
+            <p>采用 Freemium (免费+增值) 的 SaaS 订阅模式：</p>
+            
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>版本</th>
+                        <th>价格</th>
+                        <th>核心权益</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>免费版</strong></td>
+                        <td>Free</td>
+                        <td>每日限次生成，输出内容带水印，关键词数量受限。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pro版</strong></td>
+                        <td>$39/月</td>
+                        <td>混合风格Listing生成；导出PDF报告；无限制生成。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Team版</strong></td>
+                        <td>$199/月</td>
+                        <td>5人协作空间；共享竞品库、模板库；批量操作；专属Dashboard。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>6. 运营推广策略</h2>
+            
+            <h3>6.1 内容营销</h3>
+            <p>输出高质量干货，如《如何写出BestSeller的文案风格？》；制作“Good Power Bank vs SellerCopilot生成版”的对比图。</p>
+
+            <h3>6.2 SEO策略</h3>
+            <p>主攻长尾词，在官网博客发布针对性文章；向AMZ123、知无不言等垂直媒体投稿。</p>
+
+            <h3>6.3 私域裂变</h3>
+            <p>邀请50位大卖作为种子用户；通过“转发案例图获赠更多额度”的机制进行裂变。</p>
+
+            <h2>7. 合规与安全</h2>
+            <ul>
+                <li><strong>数据隐私：</strong> 严格遵循“Firecrawl抓取 -> 内存解析 -> 即时销毁”流程，不留存用户核心商业机密。</li>
+                <li><strong>平台合规：</strong> 每日同步Amazon Seller Central最新政策更新，自动添加合规声明（如FCC/RoHS）。</li>
+            </ul>
+
+            <a href="SellerCopilot商业计划书.pdf" class="back-btn">← 获取完整 BP PDF</a>
+        </article>
+    </div>
+
+    <script>
+        // --- 1. 背景动画 (复用逻辑) ---
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000; 
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+
+        // --- 2. 菜单逻辑 ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        
+        hamburger.addEventListener('click', toggleMenu);
+    </script>
+</body>
+</html>

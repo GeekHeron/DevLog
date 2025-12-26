@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta property="og:title" content="SellerCopilot 技术架构解析">
+    <meta property="og:description" content="基于 Next.js 与 DeepSeek 的电商 RAG 系统实现">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SellerCopilot 工程架构 - GeekHeron</title>
+    <style>
+        /* --- 1. 全局样式 (复用深色星空主题) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* 背景特效 */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); 
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 2. 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 3. 内容区样式 --- */
+        .container {
+            max-width: 900px; 
+            margin: 0 auto;
+            padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 20px;
+        }
+
+        .page-title { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
+        .page-subtitle { color: #666; font-family: monospace; font-size: 14px; text-transform: uppercase; }
+
+        .article-content { font-size: 16px; color: #ddd; }
+
+        .article-content h2 {
+            font-size: 24px; color: #fff; margin-top: 50px; margin-bottom: 25px;
+            padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .article-content h3 {
+            font-size: 18px; color: #ffd700; /* 金色高亮 */
+            margin-top: 35px; margin-bottom: 15px;
+            font-family: monospace; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .article-content p { margin-bottom: 20px; text-align: justify; }
+        .article-content ul { margin-left: 20px; margin-bottom: 25px; color: #bbb; }
+        .article-content li { margin-bottom: 10px; }
+
+        /* 代码块优化 */
+        .article-content pre {
+            background: #111; border: 1px solid #333; padding: 20px;
+            border-radius: 8px; overflow-x: auto; margin: 25px 0;
+            font-family: "Consolas", "Monaco", monospace;
+        }
+        .article-content code { color: #8BE9FD; } /* 变量蓝 */
+        .keyword { color: #FF79C6; } /* 关键字粉 */
+        .string { color: #F1FA8C; } /* 字符串黄 */
+        .comment { color: #6272A4; font-style: italic; } /* 注释灰 */
+        .function { color: #50FA7B; } /* 函数绿 */
+
+        .tech-stack-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; margin: 40px 0;
+        }
+        .tech-card {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .tech-card strong { color: #ffd700; display: block; margin-bottom: 8px; }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
+                z-index: 101; flex-direction: column; justify-content: center;
+                transform: translateX(100%); transition: transform 0.4s;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 24px; color: #fff; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="#" class="logo">SellerCopilot</a>
+        <div class="hamburger"><span></span><span></span><span></span></div>
+    </header>
+
+    <div class="container">
+        <section class="page-header">
+            <h1 class="page-title">SellerCopilot 工程架构拆解</h1>
+            <p class="page-subtitle">// NEXT.JS + FLASK + DEEPSEEK RAG PIPELINE</p>
+        </section>
+
+        <article class="article-content">
+            <p>本文档基于项目核心代码 <code>app.py</code> (后端) 与 <code>page.tsx</code> (前端) 生成。SellerCopilot 采用经典的 <strong>BFF (Backend for Frontend)</strong> 模式变体，将 Next.js 作为交互层，Python Flask 作为 AI 逻辑编排层，实现了轻量级但高性能的 RAG 链路。</p>
+
+            <div class="tech-stack-grid">
+                <div class="tech-card">
+                    <strong>Frontend (UI)</strong>
+                    Next.js (App Router)<br>React Hooks<br>Tailwind CSS<br>Lucide Icons
+                </div>
+                <div class="tech-card">
+                    <strong>Backend (API)</strong>
+                    Python Flask<br>OpenAI SDK<br>Gevent (WSGI)<br>Flask-CORS
+                </div>
+                <div class="tech-card">
+                    <strong>AI & Data</strong>
+                    DeepSeek V3 (LLM)<br>Jina Reader (Crawl)<br>Regex (Cleaning)<br>JSON Schema
+                </div>
+            </div>
+
+            <h2>1. 后端：AI 编排与 RAG 流水线</h2>
+            <p>后端核心逻辑位于 <code>app.py</code>。它不仅是一个 API 网关，更是整个应用的“大脑”，负责协调爬虫、Prompt 工程和格式清洗。</p>
+
+            <h3>1.1 智能爬虫与上下文获取 (RAG Ingestion)</h3>
+            <p>系统没有维护沉重的 Headless Browser 集群，而是通过集成 <strong>Jina Reader</strong> API，将复杂的 Amazon 产品页实时转换为 LLM 友好的 Markdown 格式。</p>
+            <pre><code><span class="keyword">def</span> <span class="function">fetch_url_content</span>(url):
+    <span class="comment"># 利用 Jina Reader 将 URL 转为 Markdown，极大降低 Token 消耗</span>
+    jina_url = <span class="string">f"https://r.jina.ai/{url}"</span>
+    headers = {
+        <span class="string">"X-Return-Format"</span>: <span class="string">"markdown"</span>
+    }
+    response = requests.get(jina_url, headers=headers)
+    <span class="keyword">return</span> response.text</code></pre>
+
+            <h3>1.2 竞品洞察萃取 (Information Extraction)</h3>
+            <p>直接将整个网页塞给生成模型会导致“幻觉”和 Token 浪费。架构中引入了一个中间层 <code>extract_competitor_insights</code>，使用 DeepSeek 先提取核心卖点、SEO 关键词和语调特征。</p>
+            <ul>
+                <li><strong>输入：</strong> 12000 字符的原始 Markdown。</li>
+                <li><strong>Prompt 策略：</strong> Role-Play (Data Extractor) + Summarization。</li>
+                <li><strong>输出：</strong> 结构化的 Competitor Context。</li>
+            </ul>
+
+            <h3>1.3 强类型 JSON 生成 (Structured Output)</h3>
+            <p>为了保证前端能完美渲染五点描述和 HTML 代码，后端在 System Prompt 中强制约束了 JSON 格式，并配合 <code>clean_json_string</code> 正则函数进行防御性编程。</p>
+            <pre><code><span class="keyword">def</span> <span class="function">clean_json_string</span>(content):
+    <span class="comment"># 移除 LLM 可能输出的 Markdown 代码块标记，确保 JSON.loads 成功</span>
+    <span class="keyword">if</span> content.startswith(<span class="string">"```"</span>):
+        content = re.sub(<span class="string">r'^```json\s*'</span>, <span class="string">''</span>, content, flags=re.MULTILINE)
+        content = re.sub(<span class="string">r'\s*```$'</span>, <span class="string">''</span>, content, flags=re.MULTILINE)
+    <span class="keyword">return</span> content</code></pre>
+
+            <h2>2. 前端：交互体验与状态管理</h2>
+            <p>前端基于 <strong>Next.js</strong> 构建，采用了 Sidebar + Chat 的布局模式。核心代码位于 <code>page.tsx</code>。</p>
+
+            <h3>2.1 状态驱动的 UI (State Management)</h3>
+            <p>前端并未引入 Redux 等重型库，而是使用 React <code>useState</code> 管理三个核心维度的 Context：</p>
+            <ul>
+                <li><code>myProduct</code>: 用户输入的产品参数。</li>
+                <li><code>competitorText</code>: 竞品链接或文本。</li>
+                <li><code>targetLang</code>: 目标生成语言 (EN/ES/DE/JP)。</li>
+            </ul>
+
+            <h3>2.2 真实 API 联调</h3>
+            <p>在 <code>handleGenerate</code> 函数中，前端通过 fetch API 与 Flask 后端通信。这里展示了真实的负载结构：</p>
+            <pre><code><span class="keyword">const</span> handleGenerate = <span class="keyword">async</span> () => {
+    <span class="comment">// 组装 Payload，发送至 Python 后端</span>
+    <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">'[http://127.0.0.1:5000/api/generate](http://127.0.0.1:5000/api/generate)'</span>, {
+        method: <span class="string">'POST'</span>,
+        body: JSON.stringify({
+            competitorText: competitorText, 
+            myProduct: myProduct,           
+            targetLang: targetLang          
+        }),
+    });
+    
+    <span class="comment">// 解析后端返回的严格 JSON 格式</span>
+    <span class="keyword">const</span> realData = <span class="keyword">await</span> response.json();
+    <span class="comment">// ... 渲染 Title, Bullets, Description</span>
+};</code></pre>
+
+            <h3>2.3 渲染引擎</h3>
+            <p>前端组件具有针对 Amazon Listing 的特殊渲染逻辑：</p>
+            <ul>
+                <li><strong>CopyBtn 组件：</strong> 每个字段（标题、五点）都配备独立的复制按钮，方便卖家一键搬运。</li>
+                <li><strong>HTML Preview：</strong> 对于 Description 字段，前端保留了 HTML 源码显示，因为 Amazon 后台需要直接粘贴 HTML 代码。</li>
+                <li><strong>Loading State：</strong> 使用 Sparkles 动画和 Pulse 效果缓解用户在 AI 推理期间（通常 10-20秒）的等待焦虑。</li>
+            </ul>
+
+            <h2>3. 部署与扩展性 (Deployment)</h2>
+            <p>目前架构为单体微服务结构，便于快速迭代。未来的扩展路线图如下：</p>
+            <ul>
+                <li><strong>Docker Compose：</strong> 将 Flask 和 Next.js 容器化编排。</li>
+                <li><strong>Redis 缓存：</strong> 在后端增加 Redis 层，缓存高频竞品 URL 的爬取结果（Markdown），减少 Jina API 调用成本。</li>
+                <li><strong>SSE 流式传输：</strong> 改造 <code>app.py</code> 为 <code>stream_with_context</code>，让前端能像 ChatGPT 一样逐字显示生成内容。</li>
+            </ul>
+
+        </article>
+    </div>
+
+    <script>
+        // --- 背景动画逻辑 (保持一致性) ---
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 1500; // 粒子数量略微减少以提升性能
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.15; this.vy = (Math.random() - 0.5) * 0.15;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+
+        // --- 菜单交互逻辑 ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -108,12 +108,16 @@
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
                 background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
-                z-index: 101; flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                z-index: 101; flex-direction: column; justify-content: center; align-items: center; 
+                gap: 60px; /* 增大间距 */
                 transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .nav-links.active { transform: translateX(0); }
             .flow-row { flex-direction: column; }
             .arrow { transform: rotate(90deg); margin: 10px 0; }
+
+             /* 字体加大到 32px */
+             .nav-links a { font-size: 32px; font-weight: 800; color: #fff; }
         }
     </style>
 </head>
@@ -133,7 +137,7 @@
 
         <nav class="nav-links">
             <a href="InfoFlowAI.html">商业计划</a>
-            <a href="tech.html" class="active">技术架构</a>
+            <a href="InfoFlowtech.html" class="active">技术架构</a>
             <a href="whitepaper.html">深度观察</a>
         </nav>
     </header>
@@ -274,5 +278,3 @@
 </body>
 
 </html>
-
-

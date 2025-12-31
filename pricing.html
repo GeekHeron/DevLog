@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>获取伏羲引擎源码 - GeekHeron</title>
     
-    <meta property="og:title" content="获取伏羲引擎源码 - GeekHeron">
-    <meta property="og:description" content="构建属于你的 AI 命理 SaaS。获取伏羲引擎完整源代码，开启 AI + 传统文化变现闭环。">
+    <meta property="og:title" content="伏羲引擎 (Fuxi Engine) 商业版交付 - GeekHeron">
+    <meta property="og:description" content="卖的不仅是代码，更是一套跑通的变现闭环系统。">
     <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
     <link rel="icon" type="image/png" href="logo.png">
 
@@ -50,7 +50,7 @@
         .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-        /* Hamburger Menu (Added) */
+        /* Hamburger Menu */
         .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
         .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
         .hamburger span:nth-child(1) { top: 0; }
@@ -80,7 +80,77 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* --- 4. Pricing Grid --- */
+        /* --- 4. Boss Poster Styles (New) --- */
+        .boss-poster {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid var(--primary-gold);
+            border-radius: 16px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        }
+
+        .poster-badge {
+            position: absolute; top: 20px; left: -30px;
+            background: var(--primary-gold); color: #000;
+            font-weight: 800; font-size: 12px; padding: 5px 40px;
+            transform: rotate(-45deg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 5; text-transform: uppercase;
+        }
+
+        .poster-content {
+            display: flex; flex-wrap: wrap; align-items: center;
+            padding: 40px; position: relative; z-index: 2;
+        }
+
+        .poster-left { flex: 1.5; padding-right: 30px; min-width: 300px; }
+        .poster-left h2 { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 5px; letter-spacing: -0.5px; line-height: 1.2; }
+        .poster-left h3 { font-size: 20px; color: #888; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        .gold-text { color: var(--primary-gold); font-style: italic; }
+        
+        .poster-desc {
+            color: #ccc; font-size: 16px; line-height: 1.6; margin-bottom: 25px;
+            border-left: 3px solid var(--primary-gold); padding-left: 15px;
+        }
+
+        .poster-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .poster-features li {
+            font-size: 14px; color: #eee; background: rgba(255, 255, 255, 0.05);
+            padding: 8px 12px; border-radius: 4px; display: inline-block; width: fit-content;
+        }
+
+        .poster-right { flex: 1; display: flex; justify-content: center; min-width: 280px; margin-top: 20px; }
+
+        .roi-card {
+            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 25px; border-radius: 12px; width: 100%; backdrop-filter: blur(10px);
+        }
+        .roi-title {
+            text-align: center; color: var(--primary-gold); font-weight: 700; margin-bottom: 15px;
+            font-size: 14px; letter-spacing: 1px; text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;
+        }
+        .roi-data { margin-bottom: 20px; }
+        .data-row {
+            display: flex; justify-content: space-between; margin-bottom: 10px;
+            font-size: 14px; color: #ccc; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 5px;
+        }
+        .data-row .highlight { color: #fff; font-weight: 700; }
+
+        .poster-btn {
+            background: linear-gradient(90deg, #ffd700, #e5c100); color: #000 !important;
+            border: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .poster-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5); }
+        .poster-glow {
+            position: absolute; top: -50%; right: -20%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
+            pointer-events: none; z-index: 1;
+        }
+
+        /* --- 5. Pricing Grid --- */
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -129,7 +199,8 @@
         .plan-name { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 10px; font-weight: 700; }
         .price-amount { font-size: 42px; font-weight: 700; color: #fff; line-height: 1; }
         .price-currency { font-size: 20px; vertical-align: top; margin-right: 4px; color: #888; }
-        .price-period { font-size: 13px; color: #666; display: block; margin-top: 8px; }
+        .price-period { font-size: 13px; color: #666; display: block; margin-top: 8px; line-height: 1.5; }
+        .price-period.highlight-text { color: var(--primary-gold); font-weight: 600; }
 
         .feature-list { list-style: none; margin-bottom: 35px; flex-grow: 1; }
         .feature-list li { margin-bottom: 12px; color: #ccc; font-size: 14px; display: flex; align-items: start; gap: 12px; line-height: 1.4; }
@@ -165,7 +236,7 @@
             box-shadow: 0 4px 25px rgba(255, 215, 0, 0.4);
         }
 
-        /* --- 5. FAQ & WeChat --- */
+        /* --- 6. FAQ & WeChat --- */
         .faq-section { margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px; }
         .faq-title { text-align: center; font-size: 24px; margin-bottom: 40px; font-weight: 700; letter-spacing: 1px;}
         .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -228,6 +299,13 @@
             .header-section h1 { font-size: 32px; }
             .pricing-card.featured { transform: none !important; }
             .faq-grid { grid-template-columns: 1fr; }
+            
+            /* Poster Mobile Styles */
+            .boss-poster { margin-bottom: 40px; }
+            .poster-content { flex-direction: column; align-items: stretch; padding: 25px; }
+            .poster-left { margin-bottom: 30px; padding-right: 0; }
+            .poster-left h2 { font-size: 26px; }
+            .poster-right { margin-top: 0; }
         }
     </style>
 </head>
@@ -258,6 +336,45 @@
             <p>获取伏羲引擎 (Fuxi Engine) 完整源代码。<br>不仅是代码，更是一套经过验证的“AI + 传统文化”变现闭环系统。</p>
         </div>
 
+        <div class="boss-poster">
+            <div class="poster-badge">仅限前 10 位 · 创始人亲带</div>
+            <div class="poster-content">
+                <div class="poster-left">
+                    <h2>2025 数字资产 · 变现闭环</h2>
+                    <h3>伏羲引擎 <span class="gold-text">交付上线版</span> 招募令</h3>
+                    <p class="poster-desc">
+                        不做打工人，拥有属于你的 <strong>AI 现金流系统</strong>。<br>
+                        这就不是买软件，这是买一个<strong>“24小时自动成交”</strong>的生意。
+                    </p>
+                    <ul class="poster-features">
+                        <li>🔥 <strong>结果对赌</strong>：承诺 30 天协助跑通第一笔收入</li>
+                        <li>🛡️ <strong>数据私有</strong>：源码部署到您名下，拒绝平台抽成</li>
+                        <li>🤝 <strong>陪跑落地</strong>：从服务器配置到流量变现，全程护航</li>
+                    </ul>
+                </div>
+                <div class="poster-right">
+                    <div class="roi-card">
+                        <div class="roi-title">预计投入产出 (ROI)</div>
+                        <div class="roi-data">
+                            <div class="data-row">
+                                <span>单客利润</span>
+                                <span class="highlight">¥29.9 ~ ¥198</span>
+                            </div>
+                            <div class="data-row">
+                                <span>边际成本</span>
+                                <span class="highlight">≈ ¥0.02 /次</span>
+                            </div>
+                            <div class="data-row">
+                                <span>复购属性</span>
+                                <span class="highlight">极高 (日/周运)</span>
+                            </div>
+                        </div>
+                        <a href="#" class="poster-btn cta-btn">抢占合伙人名额</a>
+                    </div>
+                </div>
+            </div>
+            <div class="poster-glow"></div>
+        </div>
         <div class="pricing-grid">
             <div class="pricing-card">
                 <div class="price-header">
@@ -271,42 +388,46 @@
                     <li><span class="icon-check">✓</span> DeepSeek API 接入示例</li>
                     <li class="disabled"><span class="icon-x">×</span> 核心 BaziLogic 排盘算法</li>
                     <li class="disabled"><span class="icon-x">×</span> 商业级支付网关集成</li>
-                    <li class="disabled"><span class="icon-x">×</span> 技术支持服务</li>
+                    <li class="disabled"><span class="icon-x">×</span> 商业运营指导</li>
                 </ul>
                 <a href="#" class="cta-btn">联系购买</a>
             </div>
 
             <div class="pricing-card featured">
-                <div class="tag-banner">Best Value / 开发者首选</div>
+                <div class="tag-banner">Most Popular / 变现首选</div>
                 <div class="price-header">
-                    <div class="plan-name">Standard / 标准商业版</div>
-                    <div class="price-amount"><span class="price-currency">¥</span>6,888</div>
-                    <span class="price-period">含商业授权 + 核心算法</span>
+                    <div class="plan-name">Commercial / 商业源码授权</div>
+                    <div class="price-amount"><span class="price-currency">¥</span>19,800</div>
+                    <span class="price-period highlight-text">
+                        可直接上线 · 可收费 · 可复制
+                    </span>
                 </div>
                 <ul class="feature-list">
-                    <li><span class="icon-check">✓</span> <strong>全套前后端完整源码</strong></li>
-                    <li><span class="icon-check">✓</span> <strong>商业化运营授权 (无需分成)</strong></li>
-                    <li><span class="icon-check">✓</span> <strong>核心排盘算法 + Prompt 工程</strong></li>
-                    <li><span class="icon-check">✓</span> 全球支付/用户系统集成</li>
-                    <li><span class="icon-check">✓</span> 标准 Docker 部署文档 (README)</li>
-                    <li class="disabled"><span class="icon-x">×</span> 1对1 远程部署/技术咨询</li>
+                    <li><span class="icon-check">✓</span> <strong>全套前后端商业级源码</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>含核心算法 + 独家 Prompt</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>永久商业化运营授权 (免分成)</strong></li>
+                    <li><span class="icon-check">✓</span> 支付/会员/分销系统完整集成</li>
+                    <li><span class="icon-check">✓</span> 详细部署文档 & 操作手册</li>
+                    <li class="disabled"><span class="icon-x">×</span> 1对1 商业陪跑 & 流量指导</li>
                 </ul>
                 <a href="#" class="cta-btn">获取商业授权</a>
             </div>
 
             <div class="pricing-card">
                 <div class="price-header">
-                    <div class="plan-name">Enterprise / 尊享交付版</div>
-                    <div class="price-amount"><span class="price-currency">¥</span>12,999</div>
-                    <span class="price-period">含 1 个月技术服务</span>
+                    <div class="plan-name">Enterprise / 交付上线版</div>
+                    <div class="price-amount"><span class="price-currency">¥</span>49,800</div>
+                    <span class="price-period highlight-text">
+                        VIP 尊享交付 + 商业陪跑
+                    </span>
                 </div>
                 <ul class="feature-list">
-                    <li><span class="icon-check">✓</span> 包含标准商业版所有代码</li>
-                    <li><span class="icon-check">✓</span> <strong>1对1 远程协助部署 (保障上线)</strong></li>
-                    <li><span class="icon-check">✓</span> <strong>30天优先技术咨询 & Bug修复</strong></li>
-                    <li><span class="icon-check">✓</span> 支付参数配置 & 域名解析指导</li>
-                    <li><span class="icon-check">✓</span> 品牌 Logo 去除 / 简单 UI 微调</li>
-                    <li><span class="icon-check">✓</span> 专属微信 VIP 服务通道</li>
+                    <li><span class="icon-check">✓</span> 包含商业版所有代码与权益</li>
+                    <li><span class="icon-check">✓</span> <strong>承诺：30天内跑通第一笔收入</strong></li>
+                    <li><span class="icon-check">✓</span> <strong>全托管部署服务 (无需懂技术)</strong></li>
+                    <li><span class="icon-check">✓</span> 1对1 流量变现指导 & 避坑指南</li>
+                    <li><span class="icon-check">✓</span> 品牌定制 / UI 深度调整</li>
+                    <li><span class="icon-check">✓</span> 专属技术顾问 VIP 通道</li>
                 </ul>
                 <a href="#" class="cta-btn">咨询交付</a>
             </div>
@@ -316,10 +437,10 @@
             <h3 class="faq-title">常见问题 (FAQ)</h3>
             <div class="faq-grid">
                 <div class="faq-item">
-                    <h4>Q: 标准商业版和尊享版有什么区别？</h4>
-                    <p>代码完全一致。区别在于<strong>服务</strong>：<br>
-                    - <strong>标准版 (¥6,888)</strong> 适合懂技术的开发者，提供完善的文档，您需要自行完成部署。<br>
-                    - <strong>尊享版 (¥12,999)</strong> 提供保姆级服务，我们协助您配置服务器、支付接口并确保网站上线，适合没有运维经验的客户。</p>
+                    <h4>Q: 商业授权版和交付上线版有什么本质区别？</h4>
+                    <p>区别在于<strong>“结果承诺”与“服务深度”</strong>：<br>
+                    - <strong>商业授权版 (¥19,800)</strong> 交付的是工具和代码，适合有一定技术或运营基础的伙伴，您拿到的是一把“锋利的刀”。<br>
+                    - <strong>交付上线版 (¥49,800)</strong> 交付的是结果。我们不仅帮您把网站搭建好，更提供 1 对 1 陪跑指导，承诺协助您在 30 天内完成商业闭环，跑通第一笔收入。</p>
                 </div>
                 <div class="faq-item">
                     <h4>Q: 核心算法包含什么？</h4>
@@ -327,11 +448,11 @@
                 </div>
                 <div class="faq-item">
                     <h4>Q: 购买后可以转卖代码吗？</h4>
-                    <p>不可以。购买获得的是“商业运营权”，您可以用来搭建网站收费，但严禁将源代码直接转售、开源或作为模板二次分发。每份授权均植入了数字水印。</p>
+                    <p>不可以。购买获得的是“商业运营权”，您可以用来搭建网站收费，但严禁将源代码直接转售、开源或作为模板二次分发。每份授权均植入了数字水印，违者必究。</p>
                 </div>
                 <div class="faq-item">
                     <h4>Q: 交付流程是怎样的？</h4>
-                    <p>添加微信确认需求并支付后，标准版将直接通过 GitHub 私有仓库或加密包交付；尊享版将拉群对接，预约时间进行远程部署协助。</p>
+                    <p>添加微信支付定金后，商业授权版将通过 GitHub 私有仓库或加密包即时交付；交付上线版将建立专属服务群，预约时间进行服务器配置与业务陪跑启动。</p>
                 </div>
             </div>
         </div>
@@ -341,7 +462,7 @@
         <div class="modal-box">
             <div class="modal-close" id="closeModal">&times;</div>
             <h3 class="modal-title">添加微信咨询</h3>
-            <p class="modal-desc">请备注您感兴趣的版本 (如：商业版/尊享版)</p>
+            <p class="modal-desc">请备注您感兴趣的版本 (如：商业版/交付版)</p>
             <img src="wechat.png" alt="微信二维码" class="wx-qrcode">
             <div class="wx-tip">SCAN QR CODE TO ADD WECHAT</div>
         </div>
@@ -392,7 +513,7 @@
         closeBtn.addEventListener('click', () => { modal.classList.remove('active'); });
         modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
-        // Hamburger Logic (Standardized)
+        // Hamburger Logic
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
         function toggleMenu() {

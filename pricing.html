@@ -140,8 +140,19 @@
         .data-row .highlight { color: #fff; font-weight: 700; }
 
         .poster-btn {
-            background: linear-gradient(90deg, #ffd700, #e5c100); color: #000 !important;
-            border: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            background: linear-gradient(90deg, #ffd700, #e5c100) !important; 
+            color: #000 !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* 悬停效果也需要强制生效 */
+        .poster-btn:hover {
+            background: linear-gradient(90deg, #ffe033, #ffd700) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5) !important;
+            color: #000 !important; 
+            border-color: transparent !important;
         }
         .poster-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5); }
         .poster-glow {
@@ -524,3 +535,4 @@
     </script>
 </body>
 </html>
+

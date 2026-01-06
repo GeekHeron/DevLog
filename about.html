@@ -136,14 +136,47 @@
         }
         .secondary-btn:hover { border-color: #fff; }
 
-        /* 微信模块 */
-        .wechat-box {
-            background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+        /* --- NEW: 社交矩阵样式 (Social Grid) --- */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
         }
-        .wechat-box:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
-        .wechat-qr { width: 100%; max-width: 140px; border-radius: 4px; filter: grayscale(10%); }
-        .wechat-text { font-size: 10px; color: #888; margin-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+        .social-item {
+            background: rgba(255,255,255,0.03); 
+            padding: 15px 10px; 
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .social-item:hover { 
+            border-color: rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,0.08); 
+            transform: translateY(-2px);
+        }
+
+        /* 让 WhatsApp 占据整行，保持视觉平衡 */
+        .social-item.full-width {
+            grid-column: span 2;
+        }
+
+        .social-qr { 
+            width: 100%; max-width: 90px; 
+            border-radius: 4px; 
+            filter: grayscale(10%); 
+            transition: 0.3s;
+        }
+        
+        .social-item:hover .social-qr { filter: grayscale(0%); }
+
+        .social-text { 
+            font-size: 10px; color: #888; margin-top: 10px; 
+            letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
+        }
 
         /* --- 右侧：详细内容 --- */
         .content-section { padding-top: 10px; }
@@ -259,11 +292,23 @@
                 <a href="works.html" class="secondary-btn">查看落地案例</a>
             </div>
             
-            <div class="wechat-box">
-                <img src="wechat.png" alt="WeChat" class="wechat-qr">
-                <p class="wechat-text">WeChat: 业务咨询通道</p>
+            <div class="social-grid">
+                <div class="social-item">
+                    <img src="telegram.png" alt="Telegram" class="social-qr">
+                    <p class="social-text">Telegram</p>
+                </div>
+                
+                <div class="social-item">
+                    <img src="wechat.png" alt="WeChat" class="social-qr">
+                    <p class="social-text">WeChat</p>
+                </div>
+
+                <div class="social-item full-width">
+                    <img src="WhatApp.png" alt="WhatsApp" class="social-qr">
+                    <p class="social-text">WhatsApp: Business</p>
+                </div>
             </div>
-        </aside>
+            </aside>
 
         <div class="content-section">
             
@@ -415,4 +460,3 @@
     </script>
 </body>
 </html>
-

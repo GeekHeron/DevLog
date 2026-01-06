@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta property="og:title" content="About & Business | GeekHeron">
+    <meta property="og:description" content="Helping enterprises and individuals build AI-driven business closed-loop systems.">
+    <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
+    <meta property="og:url" content="https://geekheron.github.io/DevLog/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About & Cooperation - GeekHeron</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Wang Jianfeng",
+      "additionalName": "GeekHeron",
+      "jobTitle": "AI Full Stack Architect / Independent Developer",
+      "url": "https://geekheron.github.io/DevLog/about.html",
+      "knowsAbout": ["AI Agent Development", "RAG Systems", "DevOps", "SaaS Architecture"]
+    }
+    </script>
+    <style>
+        /* --- 1. Global Styles --- */
+        :root {
+            --accent-color: #fff;
+            --bg-color: #000;
+            --card-bg: rgba(20, 20, 20, 0.6);
+            --gold: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        /* --- 2. Background Effects --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-gradient {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 20%, rgba(30,30,40,0.4), #000 95%);
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. Navigation --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px; position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px); background: rgba(0,0,0,0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 4. Layout --- */
+        .container {
+            max-width: 1100px; margin: 0 auto; padding: 100px 20px;
+            position: relative; z-index: 10;
+            display: grid; grid-template-columns: 320px 1fr; gap: 80px;
+            align-items: start;
+        }
+
+        /* --- Left: Profile Section --- */
+        .profile-section { position: sticky; top: 120px; text-align: center; }
+
+        .avatar-container {
+            width: 180px; height: 180px; margin: 0 auto 30px; position: relative;
+        }
+
+        .avatar-image {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: pulse-glow 3s infinite;
+        }
+        
+        .avatar-image[style*="display: none"] + .avatar-fallback { display: flex; }
+        .avatar-fallback {
+            display: none; width: 100%; height: 100%; border-radius: 50%;
+            background: #111; align-items: center; justify-content: center;
+            font-size: 40px; font-weight: 800; color: #333; border: 1px solid #333;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0); }
+        }
+
+        .profile-name { font-size: 36px; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; }
+        .profile-id { font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px; }
+        
+        .profile-title {
+            font-size: 12px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; 
+            margin-bottom: 40px; line-height: 1.6;
+        }
+
+        /* CTA Buttons */
+        .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        
+        .contact-btn {
+            display: block; background: #fff; color: #000;
+            padding: 14px 0; border-radius: 4px;
+            font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+            transition: all 0.3s ease; cursor: pointer; text-align: center;
+        }
+        .contact-btn:hover { background: #ddd; transform: translateY(-2px); }
+        
+        .secondary-btn {
+            display: block; background: transparent; color: #fff; border: 1px solid #333;
+            padding: 14px 0; border-radius: 4px;
+            font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+            transition: all 0.3s ease; cursor: pointer; text-align: center;
+        }
+        .secondary-btn:hover { border-color: #fff; }
+
+        /* --- Social Grid --- */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-item {
+            background: rgba(255,255,255,0.03); 
+            padding: 15px 10px; 
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .social-item:hover { 
+            border-color: rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,0.08); 
+            transform: translateY(-2px);
+        }
+
+        .social-item.full-width {
+            grid-column: span 2;
+        }
+
+        .social-qr { 
+            width: 100%; max-width: 90px; 
+            border-radius: 4px; 
+            filter: grayscale(10%); 
+            transition: 0.3s;
+        }
+        
+        .social-item:hover .social-qr { filter: grayscale(0%); }
+
+        .social-text { 
+            font-size: 10px; color: #888; margin-top: 10px; 
+            letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
+        }
+
+        /* --- Right: Content Section --- */
+        .content-section { padding-top: 10px; }
+        .section-block { margin-bottom: 80px; }
+        
+        .section-title {
+            font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; 
+            margin-bottom: 30px; font-weight: 800; display: flex; align-items: center;
+        }
+        .section-title::after {
+            content: ''; height: 1px; background: #333; flex-grow: 1; margin-left: 20px;
+        }
+
+        /* Value Prop */
+        .value-prop {
+            font-size: 24px; font-weight: 700; line-height: 1.4; margin-bottom: 20px;
+        }
+        .bio-text { font-size: 16px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
+        .highlight { color: #fff; border-bottom: 1px dotted #666; }
+
+        /* Service Cards */
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
+        .service-card {
+            background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 25px;
+            transition: 0.3s;
+        }
+        .service-card:hover { border-color: #666; background: rgba(255,255,255,0.05); }
+        .service-icon { font-size: 20px; margin-bottom: 15px; color: #fff; }
+        .service-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .service-desc { font-size: 13px; color: #888; line-height: 1.6; }
+
+        /* Tech Stack */
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .tech-tag { 
+            padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px; 
+        }
+
+        /* Social Proof */
+        .proof-box {
+            border-left: 3px solid var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.05), transparent);
+            padding: 20px; margin: 30px 0;
+        }
+        .proof-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; color: #fff; }
+        .proof-text { font-size: 13px; color: #aaa; }
+
+        /* Terminal */
+        .terminal-box {
+            background: #0d0d0d; border: 1px solid #333; padding: 20px; 
+            font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 850px) {
+            header { padding: 20px; justify-content: space-between; }
+            .hamburger { display: block; }
+            
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s;
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            
+            .nav-links a {
+                font-size: 24px; 
+                margin-left: 0;
+                font-weight: 700;
+            }
+
+            .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
+            .profile-section { position: relative; top: 0; }
+            .services-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-gradient"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <div class="hamburger"><span></span><span></span><span></span></div>
+<nav class="nav-links">
+    <a href="index.html" onclick="toggleMenu()">Home</a>
+    <a href="article.html" onclick="toggleMenu()">Insights</a>
+    <a href="works.html" onclick="toggleMenu()">Portfolio</a>
+    <a href="pricing.html" onclick="toggleMenu()">Pricing</a>
+    <a href="about.html" class="active" onclick="toggleMenu()">About & Cooperation</a>
+    <a href="about.html" class="lang-btn">中文 / Chinese</a>
+</nav>
+    </header>
+
+    <main class="container">
+        
+        <aside class="profile-section">
+            <div class="avatar-container">
+                <img src="image_3.png" alt="Wang Jianfeng" class="avatar-image" onerror="this.style.display='none'">
+                <div class="avatar-fallback">GH</div>
+            </div>
+            <h1 class="profile-name">Geek Heron</h1>
+            <p class="profile-id">@Wang Jianfeng</p>
+            <p class="profile-title">
+                Independent Developer / Tech Partner<br>
+                Building High-Availability AI Systems
+            </p>
+            
+            <div class="cta-group">
+                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Business Inquiry</a>
+                <a href="works.html" class="secondary-btn">View Portfolio</a>
+            </div>
+            
+            <div class="social-grid">
+                <div class="social-item">
+                    <img src="telegram.png" alt="Telegram" class="social-qr">
+                    <p class="social-text">Telegram</p>
+                </div>
+                
+                <div class="social-item">
+                    <img src="wechat.png" alt="WeChat" class="social-qr">
+                    <p class="social-text">WeChat</p>
+                </div>
+
+                <div class="social-item full-width">
+                    <img src="WhatApp.png" alt="WhatsApp" class="social-qr">
+                    <p class="social-text">WhatsApp: Business</p>
+                </div>
+            </div>
+            </aside>
+
+        <div class="content-section">
+            
+            <section class="section-block">
+                <h3 class="section-title">01 / Why Work With Me</h3>
+                <h2 class="value-prop">More than just code,<br>Delivering profitable business systems.</h2>
+                
+                <p class="bio-text">
+                    I am Heron, an AI Full Stack Architect and Independent Developer. In the wave of AI, technical barriers are melting away; the real barriers lie in **engineering implementation** and the construction of a **business closed-loop**.
+                </p>
+                <p class="bio-text">
+                    I specialize in encapsulating complex LLM capabilities into stable enterprise-level applications. From low-level Linux kernel tuning to high-level Agent orchestration, I provide technical backing from 0 to 1.
+                </p>
+
+                <div class="proof-box">
+                    <div class="proof-title">Proven Track Record: Fuxi Engine</div>
+                    <div class="proof-text">
+                        A SaaS product I independently developed and operate. Successfully solved engineering challenges such as Render platform memory overflows, Nginx timeouts, and global payment integration, realizing the deep integration and commercial monetization of DeepSeek models with traditional algorithms.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">02 / Service Scope</h3>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">✦</div>
+                        <h4 class="service-name">Full-Stack AI Application</h4>
+                        <p class="service-desc">Custom development of enterprise AI knowledge bases, intelligent customer service, or vertical SaaS based on RAG or Agent technology. Includes frontend UI, backend logic, and model fine-tuning.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">⚡</div>
+                        <h4 class="service-name">Rapid MVP Launch</h4>
+                        <p class="service-desc">For entrepreneurs, turn your idea into a runnable, chargeable product within 2-4 weeks. Includes payment system integration (Stripe/USDT) and basic SEO setup.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🛡️</div>
+                        <h4 class="service-name">High-Availability Consulting</h4>
+                        <p class="service-desc">Resolve stubborn issues like high server load, Python memory leaks, and Docker cluster deployment. Ensure your business remains stable during traffic peaks.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">📝</div>
+                        <h4 class="service-name">Prompt Engineering</h4>
+                        <p class="service-desc">Optimize LLM output quality, design complex Chain of Thought (CoT) structures, enabling AI to precisely execute specific business logic and reduce hallucinations.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">03 / Tech Stack</h3>
+                <div class="terminal-box">
+                    <span style="color: #666;">$</span> <span id="typewriter"></span><span class="cursor">|</span>
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag" style="border-color: #fff; color: #fff;">DeepSeek / LLM</span>
+                    <span class="tech-tag" style="border-color: #fff; color: #fff;">ChatGPT / OpenAI</span>
+                    <span class="tech-tag" style="border-color: #fff; color: #fff;">Gemini / Google</span>
+                    
+                    <span class="tech-tag">Python Flask</span>
+                    <span class="tech-tag">Linux / Debian</span>
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">Gunicorn / Gevent</span>
+                    <span class="tech-tag">HTML5 / CSS3</span>
+                    <span class="tech-tag">Nginx Tuning</span>
+                    <span class="tech-tag">RAG Implementation</span>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">04 / Experience</h3>
+                <div style="border-left: 2px solid #333; padding-left: 30px;">
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025.07 - Present</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">Independent Full-Stack Architect (Fuxi Engine)</h4>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>SaaS Architecture Design:</strong> Led the development of a vertical AI SaaS platform, utilizing <strong>Python Flask + Gevent + Redis</strong> to build a high-concurrency asynchronous architecture, supporting 10k+ daily requests. Implemented SSE streaming response, optimizing TTFT to under 200ms.<br>
+                            • <strong>AI Business Loop:</strong> Independently designed and implemented a Token billing system, integrated <strong>Stripe & USDT</strong> hybrid payment gateways, connecting the automated process of "User Subscription - API Call - Cost Accounting".<br>
+                            • <strong>Model Engineering:</strong> Integrated DeepSeek V3 large models with traditional statistical algorithms, significantly improving vertical domain QA accuracy and reducing hallucinations through Prompt Engineering and RAG technology.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2024.03 - 2025.07</div>
+                        <h4 class="history-role">DevOps Engineer @ Shenzhen Fengcai</h4>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>Infrastructure Automation:</strong> Responsible for O&M of Linux (Debian/CentOS) server clusters. Wrote Python/Shell automation scripts replacing 40% of manual inspection work, significantly reducing O&M labor costs.<br>
+                            • <strong>Containerization & CI/CD:</strong> Built a CI/CD pipeline based on <strong>Docker + Jenkins/GitLab CI</strong>, shortening application deployment time by 60% and ensuring environment consistency.<br>
+                            • <strong>High Availability Assurance:</strong> Optimized Nginx load balancing strategies and Linux kernel parameters, combined with Prometheus + Grafana monitoring, guaranteeing SLA > 99.9% for core businesses during traffic peaks.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // --- 1. Background Particles ---
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = (Math.random() - 0.5) * width * 2;
+                this.y = (Math.random() - 0.5) * height * 2;
+                this.z = (Math.random() * 300 * 2) - 300;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.z -= 0.3;
+                if (this.z < -300) { this.z += 600; this.x = (Math.random() - 0.5) * width * 2; this.y = (Math.random() - 0.5) * height * 2; }
+            }
+            draw() {
+                const perspective = 300 / (300 + this.z);
+                const x = (this.x * perspective) + width / 2;
+                const y = (this.y * perspective) + height / 2;
+                const scale = perspective;
+                if (x > 0 && x < width && y > 0 && y < height) {
+                    ctx.fillStyle = `rgba(255,255,255,${this.alpha * scale})`;
+                    ctx.beginPath(); ctx.arc(x, y, 1.2 * scale, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+        }
+        function initParticles() { particles = []; for(let i=0; i<800; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        resize(); initParticles(); animate();
+
+        // --- 2. Typewriter Effect ---
+        const textToType = "Loading core modules... AI Agents initialized. Business logic ready.";
+        const typeElement = document.getElementById('typewriter');
+        let i = 0;
+        function typeWriter() {
+            if (i < textToType.length) {
+                typeElement.innerHTML += textToType.charAt(i);
+                i++; setTimeout(typeWriter, 50);
+            }
+        }
+        setTimeout(typeWriter, 500);
+
+        // --- 3. Menu Logic ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); }
+        hamburger.addEventListener('click', toggleMenu);
+    </script>
+</body>
+</html>

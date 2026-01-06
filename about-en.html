@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta property="og:title" content="About & Business | GeekHeron">
-    <meta property="og:description" content="Helping enterprises and individuals build AI-driven business closed-loop systems.">
+    <meta property="og:title" content="About Me & Cooperation | GeekHeron">
+    <meta property="og:description" content="Assisting enterprises and individuals in building AI-driven business closed-loop systems.">
     <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
     <meta property="og:url" content="https://geekheron.github.io/DevLog/">
     <meta name="twitter:card" content="summary_large_image">
@@ -18,7 +18,7 @@
       "name": "Wang Jianfeng",
       "additionalName": "GeekHeron",
       "jobTitle": "AI Full Stack Architect / Independent Developer",
-      "url": "https://geekheron.github.io/DevLog/about.html",
+      "url": "https://geekheron.github.io/DevLog/about-en.html",
       "knowsAbout": ["AI Agent Development", "RAG Systems", "DevOps", "SaaS Architecture"]
     }
     </script>
@@ -54,7 +54,7 @@
             z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. Navigation --- */
+        /* --- 3. Header / Nav --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 30px 50px; position: sticky; top: 0; z-index: 100;
@@ -65,6 +65,25 @@
         .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
         .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* Language Switcher */
+        .lang-btn {
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 14px;
+            border-radius: 4px;
+            margin-left: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+        .lang-btn:hover {
+            background: #fff;
+            color: #000 !important;
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
 
         .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
         .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
@@ -83,7 +102,7 @@
             align-items: start;
         }
 
-        /* --- Left: Profile Section --- */
+        /* --- Left: Profile --- */
         .profile-section { position: sticky; top: 120px; text-align: center; }
 
         .avatar-container {
@@ -117,7 +136,7 @@
             margin-bottom: 40px; line-height: 1.6;
         }
 
-        /* CTA Buttons */
+        /* CTA Group */
         .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         
         .contact-btn {
@@ -139,32 +158,33 @@
         /* --- Social Grid --- */
         .social-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 20px;
+            grid-template-columns: 1fr; 
+            gap: 15px;
+            margin-top: 30px;
         }
 
         .social-item {
             background: rgba(255,255,255,0.03); 
-            padding: 15px 10px; 
+            padding: 15px; 
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.05); 
             transition: 0.3s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
         }
-
+        
         .social-item:hover { 
             border-color: rgba(255,255,255,0.2); 
             background: rgba(255,255,255,0.08); 
-            transform: translateY(-2px);
-        }
-
-        .social-item.full-width {
-            grid-column: span 2;
+            transform: translateX(5px); 
         }
 
         .social-qr { 
-            width: 100%; max-width: 90px; 
+            width: 100%; 
+            max-width: 100px;
+            height: auto;
             border-radius: 4px; 
             filter: grayscale(10%); 
             transition: 0.3s;
@@ -173,11 +193,11 @@
         .social-item:hover .social-qr { filter: grayscale(0%); }
 
         .social-text { 
-            font-size: 10px; color: #888; margin-top: 10px; 
+            font-size: 11px; color: #888; margin-top: 10px; 
             letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
         }
 
-        /* --- Right: Content Section --- */
+        /* --- Right: Content --- */
         .content-section { padding-top: 10px; }
         .section-block { margin-bottom: 80px; }
         
@@ -196,7 +216,7 @@
         .bio-text { font-size: 16px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
         .highlight { color: #fff; border-bottom: 1px dotted #666; }
 
-        /* Service Cards */
+        /* Services Grid */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
         .service-card {
             background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 25px;
@@ -207,13 +227,13 @@
         .service-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #fff; }
         .service-desc { font-size: 13px; color: #888; line-height: 1.6; }
 
-        /* Tech Stack */
+        /* Tech Tags */
         .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
         .tech-tag { 
             padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px; 
         }
 
-        /* Social Proof */
+        /* Proof Box */
         .proof-box {
             border-left: 3px solid var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.05), transparent);
             padding: 20px; margin: 30px 0;
@@ -221,7 +241,7 @@
         .proof-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; color: #fff; }
         .proof-text { font-size: 13px; color: #aaa; }
 
-        /* Terminal */
+        /* Terminal Box */
         .terminal-box {
             background: #0d0d0d; border: 1px solid #333; padding: 20px; 
             font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
@@ -248,9 +268,28 @@
                 font-weight: 700;
             }
 
+            .lang-btn {
+                margin-left: 0;
+                margin-top: 20px;
+                padding: 10px 30px;
+                font-size: 14px;
+            }
+
             .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
             .profile-section { position: relative; top: 0; }
             .services-grid { grid-template-columns: 1fr; }
+
+            .social-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                margin-top: 20px;
+            }
+            .social-item { padding: 10px 5px; }
+            .social-item:hover { transform: translateY(-2px); }
+            .social-text {
+                font-size: 9px; margin-top: 6px;
+                white-space: nowrap; transform: scale(0.9);
+            }
         }
     </style>
 </head>
@@ -264,11 +303,11 @@
         <div class="hamburger"><span></span><span></span><span></span></div>
 <nav class="nav-links">
     <a href="index.html" onclick="toggleMenu()">Home</a>
-    <a href="article.html" onclick="toggleMenu()">Insights</a>
+    <a href="article.html" onclick="toggleMenu()">Analysis</a>
     <a href="works.html" onclick="toggleMenu()">Portfolio</a>
     <a href="pricing.html" onclick="toggleMenu()">Pricing</a>
-    <a href="about.html" class="active" onclick="toggleMenu()">About & Cooperation</a>
-    <a href="about.html" class="lang-btn">中文 / Chinese</a>
+    <a href="about-en.html" class="active" onclick="toggleMenu()">About & Cooperation</a>
+    <a href="about.html" class="lang-btn">CN / 中文</a>
 </nav>
     </header>
 
@@ -282,13 +321,13 @@
             <h1 class="profile-name">Geek Heron</h1>
             <p class="profile-id">@Wang Jianfeng</p>
             <p class="profile-title">
-                Independent Developer / Tech Partner<br>
-                Building High-Availability AI Systems
+                Indie Developer / Tech Partner<br>
+                Building High-Availability AI Business Systems
             </p>
             
             <div class="cta-group">
-                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Business Inquiry</a>
-                <a href="works.html" class="secondary-btn">View Portfolio</a>
+                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Send Business Invite</a>
+                <a href="works.html" class="secondary-btn">View Case Studies</a>
             </div>
             
             <div class="social-grid">
@@ -302,9 +341,9 @@
                     <p class="social-text">WeChat</p>
                 </div>
 
-                <div class="social-item full-width">
+                <div class="social-item">
                     <img src="WhatApp.png" alt="WhatsApp" class="social-qr">
-                    <p class="social-text">WhatsApp: Business</p>
+                    <p class="social-text">WhatsApp</p>
                 </div>
             </div>
             </aside>
@@ -313,19 +352,19 @@
             
             <section class="section-block">
                 <h3 class="section-title">01 / Why Work With Me</h3>
-                <h2 class="value-prop">More than just code,<br>Delivering profitable business systems.</h2>
+                <h2 class="value-prop">More Than Code:<br>Delivering Profitable Business Systems.</h2>
                 
                 <p class="bio-text">
-                    I am Heron, an AI Full Stack Architect and Independent Developer. In the wave of AI, technical barriers are melting away; the real barriers lie in **engineering implementation** and the construction of a **business closed-loop**.
+                    I am Heron, an AI Full-Stack Architect and Independent Developer. In the current wave of AI, technical barriers are melting away. The real moat now lies in <strong>Engineering Implementation</strong> and constructing a <strong>Business Closed-Loop</strong>.
                 </p>
                 <p class="bio-text">
-                    I specialize in encapsulating complex LLM capabilities into stable enterprise-level applications. From low-level Linux kernel tuning to high-level Agent orchestration, I provide technical backing from 0 to 1.
+                    I specialize in encapsulating complex LLM capabilities into stable, enterprise-grade applications. From underlying Linux kernel tuning to upper-layer Agent orchestration, I provide complete technical coverage from 0 to 1.
                 </p>
 
                 <div class="proof-box">
-                    <div class="proof-title">Proven Track Record: Fuxi Engine</div>
+                    <div class="proof-title">Live Project: Fuxi Engine</div>
                     <div class="proof-text">
-                        A SaaS product I independently developed and operate. Successfully solved engineering challenges such as Render platform memory overflows, Nginx timeouts, and global payment integration, realizing the deep integration and commercial monetization of DeepSeek models with traditional algorithms.
+                        A SaaS product I developed and operate independently. Successfully resolved engineering challenges such as Render platform memory overflows, Nginx timeouts, and global payment integration. Achieved deep integration of DeepSeek models with traditional algorithms for commercial viability.
                     </div>
                 </div>
             </section>
@@ -335,23 +374,23 @@
                 <div class="services-grid">
                     <div class="service-card">
                         <div class="service-icon">✦</div>
-                        <h4 class="service-name">Full-Stack AI Application</h4>
-                        <p class="service-desc">Custom development of enterprise AI knowledge bases, intelligent customer service, or vertical SaaS based on RAG or Agent technology. Includes frontend UI, backend logic, and model fine-tuning.</p>
+                        <h4 class="service-name">Full-Stack AI Development</h4>
+                        <p class="service-desc">Custom enterprise AI knowledge bases, smart CS, or vertical SaaS based on RAG or Agent tech. Includes Frontend UI, Backend logic, and Model Fine-tuning.</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon">⚡</div>
                         <h4 class="service-name">Rapid MVP Launch</h4>
-                        <p class="service-desc">For entrepreneurs, turn your idea into a runnable, chargeable product within 2-4 weeks. Includes payment system integration (Stripe/USDT) and basic SEO setup.</p>
+                        <p class="service-desc">For entrepreneurs: Turn your idea into a runnable, monetizable product in 2-4 weeks. Includes payment system integration (Stripe/USDT) and basic SEO setup.</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon">🛡️</div>
-                        <h4 class="service-name">High-Availability Consulting</h4>
-                        <p class="service-desc">Resolve stubborn issues like high server load, Python memory leaks, and Docker cluster deployment. Ensure your business remains stable during traffic peaks.</p>
+                        <h4 class="service-name">High-Avail Architecture</h4>
+                        <p class="service-desc">Solving server overloads, Python memory leaks, and Docker cluster issues. Ensuring your business remains stable under peak traffic floods.</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon">📝</div>
                         <h4 class="service-name">Prompt Engineering</h4>
-                        <p class="service-desc">Optimize LLM output quality, design complex Chain of Thought (CoT) structures, enabling AI to precisely execute specific business logic and reduce hallucinations.</p>
+                        <p class="service-desc">Optimizing LLM output quality and designing complex Chain-of-Thought (CoT) structures to ensure AI executes specific business logic precisely with reduced hallucinations.</p>
                     </div>
                 </div>
             </section>
@@ -381,11 +420,11 @@
                 <div style="border-left: 2px solid #333; padding-left: 30px;">
                     <div style="margin-bottom: 40px;">
                         <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025.07 - Present</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">Independent Full-Stack Architect (Fuxi Engine)</h4>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">Indep. Full-Stack Architect (Fuxi Engine)</h4>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>SaaS Architecture Design:</strong> Led the development of a vertical AI SaaS platform, utilizing <strong>Python Flask + Gevent + Redis</strong> to build a high-concurrency asynchronous architecture, supporting 10k+ daily requests. Implemented SSE streaming response, optimizing TTFT to under 200ms.<br>
-                            • <strong>AI Business Loop:</strong> Independently designed and implemented a Token billing system, integrated <strong>Stripe & USDT</strong> hybrid payment gateways, connecting the automated process of "User Subscription - API Call - Cost Accounting".<br>
-                            • <strong>Model Engineering:</strong> Integrated DeepSeek V3 large models with traditional statistical algorithms, significantly improving vertical domain QA accuracy and reducing hallucinations through Prompt Engineering and RAG technology.
+                            • <strong>SaaS Architecture:</strong> Led the development of a vertical AI SaaS platform. Built a high-concurrency async architecture using <strong>Python Flask + Gevent + Redis</strong>, supporting 10k+ daily requests. Implemented SSE streaming, optimizing TTFT (Time to First Token) to under 200ms.<br>
+                            • <strong>Business Closed-Loop:</strong> Designed and implemented the Token billing system, integrated <strong>Stripe & USDT</strong> hybrid payment gateways, and automated the "Subscription-API Call-Cost Accounting" flow.<br>
+                            • <strong>Model Engineering:</strong> Fused DeepSeek V3 large models with traditional statistical algorithms. Significantly improved vertical domain QA accuracy and reduced hallucinations via Prompt Engineering and RAG.
                         </p>
                     </div>
                     
@@ -393,9 +432,9 @@
                         <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2024.03 - 2025.07</div>
                         <h4 class="history-role">DevOps Engineer @ Shenzhen Fengcai</h4>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>Infrastructure Automation:</strong> Responsible for O&M of Linux (Debian/CentOS) server clusters. Wrote Python/Shell automation scripts replacing 40% of manual inspection work, significantly reducing O&M labor costs.<br>
-                            • <strong>Containerization & CI/CD:</strong> Built a CI/CD pipeline based on <strong>Docker + Jenkins/GitLab CI</strong>, shortening application deployment time by 60% and ensuring environment consistency.<br>
-                            • <strong>High Availability Assurance:</strong> Optimized Nginx load balancing strategies and Linux kernel parameters, combined with Prometheus + Grafana monitoring, guaranteeing SLA > 99.9% for core businesses during traffic peaks.
+                            • <strong>Infrastructure Automation:</strong> Managed Linux (Debian/CentOS) server clusters. Wrote Python/Shell scripts to replace 40% of manual inspections, significantly reducing operational costs.<br>
+                            • <strong>Containerization & CI/CD:</strong> Built continuous integration pipelines based on <strong>Docker + Jenkins/GitLab CI</strong>, shortening deployment time by 60% and ensuring environment consistency.<br>
+                            • <strong>High Availability:</strong> Optimized Nginx load balancing and Linux kernel parameters. Implemented Prometheus + Grafana monitoring to ensure SLA > 99.9% during peak traffic.
                         </p>
                     </div>
                 </div>
@@ -405,7 +444,7 @@
     </main>
 
     <script>
-        // --- 1. Background Particles ---
+        // --- 1. Particles (Kept identical for visual consistency) ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;

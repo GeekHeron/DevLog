@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta property="og:title" content="GlobalYield AI - RWA Arbitrage & Intelligence">
+    <meta property="og:description" content="下一代去中心化现实资产(RWA)智能套利终端">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalYield AI | 商业计划书 - RWA 智能套利终端</title>
+    <style>
+        /* --- 1. 全局样式 (复用 InfoFlow 风格) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #050505;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); 
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { 
+            font-size: 22px; font-weight: 800; letter-spacing: 2px; color: #fff; 
+            background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #888; letter-spacing: 0.5px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 4. 核心内容容器 --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 80px;
+            border-left: 5px solid #00d2ff;
+            padding-left: 30px;
+        }
+
+        .page-title { font-size: 42px; font-weight: 700; letter-spacing: -1.5px; margin-bottom: 15px; color: #fff; }
+        .page-subtitle { color: #00d2ff; font-family: "JetBrains Mono", monospace; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* 文章内容排版 */
+        .article-content {
+            font-size: 17px;
+            color: #ccc;
+        }
+
+        .article-content h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-top: 80px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .article-content h2::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; width: 60px; height: 3px; background-color: #00d2ff;
+        }
+
+        .article-content h3 {
+            font-size: 20px;
+            color: #fff; 
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+        }
+        
+        .article-content h3::before {
+            content: '>'; color: #00d2ff; font-weight: 800;
+        }
+
+        .article-content p { margin-bottom: 25px; text-align: justify; }
+
+        .article-content ul, .article-content ol { 
+            margin-left: 20px; margin-bottom: 30px; color: #b0b0b0; 
+            background: rgba(255,255,255,0.02); padding: 25px 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .article-content li { margin-bottom: 12px; padding-left: 5px; }
+        
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        /* 表格样式适配 */
+        .pricing-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 40px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .pricing-table th, .pricing-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(10, 10, 10, 0.6);
+        }
+        .pricing-table th {
+            background: rgba(0, 210, 255, 0.1);
+            color: #00d2ff;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        .pricing-table tr:last-child td { border-bottom: none; }
+
+        /* 引用块/高亮块 */
+        .executive-summary {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border-left: 4px solid #00d2ff;
+            padding: 40px;
+            margin-bottom: 60px;
+            font-size: 18px;
+            color: #e0e0e0;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tech-box {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 14px;
+            background: #111;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            color: #8fbc8f;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .back-btn {
+            display: inline-flex; align-items: center; margin-top: 80px;
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .back-btn:hover { background: #00d2ff; color: #000; border-color: #00d2ff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .container { padding: 40px 20px; }
+            .page-title { font-size: 32px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: #000;
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.active { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GlobalYield AI</a>
+        
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html">深度分析</a>
+            <a href="about.html">关于我 & 商业合作</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="page-header">
+            <h1 class="page-title">GlobalYield AI 商业计划书</h1>
+            <p class="page-subtitle">// RWA ARBITRAGE & INTELLIGENCE TERMINAL (VER 2026.1)</p>
+        </section>
+
+        <article class="article-content">
+            <div class="executive-summary">
+                <strong>1. 执行摘要 (Executive Summary)</strong><br><br>
+                GlobalYield AI 致力于打造 <strong>Web3 时代的 Bloomberg Terminal</strong>。在 2026 年 RWA（现实资产上链）市场规模突破 10 万亿美元的背景下，我们利用 AI Agent 技术解决跨国界、跨协议的资产信息不对称问题。<br><br>
+                通过独创的 <strong>"Monitor-Analyst" 双 Agent 架构</strong>，我们为全球投资者提供实时的收益率监控、风险穿透分析及合规套利路由。我们的愿景是让每一位数字游民和中小投资者，都能像华尔街机构一样，安全地捕获全球各地的优质资产溢价。
+            </div>
+
+            <h2>2. 市场背景与机会 (Market & Opportunity)</h2>
+            <p>2026 年的金融市场呈现出明显的“资产二元化”特征：一方面，传统银行储蓄利率持续走低；另一方面，新兴市场（如东南亚、拉美）的链上信贷及基础设施债券（RWA）提供了高达 8%-15% 的真实年化收益。然而，巨大的机会背后隐藏着巨大的鸿沟。</p>
+
+            <h3>2.1 三大核心痛点</h3>
+            <ul>
+                <li><strong>信息极度碎片化：</strong> 优质的 RWA 资产分散在 Centrifuge, Maple, Goldfinch, Ondo 等数十个互不连通的协议中。投资者需要打开 20 个网页才能完成一次基本的比价。</li>
+                <li><strong>风险评估黑盒：</strong> 面对“年化 12% 的肯尼亚农业贷款代币”，普通投资者缺乏能力去验证其底层资产的真实性、承兑汇票的法律效力以及当地货币的汇率风险。</li>
+                <li><strong>套利窗口短：</strong> 链上流动性瞬息万变，手动操作无法捕捉稍纵即逝的利差（Spread），且极易在 Gas 费和滑点中损失利润。</li>
+            </ul>
+
+            <h3>2.2 解决方案：AI 驱动的智能投顾</h3>
+            <p>GlobalYield AI 不仅仅是一个聚合器，它是一个<strong>主动决策系统</strong>。我们不生产资产，我们只做资产的“过滤器”和“放大镜”。通过 AI 自动化审计与实时监控，我们将非标的 RWA 资产转化为标准化的、可比较的投资标的。</p>
+
+            <h2>3. 产品体系与核心功能 (Product Ecosystem)</h2>
+            <p>我们的产品矩阵围绕“发现-分析-执行”的投资闭环构建。</p>
+
+            <h3>3.1 Global Scanner (全球资产雷达)</h3>
+            <p>这是一个 24/7 运行的监控系统，覆盖 Ethereum, Solana, Base, Polygon 等主流公链。它不仅监控 APY（年化收益率），更监控 TVL（锁仓量）的异动和底层资产的违约率。</p>
+            <ul>
+                <li><strong>实时利差热力图：</strong> 直观展示美国国债 RWA 与新兴市场企业债 RWA 之间的溢价空间。</li>
+                <li><strong>流动性预警：</strong> 当某个优质资产池出现赎回潮前，提前 10 分钟发出预警。</li>
+            </ul>
+
+            <h3>3.2 Risk Architect (AI 风控架构师)</h3>
+            <p>这是我们的核心壁垒。利用 LLM（大语言模型）强大的文本理解能力，对每一个上架资产进行深度穿透。</p>
+            <ul>
+                <li><strong>文档智能审计：</strong> AI 自动阅读并分析长达 100 页的招股说明书（Prospectus）和法律意见书，识别其中的霸王条款、回购限制及管辖权风险。</li>
+                <li><strong>GY-Score 评分模型：</strong> 结合链上数据（违约历史）与链下数据（彭博社宏观数据），生成 0-100 的安全评分。我们只推荐评分 > 80 的资产。</li>
+            </ul>
+
+            <h2>4. 技术架构 (Technical Architecture)</h2>
+            <p>作为技术驱动型平台，我们的架构设计遵循“高并发、低延迟、强安全”的原则。以下是针对全栈开发视角的系统分层：</p>
+
+            <div class="tech-box">
+[Data Layer]
+├── On-Chain Scraper: Rust 编写的高性能节点监听器 (Alchemy/Infura)
+├── Off-Chain Oracle: 接入 Bloomberg/Refinitiv API 获取传统金融锚点数据
+└── Vector DB: 使用 Milvus 存储千万级的历史交易记录与法律文档向量
+
+[Logic Layer - The Brain]
+├── Yield Engine: Python (Pandas/NumPy) 计算实时利差与套利路径
+├── LLM Analyst: 基于 GPT-4o fine-tune 的金融专用模型，用于非结构化数据分析
+└── Risk Controller: 独立的风控微服务，负责最后一道安全阈值拦截
+
+[Interface Layer]
+├── Web Dashboard: Next.js + Tailwind CSS 构建的响应式看板
+├── Telegram/Discord Bot: 基于 WebSocket 推送的毫秒级即时警报
+└── API Gateway: 为机构客户提供标准化的 JSON 数据接口
+            </div>
+
+            <h2>5. 商业模式与变现 (Business Model)</h2>
+            <p>我们采用经典的 SaaS + Marketplace 混合模式，确保现金流的稳定性与爆发性。</p>
+
+            <h3>5.1 订阅制 (Recurring Revenue)</h3>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>方案</th>
+                        <th>价格</th>
+                        <th>权益</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Free / 体验版</strong></td>
+                        <td>$0</td>
+                        <td>查看 Top 10 资产榜单，滞后 15 分钟的数据，基础周报。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pro / 交易员版</strong></td>
+                        <td>$29 / 月</td>
+                        <td>实时毫秒级数据，无限次 AI 风险报告，Telegram 实时推送，自定义监控阈值。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alpha / 机构版</strong></td>
+                        <td>$499 / 月</td>
+                        <td>API 访问权限，私有化部署风控模型，专属分析师支持。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>5.2 交易导流 (Affiliate & Commission)</h3>
+            <p>对于通过 GlobalYield AI 跳转并成功认购 RWA 资产的资金，我们向资产发行方（Protocol）收取 <strong>0.2% - 0.5%</strong> 的引流佣金。鉴于 RWA 单笔投资额通常较大（$10k+），这部分收入将极其可观。</p>
+
+            <h2>6. 市场策略与增长 (Go-to-Market)</h2>
+            
+            <h3>Phase 1: 建立信任 (种子期)</h3>
+            <ul>
+                <li><strong>内容营销：</strong> 在 Twitter 和 Substack 发布深度的《全球 RWA 收益周报》，通过高质量的信息输出树立“最懂 RWA 的分析师”人设。</li>
+                <li><strong>工具引流：</strong> 免费开放“RWA 计算器”和“资产对比工具”，通过 SEO 获取长尾流量。</li>
+            </ul>
+
+            <h3>Phase 2: 社区裂变 (成长期)</h3>
+            <ul>
+                <li><strong>Referral Program：</strong> 邀请好友注册 Pro 会员，双方各得 1 个月免费时长。</li>
+                <li><strong>DAO 治理：</strong> 引入代币投票机制，让社区决定下周优先分析哪个资产协议。</li>
+            </ul>
+
+            <h2>7. 财务预测与融资需求 (Financials)</h2>
+            <p>基于目前的开发进度，我们预计在上线第 6 个月达到盈亏平衡。</p>
+            <ul>
+                <li><strong>首年目标：</strong> 拥有 2,000 名 Pro 付费用户，ARR (年度经常性收入) 达到 $700,000。</li>
+                <li><strong>主要成本：</strong> 60% 用于研发与数据节点费用，30% 用于市场推广，10% 用于合规法务。</li>
+            </ul>
+            <p>我们目前正在寻求 <strong>$500,000</strong> 的种子轮融资，主要用于扩充 AI 工程师团队及购买高阶金融数据源授权。</p>
+
+            <a href="about.html" class="back-btn">联系创始人 (Link to About)</a>
+            <a href="works.html" class="back-btn" style="margin-left: 20px; background: transparent; color: #888; border: none;">返回案例库 (Link to Works)</a>
+        </article>
+    </div>
+
+    <script>
+        // --- 背景粒子动画 (优化版) ---
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 1500; 
+        
+        function resize() { 
+            width = window.innerWidth; 
+            height = window.innerHeight; 
+            canvas.width = width; 
+            canvas.height = height; 
+        }
+        
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width; 
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.3; 
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.size = Math.random() * 1.8; 
+                this.alpha = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.9 ? '#00d2ff' : '#ffffff'; 
+            }
+            update() {
+                this.x += this.vx; 
+                this.y += this.vy;
+                if(this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = this.color === '#00d2ff' ? `rgba(0, 210, 255, ${this.alpha})` : `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); 
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+                ctx.fill();
+            }
+        }
+        
+        function init() { 
+            resize(); 
+            particles.length = 0;
+            for(let i=0; i<numParticles; i++) particles.push(new Particle()); 
+        }
+        
+        function animate() { 
+            ctx.clearRect(0, 0, width, height); 
+            particles.forEach(p => { p.update(); p.draw(); }); 
+            requestAnimationFrame(animate); 
+        }
+        
+        window.addEventListener('resize', () => { init(); });
+        init(); 
+        animate();
+
+        // --- 菜单交互逻辑 ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -3,14 +3,14 @@
 <head>
     <meta property="og:title" content="深度分析 | GeekHeron">
     <meta property="og:description" content="鹭栖数字潮汐，静观算力涌动">
-    <meta property="og:image" content="https://geekheron.github.io/DevLog//logo.png"> 
-    <meta property="og:url" 	content="https://geekheron.github.io/DevLog/">
+    <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
+    <meta property="og:url" content="https://geekheron.github.io/DevLog/">
     <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>深度分析 - GeekHeron</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
+    
     <style>
         /* --- 1. 全局样式 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,10 +47,12 @@
         }
 
         .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
-        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #888; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-        /* 汉堡菜单样式 */
+        /* 汉堡菜单样式 (移动端) */
         .hamburger {
             display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative;
         }
@@ -120,22 +122,17 @@
         @media (max-width: 768px) {
             header { padding: 20px; justify-content: space-between; }
             .hamburger { display: block; }
-            
-            /* 全屏菜单逻辑 */
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
                 background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
                 z-index: 101;
                 flex-direction: column; justify-content: center; align-items: center; gap: 40px;
                 transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex; /* 确保 display 是 flex */
+                display: flex; /* 修复移动端隐藏问题 */
             }
             .nav-links.active { transform: translateX(0); }
-            .nav-links a { margin-left: 0; font-size: 24px; font-weight: 800; }
-
+            .nav-links a { font-size: 24px; font-weight: 800; }
             .article-grid { grid-template-columns: 1fr; }
-            .page-title { font-size: 30px; }
-            .article-card { height: auto; } /* 移动端高度自适应 */
         }
     </style>
 </head>
@@ -152,11 +149,11 @@
         </div>
 
         <nav class="nav-links">
-            <a href="index.html" onclick="toggleMenu()">首页</a>
-            <a href="article.html" class="active" onclick="toggleMenu()">深度分析</a>
-            <a href="works.html" onclick="toggleMenu()">作品展示</a>
-            <a href="pricing.html" onclick="toggleMenu()">源码交付</a>
-            <a href="about.html" onclick="toggleMenu()">关于我 & 商业合作</a> 
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="works.html">作品展示</a>
+            <a href="pricing.html">源码交付</a>
+            <a href="about.html">关于我 & 商业合作</a> 
         </nav>
     </header>
 
@@ -168,7 +165,7 @@
 
         <div class="article-grid">
 
-            <a href="GlobalYield AI.html" class="article-card">
+            <a href="global-yield.html" class="article-card">
                 <div class="card-meta"><span>2026.01.13</span><span class="tag">RWA / FINTECH</span></div>
                 <h2 class="card-title">GlobalYield AI: RWA 智能套利终端 BP</h2>
                 <p class="card-excerpt">深度拆解 Web3 时代的 Bloomberg Terminal。利用 AI Agent 监控全球现实资产(RWA)收益率，实现跨协议自动套利与风控。</p>
@@ -189,13 +186,13 @@
                 <div class="read-more">Read Analysis</div>
             </a>
             
-			<a href="Embodied AI.html" class="article-card">
+            <a href="Embodied AI.html" class="article-card">
                 <div class="card-meta"><span>2025.12.28</span><span class="tag">EMBODIED AI</span></div>
                 <h2 class="card-title">具身智能：AI 的“肉身”时刻与 AGI 的最后拼图</h2>
                 <p class="card-excerpt">如果说大语言模型（LLM）是 AI 的“大脑”，那么具身智能就是为这个大脑装上了“身体”。这是 AI 从旁观者变为物理世界参与者的质变。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
-			
+            
             <a href="RWA.html" class="article-card">
                 <div class="card-meta"><span>2025.12.23</span><span class="tag">RWA & DEFI</span></div>
                 <h2 class="card-title">RWA 信任层：打破虚实边界的“中间人”</h2>
@@ -306,7 +303,7 @@
         window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
         init(); animate();
 
-        // --- 菜单切换脚本 (保持原样) ---
+        // --- 菜单切换脚本 ---
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
         function toggleMenu() {
@@ -316,5 +313,4 @@
         hamburger.addEventListener('click', toggleMenu);
     </script>
 </body>
-
 </html>

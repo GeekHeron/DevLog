@@ -80,7 +80,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* --- 4. Boss Poster Styles (New) --- */
+        /* --- 4. Boss Poster Styles --- */
         .boss-poster {
             background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
             border: 1px solid var(--primary-gold);
@@ -144,17 +144,14 @@
             color: #000 !important;
             border: none !important;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            text-align: center; display: block; width: 100%; padding: 12px 0; border-radius: 6px; font-weight: bold;
         }
         
-        /* 悬停效果也需要强制生效 */
         .poster-btn:hover {
             background: linear-gradient(90deg, #ffe033, #ffd700) !important;
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5) !important;
-            color: #000 !important; 
-            border-color: transparent !important;
         }
-        .poster-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5); }
         .poster-glow {
             position: absolute; top: -50%; right: -20%; width: 600px; height: 600px;
             background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
@@ -247,6 +244,19 @@
             box-shadow: 0 4px 25px rgba(255, 215, 0, 0.4);
         }
 
+        /* --- New: Sub Link Styles --- */
+        .sub-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #666;
+            text-decoration: underline;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+        .sub-link:hover { color: var(--primary-gold); opacity: 1; }
+
         /* --- 6. FAQ & WeChat --- */
         .faq-section { margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px; }
         .faq-title { text-align: center; font-size: 24px; margin-bottom: 40px; font-weight: 700; letter-spacing: 1px;}
@@ -337,7 +347,6 @@
             <a href="article.html" onclick="toggleMenu()">深度分析</a>
             <a href="works.html" onclick="toggleMenu()">作品展示</a>
             <a href="pricing.html" class="active" onclick="toggleMenu()">源码交付</a>
-            <a href="bianxian.html" onclick="toggleMenu()">变现指南</a>
             <a href="about.html" onclick="toggleMenu()">关于我 & 商业合作</a>
         </nav>
     </header>
@@ -382,11 +391,13 @@
                             </div>
                         </div>
                         <a href="#" class="poster-btn cta-btn">抢占合伙人名额</a>
+                        <a href="bianxian.html" class="sub-link" style="color:#aaa;">阅读：实战变现白皮书 →</a>
                     </div>
                 </div>
             </div>
             <div class="poster-glow"></div>
         </div>
+        
         <div class="pricing-grid">
             <div class="pricing-card">
                 <div class="price-header">
@@ -403,6 +414,7 @@
                     <li class="disabled"><span class="icon-x">×</span> 商业运营指导</li>
                 </ul>
                 <a href="#" class="cta-btn">联系购买</a>
+                <a href="bianxian.html" class="sub-link">阅读：实战变现白皮书 →</a>
             </div>
 
             <div class="pricing-card featured">
@@ -423,6 +435,7 @@
                     <li class="disabled"><span class="icon-x">×</span> 1对1 商业陪跑 & 流量指导</li>
                 </ul>
                 <a href="#" class="cta-btn">获取商业授权</a>
+                <a href="bianxian.html" class="sub-link">阅读：实战变现白皮书 →</a>
             </div>
 
             <div class="pricing-card">
@@ -442,6 +455,7 @@
                     <li><span class="icon-check">✓</span> 专属技术顾问 VIP 通道</li>
                 </ul>
                 <a href="#" class="cta-btn">咨询交付</a>
+                <a href="bianxian.html" class="sub-link">阅读：实战变现白皮书 →</a>
             </div>
         </div>
 
@@ -517,8 +531,11 @@
 
         ctaBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                modal.classList.add('active'); 
+                if(btn.classList.contains('poster-btn') || btn.closest('.pricing-card')) {
+                    // Only trigger modal for pricing buttons, not the guide link
+                     e.preventDefault(); 
+                     modal.classList.add('active'); 
+                }
             });
         });
 

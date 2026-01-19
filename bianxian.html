@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>实战变现白皮书 | 伏羲引擎 Fuxi Engine</title>
+    <meta name="description" content="如何用 AI 命理构建自动化现金流 - 伏羲引擎实战指南">
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <style>
+        /* --- 1. 核心视觉变量 --- */
+        :root {
+            --primary-gold: #ffd700;
+            --secondary-gold: #c5a059;
+            --bg-dark: #050505;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --card-bg: rgba(20, 20, 20, 0.85);
+            --border-color: rgba(255, 215, 0, 0.15);
+        }
+
+        @font-face {
+            font-family: 'Kaiti';
+            src: local("Kaiti"), local("STKaiti"), local("KaiTi"), local("楷体");
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        /* --- 2. 导航栏 (保持与其他页面一致) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            background: rgba(0,0,0,0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .logo { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-gold); }
+
+        /* 移动端菜单按钮 */
+        .hamburger { display: none; cursor: pointer; width: 30px; height: 20px; position: relative; z-index: 102; }
+        .hamburger span { display: block; width: 100%; height: 2px; background: #fff; position: absolute; transition: 0.3s; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 3. 白皮书主体容器 --- */
+        .doc-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px 100px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 标题区 */
+        .doc-header { text-align: center; margin-bottom: 60px; border-bottom: 1px solid var(--border-color); padding-bottom: 40px; }
+        .doc-tag { 
+            display: inline-block; background: var(--primary-gold); color: #000; 
+            font-size: 12px; font-weight: bold; padding: 4px 12px; border-radius: 2px; margin-bottom: 15px; 
+            letter-spacing: 1px;
+        }
+        .doc-title { 
+            font-family: "Kaiti", serif; font-size: 42px; color: var(--primary-gold); margin-bottom: 20px; 
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+        .doc-intro { font-size: 16px; color: var(--text-muted); max-width: 700px; margin: 0 auto; font-style: italic; }
+
+        /* 章节通用样式 */
+        .chapter { margin-bottom: 50px; background: var(--card-bg); padding: 40px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .chapter-title { 
+            font-size: 24px; color: #fff; margin-bottom: 25px; border-left: 4px solid var(--primary-gold); 
+            padding-left: 15px; display: flex; align-items: center;
+        }
+        .chapter-title span { color: var(--secondary-gold); font-size: 16px; margin-right: 10px; font-weight: normal; font-family: monospace; }
+        
+        h3 { font-size: 18px; color: var(--primary-gold); margin: 25px 0 15px; }
+        p { margin-bottom: 15px; text-align: justify; color: #ccc; font-size: 16px; }
+        ul { list-style: none; margin-bottom: 20px; }
+        li { position: relative; padding-left: 20px; margin-bottom: 10px; color: #ccc; }
+        li::before { content: "•"; color: var(--primary-gold); position: absolute; left: 0; }
+        strong { color: #fff; font-weight: 600; }
+
+        /* 特殊高亮块 - 核心逻辑 */
+        .core-logic-box {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,0,0,0));
+            border: 1px dashed var(--primary-gold);
+            padding: 30px; margin-bottom: 50px; border-radius: 8px;
+            text-align: center;
+        }
+        .core-logic-text { font-size: 18px; color: #fff; font-weight: bold; }
+        .core-logic-sub { color: var(--secondary-gold); margin-top: 10px; font-size: 14px; }
+
+        /* 数据对比表格 */
+        .data-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;
+            text-align: center;
+        }
+        .data-item { background: rgba(0,0,0,0.5); padding: 15px; border: 1px solid #333; border-radius: 4px; }
+        .data-label { font-size: 12px; color: #888; margin-bottom: 5px; }
+        .data-value { font-size: 20px; color: var(--primary-gold); font-weight: bold; font-family: monospace; }
+
+        /* 漏斗模型列表 */
+        .funnel-list .step { 
+            border-bottom: 1px solid rgba(255,255,255,0.05); padding: 15px 0; display: flex; flex-direction: column; 
+        }
+        .funnel-list .step:last-child { border-bottom: none; }
+        .funnel-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .funnel-price { color: var(--primary-gold); font-weight: bold; }
+
+        /* 底部 CTA */
+        .footer-cta { margin-top: 60px; text-align: center; }
+        .cta-btn {
+            display: inline-block; background: var(--primary-gold); color: #000;
+            padding: 15px 40px; font-size: 16px; font-weight: bold; border-radius: 4px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); letter-spacing: 1px;
+        }
+        .cta-btn:hover { background: #fff; box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
+        .quote { color: #888; margin-bottom: 30px; font-family: "Kaiti"; font-size: 20px; }
+
+        /* 背景动画Canvas */
+        #zen-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; pointer-events: none;}
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .nav-links { 
+                position: fixed; top: 0; right: 0; height: 100vh; width: 70%; 
+                background: #111; flex-direction: column; padding: 80px 40px; 
+                transform: translateX(100%); transition: 0.3s; z-index: 101; border-left: 1px solid #333;
+            }
+            .nav-links.open { transform: translateX(0); }
+            .hamburger { display: block; }
+            
+            .doc-wrapper { padding: 40px 15px 80px; }
+            .doc-title { font-size: 30px; }
+            .chapter { padding: 25px 20px; }
+            .data-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">首页</a>
+            <a href="pricing.html">获取源码</a>
+            <a href="bianxian.html" class="active">变现指南</a>
+            <a href="about.html">关于作者</a>
+        </nav>
+    </header>
+
+    <canvas id="zen-bg"></canvas>
+
+    <div class="doc-wrapper">
+        <div class="doc-header">
+            <span class="doc-tag">INTERNAL DOCUMENT / 内部实操手册</span>
+            <h1 class="doc-title">伏羲引擎实战变现白皮书</h1>
+            <p class="doc-intro">
+                这份指南并非泛泛而谈的理论，而是基于【伏羲引擎】源代码特性量身打造的实操手册。<br>
+                全文约 1200 字，旨在帮助您从零构建一个自动化的“AI + 玄学”现金流系统。
+            </p>
+        </div>
+
+        <div class="core-logic-box">
+            <div class="core-logic-text">核心逻辑</div>
+            <p style="margin: 10px 0 0; text-align: center; color: #ddd;">
+                利用 AI 的低边际成本（Token 极便宜）<br>
+                ✖<br>
+                玄学咨询的高感知价值（用户愿意付费）<br>
+                ⬇<br>
+                <span style="color: var(--primary-gold);">打通“流量 - 转化 - 复购”的商业闭环</span>
+            </p>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-title"><span>01</span> 顶层认知与产品定位</div>
+            <p>在开始之前，请务必纠正一个观念：你卖的不是软件，而是<strong>“确定性”和“情绪抚慰”</strong>。</p>
+            
+            <h3>产品定位</h3>
+            <ul>
+                <li><strong>不要说</strong>自己是“算命网站”。</li>
+                <li><strong>要定位为</strong>“AI 心理咨询与人生决策辅助系统”。</li>
+                <li>利用内置的 <code>BaziLogic</code> 真太阳时算法，强调<strong>“数据科学”与“传统智慧”</strong>的结合，有效收割高知人群和年轻群体。</li>
+            </ul>
+
+            <h3>成本与利润分析</h3>
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="data-label">单次 API 成本</div>
+                    <div class="data-value">¥0.02</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">市场公允售价</div>
+                    <div class="data-value">¥29.9+</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">毛利率</div>
+                    <div class="data-value">99%</div>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 14px; color: #666;">*基于 DeepSeek V3 API 2000字深度报告测算</p>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-title"><span>02</span> 基建部署与品牌重塑</div>
+            <p>拿到源码后，不要急着推广，先做好“装修”。</p>
+
+            <h3>品牌私有化（去技术化）</h3>
+            <p>修改 <code>config.py</code> 和前端模板，将“伏羲引擎”替换为您自己的品牌（如“天机阁”、“灵犀AI”）。保持目前的<strong>黑金（Black & Gold）配色</strong>，这种配色在心理学上暗示“高端、神秘、昂贵”。</p>
+
+            <h3>支付与卡密系统配置</h3>
+            <ul>
+                <li><strong>有企业资质：</strong>直接对接微信/支付宝原生支付。</li>
+                <li><strong>无资质方案（重点）：</strong>利用源码自带的 CardKey（卡密）系统。在发卡平台（如自动发卡网）上架“VIP月卡”或“测算码”，用户购买后回填核销。完美规避个人支付接口难题。</li>
+            </ul>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-title"><span>03</span> 公域流量矩阵：暴力引流</div>
+            <p>我们的系统自带“可视化排盘”，这是天然的短视频素材。</p>
+
+            <h3>1. 抖音/TikTok/视频号（视觉冲击流）</h3>
+            <ul>
+                <li><strong>内容策略：</strong>不要真人出镜。录屏伏羲引擎的“AI 生成过程”。</li>
+                <li><strong>文案钩子：</strong>“DeepSeek 真的太敢说了！输入生日，它居然算出我 2026 年会……”</li>
+                <li><strong>操作细节：</strong>利用系统生成的犀利金句截图（配合 Prompt 中的冷读术指令），配合悬疑 BGM，完播率极高。</li>
+            </ul>
+
+            <h3>2. 小红书（高颜值图文流）</h3>
+            <ul>
+                <li><strong>人设：</strong>“懂 AI 的命理师”或“赛博算命师”。</li>
+                <li><strong>玩法：</strong>发布精美的 SVG/Canvas 排盘截图。钩子：“免费帮看八字，限前 10 名”，在评论区引导私信，最终导流至网页解锁深度报告。</li>
+            </ul>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-title"><span>04</span> 成交漏斗与定价策略</div>
+            <p>利用模块化功能，设计一个让用户无法拒绝的<strong>“上瘾模型”</strong>。</p>
+            
+            <div class="funnel-list">
+                <div class="step">
+                    <div class="funnel-header">
+                        <strong>第一层：免费钩子 (Free Tier)</strong>
+                        <span class="funnel-price">¥0</span>
+                    </div>
+                    <p style="margin:0; font-size:14px; color:#888;">开放基础排盘、五行强弱。目的：获取信任，培养日活。</p>
+                </div>
+                <div class="step">
+                    <div class="funnel-header">
+                        <strong>第二层：低门槛转化 (Entry Level)</strong>
+                        <span class="funnel-price">¥9.9</span>
+                    </div>
+                    <p style="margin:0; font-size:14px; color:#888;">产品：《AI 性格盲点深挖》。逻辑：一杯奶茶钱，筛选出有付费意愿的真实用户。</p>
+                </div>
+                <div class="step">
+                    <div class="funnel-header">
+                        <strong>第三层：高利润产品 (Profit Maker)</strong>
+                        <span class="funnel-price">¥49.9 - ¥98</span>
+                    </div>
+                    <p style="margin:0; font-size:14px; color:#888;">产品：《2026 流年大运详批》。话术：“赤马红羊劫，你的运势是起飞还是蛰伏？AI 给你万字攻略。”</p>
+                </div>
+                <div class="step">
+                    <div class="funnel-header">
+                        <strong>第四层：VIP 订阅 (Recurring)</strong>
+                        <span class="funnel-price">¥198/年</span>
+                    </div>
+                    <p style="margin:0; font-size:14px; color:#888;">权益：全年无限次查看每日运势，解锁合婚功能。锁定用户 LTV。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-title"><span>05</span> 私域沉淀 & <span>06</span> 裂变体系</div>
+            
+            <h3>人机协作模式（高客单）</h3>
+            <p>SaaS 只是前台。在 AI 报告底部加上：“如需大师人工一对一化解，请添加微信”。当用户咨询复杂问题（收费 ¥500+）时，你将问题输入后台“AI 问答”模块，润色后回复。<strong>本质是用 AI 的能力，卖人工的高价。</strong></p>
+
+            <h3>代理分销（躺赚模式）</h3>
+            <p>利用 CardKey 系统，以 5 折批量生成卡密卖给代理（微商、大学生）。他们去发朋友圈赚差价，你只需要卖卡密，无需负责售后。</p>
+        </div>
+
+        <div class="footer-cta">
+            <p class="quote">“玄学赛道，长盛不衰。<br>在 AI 时代，谁能最先用科技包装传统，谁就能通过降维打击，赚到第一桶金。”</p>
+            <br>
+            <p style="margin-bottom: 20px; color: #fff;">准备好开始了吗？</p>
+            <a href="pricing.html" class="cta-btn">获取伏羲引擎源码</a>
+        </div>
+    </div>
+
+    <script>
+        // 移动端菜单切换
+        function toggleMenu() {
+            document.querySelector('.hamburger').classList.toggle('active');
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+
+        // 背景动画 (复用之前的 Smoke/Particle 效果，保持视觉统一)
+        const canvas = document.getElementById('zen-bg');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 100;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = -Math.random() * 1 - 0.5;
+                this.size = Math.random() * 20 + 5;
+                this.alpha = Math.random() * 0.15;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= 0.0005;
+                if(this.y < -50 || this.alpha <= 0) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(100, 100, 100, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function animateBg() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateBg);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        for(let i=0; i<50; i++) particles.push(new Particle());
+        animateBg();
+    </script>
+</body>
+</html>

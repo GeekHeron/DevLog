@@ -66,7 +66,7 @@
         .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-        /* 语言切换按钮样式 (新增补全) */
+        /* 语言切换按钮样式 */
         .lang-btn {
             border: 1px solid rgba(255,255,255,0.3);
             padding: 6px 14px;
@@ -155,12 +155,11 @@
         }
         .secondary-btn:hover { border-color: #fff; }
 
-        /* --- 社交矩阵样式 (Social Grid) - 逆向响应式优化 --- */
+        /* --- 社交矩阵样式 (Social Grid) --- */
         .social-grid {
             display: grid;
-            /* 【电脑端】: 1fr 表示只有一列，垂直堆叠，填补侧边栏 */
             grid-template-columns: 1fr; 
-            gap: 15px; /* 垂直间距大一点 */
+            gap: 15px;
             margin-top: 30px;
         }
 
@@ -176,7 +175,6 @@
             justify-content: center;
         }
         
-        /* 电脑端鼠标悬停: 向右动 */
         .social-item:hover { 
             border-color: rgba(255,255,255,0.2); 
             background: rgba(255,255,255,0.08); 
@@ -185,7 +183,7 @@
 
         .social-qr { 
             width: 100%; 
-            max-width: 100px; /* 电脑端限制最大宽度 */
+            max-width: 100px;
             height: auto;
             border-radius: 4px; 
             filter: grayscale(10%); 
@@ -248,6 +246,15 @@
             background: #0d0d0d; border: 1px solid #333; padding: 20px; 
             font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
         }
+        
+        /* 链接风格 */
+        .inline-link {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-color: var(--gold);
+            text-underline-offset: 4px;
+        }
+        .inline-link:hover { color: var(--gold); }
 
         /* 移动端适配 */
         @media (max-width: 850px) {
@@ -264,7 +271,6 @@
             }
             .nav-links.active { transform: translateX(0); }
             
-            /* 手机端菜单字体加大 */
             .nav-links a {
                 font-size: 24px; 
                 margin-left: 0;
@@ -282,15 +288,13 @@
             .profile-section { position: relative; top: 0; }
             .services-grid { grid-template-columns: 1fr; }
 
-            /* --- 手机端社交矩阵: 横向一排 --- */
             .social-grid {
-                /* 【手机端】: repeat(3, 1fr) 表示三列并排，即一横排 */
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
                 margin-top: 20px;
             }
             .social-item { padding: 10px 5px; }
-            .social-item:hover { transform: translateY(-2px); } /* 手机端改为向上动 */
+            .social-item:hover { transform: translateY(-2px); }
             .social-text {
                 font-size: 9px; margin-top: 6px;
                 white-space: nowrap; transform: scale(0.9);
@@ -411,37 +415,61 @@
                     <span class="tech-tag" style="border-color: #fff; color: #fff;">Gemini / Google</span>
                     
                     <span class="tech-tag">Python Flask</span>
+                    <span class="tech-tag">Next.js</span>
+                    <span class="tech-tag">Rust</span>
                     <span class="tech-tag">Linux / Debian</span>
                     <span class="tech-tag">Docker</span>
-                    <span class="tech-tag">Gunicorn / Gevent</span>
-                    <span class="tech-tag">HTML5 / CSS3</span>
-                    <span class="tech-tag">Nginx Tuning</span>
                     <span class="tech-tag">RAG Implementation</span>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">04 / Experience</h3>
+                <h3 class="section-title">04 / Experience & Projects</h3>
                 <div style="border-left: 2px solid #333; padding-left: 30px;">
-                    <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025.07 - Present</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">独立全栈架构师 (Fuxi Engine)</h4>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>SaaS 架构设计：</strong> 主导开发垂直领域 AI SaaS 平台，利用 <strong>Python Flask + Gevent + Redis</strong> 构建高并发异步架构，成功支撑日均 10k+ 请求。实现 SSE 流式响应，将首字延迟 (TTFT) 优化至 200ms 以内。<br>
-                            • <strong>AI 商业闭环：</strong> 独立设计并落地 Token 计费体系，集成 <strong>Stripe & USDT</strong> 混合支付网关，打通“用户订阅-API调用-成本核算”的全自动化流程。<br>
-                            • <strong>模型工程：</strong> 融合 DeepSeek V3 大模型与传统统计算法，通过 Prompt Engineering 与 RAG 技术显著提升垂直领域问答准确率，降低模型幻觉。
-                        </p>
-                    </div>
                     
                     <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2024.03 - 2025.07</div>
-                        <h4 class="history-role">DevOps Engineer @ Shenzhen Fengcai</h4>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2026 - Present</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="InfoFlowAI.html" class="inline-link">InfoFlow AI (流光智能)</a> - Creator
+                        </h4>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>基础设施自动化：</strong> 负责 Linux (Debian/CentOS) 服务器集群的运维管理。编写 Python/Shell 自动化脚本替代 40% 的人工巡检工作，显著降低运维人力成本。<br>
-                            • <strong>容器化与 CI/CD：</strong> 搭建基于 <strong>Docker + Jenkins/GitLab CI</strong> 的持续集成流水线，将应用部署时间缩短 60%，并确保了环境的一致性。<br>
-                            • <strong>高可用保障：</strong> 优化 Nginx 负载均衡策略与 Linux 内核参数，配合 Prometheus + Grafana 监控体系，保障核心业务在流量洪峰期间 SLA > 99.9%。
+                            • <strong>自动化媒体矩阵：</strong> 构建了基于 Python DAG 的全自动化内容工厂。整合 <strong>Tavily</strong> (信息抓取)、<strong>GPT-4o</strong> (脚本编排) 与 <strong>ElevenLabs</strong> (多角色 TTS)。<br>
+                            • <strong>零人工干预：</strong> 实现了从热点新闻监控到双人播客/视频生成的无人值守流水线，支持中/英/西多语言自动分发。
                         </p>
                     </div>
+
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025.07 - Present</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="fuxiengine.html" class="inline-link">Fuxi Engine (伏羲引擎)</a> - Full Stack Architect
+                        </h4>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>SaaS 架构：</strong> 独立开发基于 <strong>Python Flask + DeepSeek V3</strong> 的垂直领域 AI SaaS。解决了真太阳时天文计算、跨域 Cookie 传递及高并发下的 SSE 流式响应。<br>
+                            • <strong>商业闭环：</strong> 设计并落地了基于 Stripe & USDT 的混合支付网关与 Token 计费体系。
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025 - Project</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="SellerCopilot.html" class="inline-link">SellerCopilot</a> - Lead Developer
+                        </h4>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>跨境电商 RAG：</strong> 开发基于 <strong>Next.js (App Router)</strong> 的 Listing 生成工具。利用 <strong>Jina Reader</strong> 实时抓取竞品页面，配合 RAG 技术实现高转化的文案仿写。<br>
+                            • <strong>工程化：</strong> 实现了强类型 JSON 输出约束与防御性编程，确保 AI 输出内容可直接用于 Amazon 后台。
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">2025 - Concept</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="global-yield.html" class="inline-link">GlobalYield AI</a> - Technical Lead
+                        </h4>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>RWA 智能终端：</strong> 设计了 "Monitor-Analyst" 双 Agent 架构。使用 <strong>Rust</strong> 编写高性能链上数据监听器，结合 Python Pandas 进行实时利差分析，服务于 RWA 资产套利。
+                        </p>
+                    </div>
+
                 </div>
             </section>
 

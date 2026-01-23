@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -142,6 +142,54 @@
         /* 背景动画Canvas */
         #zen-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; pointer-events: none;}
 
+        /* --- NEW: Demo Button Styles --- */
+        .header-cta-box {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .demo-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 40px;
+            border: 1px solid var(--primary-gold);
+            border-radius: 50px;
+            color: var(--primary-gold);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(255, 215, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .demo-btn:hover {
+            background: var(--primary-gold);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            text-decoration: none;
+        }
+
+        .live-dot {
+            width: 8px; height: 8px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff00;
+            animation: pulse-green 2s infinite;
+        }
+        
+        .demo-btn:hover .live-dot { background-color: #000; box-shadow: none; animation: none; }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             header { padding: 20px; }
@@ -175,6 +223,13 @@
             <p class="doc-intro">
                 这份指南并非泛泛而谈的理论，而是基于【伏羲引擎】源代码特性量身打造的实操手册。<br>
             </p>
+
+            <div class="header-cta-box">
+                <a href="https://fuxiengine.xyz" target="_blank" class="demo-btn">
+                    <span class="live-dot"></span>
+                    查看项目演示 (Live Demo)
+                </a>
+            </div>
         </div>
 
         <div class="core-logic-box">
@@ -365,6 +420,3 @@
 </body>
 
 </html>
-
-
-

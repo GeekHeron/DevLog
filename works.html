@@ -3,18 +3,13 @@
 <head>
     <meta property="og:title" content="GeekHeron | 作品展示">
     <meta property="og:description" content="鹭栖数字潮汐，静观算力涌动">
-    <meta property="og:image" content="https://geekheron.github.io/DevLog//logo.png"> 
-    <meta property="og:url" 	content="https://geekheron.github.io/DevLog/">
-    <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品展示 - GeekHeron</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
     <style>
-        /* --- 1. 全局样式 (与 Article/About 统一) --- */
+        /* --- 1. 全局样式 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
             background-color: #000;
@@ -22,203 +17,94 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         
         /* --- 2. 背景特效层 --- */
-        #galaxy-field {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-        }
-        
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .overlay-dark {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 0; pointer-events: none;
+            background: rgba(0, 0, 0, 0.7); z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. 导航栏 (标准统一版) --- */
+        /* --- 3. 导航栏 --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 30px 50px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            background-color: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100;
         }
-
         .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
-        
-        /* 导航链接样式修正 */
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
-
-        /* 汉堡菜单样式 */
-        .hamburger {
-            display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative;
-        }
-        .hamburger span {
-            display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out;
-        }
+        
+        /* 汉堡菜单 */
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 9px; }
         .hamburger span:nth-child(3) { top: 18px; }
-        
         .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-        /* --- 4. 页面主体内容 --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 80px 20px;
-            position: relative; z-index: 10;
-        }
+        /* --- 4. 页面主体 --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 80px 20px; position: relative; z-index: 10; }
+        .page-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 20px; }
+        .page-title { font-size: 40px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
+        .page-subtitle { color: #666; font-family: monospace; font-size: 14px; text-transform: uppercase; }
 
-        .page-header {
-            margin-bottom: 60px;
-            border-left: 4px solid #fff; padding-left: 20px;
-        }
-
-        .page-title {
-            font-size: 40px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-        }
-
-        .page-subtitle {
-            color: #666;
-            font-family: monospace;
-            font-size: 14px;
-            text-transform: uppercase;
-        }
-
-        /* --- 5. 作品展示网格 (保留原有卡片逻辑，适配新风格) --- */
-        .work-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-        }
-
+        /* --- 5. 作品展示网格 --- */
+        .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
         .work-card {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid #333;
-            padding: 40px;
-            transition: all 0.4s ease;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            background: rgba(20, 20, 20, 0.6); border: 1px solid #333; padding: 40px;
+            transition: all 0.4s ease; display: flex; flex-direction: column; position: relative; overflow: hidden;
         }
+        .work-card:hover { transform: translateY(-5px); border-color: #fff; background: #000; box-shadow: 0 10px 30px rgba(255,255,255,0.1); }
+        .work-tag { font-size: 11px; color: #ffd700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-family: monospace; }
+        .work-card h3 { font-size: 24px; margin-bottom: 15px; font-weight: 700; color: #fff; }
+        .work-card p { color: #aaa; line-height: 1.6; margin-bottom: 30px; flex-grow: 1; font-size: 14px; }
 
-        .work-card:hover {
-            transform: translateY(-5px);
-            border-color: #fff;
-            background: #000;
-            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
-        }
-
-        .work-tag {
-            font-size: 11px;
-            color: #ffd700; /* 保留原来的金色点缀 */
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            font-family: monospace;
-        }
-
-        .work-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .work-card p {
-            color: #aaa;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            flex-grow: 1;
-            font-size: 14px;
-        }
-
-        /* 交互按钮统一化 */
-        .action-container {
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
+        /* 交互按钮 */
+        .action-container { margin-top: auto; display: flex; flex-direction: column; gap: 15px; }
         .action-btn {
-            display: inline-block;
-            padding: 12px 0;
-            text-align: center;
-            border: 1px solid #fff;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
+            display: inline-block; padding: 12px 0; text-align: center; border: 1px solid #fff;
+            color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
         }
-
-        .action-btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        .details-link {
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            text-decoration: underline;
-        }
+        .action-btn:hover { background: #fff; color: #000; }
+        .details-link { text-align: center; font-size: 12px; color: #666; text-decoration: underline; }
         .details-link:hover { color: #fff; }
 
-        /* --- 移动端适配 (标准统一版) --- */
+        /* --- 移动端适配 --- */
         @media (max-width: 768px) {
-            header { padding: 20px; justify-content: space-between; }
+            header { padding: 20px; }
             .hamburger { display: block; }
-            
-            /* 全屏菜单逻辑 */
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
-                z-index: 101;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px); z-index: 101;
                 flex-direction: column; justify-content: center; align-items: center; gap: 40px;
                 transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .nav-links.active { transform: translateX(0); }
             .nav-links a { font-size: 24px; font-weight: 800; color: #fff; }
-
-            .page-title { font-size: 30px; }
         }
     </style>
 </head>
 <body>
-
     <canvas id="galaxy-field"></canvas>
     <div class="overlay-dark"></div>
 
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
-        
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-<nav class="nav-links">
-    <a href="index.html" onclick="toggleMenu()">首页</a>
-    <a href="article.html" onclick="toggleMenu()">深度分析</a>
-    <a href="works.html" class="active" onclick="toggleMenu()">作品展示</a>
-    <a href="pricing.html" onclick="toggleMenu()">源码交付</a>
-    <a href="about.html" onclick="toggleMenu()">关于我 & 商业合作</a>
-</nav>
+        <div class="hamburger"><span></span><span></span><span></span></div>
+        <nav class="nav-links">
+            <a href="index.html" onclick="toggleMenu()">首页</a>
+            <a href="article.html" onclick="toggleMenu()">深度分析</a>
+            <a href="works.html" class="active" onclick="toggleMenu()">作品展示</a>
+            <a href="pricing.html" onclick="toggleMenu()">源码交付</a>
+            <a href="about.html" onclick="toggleMenu()">关于我 & 商业合作</a>
+        </nav>
     </header>
 
     <div class="container">
@@ -228,6 +114,16 @@
         </section>
 
         <div class="work-grid">
+            <div class="work-card" style="border-top: 3px solid #ffd700;">
+                <div class="work-tag">Indie Game / Metaphysics</div>
+                <h3>天干界：逆命 (Tiangangame)</h3>
+                <p>首款基于“伏羲引擎”的硬核八字构筑 Roguelike 游戏。将中国传统命理的生克制化、十神关系完美映射为战斗数值系统。玩家将在“流年”的时间轴上，利用五行策略逆天改命。</p>
+                <div class="action-container">
+                    <a href="tiangangame BP.html" class="action-btn">查看商业计划书 (BP)</a>
+                    <a href="tiangangame.html" class="details-link">直接查看游戏规则设定</a>
+                </div>
+            </div>
+
             <div class="work-card">
                 <div class="work-tag">AI Agent / 媒体矩阵</div>
                 <h3>InfoFlow AI (流光智能)</h3>
@@ -261,15 +157,14 @@
     </div>
 
     <script>
-        // --- 1. 背景动画 (与 Article 页面统一) ---
+        // 背景动画与菜单逻辑
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
         const particles = [];
-        const numParticles = 2000; 
+        const numParticles = 1500; 
         
         function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
-        
         class Particle {
             constructor() {
                 this.x = Math.random() * width; this.y = Math.random() * height;
@@ -286,26 +181,15 @@
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-        
         function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
         function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        
         window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
         init(); animate();
 
-        // --- 2. 菜单切换逻辑 (标准版) ---
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
-        
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        
+        function toggleMenu() { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); }
         hamburger.addEventListener('click', toggleMenu);
     </script>
 </body>
-
 </html>
-
-

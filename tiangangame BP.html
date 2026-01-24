@@ -85,12 +85,21 @@
         .card {
             background: var(--glass-bg); padding: 30px; border-radius: 8px;
             border: 1px solid var(--border-light);
+            display: flex; flex-direction: column;
         }
         .card h3 { color: var(--accent-cyan); margin-bottom: 12px; font-size: 18px; }
-        .card p { font-size: 14px; color: #ccc; margin-bottom: 15px; }
-        .card ul { list-style: none; padding-left: 10px; }
+        .card p { font-size: 14px; color: #ccc; margin-bottom: 15px; flex-grow: 1; }
+        .card ul { list-style: none; padding-left: 10px; margin-top: auto; }
         .card ul li { position: relative; padding-left: 15px; font-size: 13px; color: #999; margin-bottom: 6px; }
         .card ul li::before { content: "•"; color: var(--accent-gold); position: absolute; left: 0; }
+
+        /* 价格标签 */
+        .price-tag {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-top: 15px;
+        }
+        .price-label { font-size: 12px; color: #888; text-transform: uppercase; }
+        .price-val { color: var(--accent-gold); font-weight: bold; font-family: monospace; font-size: 16px; }
 
         /* 亮点数据条 */
         .stats-bar {
@@ -217,6 +226,44 @@
                 <p style="margin-top: 15px; font-size: 14px; color: #888;">
                     * 区别于市面上数值随意的修仙游戏，本作所有伤害修正系数均来自真实的八字强弱量化算法。
                 </p>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">
+                商业模式 <span>MONETIZATION & EXPANSION</span>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>买断制 (Premium)</h3>
+                    <p>采用 Steam 标准买断模式，无内购 (No Microtransactions)。</p>
+                    <div style="margin-top: auto;">
+                        <div class="price-tag">
+                            <span class="price-label">Early Access</span>
+                            <span class="price-val">$9.99 / ¥38</span>
+                        </div>
+                        <div class="price-tag" style="border-top:none; margin-top:5px; padding-top:0;">
+                            <span class="price-label">Official Launch</span>
+                            <span class="price-val">$14.99 / ¥58</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>DLC 1: 纳音之乱</h3>
+                    <p>引入“纳音五行”系统 (如海中金、炉中火)，增加 60+ 种全新变异卡牌。</p>
+                    <div class="price-tag">
+                        <span class="price-label">Expansion Pack</span>
+                        <span class="price-val">$4.99</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>DLC 2: 紫微降临</h3>
+                    <p>引入“紫微斗数”双职业系统 (Dual-Class System)，命宫主星与十四主星羁绊。</p>
+                    <div class="price-tag">
+                        <span class="price-label">Expansion Pack</span>
+                        <span class="price-val">$6.99</span>
+                    </div>
+                </div>
             </div>
         </section>
 

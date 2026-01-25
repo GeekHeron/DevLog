@@ -477,13 +477,16 @@
     </main>
 
     <script>
-        // --- 1. 背景粒子 (保持原样以维持视觉连贯性) ---
+        // --- 1. 背景粒子与流星特效 (已更新) ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
         let particles = [];
+        let meteors = []; // 存储流星的数组
         
         function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        
+        // 基础星空粒子类
         class Particle {
             constructor() {
                 this.x = (Math.random() - 0.5) * width * 2;
@@ -506,12 +509,76 @@
                 }
             }
         }
+
+        // 流星类 (新增)
+        class Meteor {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                // 从上方或左侧随机出现
+                if (Math.random() > 0.5) {
+                    this.x = Math.random() * width; this.y = -100;
+                } else {
+                    this.x = -100; this.y = Math.random() * height * 0.5;
+                }
+                // 设置运动矢量 (向右下方快速移动)
+                const speed = Math.random() * 15 + 10;
+                const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2; // 约45度角
+                this.speedX = Math.cos(angle) * speed;
+                this.speedY = Math.sin(angle) * speed;
+                this.length = Math.random() * 80 + 50; // 流星长度
+                this.alpha = 1; this.active = true;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                // 飞出屏幕太远则渐隐
+                if (this.x > width + 200 || this.y > height + 200) { this.alpha -= 0.05; }
+                if (this.alpha <= 0) { this.active = false; }
+            }
+            draw() {
+                if (!this.active) return;
+                // 计算尾巴坐标
+                const speedMagnitude = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
+                const tailX = this.x - (this.speedX / speedMagnitude) * this.length;
+                const tailY = this.y - (this.speedY / speedMagnitude) * this.length;
+                // 创建渐变尾迹
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
+                gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                
+                ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(tailX, tailY);
+                ctx.strokeStyle = gradient; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.stroke();
+            }
+        }
+
         function initParticles() { particles = []; for(let i=0; i<800; i++) particles.push(new Particle()); }
-        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        
+        // 尝试生成新流星
+        function trySpawnMeteor() {
+            // 每帧 1% 概率生成，最多同时存在 3 个
+            if (Math.random() < 0.01 && meteors.length < 3) { meteors.push(new Meteor()); }
+        }
+
+        function animate() { 
+            ctx.clearRect(0, 0, width, height); 
+            // 绘制原有星空
+            particles.forEach(p => { p.update(); p.draw(); }); 
+            
+            // 绘制流星 (新增逻辑)
+            trySpawnMeteor();
+            meteors.forEach((m, index) => {
+                m.update(); m.draw();
+                if (!m.active) meteors.splice(index, 1); // 移除不活跃的流星
+            });
+            
+            requestAnimationFrame(animate); 
+        }
+        
         window.addEventListener('resize', () => { resize(); initParticles(); });
         resize(); initParticles(); animate();
 
-        // --- 2. 打字机特效 (更新内容) ---
+        // --- 2. 打字机特效 ---
         const textToType = "Loading core modules... AI Agents initialized. Business logic ready.";
         const typeElement = document.getElementById('typewriter');
         let i = 0;

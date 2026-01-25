@@ -3,117 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>技术架构详解 | GlobalYield AI</title>
+    <title>核心架构 Deep Dive | GlobalYield AI</title>
     <style>
-        :root { --accent: #00d2ff; --bg: #050505; --card-bg: rgba(255,255,255,0.03); }
+        :root { 
+            --accent: #00d2ff; 
+            --accent-dim: rgba(0, 210, 255, 0.1);
+            --bg: #050505; 
+            --card-bg: #0a0a0a; 
+            --border: #222;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: "JetBrains Mono", monospace; background: var(--bg); color: #ccc; line-height: 1.6; }
         
-        /* 布局层级 */
-        .container { max-width: 1000px; margin: 0 auto; padding: 80px 20px; }
-        .header-section { border-left: 4px solid var(--accent); padding-left: 30px; margin-bottom: 60px; }
-        h1 { color: #fff; font-size: 32px; letter-spacing: -1px; }
-        .tagline { color: var(--accent); font-size: 14px; text-transform: uppercase; margin-top: 5px; }
-
-        /* 架构图模拟器 */
-        .arch-viz {
-            background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 40px;
-            border-radius: 8px; margin: 40px 0; position: relative; overflow: hidden;
+        body { 
+            font-family: "JetBrains Mono", Consolas, "Courier New", monospace; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            padding-bottom: 80px;
         }
-        .node-grid { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 30px; align-items: center; }
-        .node { background: var(--card-bg); border: 1px solid #444; padding: 15px; text-align: center; font-size: 12px; position: relative; }
-        .node.active { border-color: var(--accent); color: #fff; box-shadow: 0 0 15px rgba(0,210,255,0.2); }
-        .arrow { text-align: center; color: #555; font-size: 20px; }
-
-        /* 技术栈板块 */
-        .tech-section { margin-top: 60px; }
-        h2 { color: #fff; font-size: 22px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
-        h2::before { content: "//"; color: var(--accent); }
         
+        /* 布局容器 */
+        .container { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
+        
+        /* 头部 */
+        .header-section { border-left: 4px solid var(--accent); padding-left: 25px; margin-bottom: 50px; }
+        h1 { font-size: 28px; letter-spacing: -0.5px; color: #fff; margin-bottom: 8px; }
+        .tagline { color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* 通用卡片样式 */
         .tech-card {
-            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
-            padding: 30px; margin-bottom: 20px; transition: 0.3s;
+            background: var(--card-bg); 
+            border: 1px solid var(--border);
+            padding: 30px; 
+            margin-bottom: 30px; 
+            border-radius: 6px;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
         }
-        .tech-card:hover { border-color: var(--accent); transform: translateX(10px); }
-        .tech-card h3 { color: var(--accent); font-size: 18px; margin-bottom: 15px; }
-        .code-snippet { background: #000; padding: 15px; border-radius: 4px; color: #8fbc8f; font-size: 13px; margin-top: 15px; }
+        .tech-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        
+        /* 标题样式 */
+        h2 { font-size: 18px; margin-bottom: 20px; color: #fff; display: flex; align-items: center; }
+        h2::before { content: "::"; color: var(--accent); margin-right: 10px; opacity: 0.8; }
+        
+        h3 { font-size: 15px; color: var(--accent); margin-bottom: 10px; margin-top: 20px; }
+        h3:first-of-type { margin-top: 0; }
 
-        .back-link { display: inline-block; margin-top: 40px; color: #666; text-decoration: none; font-size: 14px; }
-        .back-link:hover { color: var(--accent); }
+        p { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; text-align: justify; }
+
+        /* 列表样式 */
+        ul { list-style: none; margin-bottom: 15px; }
+        ul li { 
+            font-size: 13px; 
+            color: var(--text-main); 
+            margin-bottom: 8px; 
+            padding-left: 15px; 
+            position: relative; 
+        }
+        ul li::before { 
+            content: ">"; 
+            position: absolute; 
+            left: 0; 
+            color: var(--accent); 
+            font-size: 12px; 
+        }
+        strong { color: #fff; font-weight: 600; }
+
+        /* 1. 数据管道样式 */
+        .pipeline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .pipeline-item { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 4px; border: 1px dashed #333; }
+        .pipeline-badge { display: inline-block; font-size: 10px; padding: 2px 6px; background: var(--accent-dim); color: var(--accent); border-radius: 3px; margin-bottom: 8px; }
+
+        /* 2. Agent 对比样式 */
+        .agent-flex { display: flex; gap: 20px; flex-wrap: wrap; }
+        .agent-box { flex: 1; min-width: 280px; background: rgba(0,0,0,0.3); padding: 20px; border-left: 2px solid #333; }
+        .agent-box.monitor { border-color: #ff0055; } /* 红色代表警报/监控 */
+        .agent-box.analyst { border-color: var(--accent); } /* 蓝色代表分析/智力 */
+        .agent-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #fff; }
+        .tech-stack-mini { font-size: 11px; color: #666; font-family: monospace; border-top: 1px solid #222; padding-top: 8px; margin-top: 10px; }
+
+        /* 3. 公式样式 */
+        .math-box { 
+            background: #000; 
+            padding: 20px; 
+            text-align: center; 
+            border-radius: 4px; 
+            margin: 20px 0; 
+            font-family: "Times New Roman", serif; 
+            font-style: italic; 
+            font-size: 18px; 
+            color: #fff;
+            border: 1px solid #333;
+        }
+        .metrics-bar { display: flex; height: 6px; width: 100%; background: #222; margin-top: 25px; border-radius: 3px; overflow: hidden; }
+        .metric-seg { height: 100%; transition: width 0.5s; }
+        .legend { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; font-size: 11px; justify-content: center; }
+        .legend-item span { display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; }
+
+        /* 4. 表格样式 */
+        .specs-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+        .specs-table th { text-align: left; color: #666; font-weight: normal; padding: 12px 10px; border-bottom: 1px solid #333; width: 30%; }
+        .specs-table td { color: #fff; padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .specs-table tr:last-child td, .specs-table tr:last-child th { border-bottom: none; }
+        
+        .code { color: var(--accent); font-family: monospace; background: var(--accent-dim); padding: 2px 5px; border-radius: 3px; font-size: 12px; }
+
+        /* 底部 */
+        .footer-link { display: inline-block; margin-top: 20px; color: #555; text-decoration: none; font-size: 12px; border-bottom: 1px dotted #555; }
+        .footer-link:hover { color: var(--accent); border-color: var(--accent); }
+
     </style>
 </head>
 <body>
+
     <div class="container">
         <div class="header-section">
-            <h1>GlobalYield AI 技术架构详解</h1>
-            <p class="tagline">System Design & Data Pipeline (Ver 2.0)</p>
+            <h1>GlobalYield AI 核心架构 (Deep Dive)</h1>
+            <p class="tagline">System Architecture // Ver 2.0 // RWA Protocol</p>
         </div>
 
-        <section class="arch-viz">
-            <div class="node-grid">
-                <div class="column">
-                    <div class="node">RPC Nodes (Alchemy)</div>
-                    <div class="arrow">↓</div>
-                    <div class="node">Off-chain APIs (Bloomberg)</div>
+        <div class="tech-card">
+            <h2>1. 异构数据采集与 ETL 管道</h2>
+            <p>为了捕获 10 万亿级的 RWA 市场，数据层必须同时处理结构化与非结构化数据，确保数据颗粒度达到“资产级”。</p>
+            
+            <div class="pipeline-grid">
+                <div class="pipeline-item">
+                    <span class="pipeline-badge">On-Chain</span>
+                    <h3>链上扫描器 (Scraper)</h3>
+                    <ul>
+                        <li><strong>语言:</strong> Rust (高性能微服务)</li>
+                        <li><strong>数据源:</strong> Alchemy / Infura 节点</li>
+                        <li><strong>逻辑:</strong> 实时监听底层资产池质押率波动 (Centrifuge, Ondo) 及 Transfer/Yield 事件。</li>
+                    </ul>
                 </div>
-                <div class="column">
-                    <div class="node active">
-                        <strong>Monitor Agent</strong>
-                        <p style="font-size: 10px; opacity: 0.7;">Real-time Yield Scanning</p>
-                    </div>
-                    <div class="arrow">↕ (Dual-Stream) ↕</div>
-                    <div class="node active">
-                        <strong>Analyst Agent</strong>
-                        <p style="font-size: 10px; opacity: 0.7;">Risk Penetration (LLM)</p>
-                    </div>
+                <div class="pipeline-item">
+                    <span class="pipeline-badge">Off-Chain</span>
+                    <h3>宏观预言机 (Oracle)</h3>
+                    <ul>
+                        <li><strong>API:</strong> Bloomberg / Refinitiv</li>
+                        <li><strong>作用:</strong> 获取 10Y Treasury Yield 等宏观利率作为锚点，计算 RWA 真实溢价。</li>
+                    </ul>
                 </div>
-                <div class="column">
-                    <div class="node">User Terminal (Next.js)</div>
-                    <div class="arrow">↓</div>
-                    <div class="node">Web3 Wallet / Execution</div>
-                </div>
-            </div>
-        </section>
-
-        <div class="tech-section">
-            <div class="tech-card">
-                <h3>1. 数据采集层 (Ingestion Layer)</h3>
-                <p>利用 Rust 编写的高性能 Scraper 定时抓取链上 RWA 协议（如 Centrifuge, Ondo）的实时数据。通过定制化的 Oracle 机制平衡链下宏观数据与链上 TVL 波动。</p>
-                <div class="code-snippet">
-// 伪代码：RWA 协议监听逻辑
-fn monitor_yield(protocol_addr: Address) {
-    let logs = provider.get_logs(Filter::new().address(protocol_addr)).await?;
-    let yield_rate = parse_apy(logs);
-    push_to_vector_db(yield_rate);
-}
-                </div>
-            </div>
-
-            <div class="tech-card">
-                <h3>2. 双 Agent 决策引擎 (The Dual-Agent Core)</h3>
-                <p>这是 GlobalYield AI 的核心壁垒：</p>
-                <ul>
-                    <li><strong>Monitor Agent (Python/Pandas):</strong> 负责高频数据的利差计算，当跨协议溢价超过阈值时触发信号。</li>
-                    <li><strong>Analyst Agent (GPT-4o/Claude):</strong> 负责非结构化法律文档的语义分析，识别资产底层的潜在法律风险。</li>
-                </ul>
-            </div>
-
-            <div class="tech-card">
-                <h3>3. 风控模型 (GY-Score Model)</h3>
-                <p>基于 Milvus 向量数据库存储的千万级法律文档向量，结合实时违约数据，生成动态的安全评估评分（0-100）。</p>
-                <div class="code-snippet">
-# 风险评分权重配置
-RISK_WEIGHTS = {
-    "liquidity_risk": 0.4,
-    "legal_compliance": 0.35,
-    "oracle_reliability": 0.15,
-    "historical_default": 0.1
-}
+                <div class="pipeline-item">
+                    <span class="pipeline-badge">Unstructured</span>
+                    <h3>文档向量化管道</h3>
+                    <ul>
+                        <li><strong>目标:</strong> PDF 招股书、审计报告、法律意见书。</li>
+                        <li><strong>处理:</strong> OCR 解析 -> 文本分块 -> 向量化嵌入 (Embeddings) -> 存入 Milvus。</li>
+                    </ul>
                 </div>
             </div>
         </div>
 
-        <a href="global-yield.html" class="back-link">← 返回商业计划书</a>
+        <div class="tech-card">
+            <h2>2. "Monitor-Analyst" 双 Agent 协同机制</h2>
+            <p>这是系统最硬核的部分，解决了 RWA 领域“看得到收益但看不清风险”的痛点。</p>
+            
+            <div class="agent-flex">
+                <div class="agent-box monitor">
+                    <div class="agent-title">Type A: Monitor Agent (监控智能体)</div>
+                    <ul>
+                        <li><strong>职责:</strong> 执行高频利差扫描，维护全网收益率矩阵。</li>
+                        <li><strong>触发逻辑:</strong> 当检测到 RWA 代币 APY 异常升高且 TVL 稳定时，向 Analyst 发起“穿透申请”。</li>
+                    </ul>
+                    <div class="tech-stack-mini">Stack: Python (Pandas/NumPy) + Redis</div>
+                </div>
+
+                <div class="agent-box analyst">
+                    <div class="agent-title">Type B: Analyst Agent (分析智能体)</div>
+                    <ul>
+                        <li><strong>职责:</strong> 深度审计与风险穿透。</li>
+                        <li><strong>逻辑:</strong> 基于 RAG 检索向量库。例如：对比链上坏账率与上月 PDF 审计报告是否吻合，识别“借新还旧”庞氏特征。</li>
+                    </ul>
+                    <div class="tech-stack-mini">Stack: GPT-4o Fine-tuned + Milvus Vector DB</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-card">
+            <h2>3. GY-Score 风险评分算法</h2>
+            <p>系统不直接给出“买入”建议，而是生成一个 0-100 的动态评分，量化资产健康度。</p>
+            
+            <div class="math-box">
+                GY_Score = &sum; ( Metrics<sub>i</sub> &times; Weight<sub>i</sub> )
+            </div>
+
+            <div class="metrics-bar">
+                <div class="metric-seg" style="width: 40%; background: #00d2ff;"></div> <div class="metric-seg" style="width: 35%; background: #7928ca;"></div> <div class="metric-seg" style="width: 15%; background: #ff0080;"></div> <div class="metric-seg" style="width: 10%; background: #79ffe1;"></div> </div>
+            
+            <div class="legend">
+                <div class="legend-item"><span style="background: #00d2ff;"></span>流动性深度 (40%)</div>
+                <div class="legend-item"><span style="background: #7928ca;"></span>法律合规性 (35%)</div>
+                <div class="legend-item"><span style="background: #ff0080;"></span>预言机可靠性 (15%)</div>
+                <div class="legend-item"><span style="background: #79ffe1;"></span>历史信用 (10%)</div>
+            </div>
+            <div style="margin-top: 15px; font-size: 12px; color: #666; text-align: center;">*注：法律合规性由 AI 分析资产回购保证条款及管辖权效力得出。</div>
+        </div>
+
+        <div class="tech-card">
+            <h2>4. 关键技术选型 (Full Stack)</h2>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>模块 (Module)</th>
+                        <th>技术选型 (Tech)</th>
+                        <th>核心作用 (Role)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>前端看板</td>
+                        <td><span class="code">Next.js 14</span> + <span class="code">Tailwind</span></td>
+                        <td>提供毫秒级响应的数据可视化，支持深色模式与移动端适配。</td>
+                    </tr>
+                    <tr>
+                        <td>向量数据库</td>
+                        <td><span class="code">Milvus</span> / <span class="code">Pinecone</span></td>
+                        <td>存储数以万计的 RWA 法律文档向量，支持高维语义检索。</td>
+                    </tr>
+                    <tr>
+                        <td>后端通信</td>
+                        <td><span class="code">gRPC</span></td>
+                        <td>保证 Rust Scraper 与 Python 决策引擎之间的高性能低延迟通信。</td>
+                    </tr>
+                    <tr>
+                        <td>通知推送</td>
+                        <td><span class="code">WebSocket</span> + <span class="code">Discord Bot</span></td>
+                        <td>发现瞬时套利空间 (Spread) 时，秒级直推用户私域。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <a href="#" class="footer-link">← Return to Business Plan</a>
     </div>
+
 </body>
 </html>

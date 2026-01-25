@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术架构详解 | GlobalYield AI</title>
+    <style>
+        :root { --accent: #00d2ff; --bg: #050505; --card-bg: rgba(255,255,255,0.03); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "JetBrains Mono", monospace; background: var(--bg); color: #ccc; line-height: 1.6; }
+        
+        /* 布局层级 */
+        .container { max-width: 1000px; margin: 0 auto; padding: 80px 20px; }
+        .header-section { border-left: 4px solid var(--accent); padding-left: 30px; margin-bottom: 60px; }
+        h1 { color: #fff; font-size: 32px; letter-spacing: -1px; }
+        .tagline { color: var(--accent); font-size: 14px; text-transform: uppercase; margin-top: 5px; }
+
+        /* 架构图模拟器 */
+        .arch-viz {
+            background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 40px;
+            border-radius: 8px; margin: 40px 0; position: relative; overflow: hidden;
+        }
+        .node-grid { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 30px; align-items: center; }
+        .node { background: var(--card-bg); border: 1px solid #444; padding: 15px; text-align: center; font-size: 12px; position: relative; }
+        .node.active { border-color: var(--accent); color: #fff; box-shadow: 0 0 15px rgba(0,210,255,0.2); }
+        .arrow { text-align: center; color: #555; font-size: 20px; }
+
+        /* 技术栈板块 */
+        .tech-section { margin-top: 60px; }
+        h2 { color: #fff; font-size: 22px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        h2::before { content: "//"; color: var(--accent); }
+        
+        .tech-card {
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px; margin-bottom: 20px; transition: 0.3s;
+        }
+        .tech-card:hover { border-color: var(--accent); transform: translateX(10px); }
+        .tech-card h3 { color: var(--accent); font-size: 18px; margin-bottom: 15px; }
+        .code-snippet { background: #000; padding: 15px; border-radius: 4px; color: #8fbc8f; font-size: 13px; margin-top: 15px; }
+
+        .back-link { display: inline-block; margin-top: 40px; color: #666; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>GlobalYield AI 技术架构详解</h1>
+            <p class="tagline">System Design & Data Pipeline (Ver 2.0)</p>
+        </div>
+
+        <section class="arch-viz">
+            <div class="node-grid">
+                <div class="column">
+                    <div class="node">RPC Nodes (Alchemy)</div>
+                    <div class="arrow">↓</div>
+                    <div class="node">Off-chain APIs (Bloomberg)</div>
+                </div>
+                <div class="column">
+                    <div class="node active">
+                        <strong>Monitor Agent</strong>
+                        <p style="font-size: 10px; opacity: 0.7;">Real-time Yield Scanning</p>
+                    </div>
+                    <div class="arrow">↕ (Dual-Stream) ↕</div>
+                    <div class="node active">
+                        <strong>Analyst Agent</strong>
+                        <p style="font-size: 10px; opacity: 0.7;">Risk Penetration (LLM)</p>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="node">User Terminal (Next.js)</div>
+                    <div class="arrow">↓</div>
+                    <div class="node">Web3 Wallet / Execution</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="tech-section">
+            <div class="tech-card">
+                <h3>1. 数据采集层 (Ingestion Layer)</h3>
+                <p>利用 Rust 编写的高性能 Scraper 定时抓取链上 RWA 协议（如 Centrifuge, Ondo）的实时数据。通过定制化的 Oracle 机制平衡链下宏观数据与链上 TVL 波动。</p>
+                <div class="code-snippet">
+// 伪代码：RWA 协议监听逻辑
+fn monitor_yield(protocol_addr: Address) {
+    let logs = provider.get_logs(Filter::new().address(protocol_addr)).await?;
+    let yield_rate = parse_apy(logs);
+    push_to_vector_db(yield_rate);
+}
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>2. 双 Agent 决策引擎 (The Dual-Agent Core)</h3>
+                <p>这是 GlobalYield AI 的核心壁垒：</p>
+                <ul>
+                    <li><strong>Monitor Agent (Python/Pandas):</strong> 负责高频数据的利差计算，当跨协议溢价超过阈值时触发信号。</li>
+                    <li><strong>Analyst Agent (GPT-4o/Claude):</strong> 负责非结构化法律文档的语义分析，识别资产底层的潜在法律风险。</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h3>3. 风控模型 (GY-Score Model)</h3>
+                <p>基于 Milvus 向量数据库存储的千万级法律文档向量，结合实时违约数据，生成动态的安全评估评分（0-100）。</p>
+                <div class="code-snippet">
+# 风险评分权重配置
+RISK_WEIGHTS = {
+    "liquidity_risk": 0.4,
+    "legal_compliance": 0.35,
+    "oracle_reliability": 0.15,
+    "historical_default": 0.1
+}
+                </div>
+            </div>
+        </div>
+
+        <a href="global-yield.html" class="back-link">← 返回商业计划书</a>
+    </div>
+</body>
+</html>

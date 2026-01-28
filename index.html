@@ -69,7 +69,6 @@
         }
 
         /* --- [新增] SEO 专用隐形样式 (SR-Only Pattern) --- */
-        /* 这种写法让谷歌爬虫能读到，但人类肉眼完全不可见，且不占用布局空间 */
         .seo-visually-hidden {
             position: absolute;
             width: 1px;
@@ -402,7 +401,7 @@
         <div class="hud-data">
             <span>SYS.STATUS: ONLINE</span>
             <span>MEM: 64TB / VISUAL: RETINA</span>
-            <span>LOC: 34.05N, 118.24W / GEO.SYNC</span>
+            <span id="user-location">LOC: SCANNING... / GEO.SYNC</span>
             <span id="fps-counter">FRAME: 60FPS</span>
         </div>
     </div>
@@ -543,10 +542,39 @@
         resize();
         initParticles();
         animate();
+
+        // --- 5. [新增] 地理位置模块 ---
+        function initLocation() {
+            const locElement = document.getElementById('user-location');
+            if (!locElement) return;
+
+            if (!navigator.geolocation) {
+                locElement.textContent = "LOC: N/A / SIGNAL.LOST";
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    // 格式化逻辑：绝对值 + 方向字符 (保持 sci-fi 风格)
+                    const latDir = lat >= 0 ? 'N' : 'S';
+                    const lonDir = lon >= 0 ? 'E' : 'W';
+                    const latText = Math.abs(lat).toFixed(2);
+                    const lonText = Math.abs(lon).toFixed(2);
+
+                    locElement.textContent = `LOC: ${latText}${latDir}, ${lonText}${lonDir} / GEO.SYNC`;
+                },
+                (error) => {
+                    // 权限拒绝或获取失败时的回退显示
+                    console.warn("Location access denied or failed:", error.message);
+                    locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
+                },
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            );
+        }
+        initLocation();
     </script>
 </body>
-
 </html>
-
-
-

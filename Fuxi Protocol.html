@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta property="og:title" content="伏羲协议 Fuxi Protocol：重构形而上学的计算神学">
+    <meta property="og:description" content="当传统的八字命理遇上 Web3 与 AI 大模型，一场名为“计算神学”的社会实验正在发生。">
+    <meta property="og:image" content="https://geekheron.github.io/DevLog//logo.png"> 
+    <meta property="og:url" 	content="https://geekheron.github.io/DevLog/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伏羲协议 Fuxi Protocol：用极客思维重构形而上学 - GeekHeron</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* --- 基础样式 (复用 GeekHeron Theme) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #ccc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 0; pointer-events: none;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px; border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* --- 文章容器 --- */
+        .container {
+            max-width: 800px; margin: 0 auto; padding: 80px 20px 150px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 40px;
+        }
+        .article-meta { font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px; }
+        .tag {
+            display: inline-block; padding: 2px 8px; border: 1px solid #444; 
+            font-size: 12px; border-radius: 2px; margin-left: 10px; color: #888;
+        }
+        .article-title {
+            font-size: 42px; font-weight: 700; letter-spacing: -1px; 
+            color: #fff; line-height: 1.3; margin-bottom: 20px;
+        }
+
+        /* --- 正文排版 --- */
+        .article-content h2 {
+            font-size: 28px; color: #fff; margin-top: 60px; margin-bottom: 25px;
+            /* 赛博朋克青色与紫色撞色，代表科技与玄学的融合 */
+            border-left: 4px solid #00ffcc; 
+            padding-left: 15px;
+        }
+        .article-content h3 {
+            font-size: 22px; color: #ddd; margin-top: 40px; margin-bottom: 15px; font-weight: 600;
+        }
+        .article-content p { margin-bottom: 25px; font-size: 18px; text-align: justify; }
+        .article-content ul { margin-bottom: 30px; padding-left: 20px; }
+        .article-content li { margin-bottom: 10px; list-style-type: square; color: #bbb; }
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        .quote-block {
+            border-left: 2px solid #666; padding-left: 20px; margin: 30px 0;
+            font-style: italic; color: #888;
+        }
+
+        /* 数学公式容器 */
+        .math-block {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px;
+            margin: 30px 0; text-align: center; font-family: "Times New Roman", serif;
+            border: 1px solid #333;
+            overflow-x: auto;
+        }
+
+        .back-btn {
+            display: inline-block; margin-top: 80px;
+            font-size: 14px; color: #666; border: 1px solid #333;
+            padding: 10px 20px; transition: 0.3s;
+        }
+        .back-btn:hover { border-color: #fff; color: #fff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 15px 20px; gap: 15px; }
+            .nav-links { display: flex; width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+            .nav-links a { margin-left: 0; font-size: 14px; }
+            
+            .container { padding: 40px 20px 100px; }
+            .article-header { margin-bottom: 40px; padding-bottom: 30px; }
+            .article-title { font-size: 28px; line-height: 1.3; }
+            
+            .article-content h2 { font-size: 22px; margin-top: 40px; }
+            .article-content p { font-size: 17px; text-align: left; }
+            
+            .math-block { padding: 15px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">项目日志</a>
+            <a href="works.html">作品展示</a>
+            <a href="about.html">关于博主</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2026.02.26</span>
+                <span class="tag">WEB3</span>
+                <span class="tag">AI-AGENT</span>
+                <span class="tag">DESCI</span>
+                <span class="tag">METAPHYSICS</span>
+            </div>
+            <h1 class="article-title">伏羲协议 Fuxi Protocol：<br>用极客思维重构形而上学</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                当传统的八字命理遇上 Web3 的资产确认与 AI 大模型的算力解析，一场名为“计算神学”的社会实验正在展开。
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. 核心叙事：算命的终结与“计算神学”的崛起</h2>
+            <p>伏羲协议（Fuxi Protocol）的核心并不是在互联网上再造一个算命网站，而是利用现代极客技术对传统东方形而上学进行<strong>概念重塑</strong>。对标 Consumer Crypto（如 Friend.tech）、DeSci（计算神学）以及预测市场，协议重构了以下三个基础逻辑：</p>
+            <ul>
+                <li><strong>算命 ➔ AI 预言机 (Oracle)：</strong> 将传统算命逻辑转化为链上可验证的预测服务。例如，输入出生时间与地点，由 DeepSeek 模型生成运势概率分布，并通过 Merkle Proof 上链存证，打破算命先生的“黑盒”。</li>
+                <li><strong>八字 ➔ 链上 DID / SBT：</strong> 用户的出生年月日时构成唯一的“八字指纹”，铸造为不可转让的 Soulbound Token (SBT)（例如绑定至 <code>0x7a8b...cdef</code>），成为用户在 Web3 世界的数字命格锚点。</li>
+                <li><strong>改运 ➔ 状态跃迁：</strong> 用户通过完成特定链上行为（如参与 Karma Pool），触发系统状态变量。系统依据预设规则更新其 SBT 元数据字段（例如“偏财运”权重从 0.42 提升至 0.67），将“改运”客观地写入链上。</li>
+            </ul>
+            
+            <h2>2. 技术架构：混合链网络与 AI 逻辑引擎</h2>
+            <p>为了兼顾去中心化的安全性与高频调用的性能，伏羲协议采用了务实的架构设计：</p>
+            <ul>
+                <li><strong>智能合约层 (Base / Solana)：</strong> 核心合约（如 SBT 铸造与 Karma Pool）部署在 EVM 兼容的 <strong>Base 主网</strong>，利用 Optimism Bedrock 保障安全；高吞吐的流式机反馈则桥接至 <strong>Solana</strong> 用于实时运势推送。</li>
+                <li><strong>后端 Oracle (Python + DeepSeek)：</strong> 采用 Python (Web3.py + Solana-Py) 监听链上事件（如 <code>ComputeFortune</code>）。后端调用 <code>deepseek-chat-v2-7b</code> 接口，输入标准化八字结构体，并强制模型输出 JSON 格式的运势报告（含吉凶指数、建议行动等）。结果哈希使用 SHA-256 上链。</li>
+                <li><strong>前端 DApp：</strong> 支持 Connect Wallet 一键连接。核心是一个 SBT 可视化面板，以罗盘 UI 展示八字十神分布，并支持导出 PNG 分享至 X (原 Twitter)。</li>
+            </ul>
+
+            <h2>3. 代币经济：双币飞轮与“命理空投”</h2>
+            <p>协议采用了经典的双代币模型（$FUXI & $SQI），并设计了极具裂变效应的空投机制：</p>
+            
+            <h3>双代币模型</h3>
+            <ul>
+                <li><strong>$FUXI 治理币：</strong> 承载协议的长期价值。持有 $\ge 1000$ $FUXI 可发起 DAO 提案。协议将所有 SBT 铸造费、Karma Pool 手续费及玄学 NFT 交易税的 <strong>70%</strong> 用于 $FUXI 回购并销毁。</li>
+                <li><strong>$SQI 实用币：</strong> 系统的运行燃料。每次调用 DeepSeek AI 算力需消耗 12-89 SQI。铸造八字 SBT 收取 33 SQI。用户可通过每日签到（5 SQI）和邀请机制获取。</li>
+            </ul>
+
+            <h3>Proof of Destiny（命运证明空投）</h3>
+            <p>空投资格（Airdrop Weight）的计算不只看交互，更看“命局”。命局稀缺度决定权重，例如，如果八字排盘满足特定的贵格（如“水木清华”），其分配权重将产生乘数效应：</p>
+            <div class="math-block">
+                $$Weight_{Airdrop} = Base \times (1 + \sum Rarity\_Multiplier_{i}) \times Anti\_Sybil\_Factor$$
+            </div>
+            <p>为防止女巫攻击（Anti-Sybil），系统强制要求空投领取地址通过 <strong>BrightID 或 World ID 人脸验证</strong>，且近30天至少有3笔非零 Gas 费交易。</p>
+
+            <h2>4. 冷启动与生态闭环 (Go-to-Market)</h2>
+            <p>伏羲协议的推向市场策略分为三个递进阶段：</p>
+            <ul>
+                <li><strong>Phase 1 (病毒传播)：</strong> 推出“钱包地址算命”工具，输入任意以太坊地址即可生成“链上命格报告”（如 V神 的钱包是“丙火日主，坐实土库”）。同时推出“命格稀缺度 PK”，利用用户的攀比心理在社交媒体裂变。</li>
+                <li><strong>Phase 2 (资产沉淀)：</strong> 引导用户提交真实出生信息铸造八字 SBT，建立护城河。通过 Push Protocol 发送 Web3 原生的每日运势通知（例如“今日宜提交 DAO 提案，忌跨链转账”）。</li>
+                <li><strong>Phase 3 (生态闭环)：</strong> 推出因果预测池（Karma Pool）和集成 Blur 风格的玄学 NFT 市场（强制校验买家 SBT 的命理属性，例如“只允许水命人购买”），完成流量到变现的最终转化。</li>
+            </ul>
+
+            <h2>5. 风险控制与合规底线</h2>
+            <p>在拥抱创新的同时，协议在合规与安全上设立了严格的防火墙：</p>
+            <ul>
+                <li><strong>合规性：</strong> 前端 Nginx 配置 GeoIP 模块，拒绝来自美国 (US) 与中国大陆 (CN) 的 HTTP 请求。明确声明 $FUXI 不代表项目股权，规避 SEC 证券属性。</li>
+                <li><strong>安全性：</strong> 预言机采用 3-of-5 多签 Oracle 架构（节点分散部署于 AWS, Google Cloud, 阿里云）。最关键的是引入了 <strong>隐私 ZK 证明</strong>，用户可选择启用 zk-SNARKs 隐藏真实出生时间，仅向合约提交“该时间生成的八字符合特定条件”的证明。</li>
+            </ul>
+
+        </article>
+
+    </main>
+
+    <script>
+        /* 粒子背景动画 (复用逻辑) */
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 255, 204, ${this.alpha})`; /* 调整为科技青色 */
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+</body>
+
+</html>

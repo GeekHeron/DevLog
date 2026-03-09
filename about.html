@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta property="og:title" content="关于我 & 战略咨询 | GeekHeron">
-    <meta property="og:description" content="为企业与创业者提供 AI 时代的顶层技术架构与商业落地策略。">
+    <meta property="og:title" content="关于我 & Agent 部署 | GeekHeron">
+    <meta property="og:description" content="独立开发者，为企业提供 OpenClaw Agent 私有化部署与定制化业务工作流开发。">
     <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
     <meta property="og:url" content="https://geekheron.github.io/DevLog/">
     <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于 & 咨询 - GeekHeron</title>
+    <title>关于 & 业务合作 - GeekHeron</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <script type="application/ld+json">
@@ -17,9 +17,9 @@
       "@type": "Person",
       "name": "王鉴锋",
       "additionalName": "GeekHeron",
-      "jobTitle": "独立战略顾问 / AI 商业架构师",
+      "jobTitle": "独立开发者 / AI Agent 架构师",
       "url": "https://geekheron.github.io/DevLog/about.html",
-      "knowsAbout": ["Business Strategy", "AI Architecture", "Digital Transformation", "RWA"]
+      "knowsAbout": ["OpenClaw", "Multi-Agent Systems", "Private AI Deployment", "Workflow Automation", "Python"]
     }
     </script>
     <style>
@@ -29,7 +29,7 @@
             --bg-color: #000;
             --card-bg: rgba(20, 20, 20, 0.6);
             --gold: #ffd700;
-            --danger: #ff4d4d; /* 新增警示色 */
+            --danger: #ff4d4d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -219,7 +219,7 @@
 
         /* 新增：风险警示框 (Risk Box) - 重点修改区域 */
         .risk-box {
-            border: 1px solid rgba(255, 77, 77, 0.3); /* 红色边框 */
+            border: 1px solid rgba(255, 77, 77, 0.3);
             background: rgba(255, 77, 77, 0.05);
             border-radius: 8px;
             padding: 30px;
@@ -354,7 +354,7 @@
             <a href="article.html" onclick="toggleMenu()">深度分析</a>
             <a href="works.html" onclick="toggleMenu()">商业案例</a>
             <a href="pricing.html" onclick="toggleMenu()">源码/方案</a>
-            <a href="about.html" class="active" onclick="toggleMenu()">关于 & 咨询</a>
+            <a href="about.html" class="active" onclick="toggleMenu()">关于 & 业务合作</a>
             <a href="about-en.html" class="lang-btn">EN / English</a>
         </nav>
     </header>
@@ -369,12 +369,12 @@
             <h1 class="profile-name">Geek Heron</h1>
             <p class="profile-id">@王鉴锋</p>
             <p class="profile-title">
-                独立战略顾问 / AI 商业架构师<br>
-                Trends · Strategy · Execution
+                独立开发者 / AI Agent 架构师<br>
+                OpenClaw · Workflow · Private Deployment
             </p>
             
             <div class="cta-group">
-                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">预约企业咨询</a>
+                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">定制专属 Agent 工作流</a>
                 <a href="works.html" class="secondary-btn">查看落地案例</a>
             </div>
             
@@ -400,124 +400,113 @@
             
             <section class="section-block">
                 <h3 class="section-title">01 / The Philosophy</h3>
-                <h2 class="value-prop">不只是交付代码，<br>更是交付<span style="color: var(--gold);">商业确定性</span>。</h2>
+                <h2 class="value-prop">不只是调用 API，<br>更是交付<span style="color: var(--gold);">企业级私有化 AI 大脑</span>。</h2>
                 
                 <p class="bio-text">
-                    我是 Heron，您的<strong>战略技术合伙人</strong>。与只负责“实现功能”的开发团队不同，我的角色是站在技术与商业的十字路口，为您提供<strong>战略层面的决策支持与架构设计</strong>。
+                    我是 Heron，一名专注于 AI 自动化的<strong>独立开发者</strong>。依托于强大的 <strong>OpenClaw / Moltbot</strong> 框架，我为企业提供安全、可控的 Agent 私有化部署与复杂业务工作流定制服务。
                 </p>
                 <p class="bio-text">
-                    在 AI 浪潮下，技术的壁垒正在消融，真正的竞争壁垒在于<strong>“对趋势的精准预判”</strong>与<strong>“高效的商业闭环”</strong>。我利用全栈技术背景与多个实战项目的商业数据，协助企业主和创业者在投入研发资源之前，先看清赛道终局，规划最优路径。
+                    通用型 AI 无法理解您的专属业务 SOP。我的工作是将大模型的能力深度嵌入您的实际系统环境（如内部数据库、飞书/企业微信、ERP 等），打造真正的“数字员工”，让 AI 从“聊天玩具”变成驱动业务运转的“核心引擎”。
                 </p>
 
                 <div class="risk-box">
                     <div class="risk-title">
-                        <span style="font-size: 18px;">⚠️</span> The Cost of Inaction / 缺失“技术判断”的代价
+                        <span style="font-size: 18px;">⚠️</span> The Cost of Public SaaS / 依赖公有 AI 工具的代价
                     </div>
                     <div class="risk-grid">
                         <div class="risk-item">
-                            <h4>💸 昂贵的试错成本</h4>
-                            <p>盲目跟风开发 AI 应用，却因不懂 RAG 的局限性或模型微调的成本边界，导致烧掉百万资金后发现产品根本无法落地。</p>
+                            <h4>🔒 致命的数据泄露</h4>
+                            <p>将企业核心客户名单、内部财务数据或专有技术资料喂给公有云大模型，无异于将商业机密拱手让人。</p>
                         </div>
                         <div class="risk-item">
-                            <h4>☠️ 致命的技术债</h4>
-                            <p>被外包团队忽悠使用过时架构，导致用户量增长后系统立刻崩溃，重构成本是初期的 10 倍以上。</p>
+                            <h4>🚧 极差的业务耦合度</h4>
+                            <p>市面上的通用 SaaS 无法适配您独有的业务流程（SOP），员工依然需要在多个系统间来回复制粘贴。</p>
                         </div>
                         <div class="risk-item">
-                            <h4>📉 错失套利窗口</h4>
-                            <p>AI + 垂直行业的红利期只有 18 个月。没有高效的“人机协作”架构，您的迭代速度将被竞争对手用 AI 降维打击。</p>
+                            <h4>💸 失控的 API 成本</h4>
+                            <p>随着业务量激增，按 Token 计费的公有大模型成本将成为无底洞。私有化部署是规模化应用的唯一出路。</p>
                         </div>
                         <div class="risk-item">
-                            <h4>🤖 沦为“算力难民”</h4>
-                            <p>在不理解“Agent 工作流”的情况下，您的企业只是在购买昂贵的软件，而不是在构建属于自己的数字资产。</p>
+                            <h4>🤖 孤岛式工作流</h4>
+                            <p>缺乏多 Agent 协同架构（Multi-Agent），导致不同岗位的 AI 无法串联，无法形成端到端的自动化流水线。</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="proof-box">
-                    <div class="proof-title">实战背书：伏羲引擎 (Fuxi Engine)</div>
+                    <div class="proof-title">交付标准：100% 数据主权与自动化闭环</div>
                     <div class="proof-text">
-                        我不仅是该项目的架构师，更是其商业模式的设计者。通过将 DeepSeek 大模型与传统算法结合，我构建了一套全自动化的 SaaS 变现系统，验证了“技术赋能传统行业”的巨大潜力，实现了从流量获取到支付转化的无人值守闭环。
+                        从底层系统环境配置 (WSL2/macOS) 到多 Agent 集群的搭建，再到外部平台的 Webhook 监听打通。我不写玩具代码，我只交付能独立运行、高并发、且完全属于您自己的自动化业务中枢。
                     </div>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">02 / Consulting Services</h3>
+                <h3 class="section-title">02 / Development & Deployment Services</h3>
                 <div class="services-grid">
                     <div class="service-card">
-                        <div class="service-icon">♟️</div>
-                        <h4 class="service-name">企业 AI 战略咨询</h4>
-                        <p class="service-desc">不仅仅是接入 GPT。我为您分析业务痛点，设计“人机协作”的顶层架构，提供从员工培训、工具选型到工作流重塑的完整数字化转型方案。</p>
+                        <div class="service-icon">⚙️</div>
+                        <h4 class="service-name">OpenClaw 私有化部署</h4>
+                        <p class="service-desc">基于您的服务器环境，完整部署 OpenClaw / Moltbot 架构。实现模型本地化或安全专线接入，确保企业核心数据 100% 物理隔离与不出境。</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">🔍</div>
-                        <h4 class="service-name">趋势判断与赛道分析</h4>
-                        <p class="service-desc">基于我对 RWA (Real World Assets)、Web3 及 AI Agent 的前沿技术研究，为您提供深度的行业研报与投资建议，寻找被市场低估的价值洼地。</p>
+                        <div class="service-icon">🧩</div>
+                        <h4 class="service-name">复杂工作流 Agent 定制</h4>
+                        <p class="service-desc">抛弃通用问答，基于您的业务场景开发专属 Skill 与 Plugin。涵盖 RAG 私有知识库检索、Playwright 自动化抓取、自动化内容生成与分发。</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">⚖️</div>
-                        <h4 class="service-name">技术可行性审计</h4>
-                        <p class="service-desc">在您决定投入百万研发之前，作为您的第三方“技术审计师”，评估项目的技术难度、成本边界与潜在风险，防止被外包团队“技术黑箱”操作。</p>
+                        <div class="service-icon">🔗</div>
+                        <h4 class="service-name">企业级系统深度集成</h4>
+                        <p class="service-desc">打破数据孤岛。通过 Flask 与 Webhook，将 Agent 集群与您现有的办公环境（如飞书、钉钉、微信生态）及内部 ERP/CRM 进行无缝对接互通。</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">🚀</div>
-                        <h4 class="service-name">MVP 商业化陪跑</h4>
-                        <p class="service-desc">面向早期创业者。提供从 Idea 到 Landing Page 再到第一笔收入的全程技术与商业陪跑。我不只交付代码，我交付“跑通的商业闭环”。</p>
+                        <div class="service-icon">🧠</div>
+                        <h4 class="service-name">多智能体协同 (Multi-Agent)</h4>
+                        <p class="service-desc">针对跨境电商、自动化运营等长链路场景，设计多个 Agent 角色（如：产品分析师 + 文案写手 + 质检员）分布式作业，构建全自动数字流水线。</p>
                     </div>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">03 / The Arsenal (核心能力)</h3>
+                <h3 class="section-title">03 / The Tech Stack (技术栈)</h3>
                 <div class="terminal-box">
                     <span style="color: #666;">$</span> <span id="typewriter"></span><span class="cursor">|</span>
                 </div>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">*我精通技术，是为了更好地判断商业边界。</p>
+                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">*专注技术深度，为企业提供工业级可靠的运行环境。</p>
                 <div class="tech-tags">
-                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">商业模式架构</span>
-                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">AI Agent 工作流设计</span>
-                    <span class="tech-tag">RWA / Tokenomics</span>
-                    <span class="tech-tag">DeepSeek / LLM Fine-tuning</span>
-                    <span class="tech-tag">Growth Hacking</span>
-                    <span class="tech-tag">Python Fullstack</span>
-                    <span class="tech-tag">SaaS 支付流设计</span>
+                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">OpenClaw / Moltbot</span>
+                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">Multi-Agent Workflow</span>
+                    <span class="tech-tag">Private LLM Deployment</span>
+                    <span class="tech-tag">Feishu / Webhook Integration</span>
+                    <span class="tech-tag">Playwright Automation</span>
+                    <span class="tech-tag">Python Fullstack / Flask</span>
+                    <span class="tech-tag">RAG / Vector Database</span>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">04 / Case Studies & Insights</h3>
+                <h3 class="section-title">04 / Featured Workflows</h3>
                 <div style="border-left: 2px solid #333; padding-left: 30px;">
                     
                     <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">战略案例 | Strategy</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">电商自动化 | Multi-Agent E-commerce</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="InfoFlowAI.html" class="inline-link">InfoFlow AI (流光智能)</a> - 自动化流量矩阵
+                            <a href="works.html" class="inline-link">全托管跨境电商运营集群</a>
                         </h4>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>趋势判断：</strong> 预判了“生成式 AI 将重构内容产业”，从人力密集型转向算力密集型。<br>
-                            • <strong>解决方案：</strong> 设计了基于 Python DAG 的无人值守内容工厂，整合 Tavily 搜索与 ElevenLabs 语音合成。验证了“零边际成本”下的全球化信息套利模式。
+                            • <strong>业务场景：</strong> 自动化处理大量产品上架与用户互动。<br>
+                            • <strong>技术方案：</strong> 基于 OpenClaw 构建多智能体集群。开发专属 Skill，实现从竞品分析、多语种本地化商品描述生成，到评论自动抓取与动态回复的全流程无人值守。
                         </p>
                     </div>
 
                     <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">商业落地 | Execution</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">企业协作 | System Integration</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="fuxiengine.html" class="inline-link">Fuxi Engine (伏羲引擎)</a> - 传统文化数字化
+                            <a href="works.html" class="inline-link">飞书深度定制“数字员工”中枢</a>
                         </h4>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>商业洞察：</strong> 捕捉到“高客单咨询”与“AI 推理低成本”之间的巨大套利空间。<br>
-                            • <strong>闭环交付：</strong> 整合 Stripe/USDT 支付、私有算法库与裂变分销机制，打造了全自动现金流系统，证明了垂类 SaaS 的盈利能力。
-                        </p>
-                    </div>
-
-                    <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">前沿布局 | Insight</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="global-yield.html" class="inline-link">GlobalYield AI</a> - RWA 资产监控
-                        </h4>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>赛道分析：</strong> 针对 Real World Assets (RWA) 赛道，设计了链上数据监听与利差分析架构。<br>
-                            • <strong>技术支撑：</strong> 采用 Rust 编写高性能监听器，结合 Python Pandas 进行实时金融数据清洗，为投资决策提供毫秒级的数据支撑。
+                            • <strong>业务场景：</strong> 解决员工频繁切换系统、内部知识查询效率低下的问题。<br>
+                            • <strong>技术方案：</strong> 通过 Flask 与 Webhook 建立双向监听通道，将 Agent 能力直接注入飞书工作台。员工通过自然语言触发后台自动化脚本执行（如报表生成、数据核对），实现人机极简协作。
                         </p>
                     </div>
 
@@ -608,7 +597,7 @@
         resize(); initParticles(); animate();
 
         // --- 2. 打字机特效 (更新文案) ---
-        const textToType = "Analyzing market trends... Optimizing business logic... Strategy Ready.";
+        const textToType = "Deploying OpenClaw Cluster... Integrating Webhooks... Agents Active.";
         const typeElement = document.getElementById('typewriter');
         let i = 0;
         function typeWriter() {

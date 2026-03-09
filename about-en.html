@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta property="og:title" content="About & Strategy | GeekHeron">
-    <meta property="og:description" content="Providing top-level technical architecture and business landing strategies for the AI era.">
+    <meta property="og:title" content="About Me & Agent Deployment | GeekHeron">
+    <meta property="og:description" content="Independent developer providing enterprises with OpenClaw Agent private deployment and customized business workflow development.">
     <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
     <meta property="og:url" content="https://geekheron.github.io/DevLog/">
     <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About & Consulting - GeekHeron</title>
+    <title>About & Collaboration - GeekHeron</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": "Wang Jianfeng",
+      "name": "Jianfeng Wang",
       "additionalName": "GeekHeron",
-      "jobTitle": "Independent Strategy Consultant / AI Architect",
-      "url": "https://geekheron.github.io/DevLog/about-en.html",
-      "knowsAbout": ["Business Strategy", "AI Architecture", "Digital Transformation", "RWA"]
+      "jobTitle": "Independent Developer / AI Agent Architect",
+      "url": "https://geekheron.github.io/DevLog/about.html",
+      "knowsAbout": ["OpenClaw", "Multi-Agent Systems", "Private AI Deployment", "Workflow Automation", "Python"]
     }
     </script>
     <style>
-        /* --- 1. Global Variables & Reset --- */
+        /* --- 1. Global Styles (Consistent) --- */
         :root {
             --accent-color: #fff;
             --bg-color: #000;
             --card-bg: rgba(20, 20, 20, 0.6);
             --gold: #ffd700;
-            --danger: #ff4d4d; /* Risk Color */
+            --danger: #ff4d4d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,7 +55,7 @@
             z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. Navigation --- */
+        /* --- 3. Navigation Bar --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 30px 50px; position: sticky; top: 0; z-index: 100;
@@ -67,7 +67,7 @@
         .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-        /* Language Switch Button */
+        /* Language Toggle Button Styles */
         .lang-btn {
             border: 1px solid rgba(255,255,255,0.3);
             padding: 6px 14px;
@@ -95,7 +95,7 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-        /* --- 4. Layout --- */
+        /* --- 4. Page Layout --- */
         .container {
             max-width: 1100px; margin: 0 auto; padding: 100px 20px;
             position: relative; z-index: 10;
@@ -103,7 +103,7 @@
             align-items: start;
         }
 
-        /* --- Left: Profile --- */
+        /* --- Left Side: Personal Brand --- */
         .profile-section { position: sticky; top: 120px; text-align: center; }
 
         .avatar-container {
@@ -137,7 +137,7 @@
             margin-bottom: 40px; line-height: 1.6; font-weight: 700;
         }
 
-        /* CTA Buttons */
+        /* Commercial Button Group */
         .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         
         .contact-btn {
@@ -198,7 +198,7 @@
             letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
         }
 
-        /* --- Right: Content --- */
+        /* --- Right Side: Detailed Content --- */
         .content-section { padding-top: 10px; }
         .section-block { margin-bottom: 80px; }
         
@@ -217,7 +217,7 @@
         .bio-text { font-size: 16px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
         .highlight { color: #fff; border-bottom: 1px dotted #666; }
 
-        /* Risk Box (New Added) */
+        /* Risk Box */
         .risk-box {
             border: 1px solid rgba(255, 77, 77, 0.3);
             background: rgba(255, 77, 77, 0.05);
@@ -251,7 +251,7 @@
             color: #aaa;
             line-height: 1.6;
         }
-
+        
         /* Service Cards */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
         .service-card {
@@ -263,7 +263,7 @@
         .service-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #fff; }
         .service-desc { font-size: 13px; color: #888; line-height: 1.6; }
 
-        /* Tags */
+        /* Tech Tags */
         .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
         .tech-tag { 
             padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px; 
@@ -283,7 +283,7 @@
             font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
         }
         
-        /* Links */
+        /* Link Style */
         .inline-link {
             color: #fff;
             text-decoration: underline;
@@ -292,7 +292,7 @@
         }
         .inline-link:hover { color: var(--gold); }
 
-        /* Mobile */
+        /* Mobile Adaption */
         @media (max-width: 850px) {
             header { padding: 20px; justify-content: space-between; }
             .hamburger { display: block; }
@@ -324,7 +324,7 @@
             .profile-section { position: relative; top: 0; }
             .services-grid { grid-template-columns: 1fr; }
             
-            /* Risk Box Mobile */
+            /* Risk box mobile adaptation */
             .risk-grid { grid-template-columns: 1fr; }
 
             .social-grid {
@@ -354,8 +354,8 @@
             <a href="article.html" onclick="toggleMenu()">Insights</a>
             <a href="works.html" onclick="toggleMenu()">Case Studies</a>
             <a href="pricing.html" onclick="toggleMenu()">Solutions</a>
-            <a href="about-en.html" class="active" onclick="toggleMenu()">About & Consulting</a>
-            <a href="about.html" class="lang-btn">CN / 中文</a>
+            <a href="about.html" class="active" onclick="toggleMenu()">About & Collab</a>
+            <a href="about-zh.html" class="lang-btn">ZH / 中文</a>
         </nav>
     </header>
 
@@ -369,13 +369,13 @@
             <h1 class="profile-name">Geek Heron</h1>
             <p class="profile-id">@Wang Jianfeng</p>
             <p class="profile-title">
-                Strategic Consultant / AI Architect<br>
-                Trends · Strategy · Execution
+                Independent Developer / AI Agent Architect<br>
+                OpenClaw · Workflow · Private Deployment
             </p>
             
             <div class="cta-group">
-                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Book Consultation</a>
-                <a href="works.html" class="secondary-btn">View Case Studies</a>
+                <a href="mailto:GeekHeron@outlook.com" class="contact-btn">Customize Your Agent Workflow</a>
+                <a href="works.html" class="secondary-btn">View Deployed Cases</a>
             </div>
             
             <div class="social-grid">
@@ -400,124 +400,113 @@
             
             <section class="section-block">
                 <h3 class="section-title">01 / The Philosophy</h3>
-                <h2 class="value-prop">Not just shipping code,<br>but delivering <span style="color: var(--gold);">Business Certainty</span>.</h2>
+                <h2 class="value-prop">Not just calling APIs,<br>but delivering an <span style="color: var(--gold);">Enterprise-grade Private AI Brain</span>.</h2>
                 
                 <p class="bio-text">
-                    I am Heron, your **Strategic Technical Partner**. Unlike typical dev shops that only focus on "implementation," my role sits at the intersection of technology and commerce, providing **high-level strategic decision support and architectural design**.
+                    I'm Heron, an <strong>independent developer</strong> focused on AI automation. Relying on the powerful <strong>OpenClaw / Moltbot</strong> framework, I provide secure and controllable Agent private deployment and complex business workflow customization services for enterprises.
                 </p>
                 <p class="bio-text">
-                    In the AI era, technical barriers are melting. The real competitive moat lies in **"Precise Trend Prediction"** and **"Efficient Business Loops"**. Leveraging my full-stack background and commercial data from multiple live projects, I help enterprise leaders and founders visualize the endgame, optimize the path, and avoid expensive trial-and-error costs before investing heavily in R&D.
+                    General AI cannot understand your exclusive business SOPs. My job is to deeply embed the capabilities of large models into your actual system environment (such as internal databases, Feishu/WeCom, ERP, etc.), creating true "digital employees" and turning AI from a "chat toy" into a "core engine" driving business operations.
                 </p>
 
                 <div class="risk-box">
                     <div class="risk-title">
-                        <span style="font-size: 18px;">⚠️</span> The Cost of Inaction
+                        <span style="font-size: 18px;">⚠️</span> The Cost of Public SaaS
                     </div>
                     <div class="risk-grid">
                         <div class="risk-item">
-                            <h4>💸 Expensive Trial & Error</h4>
-                            <p>Blindly developing AI apps without understanding RAG limitations or LLM cost boundaries often leads to burning capital on products that can never be profitable.</p>
+                            <h4>🔒 Fatal Data Leaks</h4>
+                            <p>Feeding core enterprise customer lists, internal financial data, or proprietary technical documents to public cloud LLMs is tantamount to giving away trade secrets.</p>
                         </div>
                         <div class="risk-item">
-                            <h4>☠️ Fatal Technical Debt</h4>
-                            <p>Outsourcing to teams using outdated architectures leads to system collapse at scale. Refactoring often costs 10x the initial investment.</p>
+                            <h4>🚧 Poor Business Coupling</h4>
+                            <p>General SaaS on the market cannot adapt to your unique business processes (SOPs); employees still need to copy and paste back and forth across multiple systems.</p>
                         </div>
                         <div class="risk-item">
-                            <h4>📉 Missed Windows</h4>
-                            <p>The "AI + Vertical" arbitrage window is short. Without an efficient Human-AI workflow, your iteration speed will be crushed by AI-native competitors.</p>
+                            <h4>💸 Out-of-Control API Costs</h4>
+                            <p>As business volume surges, public LLM costs billed by Token will become a bottomless pit. Private deployment is the only way out for large-scale application.</p>
                         </div>
                         <div class="risk-item">
-                            <h4>🤖 Digital Serfdom</h4>
-                            <p>If you don't own your Agent Workflows, you are merely renting expensive software (SaaS) instead of building your own sovereign digital assets.</p>
+                            <h4>🤖 Siloed Workflows</h4>
+                            <p>The lack of a Multi-Agent collaborative architecture means AI in different roles cannot be connected, failing to form an end-to-end automated pipeline.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="proof-box">
-                    <div class="proof-title">Proof of Concept: Fuxi Engine</div>
+                    <div class="proof-title">Delivery Standard: 100% Data Sovereignty and Automated Closed-Loop</div>
                     <div class="proof-text">
-                        I am not just the architect, but the business model designer. By combining DeepSeek LLM with traditional algorithms, I built a fully automated SaaS monetization system, validating the immense potential of "Empowering Niche Industries with Tech" and achieving an unmanned loop from traffic acquisition to payment conversion.
+                        From underlying system environment configuration (WSL2/macOS) to the construction of multi-Agent clusters, and the integration of Webhook listening on external platforms. I don't write toy code; I only deliver automated business hubs that can run independently, handle high concurrency, and completely belong to you.
                     </div>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">02 / Consulting Services</h3>
+                <h3 class="section-title">02 / Development & Deployment Services</h3>
                 <div class="services-grid">
                     <div class="service-card">
-                        <div class="service-icon">♟️</div>
-                        <h4 class="service-name">Enterprise AI Strategy</h4>
-                        <p class="service-desc">Beyond just API integration. I analyze your business pain points to design a "Human-AI Collaboration" architecture, providing a complete digital transformation plan from staff training to tool selection.</p>
+                        <div class="service-icon">⚙️</div>
+                        <h4 class="service-name">OpenClaw Private Deployment</h4>
+                        <p class="service-desc">Fully deploy the OpenClaw / Moltbot architecture based on your server environment. Achieve local model execution or secure private line access, ensuring core enterprise data is 100% physically isolated and never leaves your borders.</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">🔍</div>
-                        <h4 class="service-name">Trend & Track Analysis</h4>
-                        <p class="service-desc">Based on cutting-edge research in RWA (Real World Assets), Web3, and AI Agents, I provide in-depth industry reports and investment advice to identify undervalued opportunities.</p>
+                        <div class="service-icon">🧩</div>
+                        <h4 class="service-name">Complex Workflow Customization</h4>
+                        <p class="service-desc">Ditch general Q&A and develop exclusive Skills and Plugins based on your business scenarios. Covering RAG private knowledge base retrieval, Playwright automated scraping, and automated content generation and distribution.</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">⚖️</div>
-                        <h4 class="service-name">Technical Feasibility Audit</h4>
-                        <p class="service-desc">Before you invest millions in R&D, act as your third-party "Technical Auditor." I evaluate technical complexity, cost boundaries, and potential risks to prevent "Black Box" operations by vendors.</p>
+                        <div class="service-icon">🔗</div>
+                        <h4 class="service-name">Deep System Integration</h4>
+                        <p class="service-desc">Break down data silos. Seamlessly integrate Agent clusters with your existing office environments (like Feishu, DingTalk, WeChat ecosystem) and internal ERP/CRM through Flask and Webhooks.</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">🚀</div>
-                        <h4 class="service-name">MVP to Revenue (0-to-1)</h4>
-                        <p class="service-desc">For early-stage founders. I provide full-cycle technical and business support from Idea to Landing Page to First Revenue. I don't just deliver code; I deliver a "Validated Business Loop."</p>
+                        <div class="service-icon">🧠</div>
+                        <h4 class="service-name">Multi-Agent Collaboration</h4>
+                        <p class="service-desc">For long-chain scenarios like cross-border e-commerce and automated operations, design multiple Agent roles (e.g., Product Analyst + Copywriter + QA Inspector) for distributed tasks to build a fully automated digital pipeline.</p>
                     </div>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">03 / The Arsenal (Capabilities)</h3>
+                <h3 class="section-title">03 / The Tech Stack</h3>
                 <div class="terminal-box">
                     <span style="color: #666;">$</span> <span id="typewriter"></span><span class="cursor">|</span>
                 </div>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">*I master technology to better judge business boundaries.</p>
+                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">*Focused on technical depth, providing an industrial-grade, reliable operating environment for enterprises.</p>
                 <div class="tech-tags">
-                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">Business Model Architecture</span>
-                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">AI Agent Workflow Design</span>
-                    <span class="tech-tag">RWA / Tokenomics</span>
-                    <span class="tech-tag">DeepSeek / LLM Fine-tuning</span>
-                    <span class="tech-tag">Growth Hacking</span>
-                    <span class="tech-tag">Python Fullstack</span>
-                    <span class="tech-tag">SaaS Payment Flow</span>
+                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">OpenClaw / Moltbot</span>
+                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">Multi-Agent Workflow</span>
+                    <span class="tech-tag">Private LLM Deployment</span>
+                    <span class="tech-tag">Feishu / Webhook Integration</span>
+                    <span class="tech-tag">Playwright Automation</span>
+                    <span class="tech-tag">Python Fullstack / Flask</span>
+                    <span class="tech-tag">RAG / Vector Database</span>
                 </div>
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">04 / Case Studies & Insights</h3>
+                <h3 class="section-title">04 / Featured Workflows</h3>
                 <div style="border-left: 2px solid #333; padding-left: 30px;">
                     
                     <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Strategy Case</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">E-commerce Automation | Multi-Agent E-commerce</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="InfoFlowAI.html" class="inline-link">InfoFlow AI</a> - Automated Traffic Matrix
+                            <a href="works.html" class="inline-link">Fully Managed Cross-border E-commerce Operations Cluster</a>
                         </h4>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>Trend Prediction:</strong> Predicted GenAI would reshape the content industry from labor-intensive to compute-intensive.<br>
-                            • <strong>Solution:</strong> Designed an unmanned content factory based on Python DAG, integrating Tavily Search & ElevenLabs. Validated a "Zero Marginal Cost" global information arbitrage model.
+                            • <strong>Business Scenario:</strong> Automated processing of massive product listings and user interactions.<br>
+                            • <strong>Technical Solution:</strong> Built a multi-agent cluster based on OpenClaw. Developed exclusive Skills to achieve a fully unattended process from competitor analysis and multi-lingual localized product description generation to automated review scraping and dynamic replying.
                         </p>
                     </div>
 
                     <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Execution Case</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Enterprise Collaboration | System Integration</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="fuxiengine.html" class="inline-link">Fuxi Engine</a> - Digitizing Tradition
+                            <a href="works.html" class="inline-link">Feishu Deeply Customized "Digital Employee" Hub</a>
                         </h4>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>Business Insight:</strong> Captured the arbitrage space between "High-Ticket Consulting" and "Low-Cost AI Inference."<br>
-                            • <strong>Closed Loop:</strong> Integrated Stripe/USDT payment, proprietary algorithms, and referral distribution mechanisms to build a fully automated cash flow system.
-                        </p>
-                    </div>
-
-                    <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Insight & Layout</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="global-yield.html" class="inline-link">GlobalYield AI</a> - RWA Asset Monitor
-                        </h4>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>Track Analysis:</strong> Designed an on-chain data listening and spread analysis architecture for the RWA (Real World Assets) sector.<br>
-                            • <strong>Tech Support:</strong> Built high-performance listeners in Rust combined with Python Pandas for real-time financial data cleaning, providing millisecond-level support for investment decisions.
+                            • <strong>Business Scenario:</strong> Solving the problems of employees frequently switching systems and low efficiency in querying internal knowledge.<br>
+                            • <strong>Technical Solution:</strong> Established a two-way listening channel via Flask and Webhooks, injecting Agent capabilities directly into the Feishu workspace. Employees trigger backend automated scripts (like report generation, data verification) through natural language, achieving minimalist human-machine collaboration.
                         </p>
                     </div>
 
@@ -608,7 +597,7 @@
         resize(); initParticles(); animate();
 
         // --- 2. Typewriter Effect ---
-        const textToType = "Analyzing market trends... Optimizing business logic... Strategy Ready.";
+        const textToType = "Deploying OpenClaw Cluster... Integrating Webhooks... Agents Active.";
         const typeElement = document.getElementById('typewriter');
         let i = 0;
         function typeWriter() {

@@ -128,7 +128,7 @@
                 z-index: 101;
                 flex-direction: column; justify-content: center; align-items: center; gap: 40px;
                 transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex; /* 修复移动端隐藏问题 */
+                display: flex; 
             }
             .nav-links.active { transform: translateX(0); }
             .nav-links a { font-size: 24px; font-weight: 800; }
@@ -164,6 +164,76 @@
         </div>
 
         <div class="article-grid">
+
+            <a href="article-private-llm.html" class="article-card">
+                <div class="card-meta"><span>2026.04.18</span><span class="tag">PRIVATE LLM</span></div>
+                <h2 class="card-title">企业私有化部署大模型全流程（OpenClaw 实战 + 架构图）</h2>
+                <p class="card-excerpt">深度拆解企业级大模型本地化部署全流程，结合 OpenClaw 实战演练与核心网络架构图，一站式解决数据隐私与合规难题。</p>
+                <div class="read-more">Read Guide</div>
+            </a>
+
+            <a href="article-saas-vs-private.html" class="article-card">
+                <div class="card-meta"><span>2026.04.15</span><span class="tag">BUSINESS STRATEGY</span></div>
+                <h2 class="card-title">私有化 AI vs SaaS：企业为什么必须自建 AI 系统？</h2>
+                <p class="card-excerpt">API 调用终究不是长久之计。解析企业数据护城河、SaaS 长期成本陷阱与自建 AI 系统的战略必要性。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
+            <a href="article-llm-roi.html" class="article-card">
+                <div class="card-meta"><span>2026.04.12</span><span class="tag">COST / ROI</span></div>
+                <h2 class="card-title">大模型私有化部署成本拆解（服务器 / Token / ROI 全算清）</h2>
+                <p class="card-excerpt">买卡还是租算力？7B 到 72B 模型的真实落地成本计算。硬核拆解服务器采购、电费、Token 折算与最终投资回报率。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
+            <a href="article-agent-workflow.html" class="article-card">
+                <div class="card-meta"><span>2026.04.10</span><span class="tag">AI AGENT</span></div>
+                <h2 class="card-title">AI Agent 工作流怎么搭？一套可落地的企业自动化架构</h2>
+                <p class="card-excerpt">告别玩具级 Demo，从零搭建企业级可稳定运行的 Agent 工作流。解析状态机、长记忆管理与异常重试机制落地指南。</p>
+                <div class="read-more">Read Guide</div>
+            </a>
+
+            <a href="article-multi-agent.html" class="article-card">
+                <div class="card-meta"><span>2026.04.08</span><span class="tag">MULTI-AGENT</span></div>
+                <h2 class="card-title">多智能体（Multi-Agent）系统设计：从0到1完整方案</h2>
+                <p class="card-excerpt">当一个 Agent 无法完成复杂任务，我们需要一个“AI 团队”。探讨基于角色的 Multi-Agent 协作架构与通信协议设计。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
+            <a href="article-openclaw-automation.html" class="article-card">
+                <div class="card-meta"><span>2026.04.05</span><span class="tag">ENGINEERING</span></div>
+                <h2 class="card-title">用 OpenClaw 搭建企业自动化系统（含完整配置与流程）</h2>
+                <p class="card-excerpt">手把手实战指南：如何利用 OpenClaw 框架快速构建企业级自动化中枢，打通内部系统孤岛与工作流。</p>
+                <div class="read-more">Read Guide</div>
+            </a>
+
+            <a href="article-rag-deployment.html" class="article-card">
+                <div class="card-meta"><span>2026.04.01</span><span class="tag">RAG / KNOWLEDGE</span></div>
+                <h2 class="card-title">企业知识库 AI（RAG）怎么搭？从0到上线完整指南</h2>
+                <p class="card-excerpt">检索增强生成（RAG）落地的全链路解析。从文档解析、向量化（Embedding）到混合检索与大模型生成的工程实践。</p>
+                <div class="read-more">Read Guide</div>
+            </a>
+
+            <a href="article-rag-pitfalls.html" class="article-card">
+                <div class="card-meta"><span>2026.03.26</span><span class="tag">RAG OPTIMIZATION</span></div>
+                <h2 class="card-title">为什么你的AI不好用？90%企业都踩了RAG这个坑</h2>
+                <p class="card-excerpt">准确率低？答非所问？深度剖析 RAG 落地中最易踩坑的 Chunking 策略、召回率优化与重排（Rerank）机制。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+
+            <a href="article-feishu-bot.html" class="article-card">
+                <div class="card-meta"><span>2026.03.22</span><span class="tag">INTEGRATION</span></div>
+                <h2 class="card-title">飞书 + AI 自动化：打造企业“数字员工”的完整方案</h2>
+                <p class="card-excerpt">将 AI 接入企业 IM 神经末梢。解析如何通过飞书开放平台构建自动处理审批、答疑解惑的“数字员工”闭环。</p>
+                <div class="read-more">Read Guide</div>
+            </a>
+
+            <a href="article-erp-crm-ai.html" class="article-card">
+                <div class="card-meta"><span>2026.03.15</span><span class="tag">ERP / CRM</span></div>
+                <h2 class="card-title">企业系统接入 AI（ERP / CRM / 微信）：真实案例拆解</h2>
+                <p class="card-excerpt">打破传统软件僵局，AI 如何赋能 ERP 与 CRM？通过真实商业案例，拆解遗留系统拥抱大模型的 API 改造之路。</p>
+                <div class="read-more">Read Case</div>
+            </a>
 
             <a href="article-silicon-evolution.html" class="article-card">
                 <div class="card-meta"><span>2026.01.27</span><span class="tag">EVOLUTION / CIVILIZATION</span></div>
@@ -328,5 +398,3 @@
     </script>
 </body>
 </html>
-
-

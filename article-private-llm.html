@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="logo.png">
     
     <style>
-        /* --- 1. 继承原有全局样式 --- */
+        /* --- 1. 全局样式 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -21,7 +21,7 @@
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         
-        /* --- 2. 背景特效层 --- */
+        /* --- 2. 背景特效 --- */
         #galaxy-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
@@ -32,23 +32,31 @@
             z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. 导航栏 --- */
+        /* --- 3. 导航栏 (含手机端汉堡菜单) --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 50px;
+            padding: 20px 50px;
             border-bottom: 1px solid #333;
             background-color: rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 100;
+            position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 1002; }
         
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-        /* --- 4. 文章专用排版样式 --- */
+        /* 汉堡按钮 */
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: #fff; transition: 0.3s;
+        }
+
+        /* --- 4. 文章排版 --- */
         .container {
             max-width: 850px; margin: 0 auto; padding: 80px 20px;
             position: relative; z-index: 10;
@@ -60,7 +68,7 @@
         }
 
         .article-title { font-size: 42px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
-        .article-meta { color: #666; font-family: monospace; font-size: 14px; display: flex; gap: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 14px; display: flex; gap: 20px; flex-wrap: wrap; }
         .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
 
         .article-body { font-size: 17px; color: #ccc; }
@@ -71,7 +79,6 @@
         .article-body ul { margin-bottom: 25px; padding-left: 20px; }
         .article-body li { margin-bottom: 15px; }
 
-        /* 代码块样式 */
         pre {
             background: rgba(30, 30, 30, 0.8);
             border: 1px solid #333;
@@ -84,9 +91,6 @@
             color: #00ffc3; 
         }
 
-        code { font-family: monospace; background: #222; padding: 2px 5px; border-radius: 3px; }
-
-        /* 重点引用样式 */
         blockquote {
             border-left: 3px solid #00ffc3;
             padding: 20px 30px;
@@ -95,29 +99,36 @@
             font-style: italic;
         }
 
-        /* SEO引流样式 */
         .seo-footer {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid #222;
-            text-align: center;
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
         }
         .seo-link {
-            display: inline-block;
-            color: #888;
-            font-size: 14px;
-            text-decoration: underline;
-            transition: color 0.3s;
+            display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
         }
-        .seo-link:hover {
-            color: #00ffc3;
-        }
+        .seo-link:hover { color: #00ffc3; }
 
-        /* --- 移动端适配 --- */
+        /* --- 5. 移动端适配 (重点修改) --- */
         @media (max-width: 768px) {
             header { padding: 20px; }
-            .article-title { font-size: 32px; }
+            .article-title { font-size: 30px; }
             .container { padding-top: 40px; }
+
+            .hamburger { display: flex; }
+
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+
+            /* 汉堡按钮变成 X */
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
         }
     </style>
 </head>
@@ -128,7 +139,12 @@
 
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
-        <nav class="nav-links">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav-links" id="nav-links">
             <a href="index.html">首页</a>
             <a href="article.html" class="active">深度分析</a>
             <a href="works.html">作品展示</a>
@@ -154,7 +170,7 @@
 
                 <h2>一、 为什么“公有云 API”只是玩具，私有化才是企业的最终归宿？</h2>
                 <p>在 AI 落地的早期，直接调用 OpenAI 或主流大厂的 API 是最快验证 MVP（最小可行性产品）的路径。但当业务真正进入深水区，两座大山会瞬间横亘在企业面前：<strong>数据隐私</strong>与<strong>长尾成本</strong>。</p>
-                <p>将企业的核心财务数据、客户 CRM 记录和专有业务代码通过公网传给第三方大模型，无异于在裸奔。对于金融、医疗或具备核心研发壁垒的企业而言，数据不下云、模型本地化不是可选项，而是合规的强制要求。</p>
+                <p>将企业的核心财务数据、客户 CRM 记录和专有业务代码通过公网传给第三方大模型，无异于在裸奔。对于金融、医疗或具备核心研发壁垒的企业而言，<strong>数据不下云、模型本地化</strong>不是可选项，而是合规的强制要求。</p>
 
                 <h2>二、 企业级 LLM 私有化部署核心架构</h2>
                 <p>一个稳健的私有化部署架构，绝不仅是“在本地跑个模型”，它需要一套完整的工程化支持。标准的企业级架构通常包含以下三层：</p>
@@ -192,6 +208,16 @@
     </main>
 
     <script>
+        // 手机端导航逻辑
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // 星空背景动画
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;

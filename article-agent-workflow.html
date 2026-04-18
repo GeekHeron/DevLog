@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent 工作流架构：从对话框到逻辑流 - GeekHeron</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <style>
+        /* --- 1. 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 (含手机端汉堡菜单) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 1002; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* 汉堡按钮 */
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: #fff; transition: 0.3s;
+        }
+
+        /* --- 4. 文章排版 --- */
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 30px;
+        }
+
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px 0; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul { margin-bottom: 25px; padding-left: 20px; }
+        .article-body li { margin-bottom: 15px; }
+
+        .seo-footer {
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
+        }
+        .seo-link {
+            display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
+        }
+        .seo-link:hover { color: #00ffc3; }
+
+        /* --- 5. 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav-links" id="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="works.html">作品展示</a>
+            <a href="pricing.html">源码交付</a>
+            <a href="about.html">商业合作</a> 
+        </nav>
+    </header>
+
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ENGINEERING & AGENT</span>
+                <h1 class="article-title">AI Agent 工作流架构：从对话框到逻辑流</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：AI Agent 工作流设计, 状态机 AI 架构, 生产级 Agent 开发, OpenClaw 智能体, Agent 记忆管理</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.18</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: ARCHITECTURE</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+                <h2>一、 从“对话框”到“逻辑流”：Agent 的工业化演进</h2>
+                <p>在 AI 浪潮的初期，大多数人的认知停留在“对话”上。然而，对于企业级应用而言，单纯的对话无法形成生产力。我们需要的不是一个会聊天的机器人，而是一个能理解复杂 SOP（标准作业程序）、能自主调用工具、并能处理异常情况的“智能执行官”。</p>
+                <p>这就是 AI Agent 工作流的核心价值：将 LLM 的推理能力嵌入到一个可预测、可控制的工程框架中。</p>
+
+                <h2>二、 生产级 Agent 的三大底层支柱</h2>
+                
+                <h3>1. 规划（Planning）与 ReAct 框架</h3>
+                <p>一个成熟的 Agent 不应该直接给出答案，而应该先思考。我们采用 ReAct (Reason + Act) 模型，让 Agent 在执行每一步前，先生成“Thought（思考）”，明确下一步要调用的工具（Action），并根据“Observation（观察）”结果修正后续路径。</p>
+                <p>在 OpenClaw 的架构中，这一过程被原子化为不同的执行节点，确保了每一步逻辑的可回溯性。</p>
+
+                <h3>2. 状态机控制（State Machine）</h3>
+                <p>生产环境最忌讳“不确定性”。如果完全交给 LLM 自由发挥，Agent 可能会陷入无限死循环或逻辑死胡同。<strong>工程化方案：</strong> 引入有限状态机。通过显式定义的有向无环图（DAG），规定 Agent 在什么状态下可以调用什么工具。例如：在未通过财务系统鉴权前，Agent 绝不能执行“转账”动作。这种约束保证了系统的健壮性。</p>
+
+                <h3>3. 长短时记忆管理（Memory Management）</h3>
+                <ul>
+                    <li><strong>短时记忆：</strong> 利用上下文窗口（Context Window）保存当前任务的即时状态。</li>
+                    <li><strong>长时记忆：</strong> 通过向量数据库（如 Milvus 或 Chroma）存储历史经验。当 Agent 遇到类似问题时，系统会自动检索出“上次我是怎么成功的”，实现自适应进化。</li>
+                </ul>
+
+                <h2>三、 实战：构建一个自动化漏洞分析 Agent</h2>
+                <p>假设我们需要一个 Agent 自动扫描代码并提交修复建议：</p>
+                <ol>
+                    <li><strong>触发阶段：</strong> 监听到 GitHub Webhook。</li>
+                    <li><strong>规划阶段：</strong> Agent 调用 Read_Code 工具，分析代码结构。</li>
+                    <li><strong>工具执行：</strong> 调用静态扫描工具，获取错误日志。</li>
+                    <li><strong>推理与修复：</strong> 将错误日志反馈给 LLM，生成修复补丁。</li>
+                    <li><strong>验证阶段：</strong> Agent 自动尝试编译修复后的代码，若失败则进入重试循环。</li>
+                </ol>
+
+                <h2>四、 结论：源码交付的工程意义</h2>
+                <p>Agent 的开发不仅是写 Prompt，更是写逻辑。通过 OpenClaw 的节点流管理，开发者可以将复杂的业务逻辑解耦。对于寻求源码交付的企业客户，这种清晰的、基于工作流的架构才是核心数字资产。</p>
+            </div>
+
+            <footer class="seo-footer">
+                <p>了解更多关于 AI Agent 工作流设计与企业私有化部署：</p>
+                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000; 
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+</body>
+</html>

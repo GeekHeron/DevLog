@@ -49,11 +49,33 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-        /* --- 4. 页面主体 --- */
+        /* --- 4. 页面主体与分栏 --- */
         .container { max-width: 1100px; margin: 0 auto; padding: 80px 20px; position: relative; z-index: 10; }
         .page-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 20px; }
         .page-title { font-size: 40px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
         .page-subtitle { color: #666; font-family: monospace; font-size: 14px; text-transform: uppercase; }
+
+        /* 区域标题样式 */
+        .section-title {
+            margin-bottom: 40px;
+            font-family: monospace;
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        /* 核心改动：两栏中间的彩色渐变隔离区，加大了上下间距 */
+        .gradient-divider-container {
+            margin: 110px 0 90px 0; /* 大跨度上下间距 */
+            text-align: center;
+        }
+        .color-line {
+            height: 2px;
+            width: 100%;
+            background: linear-gradient(90deg, rgba(0,255,204,0) 0%, rgba(0,255,204,1) 25%, rgba(187,134,252,1) 75%, rgba(187,134,252,0) 100%);
+            border: none;
+        }
 
         /* --- 5. 作品展示网格 --- */
         .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
@@ -88,6 +110,7 @@
             }
             .nav-links.active { transform: translateX(0); }
             .nav-links a { font-size: 24px; font-weight: 800; color: #fff; }
+            .gradient-divider-container { margin: 70px 0 60px 0; }
         }
     </style>
 </head>
@@ -113,8 +136,48 @@
             <p class="page-subtitle">// PORTFOLIO & CASE STUDIES</p>
         </section>
 
+        <div class="section-title">01 / Enterprise Automation & Governance</div>
         <div class="work-grid">
             
+            <div class="work-card" style="border-top: 3px solid #00ffcc;">
+                <div class="work-tag" style="color: #00ffcc;">Enterprise / RPA / Automation</div>
+                <h3>OpenClaw 亚马逊智能控价系统</h3>
+                <p>基于业务下沉的抗脆弱性全球店铺控价与防御预警管道。秒级捕获竞争对手恶意深夜调价，通过 ±5% 离散过滤器过滤信息噪声，联动飞书富文本异步交互卡片网关，捍卫千万美金出海企业的核心黄金购物车利益。</p>
+                <div class="action-container">
+                    <a href="openclaw_competitor_price_report.html" class="action-btn">查看抗脆弱性数字化治理日志</a>
+                    <a href="openclaw_arch.html" class="details-link">进入 OpenClaw 编排引擎核心架构</a>
+                </div>
+            </div>
+
+            <div class="work-card" style="border-top: 3px solid #00ffcc;">
+                <div class="work-tag" style="color: #00ffcc;">Enterprise / BI / Automation</div>
+                <h3>OpenClaw 亚马逊数据日报管道</h3>
+                <p>基于多表多维数据聚合的企业级自动化运营治理实践。彻底告别低效的人工多表数据搬运与 VLOOKUP 灾难。系统打通飞书多维表格 REST API 矩阵，支持全天候 Cron 定时触发与自适应 Top3 焦点指标排序，将核心数据以飞书原生 Table 卡片形式直达核心决策群。</p>
+                <div class="action-container">
+                    <a href="report_amazon_daily.html" class="action-btn">查看多维聚合自动化实践日志</a>
+                    <a href="openclaw_arch.html" class="details-link">进入 OpenClaw 编排引擎核心架构</a>
+                </div>
+            </div>
+
+            <div class="work-card" style="border-top: 3px solid #bb86fc;">
+                <div class="work-tag" style="color: #bb86fc;">Enterprise / Multi-Agent / Automation</div>
+                <h3>OpenClaw 编排引擎</h3>
+                <p>企业级多智能体自动化交付框架。核心采用意图驱动的 DAG 任务路由与 Docker 沙箱隔离技术，构建 24 小时无休的分布式虚拟工作流，实现复杂业务的自动化闭环。</p>
+                <div class="action-container">
+                    <a href="openclaw_arch.html" class="action-btn">查看核心架构</a>
+                    <a href="openclaw_arch.html#sandbox" class="details-link">了解 Docker 安全隔离机制</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="gradient-divider-container">
+            <div class="color-line"></div>
+        </div>
+
+        <div class="section-title">02 / Metaphysics, AI Agents & Indie Projects</div>
+        <div class="work-grid">
+
             <div class="work-card" style="border-top: 3px solid #00ffcc;">
                 <div class="work-tag" style="color: #00ffcc;">Web3 / DeSci / AI Oracle</div>
                 <h3>伏羲协议 (Fuxi Protocol)</h3>
@@ -152,16 +215,6 @@
                 <div class="action-container">
                     <a href="InfoFlowAI.html" class="action-btn">查看商业计划书 (BP)</a>
                     <a href="InfoFlowtech.html" class="details-link">查看技术架构详解</a>
-                </div>
-            </div>
-
-            <div class="work-card" style="border-top: 3px solid #bb86fc;">
-                <div class="work-tag" style="color: #bb86fc;">Enterprise / Multi-Agent / Automation</div>
-                <h3>OpenClaw 编排引擎</h3>
-                <p>企业级多智能体自动化交付框架。核心采用意图驱动的 DAG 任务路由与 Docker 沙箱隔离技术，构建 24 小时无休的分布式虚拟工作流，实现复杂业务的自动化闭环。</p>
-                <div class="action-container">
-                    <a href="openclaw_arch.html" class="action-btn">查看核心架构</a>
-                    <a href="openclaw_arch.html#sandbox" class="details-link">了解 Docker 安全隔离机制</a>
                 </div>
             </div>
 

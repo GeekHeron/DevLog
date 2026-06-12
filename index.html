@@ -99,73 +99,87 @@
             height: 100%;
             background: linear-gradient(to right, #000 35%, rgba(0,0,0,0.6) 60%, transparent 100%);
             z-index: 1;
-            pointer-events: none;
         }
 
-        /* --- 导航栏 --- */
+        /* --- 顶部导航 --- */
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
+            padding: 30px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.9);
+            position: fixed;
+            top: 0;
+            width: 100%;
             z-index: 100;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            background: rgba(0, 0, 0, 0.2); 
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            z-index: 102;
             display: flex;
             align-items: center;
-            gap: 15px;
-            z-index: 102;
-            color: #fff;
-            text-decoration: none;
+            gap: 12px;
         }
 
         .logo img {
-            height: 50px;
-            width: auto;
-            border-radius: 6px;
-            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+            width: 32px;
+            height: 32px;
         }
 
         .logo span {
-            font-size: 24px;
-            letter-spacing: 4px;
-            font-weight: 800;
-            text-transform: uppercase;
+            display: none;
+        }
+
+        /* 导航链接 */
+        nav {
+            display: flex;
+            gap: 0;
+            align-items: center;
+            z-index: 101;
         }
 
         nav ul {
             display: flex;
+            gap: 40px;
             list-style: none;
-            gap: 30px;
+            margin: 0;
+            padding: 0;
         }
 
         nav ul li a {
             font-size: 13px;
-            letter-spacing: 1px;
             font-weight: 600;
+            color: #888;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #fff;
         }
 
         .header-right {
             font-family: monospace;
             font-size: 12px;
-            color: #aaa;
+            color: #666;
+            letter-spacing: 2px;
+            z-index: 102;
         }
 
-        /* --- 汉堡菜单按钮 --- */
+        /* 汉堡菜单 */
         .hamburger {
             display: none;
             cursor: pointer;
-            z-index: 102; 
+            z-index: 102;
             width: 30px;
             height: 20px;
             position: relative;
@@ -188,22 +202,24 @@
             top: 9px;
             transform: rotate(45deg);
         }
+
         .hamburger.active span:nth-child(2) {
             opacity: 0;
         }
+
         .hamburger.active span:nth-child(3) {
             top: 9px;
             transform: rotate(-45deg);
         }
 
-        /* --- 主视觉区域 --- */
+        /* --- 主体内容 --- */
         .hero {
-            position: relative;
-            height: 100vh;
-            width: 100%;
             display: flex;
             align-items: center;
-            padding-left: 12%;
+            justify-content: flex-start;
+            height: 100vh;
+            padding: 0 50px;
+            position: relative;
             z-index: 10;
         }
 
@@ -212,52 +228,31 @@
         }
 
         h1 {
-            font-size: 60px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            color: #fff;
-            animation: fadeIn 1.5s ease-out;
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
         }
 
-        p.subtitle {
+        .subtitle {
             font-size: 18px;
-            line-height: 1.6;
-            color: #ddd;
+            color: #888;
+            line-height: 1.8;
             margin-bottom: 40px;
-            font-weight: 300;
-            min-height: 60px;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background-color: #fff;
-            margin-left: 5px;
-            transform: translateY(3px);
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            text-align: justify;
         }
 
         .btn {
             display: inline-block;
-            border: 2px solid #fff;
             padding: 14px 40px;
+            border: 1px solid #fff;
+            color: #fff;
             font-size: 13px;
             font-weight: 700;
-            letter-spacing: 1px;
             text-transform: uppercase;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            opacity: 0; 
-            animation: fadeIn 1s ease-out 3s forwards; 
+            letter-spacing: 2px;
+            transition: all 0.3s;
         }
 
         .btn:hover {
@@ -265,65 +260,30 @@
             color: #000;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- HUD 装饰 --- */
         .hud-decoration {
-            position: absolute;
+            position: fixed;
             bottom: 50px;
-            right: 50px;
-            text-align: right;
+            left: 50px;
             font-family: monospace;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 11px;
-            z-index: 20;
-            pointer-events: none;
-            animation: fadeIn 2s ease-out 1s backwards;
-        }
-
-        .hud-line {
-            width: 120px;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.3);
-            margin-left: auto;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .hud-line::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: -2px;
-            width: 5px;
-            height: 5px;
-            background: #fff;
-        }
-
-        .hud-data span {
-            display: block;
-            margin-bottom: 4px;
-            letter-spacing: 1px;
+            font-size: 12px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10;
         }
 
         /* --- 移动端适配 --- */
+        @media (max-width: 1024px) {
+            h1 { font-size: 40px; }
+            .hero { padding: 0 30px; }
+        }
+
         @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            .logo img { height: 40px; }
-            .logo span { font-size: 18px; letter-spacing: 2px; }
+            header { padding: 20px; }
             .hamburger { display: block; }
-            .header-right { display: none; }
             nav {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.95);
-                backdrop-filter: blur(100px); 
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
                 z-index: 101; 
                 display: flex;
                 flex-direction: column;
@@ -363,7 +323,7 @@
     <ul>
         <li><a href="index.html" onclick="toggleMenu()">首页</a></li> 
         <li><a href="article.html">深度分析</a></li>
-        <li><a href="works.html">作品展示</a></li>
+        <li><a href="works.html">商业案例</a></li>
         <li><a href="pricing.html">源码交付</a></li> 
         <li><a href="about.html">关于我 & 商业合作</a></li> 
     </ul>
@@ -391,190 +351,125 @@
             </p>
             <p>
                 文章内容以判断为导向，强调可反驳性与长期有效性，
-                适合对技术、架构与决策质量有要求的读者。
+                而非流量驱动的短期趋势追逐。
             </p>
         </article>
     </main>
 
-    <div class="hud-decoration">
-        <div class="hud-line"></div>
-        <div class="hud-data">
-            <span>SYS.STATUS: ONLINE</span>
-            <span>MEM: 64TB / VISUAL: RETINA</span>
-            <span id="user-location">LOC: SCANNING... / GEO.SYNC</span>
-            <span id="fps-counter">FRAME: 60FPS</span>
-        </div>
-    </div>
+    <div class="hud-decoration">// 鹭栖 · 数字潮汐</div>
 
     <script>
-        // --- 1. 移动端菜单逻辑 ---
-        const hamburger = document.querySelector('.hamburger');
-        const nav = document.querySelector('nav');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            nav.classList.toggle('active');
-        }
-        hamburger.addEventListener('click', toggleMenu);
-
-        // --- 2. 时钟模块 ---
-        function updateClock() {
-            const now = new Date();
-            const formatTime = (unit) => String(unit).padStart(2, '0');
-            const timeString = `T+${formatTime(now.getHours())}: ${formatTime(now.getMinutes())}: ${formatTime(now.getSeconds())}`;
-            document.getElementById('clock').textContent = timeString;
-        }
-        setInterval(updateClock, 1000); 
-        updateClock();
-
-        // --- 3. 打字机效果模块 ---
-        const textToType = "GeekHeron 追踪全球前沿科技，深度解析 AI、区块链、量子计算与机器人的未来。在喧嚣中寻找理性的声音。";
-        const typeElement = document.getElementById('typing-text');
-        let typeIndex = 0;
-        function typeWriter() {
-            if (typeIndex < textToType.length) {
-                typeElement.innerHTML = textToType.substring(0, typeIndex + 1) + '<span class="cursor"></span>';
-                typeIndex++;
-                setTimeout(typeWriter, Math.floor(Math.random() * 30) + 30);
-            } else {
-                typeElement.innerHTML = textToType + '<span class="cursor"></span>';
-            }
-        }
-        setTimeout(typeWriter, 1200);
-
-        // --- 4. 粒子与流星动画模块 ---
+        // 背景粒子效果
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
-        let width, height;
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
         const particles = [];
-        const numParticles = 4000; 
-        const fieldOfView = 300; 
-        const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
-
+        const numParticles = 1500;
+        
         class Particle {
-            constructor() { this.init(); }
-            init() {
-                this.x = (Math.random() - 0.5) * width * 2.5; 
-                this.y = (Math.random() - 0.5) * height * 2.5; 
-                this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
-                this.radius = Math.random() * 1.2 + 0.2; 
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2;
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5;
+                this.alpha = Math.random() * 0.5 + 0.05;
             }
             update() {
-                let cosZ = Math.cos(0.0005);
-                let sinZ = Math.sin(0.0005);
-                let tempX = this.x;
-                this.x = tempX * cosZ - this.y * sinZ;
-                this.y = tempX * sinZ + this.y * cosZ;
-                this.z -= 0.2; 
-                if (this.z < -fieldOfView) { this.z += fieldOfView * 2; }
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
             }
             draw() {
-                const perspective = fieldOfView / (fieldOfView + this.z);
-                const projectedX = (this.x * perspective) + width / 2;
-                const projectedY = (this.y * perspective) + height / 2;
-                const projectedRadius = this.radius * perspective;
-                const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
-                if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
-                    ctx.beginPath();
-                    ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${this.color}, ${opacity})`;
-                    ctx.fill();
-                }
-            }
-        }
-
-        class ShootingStar {
-            constructor() { this.reset(); this.active = false; }
-            reset() {
-                this.x = Math.random() * width + 200; 
-                this.y = Math.random() * height * 0.3 - 200; 
-                this.speed = Math.random() * 10 + 15;
-                this.len = Math.random() * 80 + 150;
-                this.size = Math.random() * 1 + 0.5;
-                this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
-                this.active = true;
-            }
-            update() {
-                if (!this.active) return;
-                this.x -= this.speed * Math.cos(this.angle);
-                this.y += this.speed * Math.sin(this.angle);
-                if (this.x < -this.len || this.y > height + this.len) this.active = false;
-            }
-            draw() {
-                if (!this.active) return;
-                const tailX = this.x + this.len * Math.cos(this.angle);
-                const tailY = this.y - this.len * Math.sin(this.angle);
-                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-                gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-                gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
                 ctx.beginPath();
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = this.size;
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(tailX, tailY);
-                ctx.stroke();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
-
-        const meteors = [new ShootingStar(), new ShootingStar(), new ShootingStar()];
-
-        function resize() {
+        
+        function init() {
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', () => {
             width = window.innerWidth;
             height = window.innerHeight;
             canvas.width = width;
             canvas.height = height;
-        }
-        window.addEventListener('resize', () => { resize(); initParticles(); });
-        function initParticles() {
-            particles.length = 0;
-            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
-        }
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            if (Math.random() < 0.008) {
-                const m = meteors.find(m => !m.active);
-                if (m) m.reset();
-            }
-            meteors.forEach(m => { m.update(); m.draw(); });
-            requestAnimationFrame(animate);
-        }
-        resize();
-        initParticles();
+        });
+        
+        init();
         animate();
-
-        // --- 5. [新增] 地理位置模块 ---
-        function initLocation() {
-            const locElement = document.getElementById('user-location');
-            if (!locElement) return;
-
-            if (!navigator.geolocation) {
-                locElement.textContent = "LOC: N/A / SIGNAL.LOST";
-                return;
+        
+        // 打字机效果
+        const subtitles = [
+            '理解复杂系统的深层逻辑',
+            '洞察 AI 变革中的机遇与陷阱',
+            '记录真实的工程判断与决策'
+        ];
+        let subtitleIndex = 0;
+        let charIndex = 0;
+        
+        function typeSubtitle() {
+            const element = document.getElementById('typing-text');
+            if (!element) return;
+            
+            const currentSubtitle = subtitles[subtitleIndex];
+            element.textContent = currentSubtitle.slice(0, charIndex);
+            
+            if (charIndex < currentSubtitle.length) {
+                charIndex++;
+                setTimeout(typeSubtitle, 100);
+            } else {
+                setTimeout(() => {
+                    subtitleIndex = (subtitleIndex + 1) % subtitles.length;
+                    charIndex = 0;
+                    typeSubtitle();
+                }, 3000);
             }
-
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-
-                    // 格式化逻辑：绝对值 + 方向字符 (保持 sci-fi 风格)
-                    const latDir = lat >= 0 ? 'N' : 'S';
-                    const lonDir = lon >= 0 ? 'E' : 'W';
-                    const latText = Math.abs(lat).toFixed(2);
-                    const lonText = Math.abs(lon).toFixed(2);
-
-                    locElement.textContent = `LOC: ${latText}${latDir}, ${lonText}${lonDir} / GEO.SYNC`;
-                },
-                (error) => {
-                    // 权限拒绝或获取失败时的回退显示
-                    console.warn("Location access denied or failed:", error.message);
-                    locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
-                },
-                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-            );
         }
-        initLocation();
+        
+        typeSubtitle();
+        
+        // 时钟
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `T+${hours}:${minutes}:${seconds}`;
+        }
+        
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        // 汉堡菜单
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const nav = document.querySelector('nav');
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        }
+        
+        document.querySelector('.hamburger').addEventListener('click', toggleMenu);
     </script>
 </body>
 </html>

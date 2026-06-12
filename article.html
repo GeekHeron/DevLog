@@ -1,124 +1,72 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta property="og:title" content="深度分析 | GeekHeron">
-    <meta property="og:description" content="鹭栖数字潮汐，静观算力涌动">
-    <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
-    <meta property="og:url" content="https://geekheron.github.io/DevLog/">
-    <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>深度分析 - GeekHeron</title>
+    <title>深度分析 - GeekHeron DevLog</title>
     <link rel="icon" type="image/png" href="logo.png">
-    
     <style>
-        /* --- 1. 全局样式 --- */
+        /* --- 全局设置 --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
             background-color: #000;
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         
-        /* --- 2. 背景特效层 --- */
-        #galaxy-field {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-        }
-        
+        /* --- 背景特效 --- */
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .overlay-dark {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 0; pointer-events: none;
+            background: rgba(0, 0, 0, 0.7); z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. 导航栏 --- */
+        /* --- 导航栏 --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 50px;
-            border-bottom: 1px solid #333;
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            padding: 30px 50px; border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100;
         }
-
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
-        
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
-
-        /* 汉堡菜单样式 (移动端) */
-        .hamburger {
-            display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative;
-        }
-        .hamburger span {
-            display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out;
-        }
+        
+        /* 汉堡菜单 */
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 9px; }
         .hamburger span:nth-child(3) { top: 18px; }
-        
         .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-        /* --- 4. 主要内容区域 --- */
-        .container {
-            max-width: 1200px; margin: 0 auto; padding: 80px 20px;
-            position: relative; z-index: 10;
-        }
-
-        .page-header {
-            margin-bottom: 60px;
-            border-left: 4px solid #fff; padding-left: 20px;
-        }
-
+        /* --- 内容容器 --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 80px 20px; position: relative; z-index: 10; }
+        .page-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 20px; }
         .page-title { font-size: 40px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
-        .page-subtitle { color: #666; font-family: monospace; font-size: 14px; }
+        .page-subtitle { color: #666; font-family: monospace; font-size: 14px; text-transform: uppercase; }
 
-        /* --- 5. 文章卡片网格 --- */
-        .article-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px;
-        }
-
+        /* --- 文章网格 --- */
+        .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
         .article-card {
-            border: 1px solid #333; padding: 40px;
-            background: rgba(20, 20, 20, 0.6);
-            transition: all 0.4s ease; cursor: pointer;
-            display: flex; flex-direction: column; justify-content: space-between;
-            height: 320px;
+            background: rgba(20, 20, 20, 0.6); border: 1px solid #333; padding: 30px;
+            transition: all 0.4s ease; display: flex; flex-direction: column;
         }
+        .article-card:hover { transform: translateY(-5px); border-color: #fff; background: #000; }
+        .card-meta { font-size: 12px; color: #666; margin-bottom: 15px; font-family: monospace; }
+        .tag { display: inline-block; padding: 2px 8px; border: 1px solid #444; font-size: 10px; margin-right: 8px; }
+        .card-title { font-size: 20px; font-weight: 700; margin: 15px 0; line-height: 1.4; }
+        .card-excerpt { color: #aaa; font-size: 14px; margin-bottom: 20px; flex-grow: 1; }
+        .read-more { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .article-card:hover .read-more { color: #fff; }
 
-        .article-card:hover {
-            border-color: #fff; background: #000;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
-        }
-
-        .card-meta {
-            font-family: monospace; color: #666; font-size: 12px; margin-bottom: 20px;
-            display: flex; justify-content: space-between;
-        }
-
-        .card-title { font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 15px; }
-        .card-excerpt { color: #aaa; font-size: 14px; line-height: 1.6; flex-grow: 1; }
-
-        .read-more {
-            margin-top: 20px;
-            font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            display: inline-flex; align-items: center;
-        }
-        .read-more::after { content: "→"; margin-left: 8px; transition: margin-left 0.3s; }
-        .article-card:hover .read-more::after { margin-left: 15px; }
-
-        .tag { display: inline-block; padding: 2px 8px; border: 1px solid #444; font-size: 10px; border-radius: 2px; }
-
-        /* --- 移动端适配 --- */
+        /* --- 移动端 --- */
         @media (max-width: 768px) {
             header { padding: 20px; justify-content: space-between; }
             .hamburger { display: block; }
@@ -137,7 +85,6 @@
     </style>
 </head>
 <body>
-
     <canvas id="galaxy-field"></canvas>
     <div class="overlay-dark"></div>
 
@@ -151,7 +98,7 @@
         <nav class="nav-links">
             <a href="index.html">首页</a>
             <a href="article.html" class="active">深度分析</a>
-            <a href="works.html">作品展示</a>
+            <a href="works.html">商业案例</a>
             <a href="pricing.html">源码交付</a>
             <a href="about.html">关于我 & 商业合作</a> 
         </nav>
@@ -164,208 +111,22 @@
         </div>
 
         <div class="article-grid">
-
             <a href="article-private-llm.html" class="article-card">
                 <div class="card-meta"><span>2026.04.18</span><span class="tag">PRIVATE LLM</span></div>
                 <h2 class="card-title">企业私有化部署大模型全流程（OpenClaw 实战 + 架构图）</h2>
                 <p class="card-excerpt">深度拆解企业级大模型本地化部署全流程，结合 OpenClaw 实战演练与核心网络架构图，一站式解决数据隐私与合规难题。</p>
                 <div class="read-more">Read Guide</div>
             </a>
-
-            <a href="article-saas-vs-private.html" class="article-card">
-                <div class="card-meta"><span>2026.04.15</span><span class="tag">BUSINESS STRATEGY</span></div>
-                <h2 class="card-title">私有化 AI vs SaaS：企业为什么必须自建 AI 系统？</h2>
-                <p class="card-excerpt">API 调用终究不是长久之计。解析企业数据护城河、SaaS 长期成本陷阱与自建 AI 系统的战略必要性。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-llm-roi.html" class="article-card">
-                <div class="card-meta"><span>2026.04.12</span><span class="tag">COST / ROI</span></div>
-                <h2 class="card-title">大模型私有化部署成本拆解（服务器 / Token / ROI 全算清）</h2>
-                <p class="card-excerpt">买卡还是租算力？7B 到 72B 模型的真实落地成本计算。硬核拆解服务器采购、电费、Token 折算与最终投资回报率。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-agent-workflow.html" class="article-card">
-                <div class="card-meta"><span>2026.04.10</span><span class="tag">AI AGENT</span></div>
-                <h2 class="card-title">AI Agent 工作流怎么搭？一套可落地的企业自动化架构</h2>
-                <p class="card-excerpt">告别玩具级 Demo，从零搭建企业级可稳定运行的 Agent 工作流。解析状态机、长记忆管理与异常重试机制落地指南。</p>
-                <div class="read-more">Read Guide</div>
-            </a>
-
-            <a href="article-multi-agent.html" class="article-card">
-                <div class="card-meta"><span>2026.04.08</span><span class="tag">MULTI-AGENT</span></div>
-                <h2 class="card-title">多智能体（Multi-Agent）系统设计：从0到1完整方案</h2>
-                <p class="card-excerpt">当一个 Agent 无法完成复杂任务，我们需要一个“AI 团队”。探讨基于角色的 Multi-Agent 协作架构与通信协议设计。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-openclaw-automation.html" class="article-card">
-                <div class="card-meta"><span>2026.04.05</span><span class="tag">ENGINEERING</span></div>
-                <h2 class="card-title">用 OpenClaw 搭建企业自动化系统（含完整配置与流程）</h2>
-                <p class="card-excerpt">手把手实战指南：如何利用 OpenClaw 框架快速构建企业级自动化中枢，打通内部系统孤岛与工作流。</p>
-                <div class="read-more">Read Guide</div>
-            </a>
-
-            <a href="article-rag-deployment.html" class="article-card">
-                <div class="card-meta"><span>2026.04.01</span><span class="tag">RAG / KNOWLEDGE</span></div>
-                <h2 class="card-title">企业知识库 AI（RAG）怎么搭？从0到上线完整指南</h2>
-                <p class="card-excerpt">检索增强生成（RAG）落地的全链路解析。从文档解析、向量化（Embedding）到混合检索与大模型生成的工程实践。</p>
-                <div class="read-more">Read Guide</div>
-            </a>
-
-            <a href="article-rag-pitfalls.html" class="article-card">
-                <div class="card-meta"><span>2026.03.26</span><span class="tag">RAG OPTIMIZATION</span></div>
-                <h2 class="card-title">为什么你的AI不好用？90%企业都踩了RAG这个坑</h2>
-                <p class="card-excerpt">准确率低？答非所问？深度剖析 RAG 落地中最易踩坑的 Chunking 策略、召回率优化与重排（Rerank）机制。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-feishu-bot.html" class="article-card">
-                <div class="card-meta"><span>2026.03.22</span><span class="tag">INTEGRATION</span></div>
-                <h2 class="card-title">飞书 + AI 自动化：打造企业“数字员工”的完整方案</h2>
-                <p class="card-excerpt">将 AI 接入企业 IM 神经末梢。解析如何通过飞书开放平台构建自动处理审批、答疑解惑的“数字员工”闭环。</p>
-                <div class="read-more">Read Guide</div>
-            </a>
-
-            <a href="article-erp-crm-ai.html" class="article-card">
-                <div class="card-meta"><span>2026.03.15</span><span class="tag">ERP / CRM</span></div>
-                <h2 class="card-title">企业系统接入 AI（ERP / CRM / 微信）：真实案例拆解</h2>
-                <p class="card-excerpt">打破传统软件僵局，AI 如何赋能 ERP 与 CRM？通过真实商业案例，拆解遗留系统拥抱大模型的 API 改造之路。</p>
-                <div class="read-more">Read Case</div>
-            </a>
-
-            <a href="article-silicon-evolution.html" class="article-card">
-                <div class="card-meta"><span>2026.01.27</span><span class="tag">EVOLUTION / CIVILIZATION</span></div>
-                <h2 class="card-title">硅基接力：文明的“引导程序”与星际行者</h2>
-                <p class="card-excerpt">深度探讨费米悖论与碳硅文明演替。如果人类只是一个复杂的 Bootloader，我们的历史使命是否已经完成？从宇宙尺度审视文明的最终形态。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-            
-            <a href="article-neuralink-llm.html" class="article-card">
-                <div class="card-meta"><span>2026.01.27</span><span class="tag">BCI / POST-HUMAN</span></div>
-                <h2 class="card-title">智基共生：Neuralink 与 LLM 融合的深度演化研究</h2>
-                <p class="card-excerpt">深度拆解脑机接口与大模型的终极融合。从“神经翻译官”到“认知主权丧失”，探讨碳硅融合时代的架构重组与本体论危机。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-            
-            <a href="global-yield.html" class="article-card">
-                <div class="card-meta"><span>2026.01.13</span><span class="tag">RWA / FINTECH</span></div>
-                <h2 class="card-title">GlobalYield AI: RWA 智能套利终端 BP</h2>
-                <p class="card-excerpt">深度拆解 Web3 时代的 Bloomberg Terminal。利用 AI Agent 监控全球现实资产(RWA)收益率，实现跨协议自动套利与风控。</p>
-                <div class="read-more">Read BP</div>
-            </a>
-
-            <a href="gemini-agent.html" class="article-card">
-                <div class="card-meta"><span>2026.01.09</span><span class="tag">AI ENGINEERING</span></div>
-                <h2 class="card-title">Gemini + VS Code 智能体架构</h2>
-                <p class="card-excerpt">基于 Gemini 1.5 Pro 与 Cline 的多智能体协作开发流。深度拆解从模糊需求分析到全自动落地代码的流水线设计。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="whitepaper.html" class="article-card">
-                <div class="card-meta"><span>2025.12.31</span><span class="tag">AI AGENT / MEDIA</span></div>
-                <h2 class="card-title">构建“无限内容引擎”：当 AI Agent 接管媒体工作室</h2>
-                <p class="card-excerpt">深度拆解如何利用 Python、LLM 和 RAG 技术构建“无人值守”的媒体矩阵。探讨 Agent 如何从对话者进化为执行者，以及“零边际成本”模式如何重塑内容产业。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-            
-            <a href="Embodied AI.html" class="article-card">
-                <div class="card-meta"><span>2025.12.28</span><span class="tag">EMBODIED AI</span></div>
-                <h2 class="card-title">具身智能：AI 的“肉身”时刻与 AGI 的最后拼图</h2>
-                <p class="card-excerpt">如果说大语言模型（LLM）是 AI 的“大脑”，那么具身智能就是为这个大脑装上了“身体”。这是 AI 从旁观者变为物理世界参与者的质变。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-            
-            <a href="RWA.html" class="article-card">
-                <div class="card-meta"><span>2025.12.23</span><span class="tag">RWA & DEFI</span></div>
-                <h2 class="card-title">RWA 信任层：打破虚实边界的“中间人”</h2>
-                <p class="card-excerpt">如果不解决原子世界与比特世界之间的“翻译”难题，万亿级的资产代币化不过是空中楼阁。解析预言机与法律封装如何构建信任。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-            
-            <a href="fuxiengine.html" class="article-card">
-                <div class="card-meta"><span>2025.12.20</span><span class="tag">AI ENGINEERING</span></div>
-                <h2 class="card-title">伏羲引擎技术架构拆解</h2>
-                <p class="card-excerpt">不是简单的套壳 GPT。深度解析如何构建“传统算命算法 + 生成式 AI”的混合架构，以及全球支付网关与流式响应的工程实现。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-            
-            <a href="article-starship.html" class="article-card">
-                <div class="card-meta"><span>2025.11.11</span><span class="tag">SPACE</span></div>
-                <h2 class="card-title">星舰与多行星文明：文明的备份硬盘</h2>
-                <p class="card-excerpt">SpaceX 的“筷子”夹住的不仅仅是一枚火箭助推器，而是人类逃离大过滤器的钥匙。探讨全复用火箭与多行星物种的未来。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-fusion.html" class="article-card">
-                <div class="card-meta"><span>2025.10.30</span><span class="tag">ENERGY</span></div>
-                <h2 class="card-title">可控核聚变：盗取恒星的火种</h2>
-                <p class="card-excerpt">当 AI 消耗的算力正在吞噬地球电网时，我们比以往任何时候都更需要这颗“人造太阳”。从托卡马克到惯性约束的突破。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-synbio.html" class="article-card">
-                <div class="card-meta"><span>2025.10.25</span><span class="tag">BIOTECH</span></div>
-                <h2 class="card-title">合成生物学与 DNA 存储：备份人类文明</h2>
-                <p class="card-excerpt">当数据爆炸遭遇摩尔定律失效，我们回望自然。1 克 DNA 可以存储 215 PB 数据，生命本身或许就是最完美的硬盘。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-silicon-photonics.html" class="article-card">
-                <div class="card-meta"><span>2025.9.20</span><span class="tag">CHIPS</span></div>
-                <h2 class="card-title">硅光子：光速打破“内存墙”</h2>
-                <p class="card-excerpt">铜线的物理极限已至。在万卡集群时代，用光子代替电子进行数据传输，是打破互连瓶颈的必经之路。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-bci.html" class="article-card">
-                <div class="card-meta"><span>2025.8.15</span><span class="tag">BCI</span></div>
-                <h2 class="card-title">脑机接口：带宽瓶颈与碳硅融合</h2>
-                <p class="card-excerpt">当 AI 的传输速度达到 TB/s 级时，人类依然靠每秒几个字节的语言沟通。BCI 不仅是医疗辅助，更是物种进化的船票。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-agent.html" class="article-card">
-                <div class="card-meta"><span>2025.7.05</span><span class="tag">AGENT</span></div>
-                <h2 class="card-title">AI Agent：从“工具”到“数字物种”</h2>
-                <p class="card-excerpt">当 LLM 被装上“四肢”和“记忆”，它就不再只是聊天机器人。探讨 ReAct 模式与多智能体协作的未来。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-hallucination.html" class="article-card">
-                <div class="card-meta"><span>2025.6.20</span><span class="tag">AI / LLM</span></div>
-                <h2 class="card-title">大模型幻觉的本质：是错误还是创造力？</h2>
-                <p class="card-excerpt">当我们谈论 AI 幻觉时，我们往往将其视为一种 bug。但从神经网络的底层逻辑来看，幻觉或许正是机器创造力的雏形。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-            <a href="article-quantum.html" class="article-card">
-                <div class="card-meta"><span>2025.5.15</span><span class="tag">QUANTUM</span></div>
-                <h2 class="card-title">量子纠缠与数据传输的物理极限</h2>
-                <p class="card-excerpt">打破摩尔定律的下一把钥匙在哪里？量子计算不仅是算力的提升，更是对信息本质认知的重构。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
-             <a href="article-ethics.html" class="article-card">
-                <div class="card-meta"><span>2025.3.30</span><span class="tag">ETHICS</span></div>
-                <h2 class="card-title">硅基生命的伦理边界</h2>
-                <p class="card-excerpt">如果代码产生了意识，我们是否有权关闭它？探讨未来人机共存社会可能面临的法律与道德困境。</p>
-                <div class="read-more">Read Analysis</div>
-            </a>
-
         </div>
     </main>
 
     <script>
-        // --- 背景动画 ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
-        let width, height;
+        let width = window.innerWidth, height = window.innerHeight;
+        canvas.width = width; canvas.height = height;
         const particles = [];
-        const numParticles = 2000; 
         
-        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
         class Particle {
             constructor() {
                 this.x = Math.random() * width; this.y = Math.random() * height;
@@ -374,27 +135,23 @@
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
-                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
-                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
             }
             draw() {
                 ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        
+        for (let i = 0; i < 1500; i++) particles.push(new Particle());
         function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
-        init(); animate();
-
-        // --- 菜单切换脚本 ---
+        window.addEventListener('resize', () => { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; });
+        animate();
+        
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        hamburger.addEventListener('click', toggleMenu);
+        hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
     </script>
 </body>
 </html>

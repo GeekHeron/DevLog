@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta property="og:title" content="Transformer 原理通俗讲解">
+    <meta property="og:description" content="从注意力机制到完整架构，用直觉理解 Transformer 如何工作">
+    <meta property="og:image" content="https://geekheron.github.io/DevLog//logo.png"> 
+    <meta property="og:url" 	content="https://geekheron.github.io/DevLog/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer 自注意力机制讲解 - GeekHeron</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* --- 基础样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #ccc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 0; pointer-events: none;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px; border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* --- 文章容器 --- */
+        .container {
+            max-width: 800px; margin: 0 auto; padding: 80px 20px 150px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 40px;
+        }
+        .article-meta { font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px; }
+        .tag {
+            display: inline-block; padding: 2px 8px; border: 1px solid #444; 
+            font-size: 12px; border-radius: 2px; margin-left: 10px; color: #888;
+        }
+        .article-title {
+            font-size: 42px; font-weight: 700; letter-spacing: -1px; 
+            color: #fff; line-height: 1.3; margin-bottom: 20px;
+        }
+
+        /* --- 正文排版 --- */
+        .article-content h2 {
+            font-size: 28px; color: #fff; margin-top: 60px; margin-bottom: 25px;
+            /* 恒星橙，代表高温等离子体与聚变能量 */
+            border-left: 4px solid #ffaa00; 
+            padding-left: 15px;
+        }
+        .article-content h3 {
+            font-size: 21px; color: #fff; margin-top: 40px; margin-bottom: 18px;
+            border-left: 3px solid #666;
+            padding-left: 12px;
+        }
+        .article-content p { margin-bottom: 25px; font-size: 18px; text-align: justify; }
+        .article-content ul { margin-bottom: 30px; padding-left: 20px; }
+        .article-content li { margin-bottom: 10px; list-style-type: square; color: #bbb; }
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        .quote-block {
+            border-left: 2px solid #666; padding-left: 20px; margin: 30px 0;
+            font-style: italic; color: #888;
+        }
+
+        /* 数学公式容器 */
+        .math-block {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px;
+            margin: 30px 0; text-align: center; font-family: "Times New Roman", serif;
+            border: 1px solid #333;
+            overflow-x: auto;
+        }
+
+        /* --- 交互组件所需变量（沿用深色主题） --- */
+        .attn-widget {
+            --surface-1: rgba(255,255,255,0.06);
+            --surface-2: rgba(255,255,255,0.12);
+            --text-primary: #eee;
+            --text-secondary: #999;
+            --text-muted: #666;
+            --border-strong: #444;
+            --border-stronger: #555;
+            --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 40px 0;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #333;
+            border-radius: 12px;
+        }
+        .attn-widget .token-btn {
+            cursor: pointer;
+            border-radius: 8px;
+            border: 1.5px solid var(--border-strong);
+            background: var(--surface-1);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: var(--font-sans);
+            padding: 8px 14px;
+            font-weight: 500;
+            transition: all 0.18s;
+            position: relative;
+            z-index: 2;
+        }
+        .attn-widget .token-btn:hover { background: var(--surface-2); }
+        .attn-widget .token-btn.active {
+            background: #412402;
+            border-color: #EF9F27;
+            color: #FAC775;
+        }
+        .attn-widget .hint { font-size: 13px; color: var(--text-muted); margin-top: 6px; text-align: center; }
+        .attn-widget .legend { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--text-secondary); }
+        .attn-widget .legend-item { display: flex; align-items: center; gap: 5px; }
+        .attn-widget .legend-dot { width: 24px; height: 3px; border-radius: 2px; }
+
+        /* 对比表格 */
+        .compare-table {
+            width: 100%; border-collapse: collapse; margin: 30px 0;
+            font-size: 16px;
+        }
+        .compare-table th, .compare-table td {
+            border: 1px solid #333; padding: 14px 16px; text-align: left;
+        }
+        .compare-table th {
+            background: rgba(255,170,0,0.08); color: #fff; font-weight: 600;
+        }
+        .compare-table td { color: #bbb; }
+        .compare-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+        .back-btn {
+            display: inline-block; margin-top: 80px;
+            font-size: 14px; color: #666; border: 1px solid #333;
+            padding: 10px 20px; transition: 0.3s;
+        }
+        .back-btn:hover { border-color: #fff; color: #fff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 15px 20px; gap: 15px; }
+            .nav-links { display: flex; width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+            .nav-links a { margin-left: 0; font-size: 14px; }
+            
+            .container { padding: 40px 20px 100px; }
+            .article-header { margin-bottom: 40px; padding-bottom: 30px; }
+            .article-title { font-size: 28px; line-height: 1.3; }
+            
+            .article-content h2 { font-size: 22px; margin-top: 40px; }
+            .article-content h3 { font-size: 18px; margin-top: 30px; }
+            .article-content p { font-size: 17px; text-align: left; }
+            
+            .math-block { padding: 15px; font-size: 14px; }
+            .compare-table { font-size: 14px; }
+            .compare-table th, .compare-table td { padding: 10px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="works.html">作品展示</a>
+            <a href="about.html">关于博主</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2026-06-30</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">Transformer</span>
+            </div>
+            <h1 class="article-title">Transformer 原理通俗讲解</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                从一句话的指代消解出发，拆解注意力机制、多头结构与整体架构，理解支撑 GPT、BERT、Claude 的核心引擎。
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>核心思想：词与词的对话</h2>
+            <p>想象你在读这句话："<strong>猫</strong>坐在垫子上，<strong>它</strong>很舒适。"</p>
+            <p>当你理解"它"指的是"猫"时，你的大脑其实在做一件事：把当前词和句子里所有其他词建立联系，判断哪些最相关。这就是 Transformer 的核心机制——<strong>注意力（Attention）</strong>。</p>
+
+            <div class="quote-block">
+                Transformer 的革命性在于：并行地、对每个词都做这件事，而不是像 RNN 一样一个词一个词地读。
+            </div>
+
+            <h2>三个核心组件</h2>
+
+            <h3>1. 注意力机制（Self-Attention）</h3>
+            <p>每个词生成三个向量：</p>
+            <ul>
+                <li><strong>Q（Query）</strong>：我想找什么？</li>
+                <li><strong>K（Key）</strong>：我能提供什么信息？</li>
+                <li><strong>V（Value）</strong>：我实际携带的内容</li>
+            </ul>
+            <p>每个词的 Q 和所有词的 K 做点积，算出相关度分数，经过 Softmax 归一化后，再对所有词的 V 做加权求和，得到这个词更新后的表示。</p>
+
+            <h3>2. 多头注意力（Multi-Head Attention）</h3>
+            <p>模型不只跑一次注意力，而是同时跑 8 个、16 个甚至更多"头"，每个头捕捉不同的语言关系，比如语法结构、指代关系、语义相关性等，最后把所有头的结果拼接起来，融合成更丰富的表示。</p>
+
+            <h3>3. 前馈网络（FFN）</h3>
+            <p>注意力完成"词间交流"之后，每个词的向量会独立通过一个两层神经网络，做非线性变换，进一步增强模型的表达能力。这一步是逐词进行的，词与词之间不再交互。</p>
+
+            <p>这三步组成一个完整的 <strong>Transformer 层</strong>：Self-Attention → 残差连接 → Layer Norm → FFN → 残差连接 → Layer Norm。实际模型会把这样的层叠加 12、32、甚至 96 次，层数越深，捕捉到的语义就越抽象。</p>
+
+            <h3>动手试一试：注意力是如何分配的</h3>
+            <p>下面以"猫坐在垫子上，它很舒适"为例，点击任意一个词，观察它在不同层会把"注意力"投向哪些词——连线越粗、颜色越深，代表关联越强。</p>
+
+            <div class="attn-widget">
+                <div class="hint" style="margin-bottom: 14px; font-size:14px; color:var(--text-secondary)">点击一个词，查看它在注意力层中关注哪些词</div>
+
+                <div id="token-row" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom: 0">
+                    <!-- tokens rendered by JS -->
+                </div>
+
+                <svg id="attn-svg" width="100%" viewBox="0 0 680 160" style="display:block; overflow:visible; margin: 0 auto"></svg>
+
+                <div id="layer-row" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:0">
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:#EF9F27; height:4px"></div> 强注意力</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#EF9F27; opacity:0.45; height:2.5px"></div> 中等注意力</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--border-strong); opacity:0.6; height:1.5px"></div> 弱注意力</div>
+                </div>
+                <div class="hint" style="margin-top:14px">每层学习不同的语言关系 — 尝试切换层</div>
+            </div>
+
+            <h2>完整流程：从输入到输出</h2>
+            <p><strong>① 词嵌入 + 位置编码</strong></p>
+            <p>每个词先被转换成一个向量（比如 512 维），再加入位置信息（这个词是句子中第几个）。因为 Transformer 本身不感知顺序，必须手动把位置信息编码进去。</p>
+
+            <p><strong>② N 个 Transformer 层叠加</strong></p>
+            <p>输入向量依次通过多个 Transformer 层，每一层都让词与词之间充分"交流"，并不断提炼出更高层次的语义特征。</p>
+
+            <p><strong>③ 输出</strong></p>
+            <p>最后一层输出的向量，经过一个线性层加 Softmax，转换成对下一个词的概率分布，从而完成预测。</p>
+
+            <h2>注意力机制的数学表达</h2>
+            <p>整个机制的核心公式其实只有一行：</p>
+            <div class="math-block">
+                $$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) V $$
+            </div>
+            <p>其中除以 $\sqrt{d_k}$ 是为了防止点积数值过大，导致 Softmax 后梯度过小、训练不稳定。就是这样一个看似简单的公式，支撑起了 GPT、BERT、Claude 等模型的整个核心运算。</p>
+
+            <h2>为什么 Transformer 这么强？</h2>
+            <table class="compare-table">
+                <tr>
+                    <th>问题</th>
+                    <th>RNN 的做法</th>
+                    <th>Transformer 的做法</th>
+                </tr>
+                <tr>
+                    <td>处理长文本</td>
+                    <td>顺序逐词读取，早期信息容易丢失</td>
+                    <td>所有词直接互相注意，距离无障碍</td>
+                </tr>
+                <tr>
+                    <td>训练速度</td>
+                    <td>必须串行计算，无法并行</td>
+                    <td>全部并行，GPU 利用率极高</td>
+                </tr>
+                <tr>
+                    <td>捕捉关系</td>
+                    <td>难以处理长距离依赖</td>
+                    <td>任意两词之间一步直达</td>
+                </tr>
+            </table>
+
+            <p>正是这种"全词并行 + 任意距离直接关联"的设计，让 Transformer 在长文本理解、训练效率和可扩展性上全面超越了此前的循环神经网络架构，也成为了如今几乎所有大语言模型的基石。</p>
+
+        </article>
+
+        <a href="article.html" class="back-btn">← 返回文章列表</a>
+    </main>
+
+    <script>
+        /* 粒子背景动画 (保持统一) */
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+
+    <script>
+        /* 注意力可视化交互组件 */
+        const TOKENS = ["猫","坐","在","垫子","上","它","很","舒适"];
+        // attention[layer][queryIdx][keyIdx] = weight 0..1
+        const ATTENTION = {
+          0: [ // 语法层
+            [0.9,0.5,0.2,0.3,0.1,0.4,0.1,0.1], // 猫
+            [0.6,0.9,0.3,0.3,0.2,0.2,0.1,0.1], // 坐
+            [0.1,0.5,0.8,0.5,0.6,0.1,0.1,0.1], // 在
+            [0.1,0.3,0.4,0.9,0.5,0.1,0.1,0.1], // 垫子
+            [0.1,0.2,0.5,0.7,0.9,0.1,0.1,0.1], // 上
+            [0.7,0.2,0.1,0.2,0.1,0.9,0.3,0.5], // 它 → 关注"猫"
+            [0.1,0.1,0.1,0.1,0.1,0.4,0.9,0.6], // 很
+            [0.3,0.1,0.1,0.1,0.1,0.6,0.7,0.9], // 舒适
+          ],
+          1: [ // 指代层
+            [0.9,0.2,0.1,0.1,0.1,0.8,0.2,0.3], // 猫
+            [0.4,0.8,0.3,0.2,0.2,0.3,0.1,0.1], // 坐
+            [0.1,0.4,0.7,0.4,0.5,0.2,0.1,0.1], // 在
+            [0.1,0.2,0.4,0.8,0.4,0.1,0.1,0.1], // 垫子
+            [0.1,0.2,0.5,0.6,0.8,0.1,0.1,0.1], // 上
+            [0.95,0.1,0.1,0.1,0.1,0.8,0.2,0.4], // 它 → 强烈关注"猫"
+            [0.2,0.1,0.1,0.1,0.1,0.6,0.8,0.5], // 很
+            [0.4,0.1,0.1,0.1,0.1,0.7,0.6,0.9], // 舒适
+          ],
+          2: [ // 语义层
+            [0.9,0.4,0.1,0.4,0.1,0.6,0.1,0.4], // 猫
+            [0.5,0.8,0.2,0.3,0.2,0.3,0.2,0.3], // 坐
+            [0.1,0.3,0.7,0.5,0.5,0.2,0.1,0.1], // 在
+            [0.2,0.3,0.3,0.9,0.5,0.1,0.1,0.2], // 垫子
+            [0.1,0.3,0.5,0.7,0.8,0.1,0.1,0.2], // 上
+            [0.8,0.2,0.1,0.2,0.1,0.9,0.4,0.7], // 它
+            [0.2,0.1,0.1,0.1,0.1,0.5,0.9,0.7], // 很
+            [0.5,0.1,0.1,0.2,0.1,0.8,0.7,0.9], // 舒适
+          ]
+        };
+        const LAYER_LABELS = ["第 1 层\n语法关系","第 2 层\n指代关系","第 3 层\n语义关系"];
+
+        let activeToken = 5; // default: 它
+        let activeLayer = 1;
+
+        function renderAttnWidget() {
+          const row = document.getElementById('token-row');
+          const layerRow = document.getElementById('layer-row');
+          if (!row || !layerRow) return;
+          row.innerHTML = '';
+          layerRow.innerHTML = '';
+
+          TOKENS.forEach((t, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'token-btn' + (i === activeToken ? ' active' : '');
+            btn.textContent = t;
+            btn.onclick = () => { activeToken = i; renderAttnWidget(); };
+            row.appendChild(btn);
+          });
+
+          [0,1,2].forEach(l => {
+            const btn = document.createElement('button');
+            btn.className = 'token-btn' + (l === activeLayer ? ' active' : '');
+            btn.textContent = LAYER_LABELS[l].split('\n')[1];
+            btn.style.fontSize = '12px';
+            btn.style.padding = '6px 10px';
+            btn.onclick = () => { activeLayer = l; renderAttnWidget(); };
+            layerRow.appendChild(btn);
+          });
+
+          drawAttnArrows();
+        }
+
+        function drawAttnArrows() {
+          const svg = document.getElementById('attn-svg');
+          if (!svg) return;
+          svg.innerHTML = '';
+          const btns = document.querySelectorAll('#token-row .token-btn');
+          const layerBtns = document.querySelectorAll('#layer-row .token-btn');
+          if (!btns.length || !layerBtns.length) return;
+
+          const svgRect = svg.getBoundingClientRect();
+          const weights = ATTENTION[activeLayer][activeToken];
+
+          btns.forEach((btn, i) => {
+            const w = weights[i];
+            if (w < 0.08) return;
+            const srcBtn = btns[activeToken];
+            const tgtBtn = btn;
+            const srcR = srcBtn.getBoundingClientRect();
+            const tgtR = tgtBtn.getBoundingClientRect();
+            const svgLeft = svgRect.left;
+            const svgTop = svgRect.top;
+            const svgW = svgRect.width || 680;
+            const svgH = svgRect.height || 160;
+            const scaleX = 680 / svgW;
+            const scaleY = 160 / svgH;
+
+            const x1 = (srcR.left + srcR.width/2 - svgLeft) * scaleX;
+            const y1 = (srcR.bottom - svgTop) * scaleY + 4;
+            const x2 = (tgtR.left + tgtR.width/2 - svgLeft) * scaleX;
+            const y2 = (tgtR.top - svgTop) * scaleY - 4;
+
+            if (i === activeToken) {
+              // self-attention: small loop
+              const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+              line.setAttribute('x1', x1-8); line.setAttribute('y1', y1+6);
+              line.setAttribute('x2', x1+8); line.setAttribute('y2', y1+6);
+              line.setAttribute('stroke', '#EF9F27');
+              line.setAttribute('stroke-width', w > 0.7 ? 4 : w > 0.4 ? 2.5 : 1.2);
+              line.setAttribute('opacity', Math.max(0.25, w));
+              line.setAttribute('stroke-linecap','round');
+              svg.appendChild(line);
+              return;
+            }
+
+            const curveOff = Math.abs(x2 - x1) * 0.3;
+            const d = `M${x1} ${y1} C${x1} ${y1+curveOff}, ${x2} ${y2-curveOff}, ${x2} ${y2}`;
+            const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+            path.setAttribute('d', d);
+            path.setAttribute('fill','none');
+            path.setAttribute('stroke', w > 0.5 ? '#EF9F27' : (w > 0.2 ? '#EF9F27' : '#555'));
+            path.setAttribute('stroke-width', w > 0.7 ? 4 : w > 0.45 ? 2.5 : w > 0.2 ? 1.5 : 0.8);
+            path.setAttribute('opacity', Math.max(0.18, Math.min(0.95, w)));
+            path.setAttribute('stroke-linecap','round');
+            svg.appendChild(path);
+          });
+        }
+
+        renderAttnWidget();
+        window.addEventListener('resize', drawAttnArrows);
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用 OpenClaw 搭建企业自动化系统（含完整配置与流程） - GeekHeron</title>
+    <meta name="description" content="用 OpenClaw 搭建企业自动化系统（含完整配置与流程）。OpenClaw 自动化, 企业自动化系统, AI 工作流, 系统集成, 企业流程自动化">
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 1002; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: 0; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul, .article-body ol { margin-bottom: 25px; padding-left: 22px; }
+        .article-body li { margin-bottom: 15px; }
+        .seo-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center; }
+        .seo-footer p { color: #777; margin-bottom: 12px; }
+        .seo-link { display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s; }
+        .seo-link:hover { color: #00ffc3; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+</style>
+</head>
+<body>
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        <nav class="nav-links" id="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="works.html">商业案例</a>
+            <a href="pricing.html">源码交付</a>
+            <a href="about.html">商业合作</a>
+        </nav>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ENGINEERING</span>
+                <h1 class="article-title">用 OpenClaw 搭建企业自动化系统（含完整配置与流程）</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：OpenClaw 自动化, 企业自动化系统, AI 工作流, 系统集成, 企业流程自动化</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.05</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: AUTOMATION</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>一、企业自动化的真正难点</h2>
+                <p>企业自动化并不是简单地把几个接口串起来。真正的挑战在于：系统分散、权限复杂、流程存在例外、数据口径不统一，而且每个部门都有自己的操作习惯。OpenClaw 的价值，是把这些零散动作沉淀成可配置、可审计、可扩展的自动化流程。</p>
+                <p>一个成熟的自动化系统应当同时具备三类能力：连接系统、理解任务、稳定执行。连接系统解决“能不能做”，理解任务解决“做什么”，稳定执行解决“失败后怎么办”。</p>
+
+                <h2>二、基础架构</h2>
+                <p>推荐把 OpenClaw 自动化系统拆成四层：触发层、编排层、执行层和观测层。触发层接入表单、IM、Webhook、定时任务；编排层维护流程节点和条件分支；执行层调用 ERP、CRM、知识库、邮件、飞书等工具；观测层记录日志、状态、耗时和异常。</p>
+                <ul>
+                    <li><strong>触发层：</strong>统一接收外部事件，避免每个系统单独写逻辑。</li>
+                    <li><strong>编排层：</strong>用流程配置描述业务规则，让修改流程不依赖重新发版。</li>
+                    <li><strong>执行层：</strong>封装工具调用，提供重试、鉴权、限流和幂等控制。</li>
+                    <li><strong>观测层：</strong>把每次执行的输入、输出和失败原因记录下来。</li>
+                </ul>
+
+                <h2>三、完整流程示例：客户线索自动跟进</h2>
+                <ol>
+                    <li><strong>线索进入：</strong>官网表单、广告落地页或销售手动录入触发自动化流程。</li>
+                    <li><strong>信息补全：</strong>系统自动查询企业工商信息、历史沟通记录和客户行业标签。</li>
+                    <li><strong>意向判断：</strong>AI 根据预算、场景、时间窗口和问题描述生成线索评分。</li>
+                    <li><strong>任务分派：</strong>高分线索进入 CRM 并推送给对应销售，低分线索进入培育队列。</li>
+                    <li><strong>内容生成：</strong>系统生成首封跟进邮件或飞书消息，销售确认后发送。</li>
+                    <li><strong>结果回写：</strong>沟通结果、下一步动作和提醒时间自动写回 CRM。</li>
+                </ol>
+
+                <h2>四、配置原则</h2>
+                <p>OpenClaw 流程配置应遵循“少写死、多声明”的原则。业务字段、审批条件、角色权限、消息模板和异常策略都应放在配置层，而不是散落在代码里。对于关键节点，要明确超时策略、重试次数和人工接管条件。</p>
+                <p>同时要为每个工具调用设置最小权限。例如，查询客户资料的节点不应该拥有删除客户的权限；生成消息的节点不应该直接发送高风险通知。权限越细，系统越容易被企业接受。</p>
+
+                <h2>五、上线与迭代</h2>
+                <p>上线初期建议选择高频、低风险、规则稳定的流程，例如线索分发、日报汇总、知识库问答、合同信息抽取。等日志和异常样本积累后，再进入跨部门审批、财务校验等复杂场景。</p>
+                <p>企业自动化的终点不是“无人值守”，而是让重复劳动自动完成，让异常情况被及时暴露，让人的注意力回到判断、沟通和决策上。</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>了解更多关于 OpenClaw 与企业自动化源码交付：</p>
+                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            </footer>
+        </article>
+    </main>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+</script>
+</body>
+</html>

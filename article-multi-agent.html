@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多智能体（Multi-Agent）系统设计：从0到1完整方案 - GeekHeron</title>
+    <meta name="description" content="多智能体（Multi-Agent）系统设计：从0到1完整方案。Multi-Agent 系统设计, 多智能体协作, AI 团队架构, Agent 通信协议, 企业级 Agent">
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 1002; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: 0; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul, .article-body ol { margin-bottom: 25px; padding-left: 22px; }
+        .article-body li { margin-bottom: 15px; }
+        .seo-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center; }
+        .seo-footer p { color: #777; margin-bottom: 12px; }
+        .seo-link { display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s; }
+        .seo-link:hover { color: #00ffc3; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+</style>
+</head>
+<body>
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        <nav class="nav-links" id="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="works.html">商业案例</a>
+            <a href="pricing.html">源码交付</a>
+            <a href="about.html">商业合作</a>
+        </nav>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">MULTI-AGENT</span>
+                <h1 class="article-title">多智能体（Multi-Agent）系统设计：从0到1完整方案</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：Multi-Agent 系统设计, 多智能体协作, AI 团队架构, Agent 通信协议, 企业级 Agent</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.08</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: ARCHITECTURE</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>一、为什么需要 Multi-Agent</h2>
+                <p>单个 Agent 适合处理边界清晰的任务，但企业场景往往同时包含需求澄清、资料检索、数据校验、工具调用、合规审查与结果交付。把所有能力塞进一个提示词里，会让系统变得难以维护，也难以定位错误。Multi-Agent 的核心价值，是把复杂任务拆成多个职责明确的智能体，让它们像一个小型团队一样协作。</p>
+                <p>在企业落地中，多智能体不是为了制造“热闹的对话”，而是为了让系统具备可扩展、可观察、可替换的工程结构。每个 Agent 都应当有清晰的角色、输入、输出、权限边界和失败处理策略。</p>
+
+                <h2>二、从0到1的系统分层</h2>
+                <h3>1. 调度层：决定谁来做</h3>
+                <p>调度层负责理解任务目标，并把任务分派给合适的 Agent。它不应该直接完成所有工作，而应像项目经理一样维护任务状态、依赖关系和交付标准。常见实现方式包括规则路由、LLM 路由、状态机路由以及混合路由。</p>
+                <h3>2. 专家层：负责具体产出</h3>
+                <p>专家 Agent 可以按业务能力划分，例如检索 Agent、数据分析 Agent、文案 Agent、代码 Agent、审计 Agent。每个专家只暴露必要工具，避免权限过宽导致误操作。</p>
+                <h3>3. 评审层：保证质量闭环</h3>
+                <p>复杂任务不能只依赖一次生成。评审 Agent 应负责检查事实一致性、格式规范、业务约束和风险点。对于高风险场景，还需要引入人工确认节点。</p>
+
+                <h2>三、通信协议比“角色设定”更重要</h2>
+                <p>很多失败的 Multi-Agent 项目停留在“你是专家A、你是专家B”的角色扮演层面，却没有定义消息格式。真正可用的协作系统需要统一协议：任务目标、上下文、证据来源、工具调用结果、置信度、阻塞原因和下一步建议，都应以结构化字段传递。</p>
+                <ul>
+                    <li><strong>Task：</strong>描述要完成的目标、截止条件和验收标准。</li>
+                    <li><strong>Context：</strong>提供业务背景、历史记录和已知约束。</li>
+                    <li><strong>Evidence：</strong>保存检索结果、数据库返回、文件引用等可追溯依据。</li>
+                    <li><strong>Decision：</strong>记录 Agent 为什么选择某个动作，方便审计和复盘。</li>
+                </ul>
+
+                <h2>四、企业场景中的典型工作流</h2>
+                <p>以“自动生成客户经营分析报告”为例，调度 Agent 接收需求后，先交给数据 Agent 拉取 CRM 与订单数据，再由分析 Agent 识别收入变化、复购趋势和异常客户；随后文案 Agent 生成报告初稿，评审 Agent 检查数值引用是否一致，最后由人工确认发送范围。这样的拆分让每个步骤都能单独测试，也能在失败时局部重试。</p>
+
+                <h2>五、落地建议</h2>
+                <p>从0到1建设 Multi-Agent，不建议一开始就追求完全自治。更稳妥的路径是先把现有 SOP 拆成节点，用状态机固定主流程，再逐步把其中需要理解、判断和生成的节点替换为 Agent。这样既能享受 AI 的灵活性，也能保留企业系统需要的可控性。</p>
+                <p>最终，Multi-Agent 的目标不是让机器“开会”，而是把复杂业务拆成可治理的智能流水线，让每一次生成、每一次判断、每一次工具调用都能被追踪、被复用、被优化。</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>了解更多关于多智能体系统与企业 Agent 架构：</p>
+                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            </footer>
+        </article>
+    </main>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+</script>
+</body>
+</html>

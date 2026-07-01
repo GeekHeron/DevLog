@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业系统接入 AI（ERP / CRM / 微信）：真实案例拆解 - GeekHeron</title>
+    <meta name="description" content="企业系统接入 AI（ERP / CRM / 微信）：真实案例拆解。ERP 接入 AI, CRM AI 自动化, 微信客户运营, 企业系统集成, 大模型 API 改造">
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 1002; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: 0; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul, .article-body ol { margin-bottom: 25px; padding-left: 22px; }
+        .article-body li { margin-bottom: 15px; }
+        .seo-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center; }
+        .seo-footer p { color: #777; margin-bottom: 12px; }
+        .seo-link { display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s; }
+        .seo-link:hover { color: #00ffc3; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+</style>
+</head>
+<body>
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header>
+        <a href="index.html" class="logo">GeekHeron</a>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        <nav class="nav-links" id="nav-links">
+            <a href="index.html">首页</a>
+            <a href="article.html" class="active">深度分析</a>
+            <a href="works.html">商业案例</a>
+            <a href="pricing.html">源码交付</a>
+            <a href="about.html">商业合作</a>
+        </nav>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ERP / CRM</span>
+                <h1 class="article-title">企业系统接入 AI（ERP / CRM / 微信）：真实案例拆解</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：ERP 接入 AI, CRM AI 自动化, 微信客户运营, 企业系统集成, 大模型 API 改造</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.03.15</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: CASE STUDY</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>一、传统企业系统为什么需要 AI</h2>
+                <p>ERP、CRM 和微信生态沉淀了企业最重要的数据：订单、库存、客户、合同、沟通记录和售后问题。但这些系统通常以表单和流程为中心，员工需要反复查询、复制、判断和填写。AI 接入的价值，不是替代原有系统，而是在系统之上增加理解、总结、预测和自动执行能力。</p>
+
+                <h2>二、案例背景</h2>
+                <p>一家 B2B 服务企业同时使用 ERP 管理订单与交付，CRM 管理销售线索和客户阶段，微信承载客户日常沟通。问题在于：销售不知道客户历史交付情况，客服无法快速判断客户等级，管理层每周都要人工汇总经营数据。数据在系统里，但没有变成及时可用的判断。</p>
+
+                <h2>三、改造目标</h2>
+                <ul>
+                    <li>销售在 CRM 中一键生成客户跟进建议。</li>
+                    <li>客服在微信侧快速查询订单、合同和售后记录。</li>
+                    <li>管理层自动收到经营周报和风险客户列表。</li>
+                    <li>关键动作保留人工确认，避免 AI 直接修改核心业务数据。</li>
+                </ul>
+
+                <h2>四、系统集成方案</h2>
+                <h3>1. 数据打通</h3>
+                <p>先通过 API 或中间库同步 ERP、CRM、微信客户标签和沟通摘要，建立统一客户 ID。没有统一 ID，AI 很容易把同名客户、分公司和历史联系人混淆。</p>
+                <h3>2. 业务工具封装</h3>
+                <p>把查询订单、查询合同、查询客户阶段、创建跟进任务等能力封装成工具。AI 不直接访问数据库，而是调用受控工具，工具层负责权限、审计和字段脱敏。</p>
+                <h3>3. 场景化 Agent</h3>
+                <p>针对销售、客服和管理层分别设计 Agent。销售 Agent 关注机会推进，客服 Agent 关注问题定位，管理 Agent 关注趋势和风险。不同角色使用不同提示词、权限和输出格式。</p>
+
+                <h2>五、真实业务流程</h2>
+                <p>当销售打开某个客户页面时，系统自动汇总该客户近 12 个月订单、合同状态、服务工单和微信沟通要点，生成“本次跟进建议”。如果客户近期投诉增加但复购下降，AI 会提示先处理交付满意度，再推进续约。销售确认后，系统自动创建 CRM 任务并生成微信沟通草稿。</p>
+
+                <h2>六、风险控制</h2>
+                <p>ERP 和 CRM 属于核心业务系统，AI 改造必须坚持“查询优先、建议优先、确认后执行”。对于改价、退款、合同变更、客户删除等动作，系统只能生成建议和审批单，不能直接执行。每次工具调用都需要记录用户、时间、输入、输出和业务对象。</p>
+
+                <h2>七、结果与启示</h2>
+                <p>改造后，销售准备客户资料的时间显著缩短，客服响应更稳定，管理层可以更早发现交付和续约风险。这个案例说明，企业 AI 的突破口不是推翻 ERP 或 CRM，而是让已有系统变得更会理解、更会提醒、更会协同。</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>了解更多关于 ERP、CRM 与微信生态的 AI 集成方案：</p>
+                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            </footer>
+        </article>
+    </main>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+</script>
+</body>
+</html>

@@ -68,7 +68,7 @@
             opacity: 0.7;
         }
 
-        /* --- [新增] SEO 专用隐形样式 (SR-Only Pattern) --- */
+        /* --- SEO 专用隐形样式 (SR-Only Pattern) --- */
         .seo-visually-hidden {
             position: absolute;
             width: 1px;
@@ -89,6 +89,8 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            filter: blur(0.4px); /* 极轻微的模糊，消除颗粒感，增加晕染效果 */
+            mix-blend-mode: screen; /* 让流星和粒子的亮部融合得更自然 */
         }
 
         .overlay-gradient {
@@ -359,15 +361,15 @@
             <span></span>
         </div>
 
-<nav>
-    <ul>
-        <li><a href="index.html" onclick="toggleMenu()">首页</a></li> 
-        <li><a href="article.html">深度分析</a></li>
-        <li><a href="works.html">商业案例</a></li>
-        <li><a href="pricing.html">源码交付</a></li> 
-        <li><a href="about.html">关于我 & 商业合作</a></li> 
-    </ul>
-</nav>
+        <nav>
+            <ul>
+                <li><a href="index.html" onclick="toggleMenu()">首页</a></li> 
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li> 
+                <li><a href="about.html">关于我 & 商业合作</a></li> 
+            </ul>
+        </nav>
         
         <div class="header-right" id="clock">T+00: 00: 00</div>
     </header>
@@ -401,8 +403,8 @@
         <div class="hud-data">
             <span>SYS.STATUS: ONLINE</span>
             <span>MEM: 64TB / VISUAL: RETINA</span>
-            <span id="user-location">LOC: SCANNING... / GEO.SYNC</span>
-            <span id="fps-counter">FRAME: 60FPS</span>
+            <span id="user-location">LOC: FETCHING... / GEO.SYNC</span>
+            <span id="fps-counter">FRAME: --FPS</span>
         </div>
     </div>
 
@@ -446,7 +448,7 @@
         const ctx = canvas.getContext('2d');
         let width, height;
         const particles = [];
-        const numParticles = 4000; 
+        const numParticles = 12000; // 性能优化：从 4000 降至 1200，保障多端流畅度
         const fieldOfView = 300; 
         const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
 
@@ -543,38 +545,60 @@
         initParticles();
         animate();
 
-        // --- 5. [新增] 地理位置模块 ---
+        // --- 5. 地理位置模块（优化版：采用免授权 IP 定位，提升留存与风骨） ---
         function initLocation() {
             const locElement = document.getElementById('user-location');
             if (!locElement) return;
 
-            if (!navigator.geolocation) {
-                locElement.textContent = "LOC: N/A / SIGNAL.LOST";
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-
-                    // 格式化逻辑：绝对值 + 方向字符 (保持 sci-fi 风格)
-                    const latDir = lat >= 0 ? 'N' : 'S';
-                    const lonDir = lon >= 0 ? 'E' : 'W';
-                    const latText = Math.abs(lat).toFixed(2);
-                    const lonText = Math.abs(lon).toFixed(2);
-
-                    locElement.textContent = `LOC: ${latText}${latDir}, ${lonText}${lonDir} / GEO.SYNC`;
-                },
-                (error) => {
-                    // 权限拒绝或获取失败时的回退显示
-                    console.warn("Location access denied or failed:", error.message);
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latitude && data.longitude) {
+                        const lat = data.latitude;
+                        const lon = data.longitude;
+                        const latDir = lat >= 0 ? 'N' : 'S';
+                        const lonDir = lon >= 0 ? 'E' : 'W';
+                        locElement.textContent = `LOC: ${Math.abs(lat).toFixed(2)}${latDir}, ${Math.abs(lon).toFixed(2)}${lonDir} / GEO.SYNC`;
+                    } else {
+                        locElement.textContent = `LOC: PROXY.DETECTED / MASKED`;
+                    }
+                })
+                .catch(() => {
                     locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
-                },
-                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-            );
+                });
         }
         initLocation();
+
+        // --- 6. 真实 FPS 监听模块（让 HUD 的 60FPS 真正动起来） ---
+        function initFPSCounter() {
+            const fpsElement = document.getElementById('fps-counter');
+            if (!fpsElement) return;
+
+            let lastCalledTime;
+            let counter = 0;
+
+            function fpsLoop() {
+                if (!lastCalledTime) {
+                    lastCalledTime = performance.now();
+                    counter = 0;
+                    requestAnimationFrame(fpsLoop);
+                    return;
+                }
+                
+                counter++;
+                const delta = (performance.now() - lastCalledTime) / 1000;
+
+                if (delta >= 1) { 
+                    const fps = Math.round(counter / delta);
+                    fpsElement.textContent = `FRAME: ${fps}FPS`;
+                    counter = 0;
+                    lastCalledTime = performance.now();
+                }
+                requestAnimationFrame(fpsLoop);
+            }
+            requestAnimationFrame(fpsLoop);
+        }
+        initFPSCounter();
     </script>
 </body>
 </html>

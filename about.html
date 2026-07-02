@@ -18,6 +18,62 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
 
+    <style>
+        /* --- 预约弹窗 (Feishu Scheduler Modal) --- */
+        .booking-overlay {
+            display: none;
+            position: fixed; inset: 0; z-index: 200;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(4px);
+            align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .booking-overlay.active { display: flex; }
+
+        .booking-modal {
+            position: relative;
+            width: 100%; max-width: 900px; height: 85vh; max-height: 720px;
+            background: #0d0d0d;
+            border: 1px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .booking-close {
+            position: absolute; top: 12px; right: 12px; z-index: 2;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .booking-close:hover { background: #fff; color: #000; }
+
+        .booking-modal iframe {
+            width: 100%; height: 100%; border: 0; display: block;
+        }
+
+        .booking-fallback-link {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            z-index: 1;
+            font-size: 11px; color: var(--text-muted);
+            background: rgba(0,0,0,0.7);
+            padding: 6px 14px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .booking-fallback-link:hover { color: var(--gold); border-color: var(--gold); }
+
+        @media (max-width: 600px) {
+            .booking-modal { height: 90vh; border-radius: 6px; }
+        }
+    </style>
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -479,6 +535,16 @@
     <canvas id="galaxy-field" aria-hidden="true"></canvas>
     <div class="overlay-gradient" aria-hidden="true"></div>
 
+    <div class="booking-overlay" id="booking-modal" role="dialog" aria-modal="true" aria-label="预约 15 分钟免费咨询">
+        <div class="booking-modal">
+            <button type="button" class="booking-close" id="booking-close" aria-label="关闭预约窗口">&times;</button>
+            <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="booking-fallback-link">
+                若窗口未正常加载，点此在新标签页打开预约页面 →
+            </a>
+            <iframe id="booking-iframe" src="" title="飞书预约日程"></iframe>
+        </div>
+    </div>
+
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
         <button class="hamburger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
@@ -510,9 +576,9 @@
 
             <div class="cta-group">
                 <a href="works.html" class="secondary-btn">查看落地案例</a>
-                <a href="#" id="email-cta" class="tertiary-btn" rel="nofollow">
+                <button type="button" id="booking-cta" class="tertiary-btn" aria-haspopup="dialog" aria-controls="booking-modal">
                     <span class="dot" aria-hidden="true"></span> 预约 15 分钟免费咨询
-                </a>
+                </button>
             </div>
 
             <div class="social-grid">
@@ -1092,6 +1158,45 @@
                 link.addEventListener('click', function () {
                     if (navLinks.classList.contains('active')) closeMenu();
                 });
+            });
+        })();
+
+        /* ---------------------------------------------------------
+         * 4. 飞书预约弹窗（Feishu Scheduler Popup）
+         * ------------------------------------------------------- */
+        (function () {
+            var FEISHU_SCHEDULER_URL = 'https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1';
+
+            var bookingBtn = document.getElementById('booking-cta');
+            var overlay = document.getElementById('booking-modal');
+            var closeBtn = document.getElementById('booking-close');
+            var iframe = document.getElementById('booking-iframe');
+            var lastFocused = null;
+
+            function openBooking() {
+                if (!iframe.src) iframe.src = FEISHU_SCHEDULER_URL;
+                overlay.classList.add('active');
+                lastFocused = document.activeElement;
+                closeBtn.focus();
+                document.addEventListener('keydown', handleKeydown);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeBooking() {
+                overlay.classList.remove('active');
+                document.removeEventListener('keydown', handleKeydown);
+                document.body.style.overflow = '';
+                if (lastFocused) lastFocused.focus();
+            }
+
+            function handleKeydown(e) {
+                if (e.key === 'Escape') closeBooking();
+            }
+
+            bookingBtn.addEventListener('click', openBooking);
+            closeBtn.addEventListener('click', closeBooking);
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) closeBooking();
             });
         })();
     </script>

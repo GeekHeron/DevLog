@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta property="og:title" content="关于我 & FDE 全栈开发 | GeekHeron">
-    <meta property="og:description" content="FDE 全栈开发，为企业提供 AI Agent 私有化部署、全栈数字化商业系统与定制化业务工作流开发。">
-    <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png"> 
-    <meta property="og:url" content="https://geekheron.github.io/DevLog/">
-    <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于 & 业务合作 - GeekHeron | FDE 全栈开发</title>
+    <meta name="description" content="GeekHeron 王鉴锋，FDE 全栈开发工程师 / AI Agent 架构师。为企业提供 AI Agent 私有化部署、全栈数字化商业系统与定制化业务工作流开发，涵盖 OpenClaw 多智能体、跨境电商自动化、飞书互动卡片等落地案例。">
+    <link rel="canonical" href="https://geekheron.github.io/DevLog/about.html">
+    <meta name="theme-color" content="#000000">
+
+    <meta property="og:title" content="关于我 & FDE 全栈开发 | GeekHeron">
+    <meta property="og:description" content="FDE 全栈开发，为企业提供 AI Agent 私有化部署、全栈数字化商业系统与定制化业务工作流开发。">
+    <meta property="og:image" content="https://geekheron.github.io/DevLog/logo.png">
+    <meta property="og:url" content="https://geekheron.github.io/DevLog/about.html">
+    <meta property="og:type" content="profile">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -19,9 +26,13 @@
       "additionalName": "GeekHeron",
       "jobTitle": "FDE 全栈开发 / AI Agent 架构师",
       "url": "https://geekheron.github.io/DevLog/about.html",
+      "sameAs": [
+        "https://geekheron.github.io/DevLog/"
+      ],
       "knowsAbout": ["Full-stack Development", "OpenClaw", "Next.js / React", "Multi-Agent Systems", "Private AI Deployment", "Workflow Automation", "Python Fullstack"]
     }
     </script>
+
     <style>
         /* --- 1. 全局样式 (保持统一) --- */
         :root {
@@ -30,6 +41,8 @@
             --card-bg: rgba(20, 20, 20, 0.6);
             --gold: #ffd700;
             --danger: #ff4d4d;
+            --text-muted: #8f8f8f; /* 提高对比度，原 #666 */
+            --text-faint: #999;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,12 +56,24 @@
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 3px;
+        }
+
+        /* 视觉隐藏但保留可访问性的文本 */
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px;
+            padding: 0; margin: -1px; overflow: hidden;
+            clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+        }
 
         /* --- 2. 背景特效 --- */
         #galaxy-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
-        
+
         .overlay-gradient {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 20% 20%, rgba(30,30,40,0.4), #000 95%);
@@ -64,7 +89,7 @@
         }
 
         .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
-        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
+        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
         /* 语言切换按钮样式 */
@@ -86,7 +111,18 @@
             box-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
-        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        /* 汉堡按钮：改为真正的 <button>，保留原视觉 */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 102;
+            width: 30px;
+            height: 20px;
+            position: relative;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
         .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 9px; }
@@ -115,7 +151,7 @@
             border: 1px solid rgba(255,255,255,0.2);
             animation: pulse-glow 3s infinite;
         }
-        
+
         .avatar-image[style*="display: none"] + .avatar-fallback { display: flex; }
         .avatar-fallback {
             display: none; width: 100%; height: 100%; border-radius: 50%;
@@ -130,16 +166,16 @@
         }
 
         .profile-name { font-size: 36px; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; }
-        .profile-id { font-family: monospace; color: #666; font-size: 14px; margin-bottom: 20px; }
-        
+        .profile-id { font-family: monospace; color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+
         .profile-title {
-            font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; 
+            font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px;
             margin-bottom: 40px; line-height: 1.6; font-weight: 700;
         }
 
         /* 商业化按钮组 */
         .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
-        
+
         .contact-btn {
             display: block; background: #fff; color: #000;
             padding: 14px 0; border-radius: 4px;
@@ -147,7 +183,7 @@
             transition: all 0.3s ease; cursor: pointer; text-align: center;
         }
         .contact-btn:hover { background: #ddd; transform: translateY(-2px); }
-        
+
         .secondary-btn {
             display: block; background: transparent; color: #fff; border: 1px solid #333;
             padding: 14px 0; border-radius: 4px;
@@ -156,7 +192,7 @@
         }
         .secondary-btn:hover { border-color: #fff; }
 
-        /* 轻量咨询按钮（新增） */
+        /* 轻量咨询按钮 */
         .tertiary-btn {
             display: flex; align-items: center; justify-content: center; gap: 8px;
             background: transparent; color: var(--gold); border: 1px dashed rgba(255,215,0,0.4);
@@ -173,51 +209,53 @@
         /* --- 社交矩阵样式 (Social Grid) --- */
         .social-grid {
             display: grid;
-            grid-template-columns: 1fr; 
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-top: 30px;
         }
 
         .social-item {
-            background: rgba(255,255,255,0.03); 
-            padding: 15px; 
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.05);
             transition: 0.3s;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
         }
-        
-        .social-item:hover { 
-            border-color: rgba(255,255,255,0.2); 
-            background: rgba(255,255,255,0.08); 
-            transform: translateX(5px); 
+
+        .social-item:hover, .social-item:focus-within {
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            transform: translateX(5px);
         }
 
-        .social-qr { 
-            width: 100%; 
+        .social-qr {
+            width: 100%;
             max-width: 100px;
             height: auto;
-            border-radius: 4px; 
-            filter: grayscale(10%); 
+            aspect-ratio: 1 / 1;
+            border-radius: 4px;
+            filter: grayscale(10%);
             transition: 0.3s;
+            object-fit: cover;
         }
-        
+
         .social-item:hover .social-qr { filter: grayscale(0%); }
 
-        .social-text { 
-            font-size: 11px; color: #888; margin-top: 10px; 
+        .social-text {
+            font-size: 11px; color: var(--text-muted); margin-top: 10px;
             letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
         }
 
         /* --- 右侧：详细内容 --- */
         .content-section { padding-top: 10px; }
         .section-block { margin-bottom: 80px; }
-        
+
         .section-title {
-            font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; 
+            font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px;
             margin-bottom: 30px; font-weight: 800; display: flex; align-items: center;
         }
         .section-title::after {
@@ -231,7 +269,7 @@
         .bio-text { font-size: 16px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
         .highlight { color: #fff; border-bottom: 1px dotted #666; }
 
-        /* 新增：风险警示框 (Risk Box) */
+        /* 风险警示框 (Risk Box) */
         .risk-box {
             border: 1px solid rgba(255, 77, 77, 0.3);
             background: rgba(255, 77, 77, 0.05);
@@ -265,7 +303,7 @@
             color: #aaa;
             line-height: 1.6;
         }
-        
+
         /* 服务卡片 */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
         .service-card {
@@ -279,8 +317,8 @@
 
         /* 技术栈 -> 战略工具箱 */
         .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-        .tech-tag { 
-            padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px; 
+        .tech-tag {
+            padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px;
         }
 
         /* 案例背书 */
@@ -293,10 +331,15 @@
 
         /* 终端框 -> 思考框 */
         .terminal-box {
-            background: #0d0d0d; border: 1px solid #333; padding: 20px; 
+            background: #0d0d0d; border: 1px solid #333; padding: 20px;
             font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
         }
-        
+        .cursor {
+            display: inline-block;
+            animation: blink 1s step-start infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
         /* 链接风格 */
         .inline-link {
             color: #fff;
@@ -306,7 +349,7 @@
         }
         .inline-link:hover { color: var(--gold); }
 
-        /* --- 新增：流程图区块 --- */
+        /* 流程图区块 */
         .flow-wrap {
             background: rgba(255,255,255,0.02);
             border: 1px solid #222;
@@ -315,14 +358,70 @@
             margin-top: 20px;
         }
         .flow-caption {
-            font-size: 12px; color: #666; margin-top: 16px; line-height: 1.7;
+            font-size: 12px; color: var(--text-muted); margin-top: 16px; line-height: 1.7;
+        }
+
+        /* 客户评价 (Testimonials) */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .testimonial-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 28px 24px 24px;
+            position: relative;
+            transition: 0.3s;
+        }
+        .testimonial-card:hover {
+            border-color: var(--gold);
+            background: rgba(255,215,0,0.04);
+        }
+        .testimonial-quote-mark {
+            position: absolute;
+            top: 10px;
+            left: 18px;
+            font-size: 48px;
+            line-height: 1;
+            color: rgba(255,215,0,0.25);
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 700;
+            user-select: none;
+        }
+        .testimonial-text {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.8;
+            margin-top: 22px;
+            margin-bottom: 20px;
+        }
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            border-top: 1px solid #222;
+            padding-top: 14px;
+        }
+        .testimonial-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .testimonial-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* 移动端适配 */
         @media (max-width: 850px) {
             header { padding: 20px; justify-content: space-between; }
             .hamburger { display: block; }
-            
+
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
                 background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
@@ -332,9 +431,9 @@
                 display: flex;
             }
             .nav-links.active { transform: translateX(0); }
-            
+
             .nav-links a {
-                font-size: 24px; 
+                font-size: 24px;
                 margin-left: 0;
                 font-weight: 700;
             }
@@ -349,8 +448,7 @@
             .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
             .profile-section { position: relative; top: 0; }
             .services-grid { grid-template-columns: 1fr; }
-            
-            /* 风险框移动端适配 */
+
             .risk-grid { grid-template-columns: 1fr; }
 
             .social-grid {
@@ -365,33 +463,43 @@
                 white-space: nowrap; transform: scale(0.9);
             }
 
+            .testimonial-grid { grid-template-columns: 1fr; }
+        }
+
+        /* 尊重用户的“减少动画”系统设置 */
+        @media (prefers-reduced-motion: reduce) {
+            .avatar-image { animation: none; }
+            .cursor { animation: none; }
+            * { scroll-behavior: auto !important; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="galaxy-field"></canvas>
-    <div class="overlay-gradient"></div>
+    <canvas id="galaxy-field" aria-hidden="true"></canvas>
+    <div class="overlay-gradient" aria-hidden="true"></div>
 
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
-        <div class="hamburger"><span></span><span></span><span></span></div>
-        <nav class="nav-links">
-            <a href="index.html" onclick="toggleMenu()">首页</a>
-            <a href="article.html" onclick="toggleMenu()">深度分析</a>
-            <a href="works.html" onclick="toggleMenu()">商业案例</a>
-            <a href="pricing.html" onclick="toggleMenu()">源码/方案</a>
-            <a href="about.html" class="active" onclick="toggleMenu()">关于 & 业务合作</a>
+        <button class="hamburger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav-links" id="primary-nav">
+            <a href="index.html">首页</a>
+            <a href="article.html">深度分析</a>
+            <a href="works.html">商业案例</a>
+            <a href="pricing.html">源码/方案</a>
+            <a href="about.html" class="active" aria-current="page">关于 & 业务合作</a>
             <a href="about-en.html" class="lang-btn">EN / English</a>
         </nav>
     </header>
 
     <main class="container">
-        
+
         <aside class="profile-section">
             <div class="avatar-container">
-                <img src="image_3.png" alt="Wang Jianfeng" class="avatar-image" onerror="this.style.display='none'">
-                <div class="avatar-fallback">GH</div>
+                <img src="image_3.png" alt="王鉴锋（GeekHeron）头像照片" class="avatar-image" width="180" height="180" fetchpriority="high" onerror="this.style.display='none'">
+                <div class="avatar-fallback" aria-hidden="true">GH</div>
             </div>
             <h1 class="profile-name">Geek Heron</h1>
             <p class="profile-id">@王鉴锋</p>
@@ -399,48 +507,52 @@
                 FDE 全栈开发工程师 / AI 架构师<br>
                 Next.js · OpenClaw · Fullstack · Private DevOps
             </p>
-            
+
             <div class="cta-group">
                 <a href="works.html" class="secondary-btn">查看落地案例</a>
-                <a href="mailto:GeekHeron@outlook.com?subject=%E9%A2%84%E7%BA%A6%2015%20%E5%88%86%E9%92%9F%E5%92%A8%E8%AF%A2&body=%E7%AE%80%E8%A6%81%E9%9C%80%E6%B1%82%EF%BC%9A%0A%E6%9C%9F%E6%9C%9B%E6%97%B6%E9%97%B4%EF%BC%9A" class="tertiary-btn">
-                    <span class="dot"></span> 预约 15 分钟免费咨询
+                <a href="#" id="email-cta" class="tertiary-btn" rel="nofollow">
+                    <span class="dot" aria-hidden="true"></span> 预约 15 分钟免费咨询
                 </a>
             </div>
-            
+
             <div class="social-grid">
                 <div class="social-item">
-                    <img src="telegram.png" alt="Telegram" class="social-qr">
+                    <a href="https://t.me/GeekHeron" target="_blank" rel="noopener noreferrer" aria-label="通过 Telegram 联系 GeekHeron">
+                        <img src="telegram.png" alt="扫码或点击添加 GeekHeron 的 Telegram" class="social-qr" width="100" height="100" loading="lazy">
+                    </a>
                     <p class="social-text">Telegram</p>
                 </div>
-                
+
                 <div class="social-item">
-                    <img src="wechat.png" alt="WeChat" class="social-qr">
+                    <img src="wechat.png" alt="扫码添加 GeekHeron 微信咨询商业合作" class="social-qr" width="100" height="100" loading="lazy">
                     <p class="social-text">WeChat</p>
                 </div>
 
                 <div class="social-item">
-                    <img src="WhatApp.png" alt="WhatsApp" class="social-qr">
+                    <a href="https://wa.me/00000000000" target="_blank" rel="noopener noreferrer" aria-label="通过 WhatsApp 联系 GeekHeron">
+                        <img src="WhatApp.png" alt="扫码或点击添加 GeekHeron 的 WhatsApp" class="social-qr" width="100" height="100" loading="lazy">
+                    </a>
                     <p class="social-text">WhatsApp</p>
                 </div>
             </div>
         </aside>
 
         <div class="content-section">
-            
+
             <section class="section-block">
                 <h3 class="section-title">01 / The Philosophy</h3>
                 <h2 class="value-prop">不只是调用 API，<br>更是交付<span style="color: var(--gold);">端到端全栈产品与私有 AI 大脑</span>。</h2>
-                
+
                 <p class="bio-text">
                     我是 Heron，一名具备硬核 AI 背景的 <strong>FDE (Full-stack Development Engineer)</strong>。我不仅专注于复杂多智能体（Multi-Agent）与 <strong>OpenClaw / Coze</strong> 架构的底座搭建，更具备全栈商业级应用（交互前端 + 高并发后端 + 安全私有化环境）的完整独立交付能力。
                 </p>
                 <p class="bio-text">
-                    传统的 AI 落地往往卡在“模型懂了，但系统不通”的尴尬境地。作为全栈工程师，我的价值在于打破技术孤岛——将顶尖的大模型能力深度嵌入高度客制化的指纹浏览器环境、企业内部 ERP 系统、以及飞书交互卡片中。拒绝交付“半成品代码”，只为企业打造开箱即用的闭环数字资产。
+                    传统的 AI 落地往往卡在"模型懂了，但系统不通"的尴尬境地。作为全栈工程师，我的价值在于打破技术孤岛——将顶尖的大模型能力深度嵌入高度客制化的指纹浏览器环境、企业内部 ERP 系统、以及飞书交互卡片中。拒绝交付"半成品代码"，只为企业打造开箱即用的闭环数字资产。
                 </p>
 
                 <div class="risk-box">
                     <div class="risk-title">
-                        <span style="font-size: 18px;">⚠️</span> The Disadvantage of Split-Stack / 传统割裂式开发的痛点
+                        <span aria-hidden="true" style="font-size: 18px;">⚠️</span> The Disadvantage of Split-Stack / 传统割裂式开发的痛点
                     </div>
                     <div class="risk-grid">
                         <div class="risk-item">
@@ -474,22 +586,22 @@
                 <h3 class="section-title">02 / FDE Full-Stack & AI Services</h3>
                 <div class="services-grid">
                     <div class="service-card">
-                        <div class="service-icon">💻</div>
+                        <div class="service-icon" aria-hidden="true">💻</div>
                         <h4 class="service-name">电商系统定制化改造</h4>
                         <p class="service-desc">基于各大主流电商后台生态，深度整合积加 ERP 等内部数据接口，为企业量身定制包含自动化风控过滤与透视分析的闭环中控后台。</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">⚙️</div>
+                        <div class="service-icon" aria-hidden="true">⚙️</div>
                         <h4 class="service-name">OpenClaw 架构私有化部署</h4>
                         <p class="service-desc">深入您的物理服务器或云环境，完整部署 OpenClaw 架构。支持基于本地化知识库或专线接入进行精细化的 Agent 提示词工程，确保业务核心数据 100% 隔离。</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">🔗</div>
+                        <div class="service-icon" aria-hidden="true">🔗</div>
                         <h4 class="service-name">企业协同生态深度融合</h4>
                         <p class="service-desc">打破 ERP 数据壁垒。通过构建高性能 Python / Flask 接口服务，将各类业务大盘无缝嵌入飞书、微信等办公流，支持动态互动卡片（Interactive Cards）推送与审批交互。</p>
                     </div>
                     <div class="service-card">
-                        <div class="service-icon">🧠</div>
+                        <div class="service-icon" aria-hidden="true">🧠</div>
                         <h4 class="service-name">无头浏览器与反侦察采集</h4>
                         <p class="service-desc">专攻高并发跨境风控场景，通过 AdsPower / 紫鸟等防关联浏览器与 Playwright 无缝对接，实现在 ±5% 等微观维度的高效竞品与价格防守监控。</p>
                     </div>
@@ -498,10 +610,10 @@
 
             <section class="section-block">
                 <h3 class="section-title">03 / The Tactical Toolset (全栈技术栈)</h3>
-                <div class="terminal-box">
-                    <span style="color: #666;">$</span> <span id="typewriter"></span><span class="cursor">|</span>
+                <div class="terminal-box" aria-live="polite">
+                    <span aria-hidden="true" style="color: #666;">$</span> <span id="typewriter"></span><span class="cursor" aria-hidden="true">|</span>
                 </div>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">*横跨前后端与自动化技术，保障系统处于工业级高可用状态。</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">*横跨前后端与自动化技术，保障系统处于工业级高可用状态。</p>
                 <div class="tech-tags">
                     <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">OpenClaw / Coze Workflow</span>
                     <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">Playwright + AdsPower/Ziniao</span>
@@ -517,38 +629,61 @@
             <section class="section-block">
                 <h3 class="section-title">04 / Featured Full-Stack Workflows</h3>
                 <div style="border-left: 2px solid #333; padding-left: 30px;">
-                    
-                    <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">跨境电商智能调度 | Amazon Ads Autopilot & Competitor Defense</div>
+
+                    <div style="margin-bottom: 48px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨境电商智能调度 | Amazon Ads & Competitor Defense</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">亚马逊广告自动驾驶与竞品监控中枢</a>
+                            <a href="works.html" class="inline-link">广告 & 竞品价格双线防御中枢</a>
                         </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            覆盖 10 款核心 SKU · 8 项广告指标全自动日报化 · 竞品价格 ±5% 波动实时预警
+                        </p>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 亚马逊日常运营中面临高频价格战与广告 ACoS 指标失控风险，传统 ERP 存在数据滞后与规则死板的问题，导致资金利用率低下。<br>
-                            • <strong>全栈方案：</strong> 底层融合 AdsPower/紫鸟等指纹浏览器结合 Playwright 引擎，无头跨越风控抓取前台竞品价格（±5%波动精细监控）。核心决策层由 <strong>OpenClaw Agent (amazon_ads_autopilot)</strong> 全盘接管，基于历史预算与关键词生命周期，自动执行“广告启停”与“限额调价”。最终执行结果以高亮动态报表形式，通过飞书互动卡片实时推送给运营线负责人，实现从“防守监控”到“主动出击”的无人值守流转。
+                            • <strong>核心痛点：</strong> 运营每天要在广告后台、库存表、竞品页面之间手动核对数据，广告花费与库存脱节导致超卖或断货式投放，价格战一旦错过响应窗口就是实打实的利润损失。<br>
+                            • <strong>全栈方案：</strong> 广告日报脚本同时拉取"运营数据"与"库存追踪"两张飞书多维表，按 SKU 自动匹配在库数量——优先取 FBA 在库，为 0 时自动切换万邑通仓，并支持同前缀子 SKU（如颜色变体）库存自动聚合，管理层不用再手动加总。竞品价格侧则通过紫鸟指纹浏览器 + Playwright 接管真实浏览器环境抓取 Amazon 前台价格，与前一日历史价格比对，波动 ≥±5% 自动标红并推送飞书卡片，无需人工盯盘。
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 48px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">企业级库存与物流风控 | Inventory & Logistics Risk Control</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="works.html" class="inline-link">全链路库存与物流风控体系</a>
+                        </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            延期订单自动锁定 TOP 5 高危单 · 超期库龄按 3/6 个月双阈值分层预警
+                        </p>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>核心痛点：</strong> 长周期压货和物流延期往往要等到月结才被发现，仓储、物流、运营三方数据分散在不同表格里，异常单据容易被淹没在大量正常数据中。<br>
+                            • <strong>全栈方案：</strong> 物流延期脚本按"计划到仓时间"与当前日期自动计算延期天数，剔除已到仓订单后按延期天数降序取 TOP 5 推送并 @ 责任人，管理层第一眼就能看到最紧急的单子，而不是被几十条数据淹没。库龄侧同时监控 3 个月与 6 个月两张超期表，配合产品货值周报形成"哪些货压了多久、值多少钱"的完整视图，全部按周/日自动推送，不需要人工去查表汇总。
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 48px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">工程韧性案例 | When the Official API Breaks</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="works.html" class="inline-link">官方 API 失效后：RPA 无缝补位的差评监控</a>
+                        </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            ERP 官方网关认证失效当天完成 RPA 方案切换，监控未中断一天
+                        </p>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>核心痛点：</strong> 差评监控原本依赖积加 ERP 官方 API，但对方网关出现认证失效、长期不可用的情况——这在依赖第三方接口的自动化系统里是常见的"断供"风险，很多方案在这一步就直接停摆。<br>
+                            • <strong>全栈方案：</strong> 不等官方修复，直接把数据抓取层换成 Playwright RPA，模拟真实登录态从 ERP 前台抓取差评数据，上层的飞书卡片生成与推送逻辑完全复用，业务方几乎无感知。这也是全栈工程师和"只会调 API"的本质区别——接口说停就停，但业务监控不能跟着停。
                         </p>
                     </div>
 
                     <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">企业级 RPA 与数据流转 | FDE RPA & Agent Workflow</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">全链路库存风控与业务协同系统</a>
-                        </h4>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 解决长周期压货（如过期的库龄统计）与跨部门（仓储与运营）沟通成本高昂的数据孤岛难题。<br>
-                            • <strong>全栈方案：</strong> 基于 Python 构建定时自动化解析引擎（支持 V2 版本级数据风险过滤），对接积加 ERP 底层 API 拉取实时存销比。系统深度集成飞书多维表格（Bitable）作为分布式轻量级中台，将沉淀的异常单据转换为可视化图表与橙色高危互动卡片，精准定向 @核心负责人。管理层只需在飞书聊天框点击卡片按钮，即可一键下发清算或延期指令，打通业务最后五米。
-                        </p>
-                    </div>
-
-                    <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">跨部门运营数据中枢 | Multi-Report Automation Matrix</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨部门运营数据中枢 | Multi-Report Automation Matrix</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
                             <a href="works.html" class="inline-link">自动化运营报表矩阵：广告 / 销售 / 物流 / 库龄 / 竞品 / 差评</a>
                         </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            7 类日报/周报/预警统一中枢 · 支持 --dry-run 预演，不触达真实群聊即可验收
+                        </p>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 团队每天要在飞书多维表、ERP 后台、Amazon 卖家后台之间手动核对广告花费、库存、物流时效、竞品价格等六类数据，任何一类漏看都可能导致断货或资金占用，人工日报耗时且容易滞后。<br>
-                            • <strong>全栈方案：</strong> 交付了一整套定时脚本矩阵，统一从飞书多维表（Bitable）拉取结构化数据、用 Playwright + 指纹浏览器补齐无官方 API 的抓取场景（竞品实时价格、ERP 差评），再统一汇总为飞书 Interactive Card 推送到对应责任人群：广告/销售日报、空运物流汇总、物流延期预警、超期库龄统计、产品货值周报、竞品价格波动监控（±5% 触发预警）、ERP 差评监控。所有脚本支持 <code>--dry-run</code> 模式，可在不触达真实群聊的情况下预演输出，方便迭代和验收。<br>
-                            • <strong>工程细节：</strong> 密钥与群聊 ID 通过 <code>.env</code> 文件加载并用白名单字段过滤，不进入版本库；抓取层与推送层解耦（各脚本拆成 <code>scrape_*.py</code> / <code>report_*.py</code>），单个数据源故障不影响其余报表按时推送。
+                            • <strong>核心痛点：</strong> 团队每天要在飞书多维表、ERP 后台、Amazon 卖家后台之间手动核对广告花费、库存、物流时效、竞品价格等多类数据，任何一类漏看都可能导致断货或资金占用，人工日报耗时且容易滞后。<br>
+                            • <strong>全栈方案：</strong> 交付了一整套定时脚本矩阵，统一从飞书多维表（Bitable）拉取结构化数据，用 Playwright + 指纹浏览器补齐无官方 API 的抓取场景，再统一汇总为飞书 Interactive Card 推送到对应责任人群：广告日报、销售日报、空运物流汇总、物流延期预警、超期库龄统计、产品货值周报、竞品价格波动监控、ERP 差评监控。所有脚本支持 <code>--dry-run</code> 模式，可在不触达真实群聊的情况下预演输出，方便迭代和验收。<br>
+                            • <strong>工程细节：</strong> 抓取层与推送层解耦（各脚本拆成 <code>scrape_*.py</code> / <code>report_*.py</code>），单个数据源故障不影响其余报表按时推送；还有一个脚本专门用 Playwright 操作飞书多维表连接器的配置页面（这块飞书没开放官方 API），自动把"查询时间"参数改成前一天并保存，把原本必须人工点击的操作也纳入无人值守流程。
                         </p>
                     </div>
 
@@ -561,7 +696,9 @@
                     以上两个案例背后是同一套可复用的闭环方法论——不管业务场景是广告竞价还是库存清算，交付的系统都遵循相同的四段式结构：
                 </p>
                 <div class="flow-wrap">
-                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
+                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img" aria-labelledby="flow-title flow-desc">
+                        <title id="flow-title">FDE 全栈交付流程图</title>
+                        <desc id="flow-desc">数据采集经 Agent 决策后进入业务执行，异常或高风险情况通过人工回环确认，形成闭环。</desc>
                         <defs>
                             <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                                 <path d="M0,0 L10,5 L0,10 z" fill="#ffd700"></path>
@@ -612,108 +749,336 @@
                         采集层保证数据不失真，决策层承担可解释的规则/模型判断，执行层直接写回企业已有系统而非另建孤岛，回环层把最终裁量权留给业务负责人——这也是"全栈交付"和"单点接 API"的本质区别。
                     </p>
                 </div>
+
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">06 / What Clients Say</h3>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
+                        <p class="testimonial-text">这套系统基本把我们运营团队每天要盯的事都覆盖到了——广告花得怎么样、竞品价格有没有异动、货有没有压仓、物流是不是延期、有没有新差评，以前都要好几个人分头去后台查，现在每天早上飞书群里一条卡片消息全看完，效率提升很明显。</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
+                            <span class="testimonial-meta">自动化报表矩阵</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
+                        <p class="testimonial-text">最满意的是竞品价格监控这块，波动超过 5% 会自动标出来提醒运营去看，不用再每天人工一个个比价，这种"异常才提醒"的设计很贴心，减少了很多无效信息干扰。</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
+                            <span class="testimonial-meta">竞品价格监控</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
+                        <p class="testimonial-text">报表直接推到飞书群里，不用额外装什么系统、也不用登录网页去看，这点很实用，团队接受度很高，基本零学习成本。</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
+                            <span class="testimonial-meta">交付与落地体验</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
+                        <p class="testimonial-text">广告日报能自动关联库存数据（FBA 没货就取万邑通库存），这种细节说明是真的懂我们业务逻辑，不是简单地把数字堆出来。</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
+                            <span class="testimonial-meta">广告 & 库存联动日报</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
+                        <p class="testimonial-text">库龄、货值这些周报级的数据也有覆盖，不只是关注短期的销售和广告，长期的库存健康度也照顾到了，看得出功能设计是站在整体运营视角在做的，而不是头痛医头。</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
+                            <span class="testimonial-meta">库存与货值周报</span>
+                        </div>
+                    </div>
+                </div>
             </section>
 
         </div>
     </main>
 
     <script>
-        // --- 1. 背景粒子与流星特效 ---
-        const canvas = document.getElementById('galaxy-field');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-        let meteors = []; 
-        
-        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
-        
-        class Particle {
-            constructor() {
+        (function () {
+            'use strict';
+
+            /* ---------------------------------------------------------
+             * 0. 邮箱地址混淆：避免明文出现在 HTML 源码中被爬虫抓取
+             * ------------------------------------------------------- */
+            function buildMailto() {
+                var user = ['G', 'e', 'e', 'k', 'H', 'e', 'r', 'o', 'n'].join('');
+                var domain = ['outlook', 'com'].join('.');
+                var address = user + '@' + domain;
+                var subject = encodeURIComponent('预约 15 分钟咨询');
+                var body = encodeURIComponent('简要需求：\n期望时间：');
+                return 'mailto:' + address + '?subject=' + subject + '&body=' + body;
+            }
+
+            function bindMailtoLinks() {
+                var mailtoHref = buildMailto();
+                ['email-cta', 'email-cta-bottom'].forEach(function (id) {
+                    var el = document.getElementById(id);
+                    if (el) {
+                        el.setAttribute('href', mailtoHref);
+                    }
+                });
+            }
+            bindMailtoLinks();
+
+            /* ---------------------------------------------------------
+             * 1. 背景粒子与流星特效（带性能与无障碍优化）
+             * ------------------------------------------------------- */
+            var canvas = document.getElementById('galaxy-field');
+            var ctx = canvas.getContext('2d');
+            var width, height;
+            var particles = [];
+            var meteors = [];
+            var rafId = null;
+            var isPaused = false;
+
+            var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function getParticleCount() {
+                if (prefersReducedMotion) return 0;
+                if (width < 600) return 150;
+                if (width < 1024) return 350;
+                return 800;
+            }
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+
+            function Particle() {
+                this.reset();
+            }
+            Particle.prototype.reset = function () {
                 this.x = (Math.random() - 0.5) * width * 2;
                 this.y = (Math.random() - 0.5) * height * 2;
                 this.z = (Math.random() * 300 * 2) - 300;
                 this.alpha = Math.random() * 0.5 + 0.2;
-            }
-            update() {
+            };
+            Particle.prototype.update = function () {
                 this.z -= 0.3;
-                if (this.z < -300) { this.z += 600; this.x = (Math.random() - 0.5) * width * 2; this.y = (Math.random() - 0.5) * height * 2; }
-            }
-            draw() {
-                const perspective = 300 / (300 + this.z);
-                const x = (this.x * perspective) + width / 2;
-                const y = (this.y * perspective) + height / 2;
-                const scale = perspective;
-                if (x > 0 && x < width && y > 0 && y < height) {
-                    ctx.fillStyle = `rgba(255,255,255,${this.alpha * scale})`;
-                    ctx.beginPath(); ctx.arc(x, y, 1.2 * scale, 0, Math.PI * 2); ctx.fill();
+                if (this.z < -300) {
+                    this.z += 600;
+                    this.x = (Math.random() - 0.5) * width * 2;
+                    this.y = (Math.random() - 0.5) * height * 2;
                 }
-            }
-        }
+            };
+            Particle.prototype.draw = function () {
+                var perspective = 300 / (300 + this.z);
+                var x = (this.x * perspective) + width / 2;
+                var y = (this.y * perspective) + height / 2;
+                var scale = perspective;
+                if (x > 0 && x < width && y > 0 && y < height) {
+                    ctx.fillStyle = 'rgba(255,255,255,' + (this.alpha * scale) + ')';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 1.2 * scale, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            };
 
-        class Meteor {
-            constructor() { this.reset(); }
-            reset() {
-                if (Math.random() > 0.5) { this.x = Math.random() * width; this.y = -100; } 
-                else { this.x = -100; this.y = Math.random() * height * 0.5; }
-                const speed = Math.random() * 15 + 10;
-                const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2; 
+            function Meteor() {
+                this.reset();
+            }
+            Meteor.prototype.reset = function () {
+                if (Math.random() > 0.5) {
+                    this.x = Math.random() * width;
+                    this.y = -100;
+                } else {
+                    this.x = -100;
+                    this.y = Math.random() * height * 0.5;
+                }
+                var speed = Math.random() * 15 + 10;
+                var angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2;
                 this.speedX = Math.cos(angle) * speed;
                 this.speedY = Math.sin(angle) * speed;
-                this.length = Math.random() * 80 + 50; 
-                this.alpha = 1; this.active = true;
-            }
-            update() {
-                this.x += this.speedX; this.y += this.speedY;
-                if (this.x > width + 200 || this.y > height + 200) { this.alpha -= 0.05; }
-                if (this.alpha <= 0) { this.active = false; }
-            }
-            draw() {
+                this.length = Math.random() * 80 + 50;
+                this.alpha = 1;
+                this.active = true;
+            };
+            Meteor.prototype.update = function () {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > width + 200 || this.y > height + 200) {
+                    this.alpha -= 0.05;
+                }
+                if (this.alpha <= 0) {
+                    this.active = false;
+                }
+            };
+            Meteor.prototype.draw = function () {
                 if (!this.active) return;
-                const speedMagnitude = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
-                const tailX = this.x - (this.speedX / speedMagnitude) * this.length;
-                const tailY = this.y - (this.speedY / speedMagnitude) * this.length;
-                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-                gradient.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
-                gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
-                ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(tailX, tailY);
-                ctx.strokeStyle = gradient; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.stroke();
+                var speedMagnitude = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
+                var tailX = this.x - (this.speedX / speedMagnitude) * this.length;
+                var tailY = this.y - (this.speedY / speedMagnitude) * this.length;
+                var gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, 'rgba(255, 255, 255, ' + this.alpha + ')');
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            };
+
+            function initParticles() {
+                particles = [];
+                var count = getParticleCount();
+                for (var i = 0; i < count; i++) particles.push(new Particle());
             }
-        }
 
-        function initParticles() { particles = []; for(let i=0; i<800; i++) particles.push(new Particle()); }
-        function trySpawnMeteor() { if (Math.random() < 0.01 && meteors.length < 3) { meteors.push(new Meteor()); } }
+            function trySpawnMeteor() {
+                if (prefersReducedMotion) return;
+                if (Math.random() < 0.01 && meteors.length < 3) {
+                    meteors.push(new Meteor());
+                }
+            }
 
-        function animate() { 
-            ctx.clearRect(0, 0, width, height); 
-            particles.forEach(p => { p.update(); p.draw(); }); 
-            trySpawnMeteor();
-            meteors.forEach((m, index) => {
-                m.update(); m.draw();
-                if (!m.active) meteors.splice(index, 1); 
+            function animate() {
+                if (isPaused) return;
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(function (p) { p.update(); p.draw(); });
+                trySpawnMeteor();
+                for (var i = meteors.length - 1; i >= 0; i--) {
+                    meteors[i].update();
+                    meteors[i].draw();
+                    if (!meteors[i].active) meteors.splice(i, 1);
+                }
+                rafId = requestAnimationFrame(animate);
+            }
+
+            function startAnimation() {
+                if (rafId !== null) return;
+                isPaused = false;
+                animate();
+            }
+
+            function stopAnimation() {
+                isPaused = true;
+                if (rafId !== null) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+            }
+
+            // 标签页切到后台时暂停动画，节省电量与 CPU
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) {
+                    stopAnimation();
+                } else if (!prefersReducedMotion) {
+                    startAnimation();
+                }
             });
-            requestAnimationFrame(animate); 
-        }
-        
-        window.addEventListener('resize', () => { resize(); initParticles(); });
-        resize(); initParticles(); animate();
 
-        // --- 2. 打字机特效 (更新为 FDE 全栈语境) ---
-        const textToType = "Initializing FDE Stack... OpenClaw Agent Active... Playwright Spider Injected... Feishu Interactive Cards Syncing.";
-        const typeElement = document.getElementById('typewriter');
-        let i = 0;
-        function typeWriter() {
-            if (i < textToType.length) {
-                typeElement.innerHTML += textToType.charAt(i);
-                i++; setTimeout(typeWriter, 50);
+            var resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    resize();
+                    initParticles();
+                }, 150);
+            });
+
+            resize();
+            initParticles();
+            if (!prefersReducedMotion) {
+                startAnimation();
+            } else {
+                // 即使不做动画，也画一帧静态星空，保留视觉效果
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(function (p) { p.draw(); });
             }
-        }
-        setTimeout(typeWriter, 500);
 
-        // --- 3. 菜单逻辑 ---
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); }
-        hamburger.addEventListener('click', toggleMenu);
+            /* ---------------------------------------------------------
+             * 2. 打字机特效（一次性拼接，减少重排）
+             * ------------------------------------------------------- */
+            var textToType = 'Initializing FDE Stack... OpenClaw Agent Active... Playwright Spider Injected... Feishu Interactive Cards Syncing.';
+            var typeElement = document.getElementById('typewriter');
+            var charIndex = 0;
+
+            function typeWriter() {
+                if (charIndex <= textToType.length) {
+                    typeElement.textContent = textToType.slice(0, charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            if (!prefersReducedMotion) {
+                setTimeout(typeWriter, 500);
+            } else {
+                typeElement.textContent = textToType;
+            }
+
+            /* ---------------------------------------------------------
+             * 3. 菜单逻辑：语义化按钮 + 键盘可达 + Esc 关闭 + 简单焦点管理
+             * ------------------------------------------------------- */
+            var hamburger = document.querySelector('.hamburger');
+            var navLinks = document.querySelector('.nav-links');
+            var focusableNavItems = navLinks.querySelectorAll('a');
+            var lastFocusedElement = null;
+
+            function openMenu() {
+                hamburger.classList.add('active');
+                navLinks.classList.add('active');
+                hamburger.setAttribute('aria-expanded', 'true');
+                lastFocusedElement = document.activeElement;
+                if (focusableNavItems.length) focusableNavItems[0].focus();
+                document.addEventListener('keydown', handleMenuKeydown);
+            }
+
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+                document.removeEventListener('keydown', handleMenuKeydown);
+                if (lastFocusedElement) lastFocusedElement.focus();
+            }
+
+            function toggleMenu() {
+                var isOpen = hamburger.classList.contains('active');
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            function handleMenuKeydown(e) {
+                if (e.key === 'Escape') {
+                    closeMenu();
+                    return;
+                }
+                // 简单的 focus trap：Tab 循环在菜单内部
+                if (e.key === 'Tab' && focusableNavItems.length) {
+                    var first = focusableNavItems[0];
+                    var last = focusableNavItems[focusableNavItems.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+
+            hamburger.addEventListener('click', toggleMenu);
+            focusableNavItems.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (navLinks.classList.contains('active')) closeMenu();
+                });
+            });
+        })();
     </script>
 </body>
 </html>

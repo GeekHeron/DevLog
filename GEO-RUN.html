@@ -14,17 +14,20 @@
     <meta name="description" content="GeekHeron GEO（生成式引擎优化）流量截流代运营服务，面向电商品牌，提升在 ChatGPT / Perplexity 等 AI 引擎中的曝光与转化。">
     <link rel="icon" type="image/png" href="logo.png">
     <style>
-        /* --- 1. 全局样式 (极客黑金风格) --- */
         :root {
             --accent-color: #fff;
             --bg-color: #000;
             --card-bg: rgba(20, 20, 20, 0.6);
             --gold: #ffd700;
+            --gold-dim: #d4b800;
             --danger: #ff4d4d;
             --success: #00ffcc;
+            --line: #1c1c1c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -32,12 +35,12 @@
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
+        strong { color: #fff; }
 
-        /* --- 2. 背景特效 --- */
+        /* --- 背景特效 --- */
         #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .overlay-gradient {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -45,46 +48,76 @@
             z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. 导航栏 --- */
+        /* --- 导航栏 --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 50px; position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(10px); background: rgba(0,0,0,0.8);
+            padding: 22px 50px; position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px); background: rgba(0,0,0,0.85);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
-        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: #666; }
-        .nav-links a:hover, .nav-links a.active { color: #fff; }
-        .lang-btn { border: 1px solid var(--gold); padding: 8px 18px; border-radius: 4px; margin-left: 30px; font-size: 12px; font-weight: 700; color: var(--gold); background: rgba(255,215,0,0.05); }
-        .lang-btn:hover { background: var(--gold); color: #000; }
-
-        /* --- 4. 页面布局 --- */
-        .container {
-            max-width: 900px; margin: 0 auto; padding: 60px 20px;
-            position: relative; z-index: 10;
+        .logo { font-size: 22px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        .header-right { display: flex; align-items: center; }
+        .nav-links a.section-link { margin-left: 28px; font-size: 13px; font-weight: 600; color: #888; white-space: nowrap; }
+        .nav-links a.section-link:hover { color: #fff; }
+        .header-cta {
+            margin-left: 30px; border: 1px solid var(--gold); padding: 10px 22px; border-radius: 4px;
+            font-size: 13px; font-weight: 800; color: #000; background: var(--gold); white-space: nowrap;
         }
+        .header-cta:hover { background: #fff; border-color: #fff; }
 
-        /* 顶部飞书预约入口 */
-        .booking-bar { text-align: center; margin-bottom: 50px; }
-        .booking-btn { display: inline-block; padding: 16px 48px; }
-        .contact-btn {
-            display: block; background: #fff; color: #000; padding: 16px 0; border-radius: 4px;
-            font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-            transition: all 0.3s ease; cursor: pointer; text-align: center;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.1);
-        }
-        .contact-btn:hover { background: var(--gold); color: #000; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(255,215,0,0.3); }
-        /* --- 右侧：销售漏斗核心内容 --- */
+        /* --- 布局 --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10; }
         .content-section { padding-top: 10px; }
-        .section-block { margin-bottom: 80px; }
+        .section-block { padding: 70px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .section-block:last-of-type { border-bottom: none; }
         .section-title { font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 30px; font-weight: 800; display: flex; align-items: center; }
         .section-title::after { content: ''; height: 1px; background: #222; flex-grow: 1; margin-left: 20px; }
 
-        /* 痛点唤醒区 */
-        .value-prop { font-size: 28px; font-weight: 700; line-height: 1.4; margin-bottom: 25px; letter-spacing: -0.5px; }
+        /* --- CTA 通用按钮 --- */
+        .btn {
+            display: inline-block; padding: 16px 40px; border-radius: 4px;
+            font-size: 14px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
+            transition: all 0.25s ease; cursor: pointer; text-align: center; border: none;
+        }
+        .btn-primary { background: #fff; color: #000; box-shadow: 0 4px 15px rgba(255,255,255,0.1); }
+        .btn-primary:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(255,215,0,0.35); }
+        .btn-ghost { background: transparent; color: #ccc; border: 1px solid #333; }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-block { display: block; width: 100%; }
+        .btn-sm { padding: 12px 24px; font-size: 12px; }
+
+        /* --- Hero --- */
+        .hero { padding: 70px 0 40px; text-align: left; }
+        .eyebrow-tag {
+            display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+            color: var(--success); background: rgba(0,255,204,0.06); border: 1px solid rgba(0,255,204,0.25);
+            padding: 6px 14px; border-radius: 50px; margin-bottom: 24px; letter-spacing: 0.5px;
+        }
+        .eyebrow-tag::before { content: '●'; font-size: 8px; }
+        .hero h1 {
+            font-size: 40px; font-weight: 800; line-height: 1.35; letter-spacing: -0.5px; margin-bottom: 26px;
+        }
+        .hero-sub { font-size: 16px; line-height: 1.8; color: #b3b3b3; font-weight: 300; margin-bottom: 30px; max-width: 720px; }
+        .hero-checks { list-style: none; margin-bottom: 38px; }
+        .hero-checks li { font-size: 14px; color: #ddd; margin-bottom: 10px; padding-left: 26px; position: relative; }
+        .hero-checks li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 900; }
+        .hero-cta-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 50px; }
+        .hero-cta-note { font-size: 12px; color: #666; }
+
+        /* --- 信任条 / 数据条 --- */
+        .trust-strip {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+            border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+            padding: 30px 0; margin-bottom: 10px;
+        }
+        .trust-item { text-align: left; }
+        .trust-item h5 { font-size: 26px; color: var(--gold); font-weight: 800; margin-bottom: 6px; }
+        .trust-item p { font-size: 12px; color: #888; line-height: 1.5; }
+
+        .value-prop { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 25px; letter-spacing: -0.5px; }
         .bio-text { font-size: 15px; line-height: 1.8; color: #b3b3b3; margin-bottom: 20px; font-weight: 300; }
-        
-        /* 风险警示框：不做GEO的代价 */
+
+        /* 风险警示框 */
         .risk-box { border: 1px solid rgba(255, 77, 77, 0.2); background: rgba(255, 77, 77, 0.02); border-radius: 8px; padding: 30px; margin: 40px 0; }
         .risk-title { color: var(--danger); font-size: 14px; font-weight: 800; letter-spacing: 1px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -102,16 +135,16 @@
         /* 案例展示区 */
         .case-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         .case-card { background: linear-gradient(145deg, #111, #050505); border: 1px solid #222; padding: 25px; border-radius: 8px; border-left: 4px solid var(--success); }
-        .case-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .case-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .case-tag { font-size: 11px; background: rgba(0, 255, 204, 0.1); color: var(--success); padding: 4px 10px; border-radius: 4px; }
         .case-title { font-size: 18px; font-weight: 700; color: #fff; }
         .case-data { display: flex; gap: 30px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #333; }
         .data-item h5 { font-size: 20px; color: var(--gold); margin-bottom: 5px; }
         .data-item p { font-size: 12px; color: #888; }
 
-        /* 技术支撑（黑客感终端） */
+        /* 技术支撑 */
         .terminal-box { background: #080808; border: 1px solid #1a1a1a; padding: 20px; font-family: monospace; font-size: 13px; color: var(--success); margin-bottom: 20px; border-radius: 4px; }
-        .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
         .tech-tag { padding: 5px 12px; border: 1px solid #222; font-size: 11px; color: #888; border-radius: 50px; }
 
         /* 效果背书框 */
@@ -119,43 +152,92 @@
         .proof-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #fff; }
         .proof-text { font-size: 13px; color: #999; line-height: 1.6; }
 
-        /* 案例对比表格 */
-        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; text-align: left; }
-        .comparison-table th { padding: 15px 12px; border-bottom: 2px solid #333; color: var(--gold); font-weight: 700; background: rgba(255,215,0,0.05); }
-        .comparison-table td { padding: 18px 12px; border-bottom: 1px solid #111; color: #ccc; }
-        .comparison-table tr:hover { background: rgba(255,255,255,0.02); }
+        /* --- 报价卡片 --- */
+        .scarcity-banner {
+            display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--danger);
+            background: rgba(255,77,77,0.05); border: 1px solid rgba(255,77,77,0.2); border-radius: 4px;
+            padding: 12px 18px; margin-bottom: 30px; font-weight: 700;
+        }
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+        .plan-card {
+            position: relative; background: rgba(255,255,255,0.015); border: 1px solid #222; border-radius: 10px;
+            padding: 32px 28px; display: flex; flex-direction: column;
+        }
+        .plan-card.featured { border-color: var(--gold); background: linear-gradient(160deg, rgba(255,215,0,0.05), rgba(255,255,255,0.01)); }
+        .plan-badge {
+            position: absolute; top: -13px; left: 28px; background: var(--gold); color: #000;
+            font-size: 11px; font-weight: 800; padding: 5px 14px; border-radius: 50px; letter-spacing: 0.5px;
+        }
+        .plan-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; color: #fff; }
+        .plan-audience { font-size: 12px; color: #888; margin-bottom: 24px; }
+        .plan-features { list-style: none; margin-bottom: 28px; flex-grow: 1; }
+        .plan-features li { font-size: 13px; color: #ccc; line-height: 1.6; padding-left: 22px; position: relative; margin-bottom: 14px; }
+        .plan-features li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 900; }
+        .plan-features li strong { display: block; color: #fff; font-size: 13px; margin-bottom: 2px; }
+        .plan-price-note { font-size: 12px; color: #666; text-align: center; margin-top: 12px; }
+        .pricing-footnote { text-align: center; margin-top: 22px; font-size: 12px; color: var(--danger); font-weight: 700; }
 
-        /* FAQ 区 */
-        .faq-item { border-bottom: 1px solid #222; padding: 20px 0; }
-        .faq-q { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; }
-        .faq-q::before { content: 'Q:'; color: var(--gold); margin-right: 10px; font-weight: 900; }
-        .faq-a { font-size: 13px; color: #888; line-height: 1.6; padding-left: 25px; }
+        /* FAQ 手风琴 */
+        .faq-item { border-bottom: 1px solid #222; }
+        .faq-q {
+            font-size: 15px; font-weight: 700; color: #fff; padding: 20px 0; display: flex;
+            align-items: center; justify-content: space-between; cursor: pointer; gap: 20px;
+        }
+        .faq-q .qmark { color: var(--gold); margin-right: 10px; font-weight: 900; }
+        .faq-q-text { display: flex; align-items: center; }
+        .faq-toggle { color: #666; font-size: 20px; font-weight: 300; transition: transform 0.25s; flex-shrink: 0; }
+        .faq-item.open .faq-toggle { transform: rotate(45deg); color: var(--gold); }
+        .faq-a {
+            font-size: 13px; color: #888; line-height: 1.7; padding-left: 25px;
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding-bottom 0.3s ease;
+        }
+        .faq-item.open .faq-a { max-height: 220px; padding-bottom: 22px; }
 
-        /* 响应式适配 */
+        /* --- 收尾 CTA --- */
+        .final-cta { text-align: center; padding: 80px 0 60px; }
+        .final-cta h2 { font-size: 28px; font-weight: 800; margin-bottom: 16px; }
+        .final-cta p { font-size: 14px; color: #999; margin-bottom: 36px; }
+
+        footer { text-align: center; padding: 30px 20px 100px; font-size: 12px; color: #444; }
+
+        /* --- 移动端悬浮 CTA --- */
+        .sticky-mobile-cta {
+            display: none; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 200;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 1px solid #222;
+            padding: 12px 16px; padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        }
+
+        /* --- 响应式 --- */
         @media (max-width: 850px) {
-            header { padding: 20px; }
+            header { padding: 18px 20px; }
+            .hero { padding-top: 40px; }
+            .hero h1 { font-size: 28px; }
+            .trust-strip { grid-template-columns: repeat(2, 1fr); }
             .services-grid { grid-template-columns: 1fr; }
             .risk-grid { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
             .case-data { flex-direction: column; gap: 15px; }
+            .header-cta { display: none; }
             .hamburger { display: block; }
+            .sticky-mobile-cta { display: block; }
+            body { padding-bottom: 70px; }
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
+                background: rgba(0, 0, 0, 0.97); backdrop-filter: blur(15px);
                 z-index: 101; flex-direction: column; justify-content: center;
-                align-items: center; gap: 40px;
+                align-items: center; gap: 34px;
                 transform: translateX(100%); transition: transform 0.4s;
                 display: flex;
             }
             .nav-links.active { transform: translateX(0); }
-            .nav-links a { font-size: 24px; margin-left: 0; font-weight: 700; }
+            .nav-links a.section-link { font-size: 22px; margin-left: 0; font-weight: 700; color: #fff; }
+            .nav-links .header-cta { display: inline-block; margin-left: 0; }
         }
 
-        /* 尊重用户的"减少动画"系统设置 */
         @media (prefers-reduced-motion: reduce) {
-            * { scroll-behavior: auto !important; }
+            html { scroll-behavior: auto !important; }
         }
 
-        /* 汉堡按钮 */
         .hamburger {
             display: none; cursor: pointer; z-index: 102;
             width: 30px; height: 20px; position: relative;
@@ -168,11 +250,9 @@
         .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-        .hamburger:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+        .hamburger:focus-visible, a:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-        /* 定价表移动端横向滚动容器 */
         .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .table-wrap .comparison-table { min-width: 560px; }
     </style>
 
     <script type="application/ld+json">
@@ -210,6 +290,11 @@
           "@type": "Question",
           "name": "GEO 带来的流量转化率怎么样？",
           "acceptedAnswer": { "@type": "Answer", "text": "极高。因为用户在使用 AI 询问“哪个产品最好”时，已经处于购物漏斗的最底层（决策阶段）。被 AI 作为“权威客观答案”推荐，自带强信任背书，转化率通常是传统展示广告的 3-5 倍。" }
+        },
+        {
+          "@type": "Question",
+          "name": "如果合作后 AI 提及率没有提升怎么办？",
+          "acceptedAnswer": { "@type": "Answer", "text": "我们在合同中约定每月交付可视化 SOV 审计报告，如连续两个报告周期核心词提及率无提升，将免费追加一个语料注入周期，直到达成约定阶段目标。" }
         }
       ]
     }
@@ -225,29 +310,65 @@
         <button class="hamburger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
             <span></span><span></span><span></span>
         </button>
-        <nav class="nav-links" id="primary-nav">
-            <a href="index.html">首页</a>
-            <a href="about.html">关于 & 业务合作</a>
-            <a href="#packages" class="lang-btn">获取最新报价表</a>
-        </nav>
+        <div class="header-right">
+            <nav class="nav-links" id="primary-nav">
+                <a href="index.html" class="section-link">首页</a>
+                <a href="article.html" class="section-link">深度分析</a>
+                <a href="works.html" class="section-link">商业案例</a>
+                <a href="pricing.html" class="section-link">源码/方案</a>
+                <a href="about.html" class="section-link">关于 & 业务合作</a>
+                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="header-cta">预约免费咨询</a>
+            </nav>
+        </div>
     </header>
 
     <main class="container">
 
-        <div class="booking-bar">
-            <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn booking-btn">预约 15 分钟免费咨询</a>
-        </div>
+        <section class="hero">
+            <div class="eyebrow-tag">GEO · 生成式引擎优化 · 电商品牌专场</div>
+            <h1>亚马逊广告内卷、独立站买量太贵？<br>让 <span style="color: var(--gold);">ChatGPT、Perplexity 主动推荐你</span>，而不是竞品。</h1>
+            <p class="hero-sub">
+                当买家在 AI 里问"推荐几款最好的产品"时，AI 给出的答案，就是新时代的搜索结果第一位。我们用多智能体架构，把你的品牌注入这个答案。
+            </p>
+            <ul class="hero-checks">
+                <li>3-4 周内看到品牌在 Perplexity / Kimi 回答中的权重上升</li>
+                <li>覆盖 ChatGPT、Perplexity、Kimi、Gemini、小红书 AI 等主流引擎</li>
+                <li>只对"AI 提及率"和"转化卡片展现"负责，拒绝虚假曝光量</li>
+            </ul>
+            <div class="hero-cta-row">
+                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary">预约 15 分钟免费诊断</a>
+                <a href="#packages" class="btn btn-ghost">查看服务与报价</a>
+            </div>
+
+            <div class="trust-strip">
+                <div class="trust-item">
+                    <h5>+340%</h5>
+                    <p>典型客户 AI 提及率 (SOV) 提升</p>
+                </div>
+                <div class="trust-item">
+                    <h5>5.8x</h5>
+                    <p>归因流量 ROI，高于同期广告投放</p>
+                </div>
+                <div class="trust-item">
+                    <h5>3-4 周</h5>
+                    <p>初见权重上升所需时间</p>
+                </div>
+                <div class="trust-item">
+                    <h5>≤3 家</h5>
+                    <p>尊享品牌版每月新签约名额</p>
+                </div>
+            </div>
+        </section>
 
         <div class="content-section">
-            
-            <section class="section-block">
-                <h3 class="section-title">01 / The Paradigm Shift / 卖家面临的流量变局</h3>
-                <h1 class="value-prop">亚马逊广告内卷、独立站买量太贵？<br>高净值买家正在用 <span style="color: var(--gold);">AI 直接决定买什么</span>。</h1>
+
+            <section class="section-block" id="risks">
+                <h3 class="section-title">痛点 / 卖家正在面对的流量变局</h3>
                 <p class="bio-text">
-                    当跨境买家在 Perplexity 输入<i>“推荐3个评价最好的户外储能电源”</i>，或者国内消费者在 Kimi 里提问<i>“性价比最高的抗老精华，排除智商税”</i>时——<strong>你的品牌，出现在 AI 回复的链接和卡片里了吗？</strong>
+                    当跨境买家在 Perplexity 输入<i>"推荐3个评价最好的户外储能电源"</i>，或者国内消费者在 Kimi 里提问<i>"性价比最高的抗老精华，排除智商税"</i>时——<strong>你的品牌，出现在 AI 回复的链接和卡片里了吗？</strong>
                 </p>
                 <p class="bio-text">
-                    传统的亚马逊站内 SEO 和 Google 竞价正在失效。<strong>GEO（Generative Engine Optimization）</strong>是拦截高质量购物意图的终极武器。我们的工作，就是通过多智能体技术干预大模型的召回机制，让你的产品成为 AI 极力推荐的"标准答案"。
+                    传统的亚马逊站内 SEO 和 Google 竞价正在失效。<strong>GEO（Generative Engine Optimization）</strong>是拦截高质量购物意图的关键动作。我们的工作，就是通过多智能体技术干预大模型的召回机制，让你的产品成为 AI 极力推荐的"标准答案"。
                 </p>
 
                 <div class="risk-box">
@@ -255,11 +376,11 @@
                     <div class="risk-grid">
                         <div class="risk-item">
                             <h4>📉 高净值流量断崖流失</h4>
-                            <p>海外 40%+ 的白领和极客已习惯用 Perplexity/ChatGPT 代替 Google。不针对 AI 优化，意味着最高转化率的客群对你完全关闭。</p>
+                            <p>海外 40%+ 的白领和极客已习惯用 Perplexity / ChatGPT 代替 Google。不针对 AI 优化，意味着最高转化率的客群对你完全关闭。</p>
                         </div>
                         <div class="risk-item">
-                            <h4>🤖 竞品正在“洗脑”大模型</h4>
-                            <p>你的竞争对手正在通过 RAG 语料反向注入，霸占各大主流 AI 的评测推荐率，而你的产品在 AI 脑中是“查无此人”。</p>
+                            <h4>🤖 竞品正在"洗脑"大模型</h4>
+                            <p>你的竞争对手正在通过 RAG 语料反向注入，霸占各大主流 AI 的评测推荐率，而你的产品在 AI 脑中是"查无此人"。</p>
                         </div>
                         <div class="risk-item">
                             <h4>💸 巨额广告费被 AI 截胡</h4>
@@ -271,17 +392,19 @@
                         </div>
                     </div>
                 </div>
+
+                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">先测一下我的品牌 AI 拦截率 →</a>
             </section>
 
             <section class="section-block" id="cases">
-                <h3 class="section-title">02 / Success Stories / 转化实战案例</h3>
+                <h3 class="section-title">转化实战案例</h3>
                 <div class="case-grid">
                     <div class="case-card">
                         <div class="case-header">
                             <h4 class="case-title">某出海 3C 数码配件品牌</h4>
                             <span class="case-tag">Perplexity & GPT-4 霸榜</span>
                         </div>
-                        <p style="font-size: 13px; color: #999;">痛点：独立站获客成本飙升，Google Ads ROI 跌破 1.2。通过我们的 GEO 语料注入，针对“Best Magsafe Powerbank”等 20 个高意向词进行拦截。</p>
+                        <p style="font-size: 13px; color: #999;">痛点：独立站获客成本飙升，Google Ads ROI 跌破 1.2。通过我们的 GEO 语料注入，针对"Best Magsafe Powerbank"等 20 个高意向词进行拦截。</p>
                         <div class="case-data">
                             <div class="data-item">
                                 <h5>+340%</h5>
@@ -297,13 +420,13 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="case-card" style="border-left-color: var(--gold);">
                         <div class="case-header">
                             <h4 class="case-title">某国内新锐美妆护肤品牌</h4>
                             <span class="case-tag" style="background: rgba(255,215,0,0.1); color: var(--gold);">小红书 AI & Kimi 截流</span>
                         </div>
-                        <p style="font-size: 13px; color: #999;">痛点：传统种草笔记石沉大海。我们利用多智能体在知乎、小红书高权重节点布局评测矩阵，成功“污染”大模型检索库。</p>
+                        <p style="font-size: 13px; color: #999;">痛点：传统种草笔记石沉大海。我们利用多智能体在知乎、小红书高权重节点布局评测矩阵，成功优化大模型检索库中的品牌权重。</p>
                         <div class="case-data">
                             <div class="data-item">
                                 <h5>Top 3</h5>
@@ -319,7 +442,7 @@
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">03 / GEO Managed Services / 四大代运营服务矩阵</h3>
+                <h3 class="section-title">GEO 代运营 · 四大服务矩阵</h3>
                 <div class="services-grid">
                     <div class="service-card">
                         <div class="service-icon">🔍</div>
@@ -333,8 +456,8 @@
                     </div>
                     <div class="service-card">
                         <div class="service-icon">🕸️</div>
-                        <h4 class="service-name">3. 高权重语料网络“逆向注入”</h4>
-                        <p class="service-desc">基于 OpenClaw 多智能体集群，自动化控制海外权威评测节点与高权重论坛。以符合人类语义的高深度文章占领 AI 检索库，强行提升推荐顺位。</p>
+                        <h4 class="service-name">3. 高权重语料网络注入</h4>
+                        <p class="service-desc">基于 OpenClaw 多智能体集群，自动化布局海外权威评测节点与高权重论坛。以符合人类语义的高深度文章占领 AI 检索库，提升推荐顺位。</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon">🛡️</div>
@@ -345,7 +468,7 @@
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">04 / Industrial Reliability / 工业级技术底座</h3>
+                <h3 class="section-title">工业级技术底座</h3>
                 <div class="terminal-box">
                     <span style="color: #666;">[root@GeekHeron ~]$</span> <span id="typewriter"></span><span class="cursor">_</span>
                 </div>
@@ -359,7 +482,7 @@
                 </div>
 
                 <div class="proof-box">
-                    <div class="proof-title">🎯 交付承诺：只看“引用率”和“流量卡片”</div>
+                    <div class="proof-title">🎯 交付承诺：只看"引用率"和"流量卡片"</div>
                     <div class="proof-text">
                         拒绝虚无缥缈的"曝光量"。我们的全托管直接对标电商最看重的指标：在买家提问时，AI 回答中<strong>你品牌的提及占比（SOV）</strong>，以及<strong>带独立站外链/产品链接的转化卡片展现次数</strong>。
                     </div>
@@ -367,74 +490,93 @@
             </section>
 
             <section class="section-block" id="packages">
-                <h3 class="section-title">05 / Service Packages / 卖家全托管报价</h3>
-                <div class="table-wrap">
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 25%;">服务维度</th>
-                            <th style="width: 35%;">标准启航版 <br><span style="font-size:11px;color:#888;font-weight:normal;">适合垂直类目中小卖家</span></th>
-                            <th style="width: 40%;">尊享品牌版 <br><span style="font-size:11px;color:#888;font-weight:normal;">适合类目Top/高客单大卖 (强推)</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>覆盖大模型</strong></td>
-                            <td>Kimi、ChatGPT（基础版）、Claude</td>
-                            <td>Perplexity、GPT-4o、小红书 AI、Kimi、Gemini</td>
-                        </tr>
-                        <tr>
-                            <td><strong>拦截词规模</strong></td>
-                            <td>针对 5 个高转化核心品类词进行 RAG 穿透</td>
-                            <td>覆盖 20+ 核心词与长尾购物意图词进行多维阻击</td>
-                        </tr>
-                        <tr>
-                            <td><strong>技术打法</strong></td>
-                            <td>站内结构化标记 + 基础权威节点权重提升</td>
-                            <td>自研集群深度语料注入 + 竞品防御压制</td>
-                        </tr>
-                        <tr>
-                            <td><strong>数据监控</strong></td>
-                            <td>每月交付 1 次 AI 提及率可视化审计报告</td>
-                            <td>专员服务，24H 实时监控告警与动态排名修补</td>
-                        </tr>
-                        <tr>
-                            <td><strong>商务报价</strong></td>
-                            <td><span style="color: #fff; font-weight:700;">联系客服获取排期</span></td>
-                            <td><span style="color: var(--gold); font-weight:700;">按季度结算 / 需提前预约锁量</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3 class="section-title">服务套餐 · 卖家全托管报价</h3>
+
+                <div class="scarcity-banner">⚠️ 为保障深度语料注入质量，尊享品牌版每月仅限接 3 个新品牌</div>
+
+                <div class="pricing-grid">
+                    <div class="plan-card">
+                        <div class="plan-name">标准启航版</div>
+                        <div class="plan-audience">适合垂直类目中小卖家</div>
+                        <ul class="plan-features">
+                            <li><strong>覆盖大模型</strong>Kimi、ChatGPT（基础版）、Claude</li>
+                            <li><strong>拦截词规模</strong>针对 5 个高转化核心品类词进行 RAG 穿透</li>
+                            <li><strong>技术打法</strong>站内结构化标记 + 基础权威节点权重提升</li>
+                            <li><strong>数据监控</strong>每月交付 1 次 AI 提及率可视化审计报告</li>
+                        </ul>
+                        <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-block">联系客服获取排期</a>
+                    </div>
+
+                    <div class="plan-card featured">
+                        <span class="plan-badge">大卖首选</span>
+                        <div class="plan-name">尊享品牌版</div>
+                        <div class="plan-audience">适合类目 Top / 高客单大卖</div>
+                        <ul class="plan-features">
+                            <li><strong>覆盖大模型</strong>Perplexity、GPT-4o、小红书 AI、Kimi、Gemini</li>
+                            <li><strong>拦截词规模</strong>覆盖 20+ 核心词与长尾购物意图词多维阻击</li>
+                            <li><strong>技术打法</strong>自研集群深度语料注入 + 竞品防御压制</li>
+                            <li><strong>数据监控</strong>专员服务，24H 实时监控告警与动态排名修补</li>
+                        </ul>
+                        <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-block">预约锁定本月名额</a>
+                        <p class="plan-price-note">按季度结算 · 需提前预约锁量</p>
+                    </div>
                 </div>
-                <p style="text-align: right; margin-top: 15px; font-size: 12px; color: var(--danger); font-weight: bold;">* 为保障深度语料注入质量，尊享品牌版每月仅限接 3 个新品牌。</p>
             </section>
 
-            <section class="section-block">
-                <h3 class="section-title">06 / FAQ / 卖家常见问题</h3>
+            <section class="section-block" id="faq">
+                <h3 class="section-title">卖家常见问题</h3>
                 <div class="faq-list">
                     <div class="faq-item">
-                        <div class="faq-q">GEO 优化大概需要多久能看到效果？</div>
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span class="faq-q-text"><span class="qmark">Q</span>GEO 优化大概需要多久能看到效果？</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
                         <div class="faq-a">大模型的训练和检索库更新（RAG机制）有一定的周期。通常在部署高权重语料后，<strong>3 到 4 周</strong>可以初步看到品牌在 Perplexity / Kimi 回答中的权重上升，第 2 个月进入稳定截流期。</div>
                     </div>
                     <div class="faq-item">
-                        <div class="faq-q">我们是做亚马逊的，没有独立站可以做 GEO 吗？</div>
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span class="faq-q-text"><span class="qmark">Q</span>我们是做亚马逊的，没有独立站可以做 GEO 吗？</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
                         <div class="faq-a">完全可以。针对亚马逊卖家，我们的语料注入会将最终导向链接设置为您的亚马逊 Listing 或 Storefront。AI 同样会向用户推荐并提供直达购买链接。</div>
                     </div>
                     <div class="faq-item">
-                        <div class="faq-q">GEO 带来的流量转化率怎么样？</div>
-                        <div class="faq-a">极高。因为用户在使用 AI 询问“哪个产品最好”时，已经处于购物漏斗的最底层（决策阶段）。被 AI 作为“权威客观答案”推荐，自带强信任背书，转化率通常是传统展示广告的 3-5 倍。</div>
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span class="faq-q-text"><span class="qmark">Q</span>GEO 带来的流量转化率怎么样？</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-a">极高。因为用户在使用 AI 询问"哪个产品最好"时，已经处于购物漏斗的最底层（决策阶段）。被 AI 作为"权威客观答案"推荐，自带强信任背书，转化率通常是传统展示广告的 3-5 倍。</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span class="faq-q-text"><span class="qmark">Q</span>如果合作后 AI 提及率没有提升怎么办？</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-a">我们在合同中约定每月交付可视化 SOV 审计报告，如连续两个报告周期核心词提及率无提升，将免费追加一个语料注入周期，直到达成约定阶段目标。</div>
                     </div>
                 </div>
+            </section>
+
+            <section class="final-cta">
+                <h2>下一次 AI 推荐名单里，该有你的品牌了。</h2>
+                <p>15 分钟免费诊断，看看你的品牌当前在主流 AI 引擎中的拦截率。</p>
+                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary">立即预约免费诊断</a>
             </section>
 
         </div>
     </main>
 
+    <footer>© GeekHeron · GEO 流量截流代运营</footer>
+
+    <div class="sticky-mobile-cta">
+        <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-block">预约 15 分钟免费诊断</a>
+    </div>
+
     <script>
         (function () {
             'use strict';
 
-            // --- 背景粒子特效（带无障碍与性能优化） ---
+            // --- 背景粒子特效 ---
             var canvas = document.getElementById('galaxy-field');
             var ctx = canvas.getContext('2d');
             var width, height, particles = [], rafId = null, isPaused = false;
@@ -489,7 +631,6 @@
             function startAnimation() { if (rafId !== null) return; isPaused = false; animate(); }
             function stopAnimation() { isPaused = true; if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
 
-            // 标签页切到后台时暂停动画，节省电量与 CPU
             document.addEventListener('visibilitychange', function () {
                 if (document.hidden) { stopAnimation(); }
                 else if (!prefersReducedMotion) { startAnimation(); }
@@ -506,12 +647,11 @@
             if (!prefersReducedMotion) {
                 startAnimation();
             } else {
-                // 即使不做动画，也画一帧静态星空，保留视觉效果
                 ctx.clearRect(0, 0, width, height);
                 particles.forEach(function (p) { p.draw(); });
             }
 
-            // --- 打字机特效（电商场景，一次性拼接，减少重排） ---
+            // --- 打字机特效 ---
             var textToType = "Scanning Perplexity index... Target Keyword 'Best Magsafe' detected. Injecting structured product data... SUCCESS. Brand AI Share of Voice increased by 450%. Routing traffic to Shopify store...";
             var typeElement = document.getElementById('typewriter');
             var charIndex = 0;
@@ -528,7 +668,7 @@
                 typeElement.textContent = textToType;
             }
 
-            // --- 移动端菜单逻辑：语义化按钮 + 键盘可达 + Esc 关闭 + 简单焦点管理 ---
+            // --- 移动端菜单 ---
             var hamburger = document.querySelector('.hamburger');
             var navLinks = document.querySelector('.nav-links');
             var focusableNavItems = navLinks.querySelectorAll('a');
@@ -565,6 +705,27 @@
             focusableNavItems.forEach(function (link) {
                 link.addEventListener('click', function () {
                     if (navLinks.classList.contains('active')) closeMenu();
+                });
+            });
+
+            // --- FAQ 手风琴 ---
+            var faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(function (item) {
+                var q = item.querySelector('.faq-q');
+                function toggleFaq() {
+                    var willOpen = !item.classList.contains('open');
+                    faqItems.forEach(function (other) {
+                        other.classList.remove('open');
+                        other.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+                    });
+                    if (willOpen) {
+                        item.classList.add('open');
+                        q.setAttribute('aria-expanded', 'true');
+                    }
+                }
+                q.addEventListener('click', toggleFaq);
+                q.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFaq(); }
                 });
             });
         })();

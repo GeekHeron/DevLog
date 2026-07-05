@@ -30,9 +30,50 @@
       "jobTitle": "FDE 全栈开发 / AI Agent 架构师",
       "url": "https://geekheron.space/about.html",
       "sameAs": [
-        "https://geekheron.space/"
+        "https://geekheron.space/",
+        "https://t.me/GeekHeron"
       ],
+      "image": "https://geekheron.space/image_3.png",
       "knowsAbout": ["Full-stack Development", "OpenClaw", "Next.js / React", "Multi-Agent Systems", "Private AI Deployment", "Workflow Automation", "Python Fullstack"]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "支持私有化部署吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。" }
+        },
+        {
+          "@type": "Question",
+          "name": "需要更换 ERP 吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。" }
+        },
+        {
+          "@type": "Question",
+          "name": "交付周期多久？",
+          "acceptedAnswer": { "@type": "Answer", "text": "根据项目复杂度，一般 2～8 周。需求确认后会提供阶段性交付计划。" }
+        },
+        {
+          "@type": "Question",
+          "name": "是否签 NDA？",
+          "acceptedAnswer": { "@type": "Answer", "text": "支持。涉及商业数据或业务流程的项目，可签署保密协议。" }
+        },
+        {
+          "@type": "Question",
+          "name": "是否提供售后？",
+          "acceptedAnswer": { "@type": "Answer", "text": "提供部署支持、Bug 修复及按约定的维护服务，可根据项目提供长期技术支持。" }
+        },
+        {
+          "@type": "Question",
+          "name": "如何收费？",
+          "acceptedAnswer": { "@type": "Answer", "text": "根据需求复杂度、系统规模及交付内容报价，可先进行 15 分钟免费咨询。" }
+        }
+      ]
     }
     </script>
 
@@ -155,7 +196,8 @@
             animation: pulse-glow 3s infinite;
         }
 
-        .avatar-image[style*="display: none"] + .avatar-fallback { display: flex; }
+        .avatar-image.img-error { display: none; }
+        .avatar-image.img-error + .avatar-fallback { display: flex; }
         .avatar-fallback {
             display: none; width: 100%; height: 100%; border-radius: 50%;
             background: #111; align-items: center; justify-content: center;
@@ -364,6 +406,52 @@
             font-size: 12px; color: var(--text-muted); margin-top: 16px; line-height: 1.7;
         }
 
+        /* FAQ 手风琴 */
+        .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .faq-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #222;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .faq-item:hover { border-color: rgba(255,215,0,0.4); }
+        .faq-item[open] { border-color: var(--gold); background: rgba(255,215,0,0.04); }
+
+        .faq-question {
+            cursor: pointer;
+            list-style: none;
+            padding: 18px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .faq-question::-webkit-details-marker { display: none; }
+        .faq-question::marker { content: ''; }
+
+        .faq-question .faq-icon {
+            flex-shrink: 0;
+            width: 20px; height: 20px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            color: var(--gold);
+            font-size: 14px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s;
+        }
+        .faq-item[open] .faq-icon { transform: rotate(45deg); }
+
+        .faq-answer {
+            padding: 0 24px 20px;
+            font-size: 14px;
+            color: #aaa;
+            line-height: 1.8;
+        }
+
         /* 客户评价 (Testimonials) */
         .testimonial-grid {
             display: grid;
@@ -501,7 +589,7 @@
 
         <aside class="profile-section">
             <div class="avatar-container">
-                <img src="image_3.png" alt="王鉴锋（GeekHeron）头像照片" class="avatar-image" width="180" height="180" fetchpriority="high" onerror="this.style.display='none'">
+                <img src="image_3.png" alt="王鉴锋（GeekHeron）头像照片" class="avatar-image" width="180" height="180" fetchpriority="high" onerror="this.classList.add('img-error')">
                 <div class="avatar-fallback" aria-hidden="true">GH</div>
             </div>
             <h1 class="profile-name">Geek Heron</h1>
@@ -545,15 +633,15 @@
 <section class="section-block">
                 <h3 class="section-title">01 / The Philosophy</h3>
                 <h2 class="value-prop">
-                    把 AI 变成真正的生产力工具。<br>
-                    交付<span style="color: var(--gold);">开箱即用的自动化业务中枢</span>，拒绝半成品代码。
+                    专注 <span style="color: var(--gold);">AI 自动化系统交付</span>，<br>
+                    为企业提供跑得起来的<span style="color: var(--gold);">企业数字化解决方案</span>，而不是停在 Demo 阶段的半成品。
                 </h2>
 
                 <p class="bio-text">
-                    我是 Heron，一名专注于企业数字化落地的 **FDE (全栈商业系统开发者)**。我不仅帮企业搭建顶层智能工作流，更具备将这些能力“独立、完整交付”为商业级闭环系统的能力，直接对您的业务结果负责。
+                    我是 Heron，一名专注 <strong>AI 自动化系统交付</strong>与<strong>企业数字化解决方案</strong>落地的 FDE（全栈商业系统开发者）。市面上不缺"能讲 AI 概念"的人，缺的是能把顶层智能工作流，独立、完整交付为一套真正跑在企业业务里的闭环系统，并对最终结果负责的人——这正是我的核心工作。
                 </p>
                 <p class="bio-text">
-                    传统的 AI 改造往往卡在“技术懂了，但业务没通”的尴尬境地。我的核心价值在于<strong>打破系统孤岛</strong>——把强大的 AI 能力，无缝接入您现有的防关联指纹浏览器、企业 ERP 系统以及飞书办公流中，让自动化真正运转起来，转化为企业可复制的数字资产。
+                    传统的 AI 改造项目往往卡在"技术方案讲得通，但业务流程接不上"的尴尬境地：模型能跑起来，却没人负责把它嵌进企业真实的工作流里。我的核心价值在于<strong>打破系统孤岛</strong>——把 AI 自动化能力无缝接入您现有的防关联指纹浏览器、企业 ERP 系统以及飞书办公流中，让自动化真正运转起来，沉淀为企业可复制、可交接的数字资产，而不是一次性的技术验证。
                 </p>
 
                 <div class="risk-box" style="padding: 25px 20px;">
@@ -776,7 +864,37 @@
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">06 / What Clients Say</h3>
+                <h3 class="section-title">06 / Frequently Asked Questions</h3>
+                <div class="faq-list">
+                    <details class="faq-item">
+                        <summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">需要更换 ERP 吗？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">交付周期多久？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">根据项目复杂度，一般 2～8 周。需求确认后会提供阶段性交付计划。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">是否签 NDA？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">支持。涉及商业数据或业务流程的项目，可签署保密协议。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">是否提供售后？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">提供部署支持、Bug 修复及按约定的维护服务，可根据项目提供长期技术支持。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">如何收费？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">根据需求复杂度、系统规模及交付内容报价，可先进行 15 分钟免费咨询。</p>
+                    </details>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">07 / What Clients Say</h3>
                 <div class="testimonial-grid">
                     <div class="testimonial-card">
                         <div class="testimonial-quote-mark" aria-hidden="true">"</div>

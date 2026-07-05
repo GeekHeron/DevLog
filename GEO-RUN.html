@@ -200,12 +200,19 @@
 
         footer { text-align: center; padding: 30px 20px 100px; font-size: 12px; color: #444; }
 
-        /* --- 移动端悬浮 CTA --- */
-        .sticky-mobile-cta {
-            display: none; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 200;
-            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 1px solid #222;
-            padding: 12px 16px; padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        .hamburger {
+            display: none; cursor: pointer; z-index: 102;
+            width: 30px; height: 20px; position: relative;
+            background: transparent; border: none; padding: 0;
         }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+        .hamburger:focus-visible, a:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
         /* --- 响应式 --- */
         @media (max-width: 850px) {
@@ -219,8 +226,6 @@
             .case-data { flex-direction: column; gap: 15px; }
             .header-cta { display: none; }
             .hamburger { display: block; }
-            .sticky-mobile-cta { display: block; }
-            body { padding-bottom: 70px; }
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
                 background: rgba(0, 0, 0, 0.97); backdrop-filter: blur(15px);
@@ -237,20 +242,6 @@
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto !important; }
         }
-
-        .hamburger {
-            display: none; cursor: pointer; z-index: 102;
-            width: 30px; height: 20px; position: relative;
-            background: transparent; border: none; padding: 0;
-        }
-        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
-        .hamburger span:nth-child(1) { top: 0; }
-        .hamburger span:nth-child(2) { top: 9px; }
-        .hamburger span:nth-child(3) { top: 18px; }
-        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-        .hamburger:focus-visible, a:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
         .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     </style>
@@ -307,9 +298,6 @@
 
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
-        <button class="hamburger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
-            <span></span><span></span><span></span>
-        </button>
         <div class="header-right">
             <nav class="nav-links" id="primary-nav">
                 <a href="index.html" class="section-link">首页</a>
@@ -319,6 +307,9 @@
                 <a href="about.html" class="section-link">关于 & 业务合作</a>
                 <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="header-cta">预约免费咨询</a>
             </nav>
+            <button class="hamburger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </header>
 
@@ -336,8 +327,8 @@
                 <li>只对"AI 提及率"和"转化卡片展现"负责，拒绝虚假曝光量</li>
             </ul>
             <div class="hero-cta-row">
-                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary">预约 15 分钟免费诊断</a>
                 <a href="#packages" class="btn btn-ghost">查看服务与报价</a>
+                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary">预约免费咨询</a>
             </div>
 
             <div class="trust-strip">
@@ -392,8 +383,6 @@
                         </div>
                     </div>
                 </div>
-
-                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">先测一下我的品牌 AI 拦截率 →</a>
             </section>
 
             <section class="section-block" id="cases">
@@ -504,7 +493,6 @@
                             <li><strong>技术打法</strong>站内结构化标记 + 基础权威节点权重提升</li>
                             <li><strong>数据监控</strong>每月交付 1 次 AI 提及率可视化审计报告</li>
                         </ul>
-                        <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-block">联系客服获取排期</a>
                     </div>
 
                     <div class="plan-card featured">
@@ -517,7 +505,6 @@
                             <li><strong>技术打法</strong>自研集群深度语料注入 + 竞品防御压制</li>
                             <li><strong>数据监控</strong>专员服务，24H 实时监控告警与动态排名修补</li>
                         </ul>
-                        <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-block">预约锁定本月名额</a>
                         <p class="plan-price-note">按季度结算 · 需提前预约锁量</p>
                     </div>
                 </div>
@@ -557,20 +544,10 @@
                 </div>
             </section>
 
-            <section class="final-cta">
-                <h2>下一次 AI 推荐名单里，该有你的品牌了。</h2>
-                <p>15 分钟免费诊断，看看你的品牌当前在主流 AI 引擎中的拦截率。</p>
-                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary">立即预约免费诊断</a>
-            </section>
-
         </div>
     </main>
 
     <footer>© GeekHeron · GEO 流量截流代运营</footer>
-
-    <div class="sticky-mobile-cta">
-        <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-block">预约 15 分钟免费诊断</a>
-    </div>
 
     <script>
         (function () {

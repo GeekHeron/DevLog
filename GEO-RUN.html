@@ -3,7 +3,10 @@
 <head>
     <meta property="og:title" content="电商 GEO 代运营 | 让 AI 优先推荐你的品牌 | GeekHeron">
     <meta property="og:description" content="专为独立站与出海品牌打造。基于多智能体架构，让 ChatGPT、Perplexity 成为你的超级带货员。">
-    <meta property="og:image" content="https://geekheron.space/logo.png"> 
+    <meta property="og:image" content="https://geekheron.space/logo.png">
+    <meta property="og:url" content="https://geekheron.space/GEO-RUN.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEO 流量截流代运营 - 电商品牌专场 - GeekHeron</title>
@@ -57,25 +60,13 @@
 
         /* --- 4. 页面布局 --- */
         .container {
-            max-width: 1100px; margin: 0 auto; padding: 60px 20px;
+            max-width: 900px; margin: 0 auto; padding: 60px 20px;
             position: relative; z-index: 10;
-            display: grid; grid-template-columns: 320px 1fr; gap: 80px;
-            align-items: start;
         }
 
-        /* --- 左侧：服务卡片与转化锚点 --- */
-        .profile-section { position: sticky; top: 120px; text-align: center; }
-        .service-badge {
-            background: rgba(255,215,0,0.1); color: var(--gold); border: 1px solid var(--gold);
-            padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700;
-            display: inline-block; margin-bottom: 25px; letter-spacing: 1px;
-        }
-        .profile-name { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2; }
-        .profile-title { font-size: 13px; color: #888; margin-bottom: 30px; line-height: 1.6; }
-        .urgency-tag { font-size: 11px; color: var(--danger); font-weight: bold; margin-bottom: 15px; display: block; }
-
-        /* 销售促单按钮 */
-        .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        /* 顶部飞书预约入口 */
+        .booking-bar { text-align: center; margin-bottom: 50px; }
+        .booking-btn { display: inline-block; padding: 16px 48px; }
         .contact-btn {
             display: block; background: #fff; color: #000; padding: 16px 0; border-radius: 4px;
             font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
@@ -83,20 +74,6 @@
             box-shadow: 0 4px 15px rgba(255,255,255,0.1);
         }
         .contact-btn:hover { background: var(--gold); color: #000; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(255,215,0,0.3); }
-        .secondary-btn {
-            display: block; background: transparent; color: #fff; border: 1px solid #333; padding: 14px 0; border-radius: 4px;
-            font-size: 12px; font-weight: 800; letter-spacing: 1px; text-align: center;
-        }
-        .secondary-btn:hover { border-color: #fff; }
-
-        /* 社交/企业联系方式 */
-        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 30px; }
-        .social-item { background: rgba(255,255,255,0.02); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); text-align: center; transition: 0.3s; cursor: pointer; }
-        .social-item:hover { border-color: var(--gold); }
-        .social-qr { width: 100%; height: auto; border-radius: 4px; filter: grayscale(20%); transition: 0.3s; }
-        .social-item:hover .social-qr { filter: grayscale(0%); }
-        .social-text { font-size: 10px; color: #ccc; margin-top: 6px; font-weight: 600; }
-
         /* --- 右侧：销售漏斗核心内容 --- */
         .content-section { padding-top: 10px; }
         .section-block { margin-bottom: 80px; }
@@ -157,14 +134,45 @@
         /* 响应式适配 */
         @media (max-width: 850px) {
             header { padding: 20px; }
-            .nav-links { display: none; } 
-            .container { grid-template-columns: 1fr; gap: 50px; padding-top: 30px; }
-            .profile-section { position: relative; top: 0; }
             .services-grid { grid-template-columns: 1fr; }
             .risk-grid { grid-template-columns: 1fr; }
-            .social-grid { grid-template-columns: repeat(3, 1fr); }
             .case-data { flex-direction: column; gap: 15px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
+                z-index: 101; flex-direction: column; justify-content: center;
+                align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s;
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 24px; margin-left: 0; font-weight: 700; }
         }
+
+        /* 尊重用户的"减少动画"系统设置 */
+        @media (prefers-reduced-motion: reduce) {
+            * { scroll-behavior: auto !important; }
+        }
+
+        /* 汉堡按钮 */
+        .hamburger {
+            display: none; cursor: pointer; z-index: 102;
+            width: 30px; height: 20px; position: relative;
+            background: transparent; border: none; padding: 0;
+        }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+        .hamburger:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+        /* 定价表移动端横向滚动容器 */
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .table-wrap .comparison-table { min-width: 560px; }
     </style>
 
     <script type="application/ld+json">
@@ -182,62 +190,64 @@
   "inLanguage": "zh-CN"
 }
     </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "GEO 优化大概需要多久能看到效果？",
+          "acceptedAnswer": { "@type": "Answer", "text": "大模型的训练和检索库更新（RAG机制）有一定的周期。通常在部署高权重语料后，3 到 4 周可以初步看到品牌在 Perplexity / Kimi 回答中的权重上升，第 2 个月进入稳定截流期。" }
+        },
+        {
+          "@type": "Question",
+          "name": "我们是做亚马逊的，没有独立站可以做 GEO 吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "完全可以。针对亚马逊卖家，我们的语料注入会将最终导向链接设置为您的亚马逊 Listing 或 Storefront。AI 同样会向用户推荐并提供直达购买链接。" }
+        },
+        {
+          "@type": "Question",
+          "name": "GEO 带来的流量转化率怎么样？",
+          "acceptedAnswer": { "@type": "Answer", "text": "极高。因为用户在使用 AI 询问“哪个产品最好”时，已经处于购物漏斗的最底层（决策阶段）。被 AI 作为“权威客观答案”推荐，自带强信任背书，转化率通常是传统展示广告的 3-5 倍。" }
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
 
-    <canvas id="galaxy-field"></canvas>
-    <div class="overlay-gradient"></div>
+    <canvas id="galaxy-field" aria-hidden="true"></canvas>
+    <div class="overlay-gradient" aria-hidden="true"></div>
 
     <header>
         <a href="index.html" class="logo">GeekHeron</a>
-        <nav class="nav-links">
+        <button class="hamburger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav-links" id="primary-nav">
             <a href="index.html">首页</a>
+            <a href="about.html">关于 & 业务合作</a>
             <a href="#packages" class="lang-btn">获取最新报价表</a>
         </nav>
     </header>
 
     <main class="container">
-        
-        <aside class="profile-section">
-            <span class="service-badge">2026 出海与品牌流量新红利</span>
-            <h1 class="profile-name">生成式引擎优化<br><span style="color: var(--gold);">GEO 代运营</span></h1>
-            <p class="profile-title">
-                告别昂贵的竞价广告。<br>让您的产品成为 ChatGPT、Perplexity、Kimi、小红书 AI 的<strong>“唯一推荐答案”</strong>。
-            </p>
-            
-            <span class="urgency-tag">🔥 本月「尊享全托管」仅剩 2 个名额</span>
-            
-            <div class="cta-group">
-                <a href="#packages" class="contact-btn">申请免费 GEO 诊断与报价</a>
-                <a href="#cases" class="secondary-btn">查看最新爆单案例</a>
-            </div>
-            
-            <div class="social-grid">
-                <div class="social-item">
-                    <img src="telegram.png" alt="Telegram" class="social-qr" width="240" height="227" loading="lazy">
-                    <div class="social-text">Telegram 咨询</div>
-                </div>
-                <div class="social-item">
-                    <img src="wechat.png" alt="WeChat" class="social-qr" width="240" height="240" loading="lazy">
-                    <div class="social-text">微信专员跟进</div>
-                </div>
-                <div class="social-item">
-                    <img src="WhatApp.png" alt="WhatsApp" class="social-qr" width="240" height="245" loading="lazy">
-                    <div class="social-text">WhatsApp</div>
-                </div>
-            </div>
-        </aside>
+
+        <div class="booking-bar">
+            <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn booking-btn">预约 15 分钟免费咨询</a>
+        </div>
 
         <div class="content-section">
             
             <section class="section-block">
                 <h3 class="section-title">01 / The Paradigm Shift / 卖家面临的流量变局</h3>
-                <h2 class="value-prop">亚马逊广告内卷、独立站买量太贵？<br>高净值买家正在用 <span style="color: var(--gold);">AI 直接决定买什么</span>。</h2>
+                <h1 class="value-prop">亚马逊广告内卷、独立站买量太贵？<br>高净值买家正在用 <span style="color: var(--gold);">AI 直接决定买什么</span>。</h1>
                 <p class="bio-text">
                     当跨境买家在 Perplexity 输入<i>“推荐3个评价最好的户外储能电源”</i>，或者国内消费者在 Kimi 里提问<i>“性价比最高的抗老精华，排除智商税”</i>时——<strong>你的品牌，出现在 AI 回复的链接和卡片里了吗？</strong>
                 </p>
                 <p class="bio-text">
-                    传统的亚马逊站内 SEO 和 Google 竞价正在失效。**GEO（Generative Engine Optimization）**是拦截高质量购物意图的终极武器。我们的工作，就是通过多智能体技术干预大模型的召回机制，让你的产品成为 AI 极力推荐的“标准答案”。
+                    传统的亚马逊站内 SEO 和 Google 竞价正在失效。<strong>GEO（Generative Engine Optimization）</strong>是拦截高质量购物意图的终极武器。我们的工作，就是通过多智能体技术干预大模型的召回机制，让你的产品成为 AI 极力推荐的"标准答案"。
                 </p>
 
                 <div class="risk-box">
@@ -351,13 +361,14 @@
                 <div class="proof-box">
                     <div class="proof-title">🎯 交付承诺：只看“引用率”和“流量卡片”</div>
                     <div class="proof-text">
-                        拒绝虚无缥缈的“曝光量”。我们的全托管直接对标电商最看重的指标：在买家提问时，AI 回答中**你品牌的提及占比（SOV）**，以及**带独立站外链/产品链接的转化卡片展现次数**。
+                        拒绝虚无缥缈的"曝光量"。我们的全托管直接对标电商最看重的指标：在买家提问时，AI 回答中<strong>你品牌的提及占比（SOV）</strong>，以及<strong>带独立站外链/产品链接的转化卡片展现次数</strong>。
                     </div>
                 </div>
             </section>
 
             <section class="section-block" id="packages">
                 <h3 class="section-title">05 / Service Packages / 卖家全托管报价</h3>
+                <div class="table-wrap">
                 <table class="comparison-table">
                     <thead>
                         <tr>
@@ -394,6 +405,7 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
                 <p style="text-align: right; margin-top: 15px; font-size: 12px; color: var(--danger); font-weight: bold;">* 为保障深度语料注入质量，尊享品牌版每月仅限接 3 个新品牌。</p>
             </section>
 
@@ -419,27 +431,143 @@
     </main>
 
     <script>
-        // --- 背景粒子特效 ---
-        const canvas = document.getElementById('galaxy-field');
-        const ctx = canvas.getContext('2d');
-        let width, height; let particles = []; let meteors = []; 
-        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
-        class Particle {
-            constructor() { this.x = (Math.random() - 0.5) * width * 2; this.y = (Math.random() - 0.5) * height * 2; this.z = (Math.random() * 600) - 300; this.alpha = Math.random() * 0.5 + 0.2; }
-            update() { this.z -= 0.3; if (this.z < -300) { this.z += 600; this.x = (Math.random() - 0.5) * width * 2; this.y = (Math.random() - 0.5) * height * 2; } }
-            draw() { const perspective = 300 / (300 + this.z); const x = (this.x * perspective) + width / 2; const y = (this.y * perspective) + height / 2; const scale = perspective; if (x > 0 && x < width && y > 0 && y < height) { ctx.fillStyle = `rgba(255,255,255,${this.alpha * scale})`; ctx.beginPath(); ctx.arc(x, y, 1.2 * scale, 0, Math.PI * 2); ctx.fill(); } }
-        }
-        function initParticles() { particles = []; for(let i=0; i<600; i++) particles.push(new Particle()); }
-        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        window.addEventListener('resize', () => { resize(); initParticles(); });
-        resize(); initParticles(); animate();
+        (function () {
+            'use strict';
 
-        // --- 打字机特效 (电商场景) ---
-        const textToType = "Scanning Perplexity index... Target Keyword 'Best Magsafe' detected. Injecting structured product data... SUCCESS. Brand AI Share of Voice increased by 450%. Routing traffic to Shopify store...";
-        const typeElement = document.getElementById('typewriter');
-        let i = 0;
-        function typeWriter() { if (i < textToType.length) { typeElement.innerHTML += textToType.charAt(i); i++; setTimeout(typeWriter, 30); } }
-        setTimeout(typeWriter, 800);
+            // --- 背景粒子特效（带无障碍与性能优化） ---
+            var canvas = document.getElementById('galaxy-field');
+            var ctx = canvas.getContext('2d');
+            var width, height, particles = [], rafId = null, isPaused = false;
+            var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function getParticleCount() {
+                if (prefersReducedMotion) return 0;
+                if (width < 600) return 150;
+                if (width < 1024) return 350;
+                return 600;
+            }
+
+            function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+
+            function Particle() { this.reset(); }
+            Particle.prototype.reset = function () {
+                this.x = (Math.random() - 0.5) * width * 2;
+                this.y = (Math.random() - 0.5) * height * 2;
+                this.z = (Math.random() * 600) - 300;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            };
+            Particle.prototype.update = function () {
+                this.z -= 0.3;
+                if (this.z < -300) { this.z += 600; this.x = (Math.random() - 0.5) * width * 2; this.y = (Math.random() - 0.5) * height * 2; }
+            };
+            Particle.prototype.draw = function () {
+                var perspective = 300 / (300 + this.z);
+                var x = (this.x * perspective) + width / 2;
+                var y = (this.y * perspective) + height / 2;
+                var scale = perspective;
+                if (x > 0 && x < width && y > 0 && y < height) {
+                    ctx.fillStyle = 'rgba(255,255,255,' + (this.alpha * scale) + ')';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 1.2 * scale, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            };
+
+            function initParticles() {
+                particles = [];
+                var count = getParticleCount();
+                for (var i = 0; i < count; i++) particles.push(new Particle());
+            }
+
+            function animate() {
+                if (isPaused) return;
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(function (p) { p.update(); p.draw(); });
+                rafId = requestAnimationFrame(animate);
+            }
+
+            function startAnimation() { if (rafId !== null) return; isPaused = false; animate(); }
+            function stopAnimation() { isPaused = true; if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
+
+            // 标签页切到后台时暂停动画，节省电量与 CPU
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) { stopAnimation(); }
+                else if (!prefersReducedMotion) { startAnimation(); }
+            });
+
+            var resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () { resize(); initParticles(); }, 150);
+            });
+
+            resize();
+            initParticles();
+            if (!prefersReducedMotion) {
+                startAnimation();
+            } else {
+                // 即使不做动画，也画一帧静态星空，保留视觉效果
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(function (p) { p.draw(); });
+            }
+
+            // --- 打字机特效（电商场景，一次性拼接，减少重排） ---
+            var textToType = "Scanning Perplexity index... Target Keyword 'Best Magsafe' detected. Injecting structured product data... SUCCESS. Brand AI Share of Voice increased by 450%. Routing traffic to Shopify store...";
+            var typeElement = document.getElementById('typewriter');
+            var charIndex = 0;
+            function typeWriter() {
+                if (charIndex <= textToType.length) {
+                    typeElement.textContent = textToType.slice(0, charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 30);
+                }
+            }
+            if (!prefersReducedMotion) {
+                setTimeout(typeWriter, 800);
+            } else {
+                typeElement.textContent = textToType;
+            }
+
+            // --- 移动端菜单逻辑：语义化按钮 + 键盘可达 + Esc 关闭 + 简单焦点管理 ---
+            var hamburger = document.querySelector('.hamburger');
+            var navLinks = document.querySelector('.nav-links');
+            var focusableNavItems = navLinks.querySelectorAll('a');
+            var lastFocusedElement = null;
+
+            function openMenu() {
+                hamburger.classList.add('active');
+                navLinks.classList.add('active');
+                hamburger.setAttribute('aria-expanded', 'true');
+                lastFocusedElement = document.activeElement;
+                if (focusableNavItems.length) focusableNavItems[0].focus();
+                document.addEventListener('keydown', handleMenuKeydown);
+            }
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+                document.removeEventListener('keydown', handleMenuKeydown);
+                if (lastFocusedElement) lastFocusedElement.focus();
+            }
+            function toggleMenu() {
+                if (hamburger.classList.contains('active')) closeMenu(); else openMenu();
+            }
+            function handleMenuKeydown(e) {
+                if (e.key === 'Escape') { closeMenu(); return; }
+                if (e.key === 'Tab' && focusableNavItems.length) {
+                    var first = focusableNavItems[0];
+                    var last = focusableNavItems[focusableNavItems.length - 1];
+                    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+                }
+            }
+            hamburger.addEventListener('click', toggleMenu);
+            focusableNavItems.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (navLinks.classList.contains('active')) closeMenu();
+                });
+            });
+        })();
     </script>
 </body>
 </html>

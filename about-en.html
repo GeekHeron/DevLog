@@ -30,9 +30,50 @@
       "jobTitle": "FDE Full-Stack Engineer / AI Agent Architect",
       "url": "https://geekheron.space/about-en.html",
       "sameAs": [
-        "https://geekheron.space/"
+        "https://geekheron.space/",
+        "https://t.me/GeekHeron"
       ],
+      "image": "https://geekheron.space/image_3.png",
       "knowsAbout": ["Full-stack Development", "OpenClaw", "Next.js / React", "Multi-Agent Systems", "Private AI Deployment", "Workflow Automation", "Python Fullstack"]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you support private/on-premise deployment?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Systems can be deployed to your company's own servers, a private cloud, or a local network environment, so business data never passes through a third-party platform." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do we need to switch our existing ERP?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Integration is prioritized with your existing ERP, Feishu, WeCom, and other systems already in use, keeping business changes to a minimum." }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does delivery take?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Typically 2–8 weeks depending on project complexity. A phased delivery plan is provided once requirements are confirmed." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you sign an NDA?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. For projects involving sensitive business data or workflows, a non-disclosure agreement can be signed." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is ongoing support provided?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Deployment support, bug fixes, and maintenance are provided as agreed, with long-term technical support available depending on the project." }
+        },
+        {
+          "@type": "Question",
+          "name": "How is pricing determined?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Pricing is based on requirement complexity, system scale, and delivery scope. A free 15-minute consultation call is available first." }
+        }
+      ]
     }
     </script>
 
@@ -155,7 +196,8 @@
             animation: pulse-glow 3s infinite;
         }
 
-        .avatar-image[style*="display: none"] + .avatar-fallback { display: flex; }
+        .avatar-image.img-error { display: none; }
+        .avatar-image.img-error + .avatar-fallback { display: flex; }
         .avatar-fallback {
             display: none; width: 100%; height: 100%; border-radius: 50%;
             background: #111; align-items: center; justify-content: center;
@@ -364,6 +406,52 @@
             font-size: 12px; color: var(--text-muted); margin-top: 16px; line-height: 1.7;
         }
 
+        /* FAQ 手风琴 */
+        .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .faq-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #222;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .faq-item:hover { border-color: rgba(255,215,0,0.4); }
+        .faq-item[open] { border-color: var(--gold); background: rgba(255,215,0,0.04); }
+
+        .faq-question {
+            cursor: pointer;
+            list-style: none;
+            padding: 18px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .faq-question::-webkit-details-marker { display: none; }
+        .faq-question::marker { content: ''; }
+
+        .faq-question .faq-icon {
+            flex-shrink: 0;
+            width: 20px; height: 20px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            color: var(--gold);
+            font-size: 14px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s;
+        }
+        .faq-item[open] .faq-icon { transform: rotate(45deg); }
+
+        .faq-answer {
+            padding: 0 24px 20px;
+            font-size: 14px;
+            color: #aaa;
+            line-height: 1.8;
+        }
+
         /* 客户评价 (Testimonials) */
         .testimonial-grid {
             display: grid;
@@ -501,7 +589,7 @@
 
         <aside class="profile-section">
             <div class="avatar-container">
-                <img src="image_3.png" alt="Portrait photo of Wang Jianfeng (GeekHeron)" class="avatar-image" width="180" height="180" fetchpriority="high" onerror="this.style.display='none'">
+                <img src="image_3.png" alt="Portrait photo of Wang Jianfeng (GeekHeron)" class="avatar-image" width="180" height="180" fetchpriority="high" onerror="this.classList.add('img-error')">
                 <div class="avatar-fallback" aria-hidden="true">GH</div>
             </div>
             <h1 class="profile-name">Geek Heron</h1>
@@ -544,13 +632,13 @@
 
             <section class="section-block">
                 <h3 class="section-title">01 / The Philosophy</h3>
-                <h2 class="value-prop">Not just calling APIs —<br>delivering <span style="color: var(--gold);">end-to-end full-stack products and a private AI brain</span>.</h2>
+                <h2 class="value-prop">Focused on <span style="color: var(--gold);">AI Automation System Delivery</span> —<br>building <span style="color: var(--gold);">enterprise digital solutions</span> that actually run in production, not half-finished demos.</h2>
 
                 <p class="bio-text">
-                    I'm Heron, an <strong>FDE (Full-stack Development Engineer)</strong> with a hardcore AI background. Beyond building the foundations for complex multi-agent systems and <strong>OpenClaw / Coze</strong> architectures, I have the complete, independent delivery capability for commercial-grade full-stack applications — interactive frontend, high-concurrency backend, and secure private environments.
+                    I'm Heron, an <strong>FDE (Full-stack Development Engineer)</strong> focused on <strong>AI automation system delivery</strong> and <strong>enterprise digital solutions</strong>. There's no shortage of people who can talk about AI concepts — what's scarce is someone who can independently deliver top-level intelligent workflows as a complete, closed-loop system that actually runs inside your business, and who takes responsibility for the outcome. That's the core of what I do.
                 </p>
                 <p class="bio-text">
-                    Traditional AI rollouts often get stuck in an awkward spot: "the model understands, but the system doesn't connect." As a full-stack engineer, my value lies in breaking down technical silos — embedding top-tier LLM capability deep into highly customized fingerprint-browser environments, internal ERP systems, and Feishu interactive cards. No "half-finished code" — only closed-loop digital assets that work out of the box for your business.
+                    Traditional AI rollouts often get stuck in an awkward spot: the technical approach makes sense on paper, but nobody owns wiring it into the real business workflow. My core value lies in breaking down system silos — embedding AI automation capability directly into your existing fingerprint-browser environments, internal ERP systems, and Feishu office workflows, so the automation actually runs and compounds into a reusable digital asset for your business, not a one-off proof of concept.
                 </p>
 
                 <div class="risk-box">
@@ -757,7 +845,37 @@
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">06 / What Clients Say</h3>
+                <h3 class="section-title">06 / Frequently Asked Questions</h3>
+                <div class="faq-list">
+                    <details class="faq-item">
+                        <summary class="faq-question">Do you support private/on-premise deployment?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">Yes. Systems can be deployed to your company's own servers, a private cloud, or a local network environment, so business data never passes through a third-party platform.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">Do we need to switch our existing ERP?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">No. Integration is prioritized with your existing ERP, Feishu, WeCom, and other systems already in use, keeping business changes to a minimum.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">How long does delivery take?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">Typically 2–8 weeks depending on project complexity. A phased delivery plan is provided once requirements are confirmed.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">Can you sign an NDA?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">Yes. For projects involving sensitive business data or workflows, a non-disclosure agreement can be signed.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">Is ongoing support provided?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">Deployment support, bug fixes, and maintenance are provided as agreed, with long-term technical support available depending on the project.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">How is pricing determined?<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">Pricing is based on requirement complexity, system scale, and delivery scope. A free 15-minute consultation call is available first.</p>
+                    </details>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">07 / What Clients Say</h3>
                 <div class="testimonial-grid">
                     <div class="testimonial-card">
                         <div class="testimonial-quote-mark" aria-hidden="true">"</div>

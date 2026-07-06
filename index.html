@@ -132,7 +132,7 @@
         }
 
         .logo img {
-            height: 50px;
+            height: 70px;
             width: auto;
             border-radius: 6px;
             box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
@@ -378,7 +378,10 @@
         <div class="content">
             <h1>洞察技术背后的<br>逻辑与力量</h1>
             <p class="subtitle" id="typing-text"></p>
-            <a href="article.html" class="btn">开始阅读</a>
+            <div style="display: flex; gap: 20px; opacity: 0; animation: fadeIn 1s ease-out 3s forwards;">
+                <a href="works.html" class="btn">查看商业案例</a>
+                <a href="article.html" class="btn">开始阅读</a>
+            </div>
         </div>
         
         <article class="seo-visually-hidden">
@@ -429,7 +432,7 @@
         updateClock();
 
         // --- 3. 打字机效果模块 ---
-        const textToType = "GeekHeron 追踪全球前沿科技，深度解析 AI、区块链、量子计算与机器人的未来。在喧嚣中寻找理性的声音。";
+        const textToType = "技术真正的价值，不在于展示智能，而在于稳定运行于真实业务。GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。";
         const typeElement = document.getElementById('typing-text');
         let typeIndex = 0;
         function typeWriter() {

@@ -5,6 +5,7 @@ header.site-header {
     left: 0;
     width: 100%;
     display: flex;
+    flex-direction: row !important;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
@@ -31,6 +32,7 @@ header.site-header .logo {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex: 0 0 auto;
     z-index: 1002;
     color: #fff;
     text-decoration: none;

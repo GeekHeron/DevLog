@@ -149,31 +149,37 @@
   "inLanguage": "zh-CN"
 }
     </script>
+    <link rel="stylesheet" href="site-nav.css">
 </head>
 <body>
     <canvas id="galaxy-field"></canvas>
     <div class="overlay"></div>
 
     <div class="container">
-        <header>
-            <span class="project-tag">Project Code: Fuxi</span>
-            <h1>天干界：逆命</h1>
-            <p class="subtitle">出生即定局，逆天改命在人为。<br>首款基于“伏羲引擎”的硬核八字构筑 Roguelike。</p>
-            
-            <div class="cta-group">
-                <a href="tiangangame.html" class="btn btn-primary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                    查看完整数值设定 (Game Rules)
-                </a>
-                <a href="about.html" class="btn btn-outline">联系开发者 (Heron)</a>
-            </div>
-        </header>
+        <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
 
         <section>
             <div class="section-title">
@@ -355,6 +361,7 @@
         window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
         init(); animate();
     </script>
+    <script src="site-nav.js"></script>
 </body>
 </html>
 

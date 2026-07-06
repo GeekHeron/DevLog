@@ -28,7 +28,7 @@
         }
         
         /* 布局容器 */
-        .container { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 140px 20px 60px; }
         
         /* 头部 */
         .header-section { border-left: 4px solid var(--accent); padding-left: 25px; margin-bottom: 50px; }
@@ -134,8 +134,34 @@
   "inLanguage": "zh-CN"
 }
     </script>
+    <link rel="stylesheet" href="site-nav.css">
 </head>
 <body>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
 
     <div class="container">
         <div class="header-section">
@@ -259,5 +285,6 @@
         <a href="#" class="footer-link">← Return to Business Plan</a>
     </div>
 
+    <script src="site-nav.js"></script>
 </body>
 </html>

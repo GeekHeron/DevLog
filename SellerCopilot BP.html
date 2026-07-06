@@ -43,7 +43,24 @@
             position: sticky; top: 0; z-index: 100;
         }
 
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 102; }
+        .logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    color: #fff;
+    text-transform: uppercase;
+    z-index: 102;
+}
+
+.logo img {
+    height: 70px;
+    width: auto;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+}
         
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
@@ -159,26 +176,36 @@
             .nav-links a { font-size: 24px; font-weight: 800; color: #fff; }
         }
     </style>
+    <link rel="stylesheet" href="site-nav.css">
 </head>
 <body>
 
     <canvas id="galaxy-field"></canvas>
     <div class="overlay-dark"></div>
 
-    <header>
-        <a href="index.html" class="logo">GEEKHERON</a>
-        
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
 
-        <nav class="nav-links">
-            <a href="#" class="active">商业计划</a>
-            <a href="SellerCopilot.html">技术架构</a>
-            <a href="about.html">联系我们</a>
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
         </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
     </header>
 
     <div class="container">
@@ -346,6 +373,7 @@
         
         hamburger.addEventListener('click', toggleMenu);
     </script>
+    <script src="site-nav.js"></script>
 </body>
 
 </html>

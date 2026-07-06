@@ -40,13 +40,32 @@
             padding: 20px 50px;
             border-bottom: 1px solid #333;
             background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(100px);
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; z-index: 1002; }
-        
-        .nav-links { display: flex; gap: 30px; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
         .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
@@ -112,6 +131,33 @@
         /* --- 5. 移动端适配 (重点修改) --- */
         @media (max-width: 768px) {
             header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
             .article-title { font-size: 30px; }
             .container { padding-top: 40px; }
 
@@ -161,26 +207,36 @@
   "inLanguage": "zh-CN"
 }
     </script>
+    <link rel="stylesheet" href="site-nav.css">
 </head>
 <body>
 
     <canvas id="galaxy-field"></canvas>
     <div class="overlay-dark"></div>
 
-    <header>
-        <a href="index.html" class="logo">GeekHeron</a>
-        <div class="hamburger" id="hamburger">
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
             <span></span>
             <span></span>
             <span></span>
-        </div>
-        <nav class="nav-links" id="nav-links">
-            <a href="index.html">首页</a>
-            <a href="article.html" class="active">深度分析</a>
-            <a href="works.html">商业案例</a>
-            <a href="pricing.html">源码交付</a>
-            <a href="about.html">商业合作</a> 
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
         </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
     </header>
 
     <main class="container">
@@ -237,7 +293,14 @@
         </article>
     </main>
 
-    <script>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
         // 手机端导航逻辑
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
@@ -275,6 +338,15 @@
         function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
         window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
         init(); animate();
-    </script>
+    
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="site-nav.js"></script>
 </body>
 </html>

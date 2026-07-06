@@ -49,10 +49,30 @@
             background: rgba(0,0,0,0.9);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(100px);
         }
-        .logo { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
-        .nav-links { display: flex; gap: 30px; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
         .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary-gold); }
 
@@ -194,6 +214,33 @@
         /* 移动端适配 */
         @media (max-width: 768px) {
             header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
             .nav-links { 
                 position: fixed; top: 0; right: 0; height: 100vh; width: 70%; 
                 background: #111; flex-direction: column; padding: 80px 40px; 
@@ -224,11 +271,33 @@
   "inLanguage": "zh-CN"
 }
     </script>
+    <link rel="stylesheet" href="site-nav.css">
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="logo">GeekHeron</a>
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
     </header>
 
     <canvas id="zen-bg"></canvas>
@@ -375,7 +444,14 @@
         </div>
     </div>
 
-    <script>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('nav');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
         // 移动端菜单切换
         function toggleMenu() {
             document.querySelector('.hamburger').classList.toggle('active');
@@ -433,7 +509,16 @@
         resize();
         for(let i=0; i<50; i++) particles.push(new Particle());
         animateBg();
-    </script>
+    
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="site-nav.js"></script>
 </body>
 
 </html>

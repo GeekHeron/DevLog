@@ -52,12 +52,31 @@
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 22px 50px; position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(10px); background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(100px); background: rgba(0,0,0,0.85);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .logo { font-size: 22px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
-        .header-right { display: flex; align-items: center; }
-        .nav-links a.section-link { margin-left: 28px; font-size: 13px; font-weight: 600; color: #888; white-space: nowrap; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links a.section-link { margin-left: 28px; font-size: 13px; font-weight: 600; color: #888; white-space: nowrap; }
         .nav-links a.section-link:hover { color: #fff; }
         .header-cta {
             margin-left: 30px; border: 1px solid var(--gold); padding: 10px 22px; border-radius: 4px;
@@ -205,7 +224,7 @@
             width: 30px; height: 20px; position: relative;
             background: transparent; border: none; padding: 0;
         }
-        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 9px; }
         .hamburger span:nth-child(3) { top: 18px; }
@@ -217,6 +236,33 @@
         /* --- 响应式 --- */
         @media (max-width: 850px) {
             header { padding: 18px 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
             .hero { padding-top: 40px; }
             .hero h1 { font-size: 28px; }
             .trust-strip { grid-template-columns: repeat(2, 1fr); }
@@ -228,10 +274,10 @@
             .hamburger { display: block; }
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-                background: rgba(0, 0, 0, 0.97); backdrop-filter: blur(15px);
+                background: rgba(0, 0, 0, 0.97); backdrop-filter: blur(100px);
                 z-index: 101; flex-direction: column; justify-content: center;
                 align-items: center; gap: 34px;
-                transform: translateX(100%); transition: transform 0.4s;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
             }
             .nav-links.active { transform: translateX(0); }
@@ -244,7 +290,38 @@
         }
 
         .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    </style>
+    
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+        }
+</style>
 
     <script type="application/ld+json">
 {
@@ -290,27 +367,36 @@
       ]
     }
     </script>
+    <link rel="stylesheet" href="site-nav.css">
 </head>
 <body>
 
     <canvas id="galaxy-field" aria-hidden="true"></canvas>
     <div class="overlay-gradient" aria-hidden="true"></div>
 
-    <header>
-        <a href="index.html" class="logo">GeekHeron</a>
-        <div class="header-right">
-            <nav class="nav-links" id="primary-nav">
-                <a href="index.html" class="section-link">首页</a>
-                <a href="article.html" class="section-link">深度分析</a>
-                <a href="works.html" class="section-link">商业案例</a>
-                <a href="pricing.html" class="section-link">源码/方案</a>
-                <a href="about.html" class="section-link">关于 & 业务合作</a>
-                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="header-cta">预约免费咨询</a>
-            </nav>
-            <button class="hamburger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
     </header>
 
     <main class="container">
@@ -549,7 +635,14 @@
 
     <footer>© GeekHeron · GEO 流量截流代运营</footer>
 
-    <script>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
         (function () {
             'use strict';
 
@@ -706,6 +799,15 @@
                 });
             });
         })();
-    </script>
+    
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="site-nav.js"></script>
 </body>
 </html>

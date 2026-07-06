@@ -187,20 +187,37 @@
   "inLanguage": "zh-CN"
 }
     </script>
+    <link rel="stylesheet" href="site-nav.css">
 </head>
 <body>
 
     <canvas id="galaxy-canvas"></canvas>
 
     <div class="container">
-        <header>
-            <span class="brand">GeekHeron / Engineering</span>
-            <h1>伏羲引擎 (Fuxi Engine) v2.0 <br>技术架构深度拆解</h1>
-            <p class="meta-info">
-                // STACK: PYTHON FLASK · DEEPSEEK V3 · SQLALCHEMY · ASTRO-ALGORITHMS<br>
-                // UPDATED: 2026.01.20
-            </p>
-        </header>
+        <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="pricing.html">源码交付</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
 
         <article>
             <blockquote>
@@ -348,6 +365,7 @@ SESSION_COOKIE_SECURE = <span class="keyword">False</span></code></pre>
         window.addEventListener('resize', () => { resize(); initStars(); });
         resize(); initStars(); animate();
     </script>
+    <script src="site-nav.js"></script>
 </body>
 
 </html>

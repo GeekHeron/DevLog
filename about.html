@@ -584,7 +584,7 @@
                 font-size: 14px;
             }
 
-            .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
+            .container { grid-template-columns: 1fr; gap: 60px; padding-top: 100px; }
             .profile-section { position: relative; top: 0; }
             .services-grid { grid-template-columns: 1fr; }
 
@@ -1033,14 +1033,7 @@
         </div>
     </main>
 
-    <script>const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        hamburger.addEventListener('click', toggleMenu);
-
+    <script>
         (function () {
             'use strict';
 
@@ -1318,15 +1311,6 @@
                 });
             });
         })();
-
-    
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        if(hamburger) hamburger.addEventListener('click', toggleMenu);
 </script>
     <script src="site-nav.js"></script>
 </body>

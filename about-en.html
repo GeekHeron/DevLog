@@ -78,14 +78,14 @@
     </script>
 
     <style>
-        /* --- 1. 全局样式 (保持统一) --- */
+        /* --- 1. Global styles (kept consistent) --- */
         :root {
             --accent-color: #fff;
             --bg-color: #000;
             --card-bg: rgba(20, 20, 20, 0.6);
             --gold: #ffd700;
             --danger: #ff4d4d;
-            --text-muted: #8f8f8f; /* 提高对比度，原 #666 */
+            --text-muted: #8f8f8f; /* Improved contrast, originally #666 */
             --text-faint: #999;
         }
 
@@ -106,14 +106,14 @@
             outline-offset: 3px;
         }
 
-        /* 视觉隐藏但保留可访问性的文本 */
+        /* Visually hidden text that remains accessible */
         .visually-hidden {
             position: absolute; width: 1px; height: 1px;
             padding: 0; margin: -1px; overflow: hidden;
             clip: rect(0,0,0,0); white-space: nowrap; border: 0;
         }
 
-        /* --- 2. 背景特效 --- */
+        /* --- 2. Background effects --- */
         #galaxy-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
@@ -124,7 +124,7 @@
             z-index: 0; pointer-events: none;
         }
 
-        /* --- 3. 导航栏 --- */
+        /* --- 3. Navigation bar --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 30px 50px; position: sticky; top: 0; z-index: 100;
@@ -156,7 +156,7 @@
         }.nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-        /* 语言切换按钮样式 */
+        /* Language switch button */
         .lang-btn {
             border: 1px solid rgba(255,255,255,0.3);
             padding: 6px 14px;
@@ -175,7 +175,7 @@
             box-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
-        /* 汉堡按钮：改为真正的 <button>，保留原视觉 */
+        /* Hamburger button: semantic <button>, same visual style */
         .hamburger {
             display: none;
             cursor: pointer;
@@ -195,7 +195,7 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-        /* --- 4. 页面布局 --- */
+        /* --- 4. Page layout --- */
         .container {
             max-width: 1100px; margin: 0 auto; padding: 100px 20px;
             position: relative; z-index: 10;
@@ -203,7 +203,7 @@
             align-items: start;
         }
 
-        /* --- 左侧：个人品牌 --- */
+        /* --- Left side: personal brand --- */
         .profile-section { position: sticky; top: 120px; text-align: center; }
 
         .avatar-container {
@@ -238,7 +238,7 @@
             margin-bottom: 40px; line-height: 1.6; font-weight: 700;
         }
 
-        /* 商业化按钮组 */
+        /* Commercial CTA group */
         .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
 
         .contact-btn {
@@ -257,7 +257,7 @@
         }
         .secondary-btn:hover { border-color: #fff; }
 
-        /* 轻量咨询按钮 */
+        /* Lightweight consultation button */
         .tertiary-btn {
             display: flex; align-items: center; justify-content: center; gap: 8px;
             background: transparent; color: var(--gold); border: 1px dashed rgba(255,215,0,0.4);
@@ -271,7 +271,7 @@
             box-shadow: 0 0 6px rgba(255,215,0,0.8);
         }
 
-        /* --- 社交矩阵样式 (Social Grid) --- */
+        /* --- Social grid --- */
         .social-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -315,7 +315,7 @@
             letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
         }
 
-        /* --- 右侧：详细内容 --- */
+        /* --- Right side: detailed content --- */
         .content-section { padding-top: 10px; }
         .section-block { margin-bottom: 80px; }
 
@@ -327,14 +327,14 @@
             content: ''; height: 1px; background: #333; flex-grow: 1; margin-left: 20px;
         }
 
-        /* 商业价值陈述 */
+        /* Business value statement */
         .value-prop {
             font-size: 24px; font-weight: 700; line-height: 1.4; margin-bottom: 20px;
         }
         .bio-text { font-size: 16px; line-height: 1.8; color: #ccc; margin-bottom: 20px; font-weight: 300; }
         .highlight { color: #fff; border-bottom: 1px dotted #666; }
 
-        /* 风险警示框 (Risk Box) */
+        /* Risk warning box */
         .risk-box {
             border: 1px solid rgba(255, 77, 77, 0.3);
             background: rgba(255, 77, 77, 0.05);
@@ -369,7 +369,7 @@
             line-height: 1.6;
         }
 
-        /* 服务卡片 */
+        /* Service cards */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
         .service-card {
             background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 25px;
@@ -380,13 +380,13 @@
         .service-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #fff; }
         .service-desc { font-size: 13px; color: #888; line-height: 1.6; }
 
-        /* 技术栈 -> 战略工具箱 */
+        /* Tech stack -> strategic toolkit */
         .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
         .tech-tag {
             padding: 5px 12px; border: 1px solid #333; font-size: 12px; color: #aaa; border-radius: 50px;
         }
 
-        /* 案例背书 */
+        /* Case proof */
         .proof-box {
             border-left: 3px solid var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.05), transparent);
             padding: 20px; margin: 30px 0;
@@ -394,7 +394,7 @@
         .proof-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; color: #fff; }
         .proof-text { font-size: 13px; color: #aaa; }
 
-        /* 终端框 -> 思考框 */
+        /* Terminal box -> thinking box */
         .terminal-box {
             background: #0d0d0d; border: 1px solid #333; padding: 20px;
             font-family: monospace; font-size: 13px; color: #ddd; margin-bottom: 30px;
@@ -405,7 +405,7 @@
         }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* 链接风格 */
+        /* Link style */
         .inline-link {
             color: #fff;
             text-decoration: underline;
@@ -414,7 +414,7 @@
         }
         .inline-link:hover { color: var(--gold); }
 
-        /* 流程图区块 */
+        /* Workflow diagram block */
         .flow-wrap {
             background: rgba(255,255,255,0.02);
             border: 1px solid #222;
@@ -426,7 +426,7 @@
             font-size: 12px; color: var(--text-muted); margin-top: 16px; line-height: 1.7;
         }
 
-        /* FAQ 手风琴 */
+        /* FAQ accordion */
         .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
         .faq-item {
             background: rgba(255,255,255,0.03);
@@ -472,7 +472,7 @@
             line-height: 1.8;
         }
 
-        /* 客户评价 (Testimonials) */
+        /* Testimonials */
         .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -528,7 +528,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* 移动端适配 */
+        /* Mobile adaptation */
         @media (max-width: 850px) {
             header { padding: 20px; justify-content: space-between; }
             .logo img { height: 40px; }
@@ -604,14 +604,14 @@
             .testimonial-grid { grid-template-columns: 1fr; }
         }
 
-        /* 尊重用户的“减少动画”系统设置 */
+        /* Respect the user's reduced-motion system setting */
         @media (prefers-reduced-motion: reduce) {
             .avatar-image { animation: none; }
             .cursor { animation: none; }
             * { scroll-behavior: auto !important; }
         }
     
-        /* 移动端适配 */
+        /* Mobile adaptation */
         @media (max-width: 768px) {
             header { padding: 20px; }
             .logo img { height: 40px; }
@@ -663,12 +663,12 @@
 
         <nav class="nav-links" id="primary-nav">
             <ul>
-                <li><a href="index.html">首页</a></li>
-                <li><a href="article.html">深度分析</a></li>
-                <li><a href="works.html">商业案例</a></li>
-                <li><a href="pricing.html">源码交付</a></li>
-                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
-                <li><a href="about.html" class="lang-btn" hreflang="zh-CN" lang="zh-CN">中文</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="article.html">Deep Analysis</a></li>
+                <li><a href="works.html">Business Cases</a></li>
+                <li><a href="pricing.html">Source Delivery</a></li>
+                <li><a href="about-en.html">About &amp; Collaboration</a></li>
+                <li><a href="about.html" class="lang-btn" hreflang="zh-CN" lang="zh-CN">Chinese</a></li>
             </ul>
         </nav>
 
@@ -813,59 +813,59 @@
                 <div style="border-left: 2px solid #333; padding-left: 30px;">
 
                     <div style="margin-bottom: 48px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨境电商智能调度 | Amazon Ads & Competitor Defense</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">Cross-Border E-commerce Intelligent Dispatch | Amazon Ads & Competitor Defense</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">广告 & 竞品价格双线防御中枢</a>
+                            <a href="works.html" class="inline-link">Dual-Line Defense Hub for Ads & Competitor Pricing</a>
                         </h4>
                         <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            覆盖 10 款核心 SKU · 8 项广告指标全自动日报化 · 竞品价格 ±5% 波动实时预警
+                            Covers 10 core SKUs · Fully automated daily reports across 8 advertising metrics · Real-time alerts for competitor price swings of ±5%
                         </p>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 运营每天要在广告后台、库存表、竞品页面之间手动核对数据，广告花费与库存脱节导致超卖或断货式投放，价格战一旦错过响应窗口就是实打实的利润损失。<br>
-                            • <strong>全栈方案：</strong> 广告日报脚本同时拉取"运营数据"与"库存追踪"两张飞书多维表，按 SKU 自动匹配在库数量——优先取 FBA 在库，为 0 时自动切换万邑通仓，并支持同前缀子 SKU（如颜色变体）库存自动聚合，管理层不用再手动加总。竞品价格侧则通过紫鸟指纹浏览器 + Playwright 接管真实浏览器环境抓取 Amazon 前台价格，与前一日历史价格比对，波动 ≥±5% 自动标红并推送飞书卡片，无需人工盯盘。
+                            • <strong>Core pain point:</strong> Operators had to manually cross-check ads dashboards, inventory sheets, and competitor pages every day. When ad spend is disconnected from inventory, campaigns can oversell or keep spending into stockouts; missing the response window in a price war means direct profit loss.<br>
+                            • <strong>Full-stack solution:</strong> The daily ads script pulls both "operations data" and "inventory tracking" Feishu Bitable tables, automatically matching stock by SKU. It prioritizes FBA inventory, switches to Winit warehouse stock when FBA is zero, and aggregates inventory across child SKUs with the same prefix, such as color variants, so management no longer has to total them by hand. On the competitor side, a Ziniao fingerprint browser plus Playwright takes over a real browser environment to collect Amazon storefront prices, compares them against the previous day's history, highlights swings of ≥±5%, and pushes Feishu cards automatically.
                         </p>
                     </div>
 
                     <div style="margin-bottom: 48px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">企业级库存与物流风控 | Inventory & Logistics Risk Control</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">Enterprise Inventory & Logistics Risk Control | Inventory Health & Logistics Alerts</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">全链路库存与物流风控体系</a>
+                            <a href="works.html" class="inline-link">End-to-End Inventory and Logistics Risk Control System</a>
                         </h4>
                         <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            延期订单自动锁定 TOP 5 高危单 · 超期库龄按 3/6 个月双阈值分层预警
+                            Automatically locks the TOP 5 high-risk delayed orders · Tiered aging alerts using 3-month and 6-month thresholds
                         </p>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 长周期压货和物流延期往往要等到月结才被发现，仓储、物流、运营三方数据分散在不同表格里，异常单据容易被淹没在大量正常数据中。<br>
-                            • <strong>全栈方案：</strong> 物流延期脚本按"计划到仓时间"与当前日期自动计算延期天数，剔除已到仓订单后按延期天数降序取 TOP 5 推送并 @ 责任人，管理层第一眼就能看到最紧急的单子，而不是被几十条数据淹没。库龄侧同时监控 3 个月与 6 个月两张超期表，配合产品货值周报形成"哪些货压了多久、值多少钱"的完整视图，全部按周/日自动推送，不需要人工去查表汇总。
+                            • <strong>Core pain point:</strong> Long-cycle inventory pressure and logistics delays are often discovered only at month-end. Warehouse, logistics, and operations data sit in separate spreadsheets, so abnormal orders are easily buried under normal records.<br>
+                            • <strong>Full-stack solution:</strong> The logistics delay script calculates delay days from the planned warehouse arrival date and the current date. After excluding orders that have already arrived, it pushes the TOP 5 delayed orders in descending order and mentions the responsible owner, so management sees the most urgent cases first instead of scanning dozens of rows. The inventory-aging side monitors both 3-month and 6-month overdue tables, combining them with weekly product value reports to show which goods have been sitting for how long and how much capital they represent. Everything is pushed automatically on daily or weekly schedules, with no manual lookup or consolidation required.
                         </p>
                     </div>
 
                     <div style="margin-bottom: 48px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">工程韧性案例 | When the Official API Breaks</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">Engineering Resilience Case | When the Official API Breaks</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">官方 API 失效后：RPA 无缝补位的差评监控</a>
+                            <a href="works.html" class="inline-link">After the Official API Failed: RPA Seamlessly Took Over Negative Review Monitoring</a>
                         </h4>
                         <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            ERP 官方网关认证失效当天完成 RPA 方案切换，监控未中断一天
+                            Switched to an RPA fallback on the same day the ERP gateway authentication failed, with zero monitoring downtime
                         </p>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 差评监控原本依赖积加 ERP 官方 API，但对方网关出现认证失效、长期不可用的情况——这在依赖第三方接口的自动化系统里是常见的"断供"风险，很多方案在这一步就直接停摆。<br>
-                            • <strong>全栈方案：</strong> 不等官方修复，直接把数据抓取层换成 Playwright RPA，模拟真实登录态从 ERP 前台抓取差评数据，上层的飞书卡片生成与推送逻辑完全复用，业务方几乎无感知。这也是全栈工程师和"只会调 API"的本质区别——接口说停就停，但业务监控不能跟着停。
+                            • <strong>Core pain point:</strong> Negative review monitoring originally depended on the official Jijia ERP API, but its gateway authentication failed and stayed unavailable for an extended period. This is a common supply-break risk in automation systems that depend on third-party interfaces, and many solutions simply stop at this point.<br>
+                            • <strong>Full-stack solution:</strong> Instead of waiting for the official fix, the data collection layer was switched to Playwright RPA, using a simulated real login session to collect negative review data from the ERP frontend. The upper-layer Feishu card generation and push logic was reused unchanged, so the business side barely felt the switch. This is the practical difference between a full-stack engineer and someone who can only call APIs: an interface can stop, but business monitoring cannot stop with it.
                         </p>
                     </div>
 
                     <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨部门运营数据中枢 | Multi-Report Automation Matrix</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">Cross-Department Operations Data Hub | Multi-Report Automation Matrix</div>
                         <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">自动化运营报表矩阵：广告 / 销售 / 物流 / 库龄 / 竞品 / 差评</a>
+                            <a href="works.html" class="inline-link">Automated Operations Reporting Matrix: Ads / Sales / Logistics / Aging / Competitors / Reviews</a>
                         </h4>
                         <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            7 类日报/周报/预警统一中枢 · 支持 --dry-run 预演，不触达真实群聊即可验收
+                            Unified hub for 7 categories of daily reports, weekly reports, and alerts · Supports <code>--dry-run</code> previews for acceptance without touching live group chats
                         </p>
                         <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 团队每天要在飞书多维表、ERP 后台、Amazon 卖家后台之间手动核对广告花费、库存、物流时效、竞品价格等多类数据，任何一类漏看都可能导致断货或资金占用，人工日报耗时且容易滞后。<br>
-                            • <strong>全栈方案：</strong> 交付了一整套定时脚本矩阵，统一从飞书多维表（Bitable）拉取结构化数据，用 Playwright + 指纹浏览器补齐无官方 API 的抓取场景，再统一汇总为飞书 Interactive Card 推送到对应责任人群：广告日报、销售日报、空运物流汇总、物流延期预警、超期库龄统计、产品货值周报、竞品价格波动监控、ERP 差评监控。所有脚本支持 <code>--dry-run</code> 模式，可在不触达真实群聊的情况下预演输出，方便迭代和验收。<br>
-                            • <strong>工程细节：</strong> 抓取层与推送层解耦（各脚本拆成 <code>scrape_*.py</code> / <code>report_*.py</code>），单个数据源故障不影响其余报表按时推送；还有一个脚本专门用 Playwright 操作飞书多维表连接器的配置页面（这块飞书没开放官方 API），自动把"查询时间"参数改成前一天并保存，把原本必须人工点击的操作也纳入无人值守流程。
+                            • <strong>Core pain point:</strong> Every day, the team had to manually reconcile ad spend, inventory, logistics timeliness, competitor prices, and other data across Feishu Bitable, the ERP backend, and Amazon Seller Central. Missing any one category could lead to stockouts or tied-up capital, while manual daily reports were slow and easy to lag behind the business.<br>
+                            • <strong>Full-stack solution:</strong> A complete scheduled-script matrix was delivered. It pulls structured data from Feishu Bitable, fills in no-official-API collection scenarios with Playwright plus fingerprint browsers, then consolidates everything into Feishu Interactive Cards pushed to the relevant owner groups: daily ads reports, daily sales reports, air freight logistics summaries, logistics delay alerts, overdue inventory aging statistics, weekly product value reports, competitor price fluctuation monitoring, and ERP negative review monitoring. All scripts support <code>--dry-run</code> mode, making it possible to preview outputs without touching live group chats, which keeps iteration and acceptance clean.<br>
+                            • <strong>Engineering details:</strong> The collection layer and push layer are decoupled, with scripts split into <code>scrape_*.py</code> and <code>report_*.py</code>, so a single data-source failure does not block the remaining reports from being delivered on time. One script also uses Playwright to operate the Feishu Bitable connector configuration page, because Feishu does not expose an official API for that part. It automatically changes the "query time" parameter to the previous day and saves it, turning another formerly manual click path into an unattended workflow.
                         </p>
                     </div>
 
@@ -875,60 +875,60 @@
             <section class="section-block">
                 <h3 class="section-title">05 / Workflow at a Glance</h3>
                 <p class="bio-text" style="margin-bottom: 0;">
-                    以上两个案例背后是同一套可复用的闭环方法论——不管业务场景是广告竞价还是库存清算，交付的系统都遵循相同的四段式结构：
+                    Behind these cases is the same reusable closed-loop methodology. Whether the business scenario is ad bidding or inventory liquidation, the delivered system follows the same four-stage structure:
                 </p>
                 <div class="flow-wrap">
                     <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img" aria-labelledby="flow-title flow-desc">
-                        <title id="flow-title">FDE 全栈交付流程图</title>
-                        <desc id="flow-desc">数据采集经 Agent 决策后进入业务执行，异常或高风险情况通过人工回环确认，形成闭环。</desc>
+                        <title id="flow-title">FDE full-stack delivery workflow diagram</title>
+                        <desc id="flow-desc">Data collection flows into agent decision-making and then business execution. Exceptions or high-risk cases return to human confirmation to form a closed loop.</desc>
                         <defs>
                             <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                                 <path d="M0,0 L10,5 L0,10 z" fill="#ffd700"></path>
                             </marker>
                         </defs>
 
-                        <!-- 连接线 -->
+                        <!-- Connector lines -->
                         <line x1="195" y1="70" x2="255" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
                         <line x1="435" y1="70" x2="495" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
                         <line x1="675" y1="70" x2="735" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
                         <path d="M 810 110 C 810 190, 90 190, 90 110" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow)"></path>
 
-                        <!-- 节点 1：数据采集 -->
+                        <!-- Node 1: data collection -->
                         <g>
                             <rect x="15" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="105" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">01 · 数据采集</text>
+                            <text x="105" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">01 · Data Collection</text>
                             <text x="105" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Playwright +</text>
-                            <text x="105" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">指纹浏览器 / ERP API</text>
+                            <text x="105" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Fingerprint Browser / ERP API</text>
                         </g>
 
-                        <!-- 节点 2：Agent 决策 -->
+                        <!-- Node 2: agent decision -->
                         <g>
                             <rect x="255" y="20" width="180" height="100" rx="8" fill="rgba(255,215,0,0.05)" stroke="#ffd700"></rect>
-                            <text x="345" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">02 · Agent 决策</text>
-                            <text x="345" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">OpenClaw 多智能体</text>
-                            <text x="345" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">按 SOP 规则判定</text>
+                            <text x="345" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">02 · Agent Decision</text>
+                            <text x="345" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">OpenClaw Multi-Agent</text>
+                            <text x="345" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">SOP-Based Rules</text>
                         </g>
 
-                        <!-- 节点 3：业务执行 -->
+                        <!-- Node 3: business execution -->
                         <g>
                             <rect x="495" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="585" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">03 · 业务执行</text>
-                            <text x="585" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">调价 / 启停 / 清算</text>
-                            <text x="585" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">写回业务系统</text>
+                            <text x="585" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">03 · Business Execution</text>
+                            <text x="585" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Pricing / Pause / Clearance</text>
+                            <text x="585" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Write Back to Systems</text>
                         </g>
 
-                        <!-- 节点 4：人工回环 -->
+                        <!-- Node 4: human loop -->
                         <g>
                             <rect x="735" y="20" width="150" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="810" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">04 · 人工回环</text>
-                            <text x="810" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">飞书互动卡片</text>
-                            <text x="810" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">负责人一键确认</text>
+                            <text x="810" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">04 · Human Loop</text>
+                            <text x="810" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Feishu Interactive Cards</text>
+                            <text x="810" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Owner One-Click Confirm</text>
                         </g>
 
-                        <text x="450" y="205" text-anchor="middle" fill="#555" font-size="11" font-family="Helvetica, Arial, sans-serif">虚线：异常/高风险决策不自动执行，回到人工确认，形成闭环</text>
+                        <text x="450" y="205" text-anchor="middle" fill="#555" font-size="11" font-family="Helvetica, Arial, sans-serif">Dashed line: exceptions and high-risk decisions return to human confirmation instead of auto-executing.</text>
                     </svg>
                     <p class="flow-caption">
-                        采集层保证数据不失真，决策层承担可解释的规则/模型判断，执行层直接写回企业已有系统而非另建孤岛，回环层把最终裁量权留给业务负责人——这也是"全栈交付"和"单点接 API"的本质区别。
+                        The collection layer keeps data faithful, the decision layer handles explainable rule and model judgment, the execution layer writes directly back into existing enterprise systems instead of creating another silo, and the loop layer leaves final discretion with the business owner. That is the essential difference between full-stack delivery and simply connecting a single API.
                     </p>
                 </div>
 
@@ -969,42 +969,42 @@
                 <div class="testimonial-grid">
                     <div class="testimonial-card">
                         <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">这套系统基本把我们运营团队每天要盯的事都覆盖到了——广告花得怎么样、竞品价格有没有异动、货有没有压仓、物流是不是延期、有没有新差评，以前都要好几个人分头去后台查，现在每天早上飞书群里一条卡片消息全看完，效率提升很明显。</p>
+                        <p class="testimonial-text">This system basically covers everything our operations team needs to watch every day: ad performance, competitor price changes, inventory pressure, logistics delays, and new negative reviews. Several people used to check different backends separately; now one Feishu card in the morning gives us the full picture, and the efficiency gain is obvious.</p>
                         <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">自动化报表矩阵</span>
+                            <span class="testimonial-name">Operations Lead, Cross-Border E-commerce Seller</span>
+                            <span class="testimonial-meta">Automated Reporting Matrix</span>
                         </div>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">最满意的是竞品价格监控这块，波动超过 5% 会自动标出来提醒运营去看，不用再每天人工一个个比价，这种"异常才提醒"的设计很贴心，减少了很多无效信息干扰。</p>
+                        <p class="testimonial-text">The competitor price monitoring is the part we are most satisfied with. When a fluctuation exceeds 5%, it is automatically marked and operators are reminded to check it. We no longer have to compare prices one by one every day. The "alert only on exceptions" design is very thoughtful and removes a lot of noise.</p>
                         <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">竞品价格监控</span>
+                            <span class="testimonial-name">Operations Lead, Cross-Border E-commerce Seller</span>
+                            <span class="testimonial-meta">Competitor Price Monitoring</span>
                         </div>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">报表直接推到飞书群里，不用额外装什么系统、也不用登录网页去看，这点很实用，团队接受度很高，基本零学习成本。</p>
+                        <p class="testimonial-text">Reports are pushed directly into Feishu groups. There is no extra system to install and no web dashboard to log into. That is very practical, the team adopted it quickly, and the learning cost was basically zero.</p>
                         <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">交付与落地体验</span>
+                            <span class="testimonial-name">Operations Lead, Cross-Border E-commerce Seller</span>
+                            <span class="testimonial-meta">Delivery & Adoption Experience</span>
                         </div>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">广告日报能自动关联库存数据（FBA 没货就取万邑通库存），这种细节说明是真的懂我们业务逻辑，不是简单地把数字堆出来。</p>
+                        <p class="testimonial-text">The daily ads report can automatically connect inventory data, using Winit inventory when FBA is out of stock. Details like this show real understanding of our business logic, not just a pile of numbers.</p>
                         <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">广告 & 库存联动日报</span>
+                            <span class="testimonial-name">Operations Lead, Cross-Border E-commerce Seller</span>
+                            <span class="testimonial-meta">Ads & Inventory Linked Daily Report</span>
                         </div>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">库龄、货值这些周报级的数据也有覆盖，不只是关注短期的销售和广告，长期的库存健康度也照顾到了，看得出功能设计是站在整体运营视角在做的，而不是头痛医头。</p>
+                        <p class="testimonial-text">Weekly-level data such as inventory aging and product value is also covered. It does not only focus on short-term sales and ads; long-term inventory health is included too. You can tell the feature design starts from an overall operations perspective instead of treating isolated symptoms.</p>
                         <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">库存与货值周报</span>
+                            <span class="testimonial-name">Operations Lead, Cross-Border E-commerce Seller</span>
+                            <span class="testimonial-meta">Inventory & Product Value Weekly Report</span>
                         </div>
                     </div>
                 </div>
@@ -1025,14 +1025,14 @@
             'use strict';
 
             /* ---------------------------------------------------------
-             * 0. 邮箱地址混淆：避免明文出现在 HTML 源码中被爬虫抓取
+             * 0. Email address obfuscation: avoid exposing plaintext in HTML source
              * ------------------------------------------------------- */
             function buildMailto() {
                 var user = ['G', 'e', 'e', 'k', 'H', 'e', 'r', 'o', 'n'].join('');
                 var domain = ['outlook', 'com'].join('.');
                 var address = user + '@' + domain;
-                var subject = encodeURIComponent('预约 15 分钟咨询');
-                var body = encodeURIComponent('简要需求：\n期望时间：');
+                var subject = encodeURIComponent('Book a 15-minute consultation');
+                var body = encodeURIComponent('Brief requirement:\nPreferred time:');
                 return 'mailto:' + address + '?subject=' + subject + '&body=' + body;
             }
 
@@ -1048,7 +1048,7 @@
             bindMailtoLinks();
 
             /* ---------------------------------------------------------
-             * 1. 背景粒子与流星特效（带性能与无障碍优化）
+             * 1. Background particles and meteors, with performance and accessibility optimizations
              * ------------------------------------------------------- */
             var canvas = document.getElementById('galaxy-field');
             var ctx = canvas.getContext('2d');
@@ -1190,7 +1190,7 @@
                 }
             }
 
-            // 标签页切到后台时暂停动画，节省电量与 CPU
+            // Pause animation when the tab is in the background to save battery and CPU
             document.addEventListener('visibilitychange', function () {
                 if (document.hidden) {
                     stopAnimation();
@@ -1213,13 +1213,13 @@
             if (!prefersReducedMotion) {
                 startAnimation();
             } else {
-                // 即使不做动画，也画一帧静态星空，保留视觉效果
+                // Even without animation, draw one static starfield frame to preserve the visual effect
                 ctx.clearRect(0, 0, width, height);
                 particles.forEach(function (p) { p.draw(); });
             }
 
             /* ---------------------------------------------------------
-             * 2. 打字机特效（一次性拼接，减少重排）
+             * 2. Typewriter effect, using single-pass string slicing to reduce layout work
              * ------------------------------------------------------- */
             var textToType = 'Initializing FDE Stack... OpenClaw Agent Active... Playwright Spider Injected... Feishu Interactive Cards Syncing.';
             var typeElement = document.getElementById('typewriter');
@@ -1239,7 +1239,7 @@
             }
 
             /* ---------------------------------------------------------
-             * 3. 菜单逻辑：语义化按钮 + 键盘可达 + Esc 关闭 + 简单焦点管理
+             * 3. Menu logic: semantic button, keyboard access, Esc close, and simple focus management
              * ------------------------------------------------------- */
             var hamburger = document.querySelector('.hamburger');
             var navLinks = document.querySelector('.nav-links');
@@ -1277,7 +1277,7 @@
                     closeMenu();
                     return;
                 }
-                // 简单的 focus trap：Tab 循环在菜单内部
+                // Simple focus trap: keep Tab navigation inside the menu
                 if (e.key === 'Tab' && focusableNavItems.length) {
                     var first = focusableNavItems[0];
                     var last = focusableNavItems[focusableNavItems.length - 1];

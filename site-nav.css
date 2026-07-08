@@ -1,4 +1,8 @@
 /* Shared site navigation, matched to index.html */
+html {
+    scroll-padding-top: 120px;
+}
+
 header.site-header {
     position: sticky;
     top: 0;
@@ -132,6 +136,10 @@ body.site-nav-open {
 }
 
 @media (max-width: 768px) {
+    html {
+        scroll-padding-top: 80px;
+    }
+
     header.site-header {
         padding: 15px 20px;
     }

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feishu + AI Automation: A Complete Guide to Building Your Enterprise Digital Employee - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/en/article-feishu-bot.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-feishu-bot.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-feishu-bot.html">
+    <meta name="description" content="Feishu + AI Automation: A Complete Guide to Building Your Enterprise Digital Employee. Feishu AI bot, digital employee, Feishu automation, AI approval, enterprise IM integration.">
+    <meta name="keywords" content="GeekHeron, Feishu Bot, AI, LLM, Digital Employee, Enterprise Automation, Feishu Integration">
+    <link rel="icon" type="image/png" href="../logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: 0; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul, .article-body ol { margin-bottom: 25px; padding-left: 22px; }
+        .article-body li { margin-bottom: 15px; }
+        .seo-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center; }
+        .seo-footer p { color: #777; margin-bottom: 12px; }
+        .seo-link { display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s; }
+        .seo-link:hover { color: #00ffc3; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+</style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Feishu + AI Automation: A Complete Guide to Building Your Enterprise Digital Employee",
+  "description": "Feishu + AI Automation: A Complete Guide to Building Your Enterprise Digital Employee. Feishu AI bot, digital employee, Feishu automation, AI approval, enterprise IM integration.",
+  "author": {
+    "@type": "Person",
+    "name": "Wang Jianfeng (GeekHeron)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/en/article-feishu-bot.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "en"
+}
+    </script>
+    <link rel="stylesheet" href="../site-nav.css">
+</head>
+<body>
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About Me &amp; Collaboration</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">INTEGRATION</span>
+                <h1 class="article-title">Feishu + AI Automation: A Complete Guide to Building Your Enterprise Digital Employee</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: Feishu AI bot, enterprise digital employee, Feishu automation, AI approval, enterprise IM integration</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.03.22</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: INTEGRATION</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>1. Why Start with Feishu for Digital Employees</h2>
+                <p>A large portion of enterprise work happens inside IM: asking questions, submitting approvals, syncing progress, looking up information, and chasing down tasks. Integrating AI into Feishu puts intelligence directly into the tool employees already use most often. Compared to building a standalone system, Feishu AI automation is easier to adopt and easier to weave into real workflows.</p>
+
+                <h2>2. Capability Boundaries of a Digital Employee</h2>
+                <p>A reliable digital employee should be more than just a "group chat bot." It needs to understand message intent, call enterprise systems, execute workflows, record results, and request confirmation before high-risk actions. Typical capabilities include knowledge base Q&A, approval assistance, meeting minutes, daily report generation, customer information lookup, ticket assignment, and task reminders.</p>
+
+                <h2>3. Complete Architecture</h2>
+                <ul>
+                    <li><strong>Feishu Entry Point:</strong> Receive direct messages, group messages, card button clicks, approval events, and form submissions.</li>
+                    <li><strong>Intent Recognition:</strong> Determine whether the user is querying knowledge, creating a task, submitting an approval, or requesting analysis.</li>
+                    <li><strong>Permission Check:</strong> Determine accessible data and executable actions based on user identity.</li>
+                    <li><strong>Tool Invocation:</strong> Connect to CRM, ERP, knowledge base, ticket system, database, and email services.</li>
+                    <li><strong>Result Feedback:</strong> Sync results back to Feishu messages, tasks, approvals, or business systems.</li>
+                </ul>
+
+                <h2>4. Scenario Example: Approval Assistant</h2>
+                <p>When an employee submits a procurement approval, the digital employee automatically reads the request, checks supplier qualifications, budget balance, historical purchase prices, and contract terms. If anomalies are found, it generates risk alerts in the approval card. If information is missing, it reminds the applicant to supplement. The approver no longer sees a pile of attachments — instead, they get a structured summary with clear recommendations.</p>
+
+                <h2>5. Scenario Example: Enterprise Knowledge Q&A</h2>
+                <p>When an employee asks in a group chat, "What's the process for stamping a new customer contract?", the bot identifies the question type, retrieves the latest process from the policy knowledge base, and returns the steps, required materials, responsible department, and source link. If the user follows up with "Is it different for the Shanghai office?", the system tailors the answer based on organizational and regional permissions.</p>
+
+                <h2>6. Launch Considerations</h2>
+                <p>Feishu AI automation requires careful attention to message noise and permission boundaries. The bot should not flood group chats with frequent messages — complex results can be folded into expandable cards. Data involving customers, contracts, and finances must have permission checks. Actions like sending external emails, modifying orders, or approving requests should require a secondary confirmation step.</p>
+
+                <h2>7. Conclusion</h2>
+                <p>Feishu is the most natural workspace for a digital employee. By connecting AI, enterprise knowledge bases, and business systems, companies can offload a large volume of repetitive communication, information lookup, and process execution to automation — freeing employees to focus on judgment and creativity.</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>Learn more about Feishu AI integration and enterprise digital employee solutions:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Helping enterprises build industrial-grade AI productivity</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>
+</body>
+</html>

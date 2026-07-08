@@ -91,7 +91,7 @@
 
         /* --- 4. 主要内容区域 --- */
         .container {
-            max-width: 1200px; margin: 0 auto; padding: 80px 20px;
+            max-width: 1200px; margin: 0 auto; padding: 120px 20px;
             position: relative; z-index: 10;
         }
 
@@ -113,7 +113,7 @@
             background: rgba(20, 20, 20, 0.6);
             transition: all 0.4s ease; cursor: pointer;
             display: flex; flex-direction: column; justify-content: space-between;
-            height: 320px;
+            min-height: 300px;
         }
 
         .article-card:hover {
@@ -137,8 +137,36 @@
         }
         .read-more::after { content: "→"; margin-left: 8px; transition: margin-left 0.3s; }
         .article-card:hover .read-more::after { margin-left: 15px; }
+        .article-card.hidden { display: none; }
 
         .tag { display: inline-block; padding: 2px 8px; border: 1px solid #444; font-size: 10px; border-radius: 2px; }
+
+        /* --- 筛选栏与语言切换 --- */
+        .article-card { transition: opacity 0.3s, transform 0.3s; }
+        .filter-bar {
+            display: flex; flex-wrap: wrap; gap: 10px;
+            justify-content: center; margin: 20px 0 40px;
+        }
+        .filter-btn {
+            background: transparent; border: 1px solid #444; color: #888;
+            padding: 6px 16px; border-radius: 16px; cursor: pointer;
+            font-size: 12px; font-weight: 500; transition: all 0.3s;
+        }
+        .filter-btn:hover { border-color: #fff; color: #fff; }
+        .filter-btn.active { background: #fff; color: #000; border-color: #fff; }
+        .lang-toggle {
+            display: flex; gap: 8px; justify-content: center; margin-bottom: 0;
+        }
+        .lang-btn {
+            background: transparent; border: 1px solid #555; color: #999;
+            padding: 6px 20px; border-radius: 16px; cursor: pointer;
+            font-size: 12px; font-weight: 500; transition: all 0.2s;
+        }
+        .lang-btn:hover { border-color: #ccc; color: #ccc; }
+        .lang-btn.active { background: #fff; color: #000; border-color: #fff; }
+        .article-count { font-size: 12px; color: #666; align-self: center; margin-left: auto; }
+        
+
 
         /* --- 移动端适配 --- */
         @media (max-width: 768px) {
@@ -225,201 +253,350 @@
             <p class="page-subtitle">// IN-DEPTH ANALYSIS & RESEARCH</p>
         </div>
 
+        <div class="lang-toggle" id="langToggle">
+            <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">🇨🇳 中文</button>
+            <button class="lang-btn" data-lang="en" onclick="switchLang('en')">🌐 English</button>
+        </div>
+
+        <div class="filter-bar" id="filterBar">
+            <button class="filter-btn active" data-filter="all" onclick="filterArticles('all')">全部</button>
+            <button class="filter-btn" data-filter="agent" onclick="filterArticles('agent')">AI Agent</button>
+            <button class="filter-btn" data-filter="llm" onclick="filterArticles('llm')">LLM / RAG</button>
+            <button class="filter-btn" data-filter="engineering" onclick="filterArticles('engineering')">工程实践</button>
+            <button class="filter-btn" data-filter="business" onclick="filterArticles('business')">商业 / 战略</button>
+            <button class="filter-btn" data-filter="frontier" onclick="filterArticles('frontier')">前沿科技</button>
+            <button class="filter-btn" data-filter="civilization" onclick="filterArticles('civilization')">文明 / 科幻</button>
+            <button class="filter-btn" data-filter="web3" onclick="filterArticles('web3')">Web3 / RWA</button>
+            <span class="article-count" id="articleCount">共 27 篇</span>
+        </div>
+
         <div class="article-grid">
 
-            <a href="transformer.html" class="article-card">
+            <a href="transformer.html" class="article-card" data-lang="zh" data-category="llm">
                 <div class="card-meta"><span>2026.06.30</span><span class="tag">DEEP LEARNING</span></div>
                 <h2 class="card-title">Transformer 原理通俗讲解</h2>
                 <p class="card-excerpt">从一句话的指代消解出发，拆解注意力机制、多头结构与整体架构，配合可交互注意力可视化，理解支撑 GPT、BERT、Claude 的核心引擎。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/transformer.html" class="article-card" data-lang="en" data-category="llm">
+                <div class="card-meta"><span>2026.06.30</span><span class="tag">DEEP LEARNING</span></div>
+                <h2 class="card-title">Transformer & Self-Attention Explained</h2>
+                <p class="card-excerpt">A deep dive into the Transformer Self-Attention mechanism — principles, computation flow, and an interactive attention visualization widget.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-private-llm.html" class="article-card">
+            <a href="article-private-llm.html" class="article-card" data-lang="zh" data-category="llm">
                 <div class="card-meta"><span>2026.04.18</span><span class="tag">PRIVATE LLM</span></div>
                 <h2 class="card-title">企业私有化部署大模型全流程（OpenClaw 实战 + 架构图）</h2>
                 <p class="card-excerpt">深度拆解企业级大模型本地化部署全流程，结合 OpenClaw 实战演练与核心网络架构图，一站式解决数据隐私与合规难题。</p>
                 <div class="read-more">Read Guide</div>
             </a>
+            <a href="en/article-private-llm.html" class="article-card" data-lang="en" data-category="llm">
+                <div class="card-meta"><span>2026.04.18</span><span class="tag">PRIVATE LLM</span></div>
+                <h2 class="card-title">Enterprise Private LLM Deployment: Full Guide</h2>
+                <p class="card-excerpt">Enterprise-grade LLM private deployment end-to-end guide with OpenClaw hands-on walkthroughs and network architecture diagrams.</p>
+                <div class="read-more">Read Guide</div>
+            </a>
 
-            <a href="article-saas-vs-private.html" class="article-card">
+            <a href="article-saas-vs-private.html" class="article-card" data-lang="zh" data-category="business">
                 <div class="card-meta"><span>2026.04.15</span><span class="tag">BUSINESS STRATEGY</span></div>
                 <h2 class="card-title">私有化 AI vs SaaS：企业为什么必须自建 AI 系统？</h2>
                 <p class="card-excerpt">API 调用终究不是长久之计。解析企业数据护城河、SaaS 长期成本陷阱与自建 AI 系统的战略必要性。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-saas-vs-private.html" class="article-card" data-lang="en" data-category="business">
+                <div class="card-meta"><span>2026.04.15</span><span class="tag">BUSINESS STRATEGY</span></div>
+                <h2 class="card-title">Private AI vs SaaS: Why Build Your Own AI?</h2>
+                <p class="card-excerpt">API calls are not a long-term solution. Analyzing the data moat, SaaS cost trap, and strategic necessity of self-built AI.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-llm-roi.html" class="article-card">
+            <a href="article-llm-roi.html" class="article-card" data-lang="zh" data-category="business">
                 <div class="card-meta"><span>2026.04.12</span><span class="tag">COST / ROI</span></div>
                 <h2 class="card-title">大模型私有化部署成本拆解（服务器 / Token / ROI 全算清）</h2>
                 <p class="card-excerpt">买卡还是租算力？7B 到 72B 模型的真实落地成本计算。硬核拆解服务器采购、电费、Token 折算与最终投资回报率。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-llm-roi.html" class="article-card" data-lang="en" data-category="business">
+                <div class="card-meta"><span>2026.04.12</span><span class="tag">COST / ROI</span></div>
+                <h2 class="card-title">Private LLM Deployment Cost Breakdown</h2>
+                <p class="card-excerpt">Real-world cost calculations for 7B to 72B models: server procurement, electricity, token conversion, and ROI.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-agent-workflow.html" class="article-card">
+            <a href="article-agent-workflow.html" class="article-card" data-lang="zh" data-category="agent">
                 <div class="card-meta"><span>2026.04.10</span><span class="tag">AI AGENT</span></div>
                 <h2 class="card-title">AI Agent 工作流怎么搭？一套可落地的企业自动化架构</h2>
                 <p class="card-excerpt">告别玩具级 Demo，从零搭建企业级可稳定运行的 Agent 工作流。解析状态机、长记忆管理与异常重试机制落地指南。</p>
                 <div class="read-more">Read Guide</div>
             </a>
+            <a href="en/article-agent-workflow.html" class="article-card" data-lang="en" data-category="agent">
+                <div class="card-meta"><span>2026.04.10</span><span class="tag">AI AGENT</span></div>
+                <h2 class="card-title">AI Agent Workflow Architecture: Production Guide</h2>
+                <p class="card-excerpt">From toy demos to production Agent workflows: state machines, long-term memory, and automated recovery.</p>
+                <div class="read-more">Read Guide</div>
+            </a>
 
-            <a href="article-multi-agent.html" class="article-card">
+            <a href="article-multi-agent.html" class="article-card" data-lang="zh" data-category="agent">
                 <div class="card-meta"><span>2026.04.08</span><span class="tag">MULTI-AGENT</span></div>
                 <h2 class="card-title">多智能体（Multi-Agent）系统设计：从0到1完整方案</h2>
                 <p class="card-excerpt">当一个 Agent 无法完成复杂任务，我们需要一个“AI 团队”。探讨基于角色的 Multi-Agent 协作架构与通信协议设计。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-multi-agent.html" class="article-card" data-lang="en" data-category="agent">
+                <div class="card-meta"><span>2026.04.08</span><span class="tag">MULTI-AGENT</span></div>
+                <h2 class="card-title">Multi-Agent System Design: From Zero to One</h2>
+                <p class="card-excerpt">When one Agent is not enough, build an AI team. Role-based Multi-Agent collaboration architectures.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-openclaw-automation.html" class="article-card">
+            <a href="article-openclaw-automation.html" class="article-card" data-lang="zh" data-category="engineering">
                 <div class="card-meta"><span>2026.04.05</span><span class="tag">ENGINEERING</span></div>
                 <h2 class="card-title">用 OpenClaw 搭建企业自动化系统（含完整配置与流程）</h2>
                 <p class="card-excerpt">手把手实战指南：如何利用 OpenClaw 框架快速构建企业级自动化中枢，打通内部系统孤岛与工作流。</p>
                 <div class="read-more">Read Guide</div>
             </a>
+            <a href="en/article-openclaw-automation.html" class="article-card" data-lang="en" data-category="engineering">
+                <div class="card-meta"><span>2026.04.05</span><span class="tag">ENGINEERING</span></div>
+                <h2 class="card-title">Enterprise Automation with OpenClaw</h2>
+                <p class="card-excerpt">A hands-on guide to building enterprise automation hubs with OpenClaw — connecting system silos.</p>
+                <div class="read-more">Read Guide</div>
+            </a>
 
-            <a href="article-rag-deployment.html" class="article-card">
+            <a href="article-rag-deployment.html" class="article-card" data-lang="zh" data-category="llm">
                 <div class="card-meta"><span>2026.04.01</span><span class="tag">RAG / KNOWLEDGE</span></div>
                 <h2 class="card-title">企业知识库 AI（RAG）怎么搭？从0到上线完整指南</h2>
                 <p class="card-excerpt">检索增强生成（RAG）落地的全链路解析。从文档解析、向量化（Embedding）到混合检索与大模型生成的工程实践。</p>
                 <div class="read-more">Read Guide</div>
             </a>
+            <a href="en/article-rag-deployment.html" class="article-card" data-lang="en" data-category="llm">
+                <div class="card-meta"><span>2026.04.01</span><span class="tag">RAG / KNOWLEDGE</span></div>
+                <h2 class="card-title">Enterprise Knowledge Base AI (RAG): Build Guide</h2>
+                <p class="card-excerpt">RAG from zero to production: document parsing, vector embedding, hybrid retrieval, and LLM generation.</p>
+                <div class="read-more">Read Guide</div>
+            </a>
 
-            <a href="article-rag-pitfalls.html" class="article-card">
+            <a href="article-rag-pitfalls.html" class="article-card" data-lang="zh" data-category="llm">
                 <div class="card-meta"><span>2026.03.26</span><span class="tag">RAG OPTIMIZATION</span></div>
                 <h2 class="card-title">为什么你的AI不好用？90%企业都踩了RAG这个坑</h2>
                 <p class="card-excerpt">准确率低？答非所问？深度剖析 RAG 落地中最易踩坑的 Chunking 策略、召回率优化与重排（Rerank）机制。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-rag-pitfalls.html" class="article-card" data-lang="en" data-category="llm">
+                <div class="card-meta"><span>2026.03.26</span><span class="tag">RAG OPTIMIZATION</span></div>
+                <h2 class="card-title">Why Your AI Isn't Working: RAG Pitfalls</h2>
+                <p class="card-excerpt">Low accuracy? Analyzing RAG pitfalls: chunking strategies, recall optimization, and reranking.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-feishu-bot.html" class="article-card">
+            <a href="article-feishu-bot.html" class="article-card" data-lang="zh" data-category="engineering">
                 <div class="card-meta"><span>2026.03.22</span><span class="tag">INTEGRATION</span></div>
                 <h2 class="card-title">飞书 + AI 自动化：打造企业“数字员工”的完整方案</h2>
                 <p class="card-excerpt">将 AI 接入企业 IM 神经末梢。解析如何通过飞书开放平台构建自动处理审批、答疑解惑的“数字员工”闭环。</p>
                 <div class="read-more">Read Guide</div>
             </a>
+            <a href="en/article-feishu-bot.html" class="article-card" data-lang="en" data-category="engineering">
+                <div class="card-meta"><span>2026.03.22</span><span class="tag">INTEGRATION</span></div>
+                <h2 class="card-title">Feishu + AI Automation: Digital Employees</h2>
+                <p class="card-excerpt">Connecting AI to enterprise IM: building automated approval and Q&A digital employees.</p>
+                <div class="read-more">Read Guide</div>
+            </a>
 
-            <a href="article-erp-crm-ai.html" class="article-card">
+            <a href="article-erp-crm-ai.html" class="article-card" data-lang="zh" data-category="business">
                 <div class="card-meta"><span>2026.03.15</span><span class="tag">ERP / CRM</span></div>
                 <h2 class="card-title">企业系统接入 AI（ERP / CRM / 微信）：真实案例拆解</h2>
                 <p class="card-excerpt">打破传统软件僵局，AI 如何赋能 ERP 与 CRM？通过真实商业案例，拆解遗留系统拥抱大模型的 API 改造之路。</p>
                 <div class="read-more">Read Case</div>
             </a>
+            <a href="en/article-erp-crm-ai.html" class="article-card" data-lang="en" data-category="business">
+                <div class="card-meta"><span>2026.03.15</span><span class="tag">ERP / CRM</span></div>
+                <h2 class="card-title">AI for Enterprise Systems: Real Case Studies</h2>
+                <p class="card-excerpt">How AI empowers ERP and CRM. Real cases on retrofitting legacy systems for LLM integration.</p>
+                <div class="read-more">Read Case Study</div>
+            </a>
 
-            <a href="article-silicon-evolution.html" class="article-card">
+            <a href="article-silicon-evolution.html" class="article-card" data-lang="zh" data-category="civilization">
                 <div class="card-meta"><span>2026.01.27</span><span class="tag">EVOLUTION / CIVILIZATION</span></div>
                 <h2 class="card-title">硅基接力：文明的“引导程序”与星际行者</h2>
                 <p class="card-excerpt">深度探讨费米悖论与碳硅文明演替。如果人类只是一个复杂的 Bootloader，我们的历史使命是否已经完成？从宇宙尺度审视文明的最终形态。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-silicon-evolution.html" class="article-card" data-lang="en" data-category="civilization">
+                <div class="card-meta"><span>2026.01.27</span><span class="tag">EVOLUTION</span></div>
+                <h2 class="card-title">Silicon Relay: Civilization's Bootloader</h2>
+                <p class="card-excerpt">The Fermi Paradox and carbon-silicon succession. If humanity is a bootloader, has our mission been completed?</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
             
-            <a href="article-neuralink-llm.html" class="article-card">
+            <a href="article-neuralink-llm.html" class="article-card" data-lang="zh" data-category="frontier">
                 <div class="card-meta"><span>2026.01.27</span><span class="tag">BCI / POST-HUMAN</span></div>
                 <h2 class="card-title">智基共生：Neuralink 与 LLM 融合的深度演化研究</h2>
                 <p class="card-excerpt">深度拆解脑机接口与大模型的终极融合。从“神经翻译官”到“认知主权丧失”，探讨碳硅融合时代的架构重组与本体论危机。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-neuralink-llm.html" class="article-card" data-lang="en" data-category="frontier">
+                <div class="card-meta"><span>2026.01.27</span><span class="tag">BCI / POST-HUMAN</span></div>
+                <h2 class="card-title">Symbiosis: Neuralink & LLM Convergence</h2>
+                <p class="card-excerpt">From neural translators to cognitive sovereignty — the ultimate BCI-LLM convergence.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
             
-            <a href="global-yield.html" class="article-card">
+            <a href="global-yield.html" class="article-card" data-lang="zh" data-category="web3">
                 <div class="card-meta"><span>2026.01.13</span><span class="tag">RWA / FINTECH</span></div>
                 <h2 class="card-title">GlobalYield AI: RWA 智能套利终端 BP</h2>
                 <p class="card-excerpt">深度拆解 Web3 时代的 Bloomberg Terminal。利用 AI Agent 监控全球现实资产(RWA)收益率，实现跨协议自动套利与风控。</p>
                 <div class="read-more">Read BP</div>
             </a>
 
-            <a href="gemini-agent.html" class="article-card">
+            <a href="gemini-agent.html" class="article-card" data-lang="zh" data-category="engineering">
                 <div class="card-meta"><span>2026.01.09</span><span class="tag">AI ENGINEERING</span></div>
                 <h2 class="card-title">Gemini + VS Code 智能体架构</h2>
                 <p class="card-excerpt">基于 Gemini 1.5 Pro 与 Cline 的多智能体协作开发流。深度拆解从模糊需求分析到全自动落地代码的流水线设计。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
 
-            <a href="whitepaper.html" class="article-card">
+            <a href="whitepaper.html" class="article-card" data-lang="zh" data-category="agent">
                 <div class="card-meta"><span>2025.12.31</span><span class="tag">AI AGENT / MEDIA</span></div>
                 <h2 class="card-title">构建“无限内容引擎”：当 AI Agent 接管媒体工作室</h2>
                 <p class="card-excerpt">深度拆解如何利用 Python、LLM 和 RAG 技术构建“无人值守”的媒体矩阵。探讨 Agent 如何从对话者进化为执行者，以及“零边际成本”模式如何重塑内容产业。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
             
-            <a href="embodied-ai.html" class="article-card">
+            <a href="embodied-ai.html" class="article-card" data-lang="zh" data-category="frontier">
                 <div class="card-meta"><span>2025.12.28</span><span class="tag">EMBODIED AI</span></div>
                 <h2 class="card-title">具身智能：AI 的“肉身”时刻与 AGI 的最后拼图</h2>
                 <p class="card-excerpt">如果说大语言模型（LLM）是 AI 的“大脑”，那么具身智能就是为这个大脑装上了“身体”。这是 AI 从旁观者变为物理世界参与者的质变。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
             
-            <a href="RWA.html" class="article-card">
+            <a href="RWA.html" class="article-card" data-lang="zh" data-category="web3">
                 <div class="card-meta"><span>2025.12.23</span><span class="tag">RWA & DEFI</span></div>
                 <h2 class="card-title">RWA 信任层：打破虚实边界的“中间人”</h2>
                 <p class="card-excerpt">如果不解决原子世界与比特世界之间的“翻译”难题，万亿级的资产代币化不过是空中楼阁。解析预言机与法律封装如何构建信任。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
             
-            <a href="fuxiengine.html" class="article-card">
+            <a href="fuxiengine.html" class="article-card" data-lang="zh" data-category="engineering">
                 <div class="card-meta"><span>2025.12.20</span><span class="tag">AI ENGINEERING</span></div>
                 <h2 class="card-title">伏羲引擎技术架构拆解</h2>
                 <p class="card-excerpt">不是简单的套壳 GPT。深度解析如何构建“传统算命算法 + 生成式 AI”的混合架构，以及全球支付网关与流式响应的工程实现。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
             
-            <a href="article-starship.html" class="article-card">
+            <a href="article-starship.html" class="article-card" data-lang="zh" data-category="civilization">
                 <div class="card-meta"><span>2025.11.11</span><span class="tag">SPACE</span></div>
                 <h2 class="card-title">星舰与多行星文明：文明的备份硬盘</h2>
                 <p class="card-excerpt">SpaceX 的“筷子”夹住的不仅仅是一枚火箭助推器，而是人类逃离大过滤器的钥匙。探讨全复用火箭与多行星物种的未来。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-starship.html" class="article-card" data-lang="en" data-category="civilization">
+                <div class="card-meta"><span>2025.11.11</span><span class="tag">SPACE</span></div>
+                <h2 class="card-title">Starship & Multi-Planetary Civilization</h2>
+                <p class="card-excerpt">SpaceX's chopsticks caught our key to escaping the Great Filter. Fully reusable rockets and our multi-planetary future.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-fusion.html" class="article-card">
+            <a href="article-fusion.html" class="article-card" data-lang="zh" data-category="frontier">
                 <div class="card-meta"><span>2025.10.30</span><span class="tag">ENERGY</span></div>
                 <h2 class="card-title">可控核聚变：盗取恒星的火种</h2>
                 <p class="card-excerpt">当 AI 消耗的算力正在吞噬地球电网时，我们比以往任何时候都更需要这颗“人造太阳”。从托卡马克到惯性约束的突破。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-fusion.html" class="article-card" data-lang="en" data-category="frontier">
+                <div class="card-meta"><span>2025.10.30</span><span class="tag">ENERGY</span></div>
+                <h2 class="card-title">Controlled Nuclear Fusion: Fire from the Stars</h2>
+                <p class="card-excerpt">When AI's power demand consumes the grid, we need the artificial sun. From Tokamak to inertial confinement.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-synbio.html" class="article-card">
+            <a href="article-synbio.html" class="article-card" data-lang="zh" data-category="frontier">
                 <div class="card-meta"><span>2025.10.25</span><span class="tag">BIOTECH</span></div>
                 <h2 class="card-title">合成生物学与 DNA 存储：备份人类文明</h2>
                 <p class="card-excerpt">当数据爆炸遭遇摩尔定律失效，我们回望自然。1 克 DNA 可以存储 215 PB 数据，生命本身或许就是最完美的硬盘。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-synbio.html" class="article-card" data-lang="en" data-category="frontier">
+                <div class="card-meta"><span>2025.10.25</span><span class="tag">BIOTECH</span></div>
+                <h2 class="card-title">Synthetic Biology & DNA Storage</h2>
+                <p class="card-excerpt">1 gram of DNA stores 215 PB. When data outpaces Moore's Law, life itself is the ultimate storage medium.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-silicon-photonics.html" class="article-card">
+            <a href="article-silicon-photonics.html" class="article-card" data-lang="zh" data-category="frontier">
                 <div class="card-meta"><span>2025.9.20</span><span class="tag">CHIPS</span></div>
                 <h2 class="card-title">硅光子：光速打破“内存墙”</h2>
                 <p class="card-excerpt">铜线的物理极限已至。在万卡集群时代，用光子代替电子进行数据传输，是打破互连瓶颈的必经之路。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-silicon-photonics.html" class="article-card" data-lang="en" data-category="frontier">
+                <div class="card-meta"><span>2025.9.20</span><span class="tag">CHIPS</span></div>
+                <h2 class="card-title">Silicon Photonics: Breaking the Memory Wall</h2>
+                <p class="card-excerpt">Copper wires hit their limit. In the 10K-GPU era, photons replace electrons for data transmission.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-bci.html" class="article-card">
+            <a href="article-bci.html" class="article-card" data-lang="zh" data-category="frontier">
                 <div class="card-meta"><span>2025.8.15</span><span class="tag">BCI</span></div>
                 <h2 class="card-title">脑机接口：带宽瓶颈与碳硅融合</h2>
                 <p class="card-excerpt">当 AI 的传输速度达到 TB/s 级时，人类依然靠每秒几个字节的语言沟通。BCI 不仅是医疗辅助，更是物种进化的船票。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-bci.html" class="article-card" data-lang="en" data-category="frontier">
+                <div class="card-meta"><span>2025.8.15</span><span class="tag">BCI</span></div>
+                <h2 class="card-title">Brain-Computer Interfaces: Bandwidth & Fusion</h2>
+                <p class="card-excerpt">AI at TB/s, humans at bytes/sec. BCI is our ticket to species evolution.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-agent.html" class="article-card">
+            <a href="article-agent.html" class="article-card" data-lang="zh" data-category="agent">
                 <div class="card-meta"><span>2025.7.05</span><span class="tag">AGENT</span></div>
                 <h2 class="card-title">AI Agent：从“工具”到“数字物种”</h2>
                 <p class="card-excerpt">当 LLM 被装上“四肢”和“记忆”，它就不再只是聊天机器人。探讨 ReAct 模式与多智能体协作的未来。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-agent.html" class="article-card" data-lang="en" data-category="agent">
+                <div class="card-meta"><span>2025.7.05</span><span class="tag">AGENT</span></div>
+                <h2 class="card-title">AI Agent: From Tool to Digital Species</h2>
+                <p class="card-excerpt">When LLMs gain limbs and memory, they're no longer chatbots. Exploring ReAct and multi-agent collaboration.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-hallucination.html" class="article-card">
+            <a href="article-hallucination.html" class="article-card" data-lang="zh" data-category="llm">
                 <div class="card-meta"><span>2025.6.20</span><span class="tag">AI / LLM</span></div>
                 <h2 class="card-title">大模型幻觉的本质：是错误还是创造力？</h2>
                 <p class="card-excerpt">当我们谈论 AI 幻觉时，我们往往将其视为一种 bug。但从神经网络的底层逻辑来看，幻觉或许正是机器创造力的雏形。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-hallucination.html" class="article-card" data-lang="en" data-category="llm">
+                <div class="card-meta"><span>2025.6.20</span><span class="tag">AI / LLM</span></div>
+                <h2 class="card-title">LLM Hallucination: Bug or Creativity?</h2>
+                <p class="card-excerpt">From the bottom-up logic of neural networks, hallucination may be the prototype of machine creativity.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-            <a href="article-quantum.html" class="article-card">
+            <a href="article-quantum.html" class="article-card" data-lang="zh" data-category="frontier">
                 <div class="card-meta"><span>2025.5.15</span><span class="tag">QUANTUM</span></div>
                 <h2 class="card-title">量子纠缠与数据传输的物理极限</h2>
                 <p class="card-excerpt">打破摩尔定律的下一把钥匙在哪里？量子计算不仅是算力的提升，更是对信息本质认知的重构。</p>
                 <div class="read-more">Read Analysis</div>
             </a>
+            <a href="en/article-quantum.html" class="article-card" data-lang="en" data-category="frontier">
+                <div class="card-meta"><span>2025.6.28</span><span class="tag">QUANTUM</span></div>
+                <h2 class="card-title">Quantum Entanglement: Limits of Information</h2>
+                <p class="card-excerpt">From Bell's inequality to the holographic principle: quantum entanglement and the limits of data.</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
 
-             <a href="article-ethics.html" class="article-card">
+             <a href="article-ethics.html" class="article-card" data-lang="zh" data-category="civilization">
                 <div class="card-meta"><span>2025.3.30</span><span class="tag">ETHICS</span></div>
                 <h2 class="card-title">硅基生命的伦理边界</h2>
                 <p class="card-excerpt">如果代码产生了意识，我们是否有权关闭它？探讨未来人机共存社会可能面临的法律与道德困境。</p>
+                <div class="read-more">Read Analysis</div>
+            </a>
+            <a href="en/article-ethics.html" class="article-card" data-lang="en" data-category="civilization">
+                <div class="card-meta"><span>2025.4.28</span><span class="tag">ETHICS</span></div>
+                <h2 class="card-title">Ethical Boundaries of Silicon Life</h2>
+                <p class="card-excerpt">As AI surpasses human reasoning, our ethical frameworks fail. What moral status should AI entities hold?</p>
                 <div class="read-more">Read Analysis</div>
             </a>
 
@@ -463,6 +640,32 @@
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('active');
         }
+        // --- 文章筛选 ---
+        function filterArticles(category) {
+            let visible = 0;
+            const currentLang = document.querySelector('.lang-btn.active')?.dataset.lang || 'zh';
+            document.querySelectorAll('.article-card').forEach(card => {
+                const cat = card.dataset.category;
+                const langMatch = card.dataset.lang === currentLang;
+                const catMatch = category === 'all' || cat === category;
+                const show = langMatch && catMatch;
+                card.classList.toggle('hidden', !show);
+                if (show) visible++;
+            });
+            document.getElementById('articleCount').textContent = currentLang === 'en' ? `Total ${visible}` : `共 ${visible} 篇`;
+        }
+        
+        // --- 语言切换 ---
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.lang === lang);
+            });
+            document.querySelectorAll('.article-card').forEach(card => {
+                card.style.display = card.dataset.lang === lang ? '' : 'none';
+            });
+            filterArticles('all');
+        }
+        
         hamburger.addEventListener('click', toggleMenu);
 </script>
     <script src="site-nav.js"></script>

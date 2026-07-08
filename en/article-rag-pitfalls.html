@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Your AI Doesn't Work Well: 90% of Enterprises Fall Into This RAG Trap - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/en/article-rag-pitfalls.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-rag-pitfalls.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-rag-pitfalls.html">
+    <meta name="description" content="Why your AI doesn't work well — 90% of enterprises fall into this RAG pitfall. RAG optimization, AI hallucinations, Chunking strategy, Rerank, enterprise knowledge base accuracy.">
+    <meta name="keywords" content="GeekHeron, Rag Pitfalls, AI, LLM, RAG Optimization, Chunking, Rerank, Enterprise Knowledge Base">
+    <link rel="icon" type="image/png" href="../logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: 0; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul, .article-body ol { margin-bottom: 25px; padding-left: 22px; }
+        .article-body li { margin-bottom: 15px; }
+        .seo-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center; }
+        .seo-footer p { color: #777; margin-bottom: 12px; }
+        .seo-link { display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s; }
+        .seo-link:hover { color: #00ffc3; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+</style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why Your AI Doesn't Work Well: 90% of Enterprises Fall Into This RAG Trap",
+  "description": "Why your AI doesn't work well — 90% of enterprises fall into this RAG pitfall. RAG optimization, AI hallucinations, Chunking strategy, Rerank, enterprise knowledge base accuracy.",
+  "author": {
+    "@type": "Person",
+    "name": "Wang Jianfeng (GeekHeron)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/en/article-rag-pitfalls.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "en"
+}
+    </script>
+    <link rel="stylesheet" href="../site-nav.css">
+</head>
+<body>
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About Me &amp; Collaboration</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">RAG OPTIMIZATION</span>
+                <h1 class="article-title">Why Your AI Doesn't Work Well: 90% of Enterprises Fall Into This RAG Trap</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: RAG optimization, AI irrelevant answers, Chunking strategy, Rerank, enterprise knowledge base accuracy</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.03.26</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: RAG</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>1. The Problem Isn't Necessarily the Model</h2>
+                <p>After launching a knowledge base AI, many enterprises immediately blame the model for not being "smart enough." But in most real-world projects, the real issue lies in the RAG pipeline: document parsing loses structure, chunking strategy is crude, retrieval recall is insufficient, reranking is missing, and prompts don't constrain the model to cited sources. The model is just the last mile — if the context it receives is flawed, the answer will be too.</p>
+
+                <h2>2. The Five Most Common Pitfalls</h2>
+                <h3>2.1 Chunking Too Aggressively</h3>
+                <p>If each chunk is just one or two sentences, the model ends up with context-free fragments. For example, the phrase "requires approval" from a policy document means nothing without knowing whether it refers to procurement, reimbursement, or contracts. The fix is to split along heading and semantic boundaries and always preserve parent headings.</p>
+                <h3>2.2 Chunking Too Generously</h3>
+                <p>Overly long chunks mix multiple topics together. A chunk may appear relevant to a query but contains so much noise that the model's summary becomes vague and unreliable. Each chunk should carry exactly one clear topic.</p>
+                <h3>2.3 Relying on Vector Search Alone</h3>
+                <p>Vector search excels at semantic similarity but can be inconsistent with serial numbers, product models, customer names, and abbreviations. Enterprise queries often depend on exact keyword matches, so combining vector retrieval with keyword search is essential.</p>
+                <h3>2.4 No Reranking Step</h3>
+                <p>Initial recall only means "potentially relevant," not "best fit for this answer." Without reranking, the model may work with high-ranking but informationally incomplete chunks. Reranking significantly improves the quality of the evidence the model uses to answer.</p>
+                <h3>2.5 No Refusal Mechanism</h3>
+                <p>When the knowledge base lacks relevant material, the system should refuse to answer or prompt the user to supplement. If the prompt doesn't explicitly require "answer based solely on retrieved content," the model may fall back on its general knowledge to fill in the gaps — producing exactly the kind of hallucination enterprises fear most.</p>
+
+                <h2>3. Diagnostic Approach</h2>
+                <p>Don't just evaluate the final answer. Break every QA interaction into three stages: how the user's question was rewritten, what chunks were retrieved, and which chunks the model actually used to generate its answer. Open these three logs and most problems become immediately traceable.</p>
+                <ul>
+                    <li><strong>If retrieved results are irrelevant:</strong> Optimize chunking, Embedding, keyword recall, and query rewriting.</li>
+                    <li><strong>If retrieved results are relevant but the answer is wrong:</strong> Improve prompts, citation constraints, and context ordering.</li>
+                    <li><strong>If the answer is correct but users don't trust it:</strong> Add source citations, document timestamps, and clickable references.</li>
+                </ul>
+
+                <h2>4. Optimization Priorities</h2>
+                <p>Fix document structure first, then retrieval recall, then add reranking, and finally optimize the generation prompt. Many teams jump straight to tuning the prompt, only to make wrong answers read more fluently. RAG is fundamentally an information supply chain — if the upstream is unstable, no amount of downstream polish will save you.</p>
+
+                <h2>5. Conclusion</h2>
+                <p>A good enterprise AI doesn't come from plugging in a model — it comes from continuously refining the knowledge pipeline. Get chunking, recall, reranking, citations, and refusal mechanisms right, and RAG can evolve from "able to answer" to "answering accurately, traceably, and reliably."</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>Learn more about RAG diagnostics, optimization, and knowledge base engineering:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Helping enterprises build industrial-grade AI productivity</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>
+</body>
+</html>

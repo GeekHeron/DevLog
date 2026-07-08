@@ -91,7 +91,7 @@
         .doc-wrapper {
             max-width: 900px;
             margin: 0 auto;
-            padding: 60px 20px 100px;
+            padding: 120pxpx 20px 100px;
             position: relative;
             z-index: 10;
         }
@@ -244,7 +244,7 @@
 
             .nav-links { 
                 position: fixed; top: 0; right: 0; height: 100vh; width: 70%; 
-                background: #111; flex-direction: column; padding: 80px 40px; 
+                background: #111; flex-direction: column; padding: 120pxpx 40px; 
                 transform: translateX(100%); transition: 0.3s; z-index: 101; border-left: 1px solid #333;
             }
             .nav-links.open { transform: translateX(0); }
@@ -453,12 +453,6 @@
         }
         hamburger.addEventListener('click', toggleMenu);
 
-        // 移动端菜单切换
-        function toggleMenu() {
-            document.querySelector('.hamburger').classList.toggle('active');
-            document.getElementById('navLinks').classList.toggle('open');
-        }
-
         // 背景动画 (复用之前的 Smoke/Particle 效果，保持视觉统一)
         const canvas = document.getElementById('zen-bg');
         const ctx = canvas.getContext('2d');
@@ -510,14 +504,6 @@
         resize();
         for(let i=0; i<50; i++) particles.push(new Particle());
         animateBg();
-    
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        if(hamburger) hamburger.addEventListener('click', toggleMenu);
 </script>
     <script src="site-nav.js"></script>
 </body>

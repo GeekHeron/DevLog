@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent System Design: A Complete Guide from 0 to 1 - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/en/article-multi-agent.html">
+    <meta name="description" content="Multi-Agent system design: a complete guide from 0 to 1. Multi-Agent system design, multi-agent collaboration, AI team architecture, Agent communication protocols, enterprise-grade Agents.">
+    <meta name="keywords" content="GeekHeron, Multi Agent, AI, LLM, Large Language Model, Technical Analysis, System Architecture">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-multi-agent.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-multi-agent.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-multi-agent.html">
+    <link rel="icon" type="image/png" href="../logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: 0; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul, .article-body ol { margin-bottom: 25px; padding-left: 22px; }
+        .article-body li { margin-bottom: 15px; }
+        .seo-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center; }
+        .seo-footer p { color: #777; margin-bottom: 12px; }
+        .seo-link { display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s; }
+        .seo-link:hover { color: #00ffc3; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+</style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Multi-Agent System Design: A Complete Guide from 0 to 1",
+  "description": "Multi-Agent system design: a complete guide from 0 to 1. Multi-Agent system design, multi-agent collaboration, AI team architecture, Agent communication protocols, enterprise-grade Agents.",
+  "author": {
+    "@type": "Person",
+    "name": "GeekHeron (Jianfeng Wang)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/en/article-multi-agent.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "en"
+}
+    </script>
+    <link rel="stylesheet" href="../site-nav.css">
+</head>
+<body>
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">In-Depth</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About &amp; Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">MULTI-AGENT</span>
+                <h1 class="article-title">Multi-Agent System Design: A Complete Guide from 0 to 1</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: Multi-Agent System Design, Multi-Agent Collaboration, AI Team Architecture, Agent Communication Protocol, Enterprise-Grade Agent</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.08</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: ARCHITECTURE</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>I. Why Do We Need Multi-Agent?</h2>
+                <p>A single Agent works well for well-bounded tasks, but enterprise scenarios often simultaneously involve requirement clarification, information retrieval, data validation, tool invocation, compliance review, and result delivery. Stuffing all capabilities into a single prompt makes the system hard to maintain and debug. The core value of Multi-Agent is decomposing complex tasks into multiple agents with clear responsibilities, collaborating like a small team.</p>
+                <p>In enterprise deployment, multi-agent is not about creating "lively conversations"—it's about building an engineering structure that is extensible, observable, and replaceable. Every Agent should have a well-defined role, input, output, permission boundaries, and failure-handling strategy.</p>
+
+                <h2>II. System Layering from 0 to 1</h2>
+                <h3>1. Orchestration Layer: Decides Who Does What</h3>
+                <p>The orchestration layer understands the task objective and delegates work to the appropriate Agent. It should not do all the work directly; like a project manager, it maintains task status, dependencies, and delivery criteria. Common implementations include rule-based routing, LLM routing, state-machine routing, and hybrid routing.</p>
+                <h3>2. Expert Layer: Owns Specific Outputs</h3>
+                <p>Expert Agents can be divided by business capability—e.g., retrieval Agent, data analysis Agent, copywriting Agent, code Agent, audit Agent. Each expert only exposes the tools it needs, avoiding overly broad permissions that could cause errors.</p>
+                <h3>3. Review Layer: Ensures Quality Closure</h3>
+                <p>Complex tasks cannot rely on a single shot. A review Agent should check factual consistency, format compliance, business constraints, and risk points. For high-risk scenarios, a manual approval node should be introduced.</p>
+
+                <h2>III. Communication Protocol Matters More Than "Role Prompting"</h2>
+                <p>Many failed Multi-Agent projects stop at role-play—"You're expert A, you're expert B"—without defining a message format. A truly usable collaboration system needs a unified protocol: task objectives, context, evidence sources, tool call results, confidence levels, blockers, and next-step suggestions should all be passed as structured fields.</p>
+                <ul>
+                    <li><strong>Task:</strong> Describes the goal, completion criteria, and acceptance criteria.</li>
+                    <li><strong>Context:</strong> Provides business background, history, and known constraints.</li>
+                    <li><strong>Evidence:</strong> Stores retrievable evidence like search results, database responses, and file references.</li>
+                    <li><strong>Decision:</strong> Records why an Agent chose a particular action, useful for auditing and retrospectives.</li>
+                </ul>
+
+                <h2>IV. Typical Enterprise Workflow</h2>
+                <p>Take "automated customer business analysis report generation" as an example: The orchestration Agent receives the request, passes it to the data Agent to pull CRM and order data; the analysis Agent identifies revenue changes, repurchase trends, and anomalous customers; the copywriting Agent generates the first draft; the review Agent checks numerical consistency; finally, a human approves the distribution scope. This decomposition lets every step be tested individually and retried locally on failure.</p>
+
+                <h2>V. Implementation Advice</h2>
+                <p>When building a Multi-Agent system from scratch, don't aim for full autonomy right away. A safer path is to first decompose existing SOPs into nodes, fix the main flow with a state machine, and then gradually replace nodes that require understanding, judgment, and generation with Agents. This approach preserves the flexibility of AI while retaining the controllability enterprises need.</p>
+                <p>Ultimately, the goal of Multi-Agent is not to make machines "hold meetings"—it's to break complex business processes into governable intelligent pipelines, where every generation, every judgment, and every tool call can be traced, reused, and optimized.</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>Learn more about multi-agent systems and enterprise Agent architecture:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Building Industrial-Grade AI Productivity for Enterprises</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>
+</body>
+</html>

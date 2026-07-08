@@ -107,7 +107,7 @@
 
         /* --- 4. 文章样式 --- */
         .container {
-            max-width: 800px; margin: 0 auto; padding: 80px 20px 150px;
+            max-width: 800px; margin: 0 auto; padding: 120px 20px 150px;
             position: relative; z-index: 10;
         }
 
@@ -372,14 +372,6 @@
         window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
         init();
         animate();
-    
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        if(hamburger) hamburger.addEventListener('click', toggleMenu);
 </script>
     <script src="site-nav.js"></script>
 </body>

@@ -4,7 +4,7 @@
     <meta property="og:title" content="Transformer 原理通俗讲解">
     <meta property="og:description" content="从注意力机制到完整架构，用直觉理解 Transformer 如何工作">
     <meta property="og:image" content="https://geekheron.space/logo.png"> 
-    <meta property="og:url" 	content="https://geekheron.space/transformer.html">
+    <meta property="og:url" content="https://geekheron.space/transformer.html">
     <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,7 +104,7 @@
 
         /* --- 文章容器 --- */
         .container {
-            max-width: 800px; margin: 0 auto; padding: 80px 20px 150px;
+            max-width: 800px; margin: 0 auto; padding: 120px 20px 150px;
             position: relative; z-index: 10;
         }
 
@@ -153,18 +153,18 @@
 
         /* --- 交互组件所需变量（沿用深色主题） --- */
         .attn-widget {
-            --surface-1: rgba(255,255,255,0.06);
-            --surface-2: rgba(255,255,255,0.12);
-            --text-primary: #eee;
-            --text-secondary: #999;
-            --text-muted: #666;
-            --border-strong: #444;
-            --border-stronger: #555;
+            --surface-1: #f5f5f5;
+            --surface-2: #e8e8e8;
+            --text-primary: #222;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --border-strong: #ccc;
+            --border-stronger: #aaa;
             --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
             margin: 40px 0;
             padding: 30px 20px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #333;
+            background: #fff;
+            border: 1px solid #ddd;
             border-radius: 12px;
         }
         .attn-widget .token-btn {
@@ -183,9 +183,9 @@
         }
         .attn-widget .token-btn:hover { background: var(--surface-2); }
         .attn-widget .token-btn.active {
-            background: #412402;
+            background: #fef3e0;
             border-color: #EF9F27;
-            color: #FAC775;
+            color: #8B5E00;
         }
         .attn-widget .hint { font-size: 13px; color: var(--text-muted); margin-top: 6px; text-align: center; }
         .attn-widget .legend { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--text-secondary); }
@@ -243,8 +243,7 @@
                 margin-left: 0;
             }
 
-            .nav-links { display: flex; width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-            .nav-links a { margin-left: 0; font-size: 14px; }
+
             
             .container { padding: 40px 20px 100px; }
             .article-header { margin-bottom: 40px; padding-bottom: 30px; }
@@ -420,21 +419,13 @@
         <a href="article.html" class="back-btn">← 返回文章列表</a>
     </main>
 
-    <script>const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        hamburger.addEventListener('click', toggleMenu);
-
+    <script>
         /* 粒子背景动画 (保持统一) */
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
         let width, height;
         const particles = [];
-        const isMobile = window.innerWidth < 768;
-        const numParticles = isMobile ? 400 : 1500;
+        let numParticles = window.innerWidth < 768 ? 400 : 1500;
         
         function resize() {
             width = window.innerWidth; height = window.innerHeight;
@@ -464,7 +455,7 @@
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
-        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        window.addEventListener('resize', () => { resize(); particles.length = 0; numParticles = window.innerWidth < 768 ? 400 : 1500; init(); });
         init(); animate();
     </script>
 
@@ -595,14 +586,6 @@
 
         renderAttnWidget();
         window.addEventListener('resize', drawAttnArrows);
-    
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        if(hamburger) hamburger.addEventListener('click', toggleMenu);
 </script>
     <script src="site-nav.js"></script>
 </body>

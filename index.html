@@ -103,8 +103,8 @@
         }
 
         /* --- 导航栏 --- */
-        header {
-            position: fixed;
+        header.site-header {
+            position: fixed !important;
             top: 0;
             left: 0;
             width: 100%;
@@ -422,26 +422,7 @@
     </div>
 
     <script>
-        // --- 1. 移动端菜单逻辑 ---
-        const hamburger = document.querySelector('.hamburger');
-        const nav = document.querySelector('nav');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            nav.classList.toggle('active');
-        }
-        hamburger.addEventListener('click', toggleMenu);
-
-        // --- 2. 时钟模块 ---
-        function updateClock() {
-            const now = new Date();
-            const formatTime = (unit) => String(unit).padStart(2, '0');
-            const timeString = `T+${formatTime(now.getHours())}: ${formatTime(now.getMinutes())}: ${formatTime(now.getSeconds())}`;
-            document.getElementById('clock').textContent = timeString;
-        }
-        setInterval(updateClock, 1000); 
-        updateClock();
-
-        // --- 3. 打字机效果模块 ---
+        // --- 1. 打字机效果模块 ---
         const textToType = "技术真正的价值，不在于展示智能，而在于稳定运行于真实业务。GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。";
         const typeElement = document.getElementById('typing-text');
         let typeIndex = 0;

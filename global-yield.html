@@ -85,7 +85,7 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 100px 20px;
+            padding: 120px 20px;
             position: relative; z-index: 10;
         }
 
@@ -478,22 +478,6 @@
         window.addEventListener('resize', () => { init(); });
         init(); 
         animate();
-
-        // --- 菜单交互逻辑 ---
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-    
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        if(hamburger) hamburger.addEventListener('click', toggleMenu);
 </script>
     <script src="site-nav.js"></script>
 </body>

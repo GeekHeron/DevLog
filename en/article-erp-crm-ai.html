@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrating AI into Enterprise Systems (ERP / CRM / WeChat): A Real-World Case Study - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/en/article-erp-crm-ai.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-erp-crm-ai.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-erp-crm-ai.html">
+    <meta name="description" content="Integrating AI into enterprise systems (ERP / CRM / WeChat): a real-world case study. ERP AI integration, CRM AI automation, WeChat customer operations, enterprise system integration, LLM API retrofit.">
+    <meta name="keywords" content="GeekHeron, Erp Crm Ai, AI, LLM, Enterprise Integration, CRM Automation, WeChat Operations">
+    <link rel="icon" type="image/png" href="../logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: 0; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul, .article-body ol { margin-bottom: 25px; padding-left: 22px; }
+        .article-body li { margin-bottom: 15px; }
+        .seo-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center; }
+        .seo-footer p { color: #777; margin-bottom: 12px; }
+        .seo-link { display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s; }
+        .seo-link:hover { color: #00ffc3; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+</style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Integrating AI into Enterprise Systems (ERP / CRM / WeChat): A Real-World Case Study",
+  "description": "Integrating AI into enterprise systems (ERP / CRM / WeChat): a real-world case study. ERP AI integration, CRM AI automation, WeChat customer operations, enterprise system integration, LLM API retrofit.",
+  "author": {
+    "@type": "Person",
+    "name": "Wang Jianfeng (GeekHeron)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/en/article-erp-crm-ai.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "en"
+}
+    </script>
+    <link rel="stylesheet" href="../site-nav.css">
+</head>
+<body>
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About Me &amp; Collaboration</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ERP / CRM</span>
+                <h1 class="article-title">Integrating AI into Enterprise Systems (ERP / CRM / WeChat): A Real-World Case Study</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: ERP AI integration, CRM AI automation, WeChat customer operations, enterprise system integration, LLM API retrofit</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.03.15</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: CASE STUDY</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>1. Why Traditional Enterprise Systems Need AI</h2>
+                <p>ERP, CRM, and WeChat ecosystems hold an enterprise's most critical data: orders, inventory, customer records, contracts, communication logs, and post-sales issues. But these systems are typically form-and-process-centric — employees must repeatedly query, copy, assess, and fill in fields. The value of AI integration isn't replacing these systems; it's adding comprehension, summarization, prediction, and automated execution on top of them.</p>
+
+                <h2>2. Case Background</h2>
+                <p>A B2B service company simultaneously uses ERP for order and delivery management, CRM for sales pipeline and customer stage tracking, and WeChat for daily customer communication. The problems: salespeople don't know a customer's delivery history, customer service can't quickly determine a customer's tier, and management manually compiles operational reports every week. The data exists in the systems, but it hasn't been turned into timely, actionable insights.</p>
+
+                <h2>3. Project Objectives</h2>
+                <ul>
+                    <li>Sales can generate customer follow-up suggestions with one click in the CRM.</li>
+                    <li>Customer service can quickly look up orders, contracts, and after-sales records from WeChat side.</li>
+                    <li>Management automatically receives weekly operational reports and at-risk customer lists.</li>
+                    <li>Critical actions require human confirmation — AI does not directly modify core business data.</li>
+                </ul>
+
+                <h2>4. System Integration Architecture</h2>
+                <h3>4.1 Data Unification</h3>
+                <p>First, synchronize data via API or intermediate database: ERP, CRM, WeChat customer tags, and communication summaries — building a unified customer ID. Without a unified ID, the AI can easily confuse similarly named customers, branch offices, and historical contacts.</p>
+                <h3>4.2 Business Tool Encapsulation</h3>
+                <p>Encapsulate capabilities like order lookup, contract lookup, customer stage retrieval, and task creation into controlled tools. The AI doesn't access the database directly — it calls these controlled tools, which handle permissions, auditing, and field masking.</p>
+                <h3>4.3 Role-Specific Agents</h3>
+                <p>Design separate agents for sales, customer service, and management. The sales agent focuses on opportunity progression, the customer service agent on issue resolution, and the management agent on trends and risk detection. Each role uses different prompts, permissions, and output formats.</p>
+
+                <h2>5. Real Business Workflow</h2>
+                <p>When a salesperson opens a customer page, the system automatically summarizes the last 12 months of orders, contract status, service tickets, and WeChat conversation highlights, generating a "recommended next steps" briefing. If a customer's complaints have increased while repeat purchases declined, the AI prompts the salesperson to address delivery satisfaction before pursuing renewal. After the salesperson confirms, the system automatically creates a CRM task and drafts a WeChat message.</p>
+
+                <h2>6. Risk Controls</h2>
+                <p>ERP and CRM are core business systems. AI integration must adhere to the principle of "query first, recommend second, confirm before execute." For actions like price modifications, refunds, contract changes, or customer deletions, the AI can only generate suggestions and approval requests — it cannot execute directly. Every tool call must log the user, timestamp, input, output, and business object.</p>
+
+                <h2>7. Results and Insights</h2>
+                <p>After the retrofit, the time salespeople spent preparing customer materials dropped significantly, customer service responses became more consistent, and management could identify delivery and renewal risks earlier. This case demonstrates that the breakthrough for enterprise AI isn't replacing ERP or CRM — it's making existing systems better at understanding, reminding, and coordinating.</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>Learn more about AI integration with ERP, CRM, and WeChat ecosystems:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Helping enterprises build industrial-grade AI productivity</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>
+</body>
+</html>

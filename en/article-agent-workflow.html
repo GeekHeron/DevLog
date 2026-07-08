@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Workflow Architecture: From Dialog Box to Logic Flow - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/en/article-agent-workflow.html">
+    <meta name="description" content="Deconstructing industrial-grade AI Agent workflow architecture: How to replace simple dialog boxes with state machines to build predictable, auditable production-grade Agent systems and memory management.">
+    <meta name="keywords" content="GeekHeron, Agent Workflow, AI, LLM, Large Language Model, Technical Analysis, System Architecture">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-agent-workflow.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-agent-workflow.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-agent-workflow.html">
+    <link rel="icon" type="image/png" href="../logo.png">
+    
+    <style>
+        /* --- 1. Global Styles --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. Background Effect --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. Navigation (with mobile hamburger menu) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* Hamburger button */
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: #fff; transition: 0.3s;
+        }
+
+        /* --- 4. Article Typography --- */
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 30px;
+        }
+
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px 0; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul { margin-bottom: 25px; padding-left: 20px; }
+        .article-body li { margin-bottom: 15px; }
+
+        .seo-footer {
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
+        }
+        .seo-link {
+            display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
+        }
+        .seo-link:hover { color: #00ffc3; }
+
+        /* --- 5. Mobile Responsive --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AI Agent Workflow Architecture: From Dialog Box to Logic Flow",
+  "description": "Deconstructing industrial-grade AI Agent workflow architecture: How to replace simple dialog boxes with state machines to build predictable, auditable production-grade Agent systems and memory management.",
+  "author": {
+    "@type": "Person",
+    "name": "GeekHeron (Jianfeng Wang)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/en/article-agent-workflow.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "en"
+}
+    </script>
+    <link rel="stylesheet" href="../site-nav.css">
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">In-Depth</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About &amp; Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ENGINEERING & AGENT</span>
+                <h1 class="article-title">AI Agent Workflow Architecture: From Dialog Box to Logic Flow</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: AI Agent Workflow Design, State Machine AI Architecture, Production-Grade Agent Development, OpenClaw Agent, Agent Memory Management</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.18</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: ARCHITECTURE</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+                <h2>I. From "Dialog Box" to "Logic Flow": The Industrialization of Agents</h2>
+                <p>In the early days of the AI wave, most people's understanding was stuck at "conversation." However, for enterprise-grade applications, mere conversation cannot generate productivity. What we need is not a chatbot, but an "intelligent executive" that understands complex SOPs (Standard Operating Procedures), can autonomously invoke tools, and handle exceptions.</p>
+                <p>This is the core value of AI Agent workflow: embedding LLM reasoning capabilities into a predictable, controllable engineering framework.</p>
+
+                <h2>II. The Three Foundational Pillars of Production-Grade Agents</h2>
+                
+                <h3>1. Planning and the ReAct Framework</h3>
+                <p>A mature Agent should not give an answer directly—it should think first. We adopt the ReAct (Reason + Act) model, requiring the Agent to generate a "Thought" before every step, specify the tool to invoke (Action), and then adjust its subsequent path based on the "Observation" result.</p>
+                <p>In the OpenClaw architecture, this process is atomized into distinct execution nodes, ensuring every step is traceable.</p>
+
+                <h3>2. State Machine Control</h3>
+                <p>Production environments abhor uncertainty. If we leave everything to the LLM's free will, the Agent might spiral into infinite loops or logical dead ends. <strong>Engineering solution:</strong> Introduce a finite state machine. By explicitly defining a Directed Acyclic Graph (DAG), we stipulate which tools the Agent can invoke under which states. For example: before passing financial system authentication, the Agent must never execute a "transfer" action. This constraint ensures system robustness.</p>
+
+                <h3>3. Long- and Short-Term Memory Management</h3>
+                <ul>
+                    <li><strong>Short-term memory:</strong> Uses the context window to retain the immediate state of the current task.</li>
+                    <li><strong>Long-term memory:</strong> Stores historical experience via vector databases (e.g., Milvus or Chroma). When the Agent encounters a similar problem, the system automatically retrieves "how I succeeded last time," enabling adaptive improvement.</li>
+                </ul>
+
+                <h2>III. Hands-On: Building an Automated Vulnerability Analysis Agent</h2>
+                <p>Suppose we need an Agent to automatically scan code and submit fix suggestions:</p>
+                <ol>
+                    <li><strong>Trigger:</strong> Listen for a GitHub Webhook.</li>
+                    <li><strong>Planning:</strong> The Agent invokes the Read_Code tool to analyze the code structure.</li>
+                    <li><strong>Tool execution:</strong> Invoke a static analysis tool to retrieve error logs.</li>
+                    <li><strong>Reasoning and fixing:</strong> Feed error logs back to the LLM to generate a fix patch.</li>
+                    <li><strong>Verification:</strong> The Agent automatically attempts to compile the patched code; if it fails, enter a retry loop.</li>
+                </ol>
+
+                <h2>IV. Conclusion: The Engineering Value of Source-Code Delivery</h2>
+                <p>Agent development is not just about writing prompts—it's about writing logic. Through OpenClaw's node-flow management, developers can decouple complex business logic. For enterprise customers seeking source-code delivery, this clear, workflow-based architecture is the core digital asset.</p>
+            </div>
+
+            <footer class="seo-footer">
+                <p>Learn more about AI Agent workflow design and enterprise private deployment:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Building Industrial-Grade AI Productivity for Enterprises</a>
+            </footer>
+        </article>
+    </main>
+
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000; 
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>
+</body>
+</html>

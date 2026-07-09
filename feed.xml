@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>GeekHeron DevLog · 关于系统、AI 与判断的记录</title>
+    <link>https://geekheron.space/</link>
+    <description>GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 09 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://geekheron.space/feed.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://geekheron.space/logo.png</url>
+      <title>GeekHeron DevLog</title>
+      <link>https://geekheron.space/</link>
+    </image>
+
+    <item>
+      <title>2026 年中科技趋势观察：AI 进入系统化落地的分水岭</title>
+      <link>https://geekheron.space/article-2026-midyear-trends.html</link>
+      <description>Grok 4.5、Meta 超级智能眼镜、深度伪造检测、自动驾驶监管——AI 从单点创新转向系统化落地的关键转折点。五大信号与下半年的三个判断。</description>
+      <pubDate>Thu, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-2026-midyear-trends.html</guid>
+      <category>FRONTIER</category>
+    </item>
+
+    <item>
+      <title>AI Agent 工作流架构：从对话框到逻辑流</title>
+      <link>https://geekheron.space/article-agent-workflow.html</link>
+      <description>解析AI Agent工作流的工业化架构设计：如何用状态机替代简单对话框，实现可预测、可追溯的生产级Agent系统与记忆管理机制。</description>
+      <pubDate>Fri, 17 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-agent-workflow.html</guid>
+      <category>ARCHITECTURE</category>
+    </item>
+
+    <item>
+      <title>AI Agent：从工具到数字物种</title>
+      <link>https://geekheron.space/article-agent.html</link>
+      <description>深入探讨AI Agent如何从简单工具演变为数字物种，及其对企业和开发者的影响。</description>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-agent.html</guid>
+      <category>AI Agent</category>
+    </item>
+
+    <item>
+      <title>脑机接口（BCI）与 AI 的融合</title>
+      <link>https://geekheron.space/article-bci.html</link>
+      <description>解析脑机接口技术与 LLM 的融合可能性，探讨 Neuralink 等前沿技术对 AI 系统的反向影响。</description>
+      <pubDate>Mon, 20 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-bci.html</guid>
+      <category>FRONTIER</category>
+    </item>
+
+    <item>
+      <title>具身智能：当 AI 长出身体</title>
+      <link>https://geekheron.space/article-embodied.html</link>
+      <description>探索具身智能（Embodied AI）概念，分析物理世界中的 AI 感知、决策与行动闭环。</description>
+      <pubDate>Sun, 26 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-embodied.html</guid>
+      <category>FRONTIER</category>
+    </item>
+
+    <item>
+      <title>ERP 与 CRM 的 AI 化改造</title>
+      <link>https://geekheron.space/article-erp-crm-ai.html</link>
+      <description>传统企业系统如何融入 AI 能力，实现真正的智能 ERP 与 CRM 转型。</description>
+      <pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-erp-crm-ai.html</guid>
+      <category>ENTERPRISE</category>
+    </item>
+
+    <item>
+      <title>AI 伦理：当系统开始决策</title>
+      <link>https://geekheron.space/article-ethics.html</link>
+      <description>探讨 AI 系统的伦理困境，从数据偏见、算法透明度到人机协作的边界问题。</description>
+      <pubDate>Sat, 02 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-ethics.html</guid>
+      <category>PHILOSOPHY</category>
+    </item>
+
+    <item>
+      <title>飞书 + AI 自动化：打造企业"数字员工"的完整方案</title>
+      <link>https://geekheron.space/article-feishu-bot.html</link>
+      <description>详解如何利用飞书（Lark）开放平台与 AI 能力，构建企业级自动化数字员工系统。</description>
+      <pubDate>Wed, 01 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-feishu-bot.html</guid>
+      <category>ENTERPRISE</category>
+    </item>
+
+    <item>
+      <title>核聚变 AI：当深度学习遇见可控聚变</title>
+      <link>https://geekheron.space/article-fusion.html</link>
+      <description>探析 AI 在可控核聚变中的角色，从等离子体建模到实时控制系统优化。</description>
+      <pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-fusion.html</guid>
+      <category>FRONTIER</category>
+    </item>
+
+    <item>
+      <title>幻觉（Hallucination）的技术根源</title>
+      <link>https://geekheron.space/article-hallucination.html</link>
+      <description>深入分析 LLM 幻觉的底层机制，从注意力机制到训练数据的内在局限。</description>
+      <pubDate>Thu, 09 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-hallucination.html</guid>
+      <category>ENGINEERING</category>
+    </item>
+
+    <item>
+      <title>企业部署 LLM 的真实 ROI 分析</title>
+      <link>https://geekheron.space/article-llm-roi.html</link>
+      <description>从成本和收益角度分析企业部署大语言模型的真实 ROI，避免常见的投资陷阱。</description>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-llm-roi.html</guid>
+      <category>BUSINESS</category>
+    </item>
+
+    <item>
+      <title>多智能体（Multi-Agent）系统设计：从0到1完整方案</title>
+      <link>https://geekheron.space/article-multi-agent.html</link>
+      <description>多智能体协作系统的架构设计方法论，涵盖通信协议、任务编排与冲突解决机制。</description>
+      <pubDate>Fri, 12 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-multi-agent.html</guid>
+      <category>ARCHITECTURE</category>
+    </item>
+
+    <item>
+      <title>Neuralink 与 LLM：脑机接口如何重塑 AI 交互</title>
+      <link>https://geekheron.space/article-neuralink-llm.html</link>
+      <description>当 Neuralink 遇上大语言模型：脑机接口能否成为下一代 AI 交互范式的突破口。</description>
+      <pubDate>Sun, 10 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-neuralink-llm.html</guid>
+      <category>FRONTIER</category>
+    </item>
+
+    <item>
+      <title>OpenClaw 自动化实践：从 Agent 到完整工作流</title>
+      <link>https://geekheron.space/article-openclaw-automation.html</link>
+      <description>基于 OpenClaw 架构，构建可维护、可扩展的企业级 AI Agent 自动化工作流系统。</description>
+      <pubDate>Sun, 21 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-openclaw-automation.html</guid>
+      <category>ENGINEERING</category>
+    </item>
+
+    <item>
+      <title>企业私有化部署大模型全流程</title>
+      <link>https://geekheron.space/article-private-llm.html</link>
+      <description>从硬件选型、模型量化到推理优化，完整的企业级私有化 LLM 部署实战指南。</description>
+      <pubDate>Wed, 06 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-private-llm.html</guid>
+      <category>ENGINEERING</category>
+    </item>
+
+    <item>
+      <title>量子计算与 AI：交叉路口</title>
+      <link>https://geekheron.space/article-quantum.html</link>
+      <description>量子计算如何影响 AI 的未来发展，从量子机器学习到量子增强优化算法。</description>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-quantum.html</guid>
+      <category>FRONTIER</category>
+    </item>
+
+    <item>
+      <title>企业知识库 AI（RAG）怎么搭？从0到上线完整指南</title>
+      <link>https://geekheron.space/article-rag-deployment.html</link>
+      <description>RAG（检索增强生成）系统从架构设计到上线的完整实战指南，适用企业知识管理场景。</description>
+      <pubDate>Sat, 24 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-rag-deployment.html</guid>
+      <category>ENGINEERING</category>
+    </item>
+
+    <item>
+      <title>RAG 的七大陷阱</title>
+      <link>https://geekheron.space/article-rag-pitfalls.html</link>
+      <description>RAG 系统在实际落地中常见的性能与可靠性陷阱，以及相应的规避策略。</description>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-rag-pitfalls.html</guid>
+      <category>ENGINEERING</category>
+    </item>
+
+    <item>
+      <title>SaaS 还是私有化？企业 AI 部署决策指南</title>
+      <link>https://geekheron.space/article-saas-vs-private.html</link>
+      <description>SaaS 与私有化部署的全面对比分析，帮助企业做出正确的 AI 部署策略。</description>
+      <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-saas-vs-private.html</guid>
+      <category>BUSINESS</category>
+    </item>
+
+    <item>
+      <title>芯片进化论：从摩尔定律到 AI 加速</title>
+      <link>https://geekheron.space/article-silicon-evolution.html</link>
+      <description>芯片产业的发展轨迹，从传统 CPU 到 AI 加速器的技术演进与现实制约。</description>
+      <pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-silicon-evolution.html</guid>
+      <category>TECH</category>
+    </item>
+
+    <item>
+      <title>硅光子：AI 算力的下一个瓶颈突破</title>
+      <link>https://geekheron.space/article-silicon-photonics.html</link>
+      <description>硅光子技术如何突破传统电子互连的带宽和功耗瓶颈，支撑下一代 AI 算力基础设施。</description>
+      <pubDate>Thu, 19 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-silicon-photonics.html</guid>
+      <category>TECH</category>
+    </item>
+
+    <item>
+      <title>Starship 工程哲学：大规模迭代的技术启示</title>
+      <link>https://geekheron.space/article-starship.html</link>
+      <description>从 SpaceX Starship 的工程方法中提炼可应用于软件和 AI 系统开发的核心理念。</description>
+      <pubDate>Mon, 23 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-starship.html</guid>
+      <category>TECH</category>
+    </item>
+
+    <item>
+      <title>合成生物学：当 AI 开始编写生命代码</title>
+      <link>https://geekheron.space/article-synbio.html</link>
+      <description>AI 在合成生物学中的角色，从蛋白质结构预测到基因回路设计的工程化方法。</description>
+      <pubDate>Fri, 27 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-synbio.html</guid>
+      <category>FRONTIER</category>
+    </item>
+
+  </channel>
+</rss>

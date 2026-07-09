@@ -273,6 +273,53 @@
         }
 
         /* --- Social grid --- */
+        /* Collapsible contact section */
+        .social-collapse {
+            margin-top: 30px;
+            border: 1px solid #222;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .social-collapse[open] {
+            border-color: rgba(255,215,0,0.3);
+            background: rgba(255,255,255,0.05);
+        }
+        .social-collapse-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 14px 18px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            user-select: none;
+        }
+        .social-collapse-summary::-webkit-details-marker { display: none; }
+        .social-collapse-summary::marker { content: ''; }
+        .social-collapse-summary:hover { color: #fff; }
+        .social-collapse-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 6px rgba(255,215,0,0.6);
+            flex-shrink: 0;
+        }
+        .social-collapse[open] .social-collapse-summary {
+            color: #fff;
+            border-bottom: 1px solid #222;
+        }
+        .social-collapse .social-grid {
+            margin: 16px;
+            margin-top: 12px;
+        }
+
         .social-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -758,26 +805,31 @@
                 </a>
             </div>
 
-            <div class="social-grid">
-                <div class="social-item">
-                    <a href="https://t.me/GeekHeron" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron on Telegram">
-                        <img src="telegram.png" alt="Scan or click to add GeekHeron on Telegram" class="social-qr" width="100" height="100" loading="lazy">
-                    </a>
-                    <p class="social-text">Telegram</p>
-                </div>
+            <details class="social-collapse">
+                <summary class="social-collapse-summary">
+                    <span class="social-collapse-dot" aria-hidden="true"></span> Contact
+                </summary>
+                <div class="social-grid">
+                    <div class="social-item">
+                        <a href="https://t.me/GeekHeron" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron on Telegram">
+                            <img src="telegram.png" alt="Scan or click to add GeekHeron on Telegram" class="social-qr" width="100" height="100" loading="lazy">
+                        </a>
+                        <p class="social-text">Telegram</p>
+                    </div>
 
-                <div class="social-item">
-                    <img src="wechat.png" alt="Scan to add GeekHeron on WeChat for business inquiries" class="social-qr" width="100" height="100" loading="lazy">
-                    <p class="social-text">WeChat</p>
-                </div>
+                    <div class="social-item">
+                        <img src="wechat.png" alt="Scan to add GeekHeron on WeChat for business inquiries" class="social-qr" width="100" height="100" loading="lazy">
+                        <p class="social-text">WeChat</p>
+                    </div>
 
-                <div class="social-item">
-                    <a href="https://wa.me/00000000000" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron on WhatsApp">
-                        <img src="WhatApp.png" alt="Scan or click to add GeekHeron on WhatsApp" class="social-qr" width="100" height="100" loading="lazy">
-                    </a>
-                    <p class="social-text">WhatsApp</p>
+                    <div class="social-item">
+                        <a href="https://wa.me/00000000000" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron on WhatsApp">
+                            <img src="WhatApp.png" alt="Scan or click to add GeekHeron on WhatsApp" class="social-qr" width="100" height="100" loading="lazy">
+                        </a>
+                        <p class="social-text">WhatsApp</p>
+                    </div>
                 </div>
-            </div>
+            </details>
         </aside>
 
         <div class="content-section">

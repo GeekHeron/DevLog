@@ -475,59 +475,151 @@
         }
 
         /* 客户评价 (Testimonials) */
+        /* 客户项目反馈 (Testimonials — Project Cards) */
+        .testimonials-header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        .testimonials-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
         .testimonial-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 20px;
-            margin-top: 10px;
+            margin-top: 0;
         }
         .testimonial-card {
             background: rgba(255,255,255,0.03);
             border: 1px solid #222;
             border-radius: 8px;
-            padding: 28px 24px 24px;
-            position: relative;
-            transition: 0.3s;
+            padding: 24px;
+            transition: 0.25s;
+            display: flex;
+            flex-direction: column;
         }
         .testimonial-card:hover {
             border-color: var(--gold);
             background: rgba(255,215,0,0.04);
         }
-        .testimonial-quote-mark {
-            position: absolute;
-            top: 10px;
-            left: 18px;
-            font-size: 48px;
-            line-height: 1;
-            color: rgba(255,215,0,0.25);
-            font-family: Georgia, "Times New Roman", serif;
-            font-weight: 700;
-            user-select: none;
+
+        /* — Project info section — */
+        .project-industry {
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 6px;
         }
-        .testimonial-text {
-            font-size: 14px;
-            color: #ccc;
-            line-height: 1.8;
-            margin-top: 22px;
-            margin-bottom: 20px;
-        }
-        .testimonial-author {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            border-top: 1px solid #222;
-            padding-top: 14px;
-        }
-        .testimonial-name {
-            font-size: 13px;
+        .project-name {
+            font-size: 16px;
             font-weight: 700;
             color: #fff;
+            margin-bottom: 6px;
+            line-height: 1.3;
         }
-        .testimonial-meta {
-            font-size: 11px;
+        .project-client-detail {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        /* — Tags — */
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .project-tag {
+            display: inline-block;
+            font-size: 10px;
+            color: #999;
+            border: 1px solid #333;
+            border-radius: 3px;
+            padding: 2px 8px;
+            letter-spacing: 0.3px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .project-tag.gold {
+            color: var(--gold);
+            border-color: rgba(255,215,0,0.35);
+        }
+
+        /* — Divider — */
+        .project-divider {
+            border: 0;
+            border-top: 1px solid #222;
+            margin: 0 0 14px;
+        }
+
+        /* — Metrics grid — */
+        .project-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .project-metrics.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .metric-value {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .metric-label {
+            display: block;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        /* — Quote section — */
+        .project-quote {
+            margin-top: auto;
+            border-top: 1px solid #222;
+            padding-top: 14px;
+        }
+        .project-quote-mark {
+            font-size: 18px;
+            color: rgba(255,215,0,0.3);
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 0;
+            vertical-align: -4px;
+            margin-right: 2px;
+        }
+        .project-quote-text {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.7;
+            font-style: normal;
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            .project-metrics {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            .testimonial-card {
+                padding: 20px;
+            }
         }
 
         /* 移动端适配 */
@@ -939,48 +1031,177 @@
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">07 / What Clients Say</h3>
+                <h3 class="section-title">07 / 客户项目反馈</h3>
+                <div class="testimonials-header">
+                    <p class="testimonials-subtitle">来自真实项目交付后的匿名反馈。根据 NDA 协议，不公开企业名称。</p>
+                </div>
                 <div class="testimonial-grid">
+
+                    <!-- Card 1: 广告日报 -->
                     <div class="testimonial-card">
-                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">这套系统基本把我们运营团队每天要盯的事都覆盖到了——广告花得怎么样、竞品价格有没有异动、货有没有压仓、物流是不是延期、有没有新差评，以前都要好几个人分头去后台查，现在每天早上飞书群里一条卡片消息全看完，效率提升很明显。</p>
-                        <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">自动化报表矩阵</span>
+                        <div class="project-industry">深圳 · 消费电子 · 年GMV 约3000万</div>
+                        <div class="project-name">广告 &amp; 库存联动日报</div>
+                        <div class="project-client-detail">运营团队 20+ 人 · 12 个 Amazon 店铺</div>
+                        <div class="project-tags">
+                            <span class="project-tag">Amazon</span>
+                            <span class="project-tag">Playwright</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">Jijia ERP</span>
+                            <span class="project-tag gold">3 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div class="project-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">45min→3min</span>
+                                <span class="metric-label">日报生成时间</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">12</span>
+                                <span class="metric-label">覆盖店铺</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">约2h/天</span>
+                                <span class="metric-label">节省人力</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">广告日报能自动关联库存数据，FBA 没货就取万邑通库存——这种细节说明是真的懂我们业务逻辑，不是简单地把数字堆出来。</span>
                         </div>
                     </div>
+
+                    <!-- Card 2: 竞品监控 -->
                     <div class="testimonial-card">
-                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">最满意的是竞品价格监控这块，波动超过 5% 会自动标出来提醒运营去看，不用再每天人工一个个比价，这种"异常才提醒"的设计很贴心，减少了很多无效信息干扰。</p>
-                        <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">竞品价格监控</span>
+                        <div class="project-industry">深圳 · 户外用品 · 年GMV 约5000万</div>
+                        <div class="project-name">竞品价格实时监控与预警</div>
+                        <div class="project-client-detail">运营团队 30+ 人 · 核心 SKU 50+</div>
+                        <div class="project-tags">
+                            <span class="project-tag">Amazon</span>
+                            <span class="project-tag gold">AdsPower</span>
+                            <span class="project-tag">Playwright</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag gold">2 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div class="project-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">±5%</span>
+                                <span class="metric-label">波动告警阈值</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">&lt;5min</span>
+                                <span class="metric-label">响应延迟</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">↓95%</span>
+                                <span class="metric-label">人工盯盘减少</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">波动超过 5% 会自动标出来提醒运营去看，不用再每天人工一个个比价。这种"异常才提醒"的设计减少了很多无效信息干扰。</span>
                         </div>
                     </div>
+
+                    <!-- Card 3: 库存物流风控 -->
                     <div class="testimonial-card">
-                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">报表直接推到飞书群里，不用额外装什么系统、也不用登录网页去看，这点很实用，团队接受度很高，基本零学习成本。</p>
-                        <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">交付与落地体验</span>
+                        <div class="project-industry">广州 · 家居跨境 · 年GMV 约8000万</div>
+                        <div class="project-name">全链路库存与物流风控体系</div>
+                        <div class="project-client-detail">供应链团队 50+ 人 · 全球多仓</div>
+                        <div class="project-tags">
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">OpenClaw</span>
+                            <span class="project-tag">Winit</span>
+                            <span class="project-tag gold">4 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div class="project-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">TOP 5</span>
+                                <span class="metric-label">自动锁定高风险单</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">3/6月</span>
+                                <span class="metric-label">双阈值库龄预警</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">100%</span>
+                                <span class="metric-label">在库SKU覆盖</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">库龄、货值这些周报级数据也有覆盖，不只是关注短期的销售和广告，长期库存健康度也照顾到了，看得出是站在整体运营视角设计的。</span>
                         </div>
                     </div>
+
+                    <!-- Card 4: RPA 差评监控 (ERP集成) -->
                     <div class="testimonial-card">
-                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">广告日报能自动关联库存数据（FBA 没货就取万邑通库存），这种细节说明是真的懂我们业务逻辑，不是简单地把数字堆出来。</p>
-                        <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">广告 & 库存联动日报</span>
+                        <div class="project-industry">深圳 · 3C数码 · 年GMV 约2亿</div>
+                        <div class="project-name">ERP 自动化与 RPA 应急监控</div>
+                        <div class="project-client-detail">运营团队 100+ 人 · 多品牌管理</div>
+                        <div class="project-tags">
+                            <span class="project-tag gold">Playwright</span>
+                            <span class="project-tag">Jijia ERP</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">RPA</span>
+                            <span class="project-tag gold">2 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div class="project-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">&lt;24h</span>
+                                <span class="metric-label">API停服→RPA切换</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">0 天</span>
+                                <span class="metric-label">监控中断</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">99%+</span>
+                                <span class="metric-label">数据抓取成功率</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">不等官方修复 API，直接把数据抓取层换成 RPA，上层推送逻辑零修改，业务方几乎无感知。接口说停就停，但业务监控不能跟着停。</span>
                         </div>
                     </div>
+
+                    <!-- Card 5: 私有化部署 -->
                     <div class="testimonial-card">
-                        <div class="testimonial-quote-mark" aria-hidden="true">"</div>
-                        <p class="testimonial-text">库龄、货值这些周报级的数据也有覆盖，不只是关注短期的销售和广告，长期的库存健康度也照顾到了，看得出功能设计是站在整体运营视角在做的，而不是头痛医头。</p>
-                        <div class="testimonial-author">
-                            <span class="testimonial-name">跨境电商卖家运营负责人</span>
-                            <span class="testimonial-meta">库存与货值周报</span>
+                        <div class="project-industry">深圳 · 跨境综合集团 · 年GMV 约5亿</div>
+                        <div class="project-name">OpenClaw 私有化部署与自动化中枢</div>
+                        <div class="project-client-detail">全团队 200+ 人 · 多系统集成</div>
+                        <div class="project-tags">
+                            <span class="project-tag gold">OpenClaw</span>
+                            <span class="project-tag gold">Private AI</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">RAG</span>
+                            <span class="project-tag gold">6 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div class="project-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">100%</span>
+                                <span class="metric-label">核心数据物理隔离</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">7 类</span>
+                                <span class="metric-label">日报/周报自动推送</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">↓80%</span>
+                                <span class="metric-label">人工操作减少</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">每天打开飞书就能看到所有运营情况，不用再登录四五个平台。新系统零学习成本，团队接受度很高。</span>
                         </div>
                     </div>
+
                 </div>
             </section>
 

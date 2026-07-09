@@ -622,333 +622,7 @@
             }
         }
 
-                /* Social Proof Strip */
-        .social-proof-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-        }
-        .proof-stat {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: 0.25s;
-        }
-        .proof-stat:hover {
-            border-color: var(--gold);
-            background: rgba(255,215,0,0.04);
-        }
-        .proof-num {
-            display: block;
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--gold);
-            line-height: 1.1;
-            margin-bottom: 6px;
-            letter-spacing: -1px;
-        }
-        .proof-desc {
-            display: block;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        /* Why GeekHeron Comparison */
-        .compare-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .compare-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 28px 24px;
-            transition: 0.25s;
-        }
-        .compare-card:hover {
-            background: rgba(255,255,255,0.06);
-        }
-        .compare-better {
-            border-color: rgba(255,215,0,0.25);
-        }
-        .compare-better:hover {
-            border-color: var(--gold);
-            background: rgba(255,215,0,0.06);
-        }
-        .compare-label {
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-        .compare-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .compare-list li {
-            font-size: 13px;
-            color: #bbb;
-            line-height: 1.6;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-        .compare-list li:last-child {
-            border-bottom: 0;
-        }
-
-        /* Capability Grid (Tech restated) */
-        .capability-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        .capability-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 20px 24px;
-            transition: 0.25s;
-        }
-        .capability-item:hover {
-            border-color: rgba(255,215,0,0.3);
-            background: rgba(255,215,0,0.04);
-        }
-        .capability-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-        .capability-tech {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-family: monospace;
-        }
-
-        /* Fit Grid (适合合作的企业) */
-        .fit-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        .fit-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 20px;
-            transition: 0.25s;
-        }
-        .fit-item:hover {
-            border-color: rgba(255,215,0,0.3);
-        }
-        .fit-icon {
-            flex-shrink: 0;
-            font-size: 18px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-        .fit-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 2px;
-        }
-        .fit-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        @media (max-width: 768px) {
-            .compare-grid {
-                grid-template-columns: 1fr;
-            }
-            .capability-grid {
-                grid-template-columns: 1fr;
-            }
-            .fit-grid {
-                grid-template-columns: 1fr;
-            }
-            .social-proof-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Social Proof Strip */
-        .social-proof-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-        }
-        .proof-stat {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: 0.25s;
-        }
-        .proof-stat:hover {
-            border-color: var(--gold);
-            background: rgba(255,215,0,0.04);
-        }
-        .proof-num {
-            display: block;
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--gold);
-            line-height: 1.1;
-            margin-bottom: 6px;
-            letter-spacing: -1px;
-        }
-        .proof-desc {
-            display: block;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        /* Why GeekHeron Comparison */
-        .compare-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .compare-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 28px 24px;
-            transition: 0.25s;
-        }
-        .compare-card:hover {
-            background: rgba(255,255,255,0.06);
-        }
-        .compare-better {
-            border-color: rgba(255,215,0,0.25);
-        }
-        .compare-better:hover {
-            border-color: var(--gold);
-            background: rgba(255,215,0,0.06);
-        }
-        .compare-label {
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-        .compare-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .compare-list li {
-            font-size: 13px;
-            color: #bbb;
-            line-height: 1.6;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-        .compare-list li:last-child {
-            border-bottom: 0;
-        }
-
-        /* Capability Grid (Tech restated) */
-        .capability-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        .capability-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 20px 24px;
-            transition: 0.25s;
-        }
-        .capability-item:hover {
-            border-color: rgba(255,215,0,0.3);
-            background: rgba(255,215,0,0.04);
-        }
-        .capability-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-        .capability-tech {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-family: monospace;
-        }
-
-        /* Fit Grid (适合合作的企业) */
-        .fit-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        .fit-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 20px;
-            transition: 0.25s;
-        }
-        .fit-item:hover {
-            border-color: rgba(255,215,0,0.3);
-        }
-        .fit-icon {
-            flex-shrink: 0;
-            font-size: 18px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-        .fit-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 2px;
-        }
-        .fit-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        @media (max-width: 768px) {
-            .compare-grid {
-                grid-template-columns: 1fr;
-            }
-            .capability-grid {
-                grid-template-columns: 1fr;
-            }
-            .fit-grid {
-                grid-template-columns: 1fr;
-            }
-            .social-proof-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-/* 移动端适配 */
+        /* 移动端适配 */
         @media (max-width: 850px) {
             header { padding: 20px; justify-content: space-between; }
             .logo img { height: 40px; }
@@ -1093,100 +767,297 @@
 
         <div class="content-section">
 
-            <!-- ============================== -->
-            <!-- HERO / 价值主张                  -->
-            <!-- ============================== -->
-            <section class="section-block" style="margin-bottom: 60px;">
-                <div style="margin-bottom: 12px;">
-                    <span style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-weight: 700;">AI Automation Studio</span>
-                </div>
-                <h2 class="value-prop" style="font-size: 28px; margin-bottom: 16px;">
-                    <span style="color: var(--gold);">AI 自动化系统</span> 交付<br>
-                    让企业数字化方案真正跑起来
+<section class="section-block">
+                <h3 class="section-title">01 / The Philosophy</h3>
+                <h2 class="value-prop">
+                    专注 <span style="color: var(--gold);">AI 自动化系统交付</span>，<br>
+                    为企业提供跑得起来的<span style="color: var(--gold);">企业数字化解决方案</span>，而不是停在 Demo 阶段的半成品。
                 </h2>
-                <p class="bio-text" style="font-size: 15px; max-width: 540px;">
-                    不是 PPT 概念，不是 Demo 半成品。从顶层工作流设计到底层系统集成，<br>
-                    完整交付可闭环、可交接的 AI 自动化系统。
+
+                <p class="bio-text">
+                    我是 Heron，一名专注 <strong>AI 自动化系统交付</strong>与<strong>企业数字化解决方案</strong>落地的 FDE（全栈商业系统开发者）。市面上不缺"能讲 AI 概念"的人，缺的是能把顶层智能工作流，独立、完整交付为一套真正跑在企业业务里的闭环系统，并对最终结果负责的人——这正是我的核心工作。
                 </p>
-                <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px;">
-                    <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" style="display: inline-block; padding: 14px 32px; font-size: 12px;">
-                        <span class="dot" style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px rgba(255,215,0,0.8); vertical-align: middle; margin-right: 8px;"></span>
-                        预约 15 分钟免费咨询
-                    </a>
-                    <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 14px 32px; font-size: 12px;">
-                        查看落地案例
-                    </a>
+                <p class="bio-text">
+                    传统的 AI 改造项目往往卡在"技术方案讲得通，但业务流程接不上"的尴尬境地：模型能跑起来，却没人负责把它嵌进企业真实的工作流里。我的核心价值在于<strong>打破系统孤岛</strong>——把 AI 自动化能力无缝接入您现有的防关联指纹浏览器、企业 ERP 系统以及飞书办公流中，让自动化真正运转起来，沉淀为企业可复制、可交接的数字资产，而不是一次性的技术验证。
+                </p>
+
+                <div class="risk-box" style="padding: 25px 20px;">
+                    <div class="risk-title" style="margin-bottom: 25px;">
+                        <span aria-hidden="true" style="font-size: 18px;">⚠️</span> 传统拼凑式开发的业务痛点 vs 独立交付解法
+                    </div>
+                    
+                    <div class="risk-grid">
+                        <div class="risk-item" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
+                            <h4 style="color: var(--danger);">❌ 数据断层与操作割裂</h4>
+                            <p>许多方案只做功能，导致管理层看不到清晰的流转过程，员工依然要在不同软件间手动搬运数据。</p>
+                            <h4 style="color: var(--gold); margin-top: 10px; margin-bottom: 4px;">=> 直观的全局可视化中控</h4>
+                            <p style="color: #fff;">自研定制化操作后台，让自动化流程运行状况、核心业务数据一目了然。</p>
+                        </div>
+                        
+                        <div class="risk-item" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
+                            <h4 style="color: var(--danger);">❌ 通用工具不贴合 SOP</h4>
+                            <p>市面上的通用 SaaS 无法完美适配您团队独有的业务细节，高昂的购买成本最终沦为摆设。</p>
+                            <h4 style="color: var(--gold); margin-top: 10px; margin-bottom: 4px;">=> 100% 依循原生业务定制</h4>
+                            <p style="color: #fff;">深度适配指纹浏览器与企业 ERP，让机器完美接管您团队现有的机械化工作流程。</p>
+                        </div>
+                        
+                        <div class="risk-item">
+                            <h4 style="color: var(--danger);">❌ 核心商业机密外泄</h4>
+                            <p>将企业的财务数据、客户资源、独家运营策略接入公共云端，无异于将商业底牌暴露给外界。</p>
+                            <h4 style="color: var(--gold); margin-top: 10px; margin-bottom: 4px;">=> 100% 安全物理隔离</h4>
+                            <p style="color: #fff;">支持企业本地服务器或私有云部署，所有核心业务数据完全归企业自主掌控。</p>
+                        </div>
+                        
+                        <div class="risk-item">
+                            <h4 style="color: var(--danger);">❌ 外包扯皮与协同成本高</h4>
+                            <p>多方团队承接项目时，前端、后端、功能模块开发者各执一词，沟通链路漫长，极易导致项目延期流产。</p>
+                            <h4 style="color: var(--gold); margin-top: 10px; margin-bottom: 4px;">=> 独当一面的高效交付</h4>
+                            <p style="color: #fff;">一人打通从业务需求到系统落地的全链路，免去跨部门沟通内耗，响应更快、更稳定。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="proof-box">
+                    <div class="proof-title">交付标准：顺畅的人机交互体验 + 工业级业务流闭环</div>
+                    <div class="proof-text">
+                        从顶层用户体验、中间层业务逻辑，到底层自动化中枢与企业日常办公软件的无缝对接。拒绝拼凑，不让老板为“无法连通的碎皮系统”重复买单。
+                    </div>
                 </div>
             </section>
 
-            <!-- ============================== -->
-            <!-- SOCIAL PROOF / 已交付          -->
-            <!-- ============================== -->
-            <section class="section-block" style="margin-bottom: 60px;">
-                <h3 class="section-title">已交付成果</h3>
-                <div class="social-proof-grid">
-                    <div class="proof-stat">
-                        <span class="proof-num">7+</span>
-                        <span class="proof-desc">自动化系统上线</span>
-                    </div>
-                    <div class="proof-stat">
-                        <span class="proof-num">×12</span>
-                        <span class="proof-desc">Amazon 多店铺覆盖</span>
-                    </div>
-                    <div class="proof-stat">
-                        <span class="proof-num">90%</span>
-                        <span class="proof-desc">日报效率提升</span>
-                    </div>
-                    <div class="proof-stat">
-                        <span class="proof-num">0</span>
-                        <span class="proof-desc">API 失效业务中断</span>
-                    </div>
-                    <div class="proof-stat">
-                        <span class="proof-num">100%</span>
-                        <span class="proof-desc">支持私有化部署</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <div style="margin-bottom: 60px;">
-                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="tertiary-btn" style="max-width: 360px;">
-                    <span class="dot" style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px rgba(255,215,0,0.8); vertical-align: middle; margin-right: 8px;"></span>
-                    看看你的业务是否适合自动化 →</a>
-            </div>
-
-            <!-- ============================== -->
-            <!-- 代表案例 / Case Cards           -->
-            <!-- ============================== -->
             <section class="section-block">
-                <h3 class="section-title">代表案例</h3>
-                <p class="testimonials-subtitle" style="margin-bottom: 24px;">来自跨境电商、品牌卖家的真实项目交付。</p>
+                <h3 class="section-title">02 / FDE Full-Stack & AI Services</h3>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon" aria-hidden="true">💻</div>
+                        <h4 class="service-name">电商系统定制化改造</h4>
+                        <p class="service-desc">基于各大主流电商后台生态，深度整合积加 ERP 等内部数据接口，为企业量身定制包含自动化风控过滤与透视分析的闭环中控后台。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon" aria-hidden="true">⚙️</div>
+                        <h4 class="service-name">OpenClaw 架构私有化部署</h4>
+                        <p class="service-desc">深入您的物理服务器或云环境，完整部署 OpenClaw 架构。支持基于本地化知识库或专线接入进行精细化的 Agent 提示词工程，确保业务核心数据 100% 隔离。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon" aria-hidden="true">🔗</div>
+                        <h4 class="service-name">企业协同生态深度融合</h4>
+                        <p class="service-desc">打破 ERP 数据壁垒。通过构建高性能 Python / Flask 接口服务，将各类业务大盘无缝嵌入飞书、微信等办公流，支持动态互动卡片（Interactive Cards）推送与审批交互。</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon" aria-hidden="true">🧠</div>
+                        <h4 class="service-name">无头浏览器与反侦察采集</h4>
+                        <p class="service-desc">专攻高并发跨境风控场景，通过 AdsPower / 紫鸟等防关联浏览器与 Playwright 无缝对接，实现在 ±5% 等微观维度的高效竞品与价格防守监控。</p>
+                    </div>
+                    <a href="GEO-RUN.html" class="service-card" style="text-decoration:none; display:block;">
+                        <div class="service-icon" aria-hidden="true">🚀</div>
+                        <h4 class="service-name">GEO 流量截流代运营</h4>
+                        <p class="service-desc">面向出海/品牌卖家的生成式引擎优化服务，通过多智能体技术干预大模型召回机制，让产品成为 ChatGPT、Perplexity 等 AI 的推荐答案。</p>
+                    </a>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">03 / The Tactical Toolset (全栈技术栈)</h3>
+                <div class="terminal-box" aria-live="polite">
+                    <span aria-hidden="true" style="color: #666;">$</span> <span id="typewriter"></span><span class="cursor" aria-hidden="true">|</span>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">*横跨前后端与自动化技术，保障系统处于工业级高可用状态。</p>
+                <div class="tech-tags">
+                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">OpenClaw / Coze Workflow</span>
+                    <span class="tech-tag" style="border-color: var(--gold); color: var(--gold);">Playwright + AdsPower/Ziniao</span>
+                    <span class="tech-tag">Feishu Interactive Cards</span>
+                    <span class="tech-tag">Python Fullstack / Flask</span>
+                    <span class="tech-tag">Next.js / React</span>
+                    <span class="tech-tag">Jijia ERP API Auth</span>
+                    <span class="tech-tag">Tailwind CSS / TypeScript</span>
+                    <span class="tech-tag">RAG / Vector Database</span>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">04 / Featured Full-Stack Workflows</h3>
+                <div style="border-left: 2px solid #333; padding-left: 30px;">
+
+                    <div style="margin-bottom: 48px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨境电商智能调度 | Amazon Ads & Competitor Defense</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="works.html" class="inline-link">广告 & 竞品价格双线防御中枢</a>
+                        </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            覆盖 10 款核心 SKU · 8 项广告指标全自动日报化 · 竞品价格 ±5% 波动实时预警
+                        </p>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>核心痛点：</strong> 运营每天要在广告后台、库存表、竞品页面之间手动核对数据，广告花费与库存脱节导致超卖或断货式投放，价格战一旦错过响应窗口就是实打实的利润损失。<br>
+                            • <strong>全栈方案：</strong> 广告日报脚本同时拉取"运营数据"与"库存追踪"两张飞书多维表，按 SKU 自动匹配在库数量——优先取 FBA 在库，为 0 时自动切换万邑通仓，并支持同前缀子 SKU（如颜色变体）库存自动聚合，管理层不用再手动加总。竞品价格侧则通过紫鸟指纹浏览器 + Playwright 接管真实浏览器环境抓取 Amazon 前台价格，与前一日历史价格比对，波动 ≥±5% 自动标红并推送飞书卡片，无需人工盯盘。
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 48px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">企业级库存与物流风控 | Inventory & Logistics Risk Control</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="works.html" class="inline-link">全链路库存与物流风控体系</a>
+                        </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            延期订单自动锁定 TOP 5 高危单 · 超期库龄按 3/6 个月双阈值分层预警
+                        </p>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>核心痛点：</strong> 长周期压货和物流延期往往要等到月结才被发现，仓储、物流、运营三方数据分散在不同表格里，异常单据容易被淹没在大量正常数据中。<br>
+                            • <strong>全栈方案：</strong> 物流延期脚本按"计划到仓时间"与当前日期自动计算延期天数，剔除已到仓订单后按延期天数降序取 TOP 5 推送并 @ 责任人，管理层第一眼就能看到最紧急的单子，而不是被几十条数据淹没。库龄侧同时监控 3 个月与 6 个月两张超期表，配合产品货值周报形成"哪些货压了多久、值多少钱"的完整视图，全部按周/日自动推送，不需要人工去查表汇总。
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 48px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">工程韧性案例 | When the Official API Breaks</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="works.html" class="inline-link">官方 API 失效后：RPA 无缝补位的差评监控</a>
+                        </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            ERP 官方网关认证失效当天完成 RPA 方案切换，监控未中断一天
+                        </p>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>核心痛点：</strong> 差评监控原本依赖积加 ERP 官方 API，但对方网关出现认证失效、长期不可用的情况——这在依赖第三方接口的自动化系统里是常见的"断供"风险，很多方案在这一步就直接停摆。<br>
+                            • <strong>全栈方案：</strong> 不等官方修复，直接把数据抓取层换成 Playwright RPA，模拟真实登录态从 ERP 前台抓取差评数据，上层的飞书卡片生成与推送逻辑完全复用，业务方几乎无感知。这也是全栈工程师和"只会调 API"的本质区别——接口说停就停，但业务监控不能跟着停。
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 40px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨部门运营数据中枢 | Multi-Report Automation Matrix</div>
+                        <h4 style="font-size: 18px; margin-bottom: 10px;">
+                            <a href="works.html" class="inline-link">自动化运营报表矩阵：广告 / 销售 / 物流 / 库龄 / 竞品 / 差评</a>
+                        </h4>
+                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
+                            7 类日报/周报/预警统一中枢 · 支持 --dry-run 预演，不触达真实群聊即可验收
+                        </p>
+                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
+                            • <strong>核心痛点：</strong> 团队每天要在飞书多维表、ERP 后台、Amazon 卖家后台之间手动核对广告花费、库存、物流时效、竞品价格等多类数据，任何一类漏看都可能导致断货或资金占用，人工日报耗时且容易滞后。<br>
+                            • <strong>全栈方案：</strong> 交付了一整套定时脚本矩阵，统一从飞书多维表（Bitable）拉取结构化数据，用 Playwright + 指纹浏览器补齐无官方 API 的抓取场景，再统一汇总为飞书 Interactive Card 推送到对应责任人群：广告日报、销售日报、空运物流汇总、物流延期预警、超期库龄统计、产品货值周报、竞品价格波动监控、ERP 差评监控。所有脚本支持 <code>--dry-run</code> 模式，可在不触达真实群聊的情况下预演输出，方便迭代和验收。<br>
+                            • <strong>工程细节：</strong> 抓取层与推送层解耦（各脚本拆成 <code>scrape_*.py</code> / <code>report_*.py</code>），单个数据源故障不影响其余报表按时推送；还有一个脚本专门用 Playwright 操作飞书多维表连接器的配置页面（这块飞书没开放官方 API），自动把"查询时间"参数改成前一天并保存，把原本必须人工点击的操作也纳入无人值守流程。
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">05 / Workflow at a Glance</h3>
+                <p class="bio-text" style="margin-bottom: 0;">
+                    以上案例背后是同一套可复用的闭环方法论——不管业务场景是广告竞价还是库存清算，交付的系统都遵循相同的四段式结构：
+                </p>
+                <div class="flow-wrap">
+                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img" aria-labelledby="flow-title flow-desc">
+                        <title id="flow-title">FDE 全栈交付流程图</title>
+                        <desc id="flow-desc">数据采集经 Agent 决策后进入业务执行，异常或高风险情况通过人工回环确认，形成闭环。</desc>
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#ffd700"></path>
+                            </marker>
+                        </defs>
+
+                        <!-- 连接线 -->
+                        <line x1="195" y1="70" x2="255" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
+                        <line x1="435" y1="70" x2="495" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
+                        <line x1="675" y1="70" x2="735" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
+                        <path d="M 810 110 C 810 190, 90 190, 90 110" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow)"></path>
+
+                        <!-- 节点 1：数据采集 -->
+                        <g>
+                            <rect x="15" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
+                            <text x="105" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">01 · 数据采集</text>
+                            <text x="105" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Playwright +</text>
+                            <text x="105" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">指纹浏览器 / ERP API</text>
+                        </g>
+
+                        <!-- 节点 2：Agent 决策 -->
+                        <g>
+                            <rect x="255" y="20" width="180" height="100" rx="8" fill="rgba(255,215,0,0.05)" stroke="#ffd700"></rect>
+                            <text x="345" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">02 · Agent 决策</text>
+                            <text x="345" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">OpenClaw 多智能体</text>
+                            <text x="345" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">按 SOP 规则判定</text>
+                        </g>
+
+                        <!-- 节点 3：业务执行 -->
+                        <g>
+                            <rect x="495" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
+                            <text x="585" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">03 · 业务执行</text>
+                            <text x="585" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">调价 / 启停 / 清算</text>
+                            <text x="585" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">写回业务系统</text>
+                        </g>
+
+                        <!-- 节点 4：人工回环 -->
+                        <g>
+                            <rect x="735" y="20" width="150" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
+                            <text x="810" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">04 · 人工回环</text>
+                            <text x="810" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">飞书互动卡片</text>
+                            <text x="810" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">负责人一键确认</text>
+                        </g>
+
+                        <text x="450" y="205" text-anchor="middle" fill="#555" font-size="11" font-family="Helvetica, Arial, sans-serif">虚线：异常/高风险决策不自动执行，回到人工确认，形成闭环</text>
+                    </svg>
+                    <p class="flow-caption">
+                        采集层保证数据不失真，决策层承担可解释的规则/模型判断，执行层直接写回企业已有系统而非另建孤岛，回环层把最终裁量权留给业务负责人——这也是"全栈交付"和"单点接 API"的本质区别。
+                    </p>
+                </div>
+
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">06 / Frequently Asked Questions</h3>
+                <div class="faq-list">
+                    <details class="faq-item">
+                        <summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">需要更换 ERP 吗？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">交付周期多久？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">根据项目复杂度，一般 2～8 周。需求确认后会提供阶段性交付计划。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">是否签 NDA？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">支持。涉及商业数据或业务流程的项目，可签署保密协议。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">是否提供售后？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">提供部署支持、Bug 修复及按约定的维护服务，可根据项目提供长期技术支持。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">如何收费？<span class="faq-icon" aria-hidden="true">+</span></summary>
+                        <p class="faq-answer">根据需求复杂度、系统规模及交付内容报价，可先进行 15 分钟免费咨询。</p>
+                    </details>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">07 / 客户项目反馈</h3>
+                <div class="testimonials-header">
+                    <p class="testimonials-subtitle">来自真实项目交付后的匿名反馈。根据 NDA 协议，不公开企业名称。</p>
+                </div>
                 <div class="testimonial-grid">
 
-                    <!-- Case 1: 广告日报 -->
+                    <!-- Card 1: 广告日报 -->
                     <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · 消费电子 · GMV 约3000万</div>
-                        <div class="project-name">广告与库存联动日报</div>
-                        <div class="project-client-detail">运营团队 20+ 人 · 12 店铺</div>
+                        <div class="project-industry">深圳 · 消费电子 · 年GMV 约3000万</div>
+                        <div class="project-name">广告 &amp; 库存联动日报</div>
+                        <div class="project-client-detail">运营团队 20+ 人 · 12 个 Amazon 店铺</div>
                         <div class="project-tags">
                             <span class="project-tag">Amazon</span>
+                            <span class="project-tag">Playwright</span>
                             <span class="project-tag gold">Feishu</span>
-                            <span class="project-tag">ERP</span>
+                            <span class="project-tag">Jijia ERP</span>
                             <span class="project-tag gold">3 周</span>
                         </div>
                         <hr class="project-divider">
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">运营每天在广告后台、库存表、竞品页面手动核对数据，广告花费与库存脱节导致超卖或断货。</p>
-                        </div>
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">脚本拉取飞书多维表，按 SKU 自动匹配在库，FBA→万邑通自动降级，竞品 ±5% 波动实时预警。</p>
-                        </div>
-                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                        <div class="project-metrics">
                             <div class="metric-item">
                                 <span class="metric-value">45min→3min</span>
                                 <span class="metric-label">日报生成时间</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">12</span>
+                                <span class="metric-label">覆盖店铺</span>
                             </div>
                             <div class="metric-item">
                                 <span class="metric-value">约2h/天</span>
@@ -1195,34 +1066,31 @@
                         </div>
                         <div class="project-quote">
                             <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">广告日报终于不用人工汇总了，FBA没货自动取万邑通库存，这种细节说明是真的懂我们业务。</span>
+                            <span class="project-quote-text">广告日报能自动关联库存数据，FBA 没货就取万邑通库存——这种细节说明是真的懂我们业务逻辑，不是简单地把数字堆出来。</span>
                         </div>
                     </div>
 
-                    <!-- Case 2: 竞品监控 -->
+                    <!-- Card 2: 竞品监控 -->
                     <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · 户外用品 · GMV 约5000万</div>
-                        <div class="project-name">竞品价格实时监控</div>
-                        <div class="project-client-detail">运营团队 30+ 人 · 50+ SKU</div>
+                        <div class="project-industry">深圳 · 户外用品 · 年GMV 约5000万</div>
+                        <div class="project-name">竞品价格实时监控与预警</div>
+                        <div class="project-client-detail">运营团队 30+ 人 · 核心 SKU 50+</div>
                         <div class="project-tags">
                             <span class="project-tag">Amazon</span>
                             <span class="project-tag gold">AdsPower</span>
+                            <span class="project-tag">Playwright</span>
                             <span class="project-tag gold">Feishu</span>
                             <span class="project-tag gold">2 周</span>
                         </div>
                         <hr class="project-divider">
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">深夜竞品恶意调价无法及时发现，运营每天人工比价，错过价格响应窗口就是实打实的利润损失。</p>
-                        </div>
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">指纹浏览器 + Playwright 接管真实环境抓取前台价格，±5% 过滤信息噪声，飞书卡片实时推送。</p>
-                        </div>
-                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                        <div class="project-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">±5%</span>
+                                <span class="metric-label">波动告警阈值</span>
+                            </div>
                             <div class="metric-item">
                                 <span class="metric-value">&lt;5min</span>
-                                <span class="metric-label">异常响应延迟</span>
+                                <span class="metric-label">响应延迟</span>
                             </div>
                             <div class="metric-item">
                                 <span class="metric-value">↓95%</span>
@@ -1231,31 +1099,24 @@
                         </div>
                         <div class="project-quote">
                             <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">异常才提醒，不用每天一个个比价，这个设计减少了很多无效信息干扰。</span>
+                            <span class="project-quote-text">波动超过 5% 会自动标出来提醒运营去看，不用再每天人工一个个比价。这种"异常才提醒"的设计减少了很多无效信息干扰。</span>
                         </div>
                     </div>
 
-                    <!-- Case 3: 库存物流 -->
+                    <!-- Card 3: 库存物流风控 -->
                     <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · 家居 · GMV 约8000万</div>
-                        <div class="project-name">库存与物流风控体系</div>
+                        <div class="project-industry">广州 · 家居跨境 · 年GMV 约8000万</div>
+                        <div class="project-name">全链路库存与物流风控体系</div>
                         <div class="project-client-detail">供应链团队 50+ 人 · 全球多仓</div>
                         <div class="project-tags">
                             <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">Python</span>
                             <span class="project-tag">OpenClaw</span>
                             <span class="project-tag">Winit</span>
                             <span class="project-tag gold">4 周</span>
                         </div>
                         <hr class="project-divider">
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">长周期压货和物流延期月结才能发现，仓储、物流、运营三方数据分散，异常被淹没在大量数据中。</p>
-                        </div>
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">自动计算延期天数，TOP 5 高危单推送 @ 责任人，库龄 3/6 个月双阈值分层预警 + 货值周报。</p>
-                        </div>
-                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                        <div class="project-metrics">
                             <div class="metric-item">
                                 <span class="metric-value">TOP 5</span>
                                 <span class="metric-label">自动锁定高风险单</span>
@@ -1264,480 +1125,87 @@
                                 <span class="metric-value">3/6月</span>
                                 <span class="metric-label">双阈值库龄预警</span>
                             </div>
+                            <div class="metric-item">
+                                <span class="metric-value">100%</span>
+                                <span class="metric-label">在库SKU覆盖</span>
+                            </div>
                         </div>
                         <div class="project-quote">
                             <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">库龄、货值这些周报级数据也覆盖到了，不只是关注短期销售，长期库存健康度也照顾得到。</span>
+                            <span class="project-quote-text">库龄、货值这些周报级数据也有覆盖，不只是关注短期的销售和广告，长期库存健康度也照顾到了，看得出是站在整体运营视角设计的。</span>
                         </div>
                     </div>
 
-                    <!-- Case 4: RPA -->
+                    <!-- Card 4: RPA 差评监控 (ERP集成) -->
                     <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · 3C数码 · GMV 约2亿</div>
-                        <div class="project-name">ERP 自动化应急监控</div>
-                        <div class="project-client-detail">运营团队 100+ 人 · 多品牌</div>
+                        <div class="project-industry">深圳 · 3C数码 · 年GMV 约2亿</div>
+                        <div class="project-name">ERP 自动化与 RPA 应急监控</div>
+                        <div class="project-client-detail">运营团队 100+ 人 · 多品牌管理</div>
                         <div class="project-tags">
                             <span class="project-tag gold">Playwright</span>
-                            <span class="project-tag">ERP</span>
+                            <span class="project-tag">Jijia ERP</span>
                             <span class="project-tag gold">Feishu</span>
-                            <span class="project-tag gold">24h 应急</span>
+                            <span class="project-tag">RPA</span>
+                            <span class="project-tag gold">2 周</span>
                         </div>
                         <hr class="project-divider">
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">积加 ERP 官方 API 认证网关失效，依赖接口的整个差评监控停摆——第三方断供在自动化项目中是常态。</p>
-                        </div>
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">不等官方修复，24 小时内将抓取层切换为 Playwright RPA，模拟登录态从前台抓取，上层推送零修改。</p>
-                        </div>
-                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                        <div class="project-metrics">
                             <div class="metric-item">
                                 <span class="metric-value">&lt;24h</span>
-                                <span class="metric-label">API停服→RPA 切换</span>
+                                <span class="metric-label">API停服→RPA切换</span>
                             </div>
                             <div class="metric-item">
                                 <span class="metric-value">0 天</span>
-                                <span class="metric-label">业务监控中断</span>
+                                <span class="metric-label">监控中断</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">99%+</span>
+                                <span class="metric-label">数据抓取成功率</span>
                             </div>
                         </div>
                         <div class="project-quote">
                             <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">不等于官方修复，直接抓取层换 RPA，上层逻辑零修改，业务几乎无感知。接口停但业务不能停。</span>
+                            <span class="project-quote-text">不等官方修复 API，直接把数据抓取层换成 RPA，上层推送逻辑零修改，业务方几乎无感知。接口说停就停，但业务监控不能跟着停。</span>
                         </div>
                     </div>
 
-                    <!-- Case 5: 私有化 -->
+                    <!-- Card 5: 私有化部署 -->
                     <div class="testimonial-card">
-                        <div class="project-industry">跨境集团 · 综合 · GMV 约5亿</div>
-                        <div class="project-name">OpenClaw 私有化自动化中枢</div>
+                        <div class="project-industry">深圳 · 跨境综合集团 · 年GMV 约5亿</div>
+                        <div class="project-name">OpenClaw 私有化部署与自动化中枢</div>
                         <div class="project-client-detail">全团队 200+ 人 · 多系统集成</div>
                         <div class="project-tags">
                             <span class="project-tag gold">OpenClaw</span>
-                            <span class="project-tag gold">私有化部署</span>
+                            <span class="project-tag gold">Private AI</span>
                             <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">RAG</span>
                             <span class="project-tag gold">6 周</span>
                         </div>
                         <hr class="project-divider">
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">核心运营数据接入公共云存在商业机密泄露风险，多个系统相互孤立，管理层缺乏统一数据视图。</p>
-                        </div>
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
-                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">全栈 OpenClaw 私有化部署，7 类日报/周报统一推送至飞书，核心数据 100% 物理隔离。</p>
-                        </div>
-                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                        <div class="project-metrics">
                             <div class="metric-item">
                                 <span class="metric-value">100%</span>
                                 <span class="metric-label">核心数据物理隔离</span>
                             </div>
                             <div class="metric-item">
-                                <span class="metric-value">↓80%</span>
-                                <span class="metric-label">人工重复操作减少</span>
-                            </div>
-                        </div>
-                        <div class="project-quote">
-                            <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">每天打开飞书就能看到所有运营情况，不用再登录四五个平台，零学习成本，团队接受度很高。</span>
-                        </div>
-                    </div>
-
-                </div>
-                <div style="margin-top: 20px; text-align: center;">
-                    <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 12px 28px; font-size: 12px;">查看完整商业案例 →</a>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <div style="margin-bottom: 60px; text-align: center;">
-                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" style="display: inline-block; padding: 14px 36px; font-size: 12px;">
-                    预约 15 分钟免费咨询
-                </a>
-            </div>
-
-            <!-- ============================== -->
-            <!-- WHY GEEKHERON                  -->
-            <!-- ============================== -->
-            <section class="section-block">
-                <h3 class="section-title">为什么选择 GeekHeron</h3>
-                <p class="testimonials-subtitle" style="margin-bottom: 24px;">AI 自动化交付不是拼功能，是拼系统能不能真正跑在你的业务里。</p>
-                <div class="compare-grid">
-                    <div class="compare-card compare-worse">
-                        <div class="compare-label" style="color: var(--danger);">普通外包模式</div>
-                        <ul class="compare-list">
-                            <li>❌ 多个团队各管一段</li>
-                            <li>❌ 只交付功能模块</li>
-                            <li>❌ API 失效即停摆</li>
-                            <li>❌ 交付即结束</li>
-                            <li>❌ 数据暴露在公共云</li>
-                            <li>❌ 多方沟通内耗严重</li>
-                        </ul>
-                    </div>
-                    <div class="compare-card compare-better">
-                        <div class="compare-label" style="color: var(--gold);">GeekHeron 交付</div>
-                        <ul class="compare-list">
-                            <li>✅ 一人打通全链路</li>
-                            <li>✅ 交付业务闭环系统</li>
-                            <li>✅ RPA 兜底，自愈能力</li>
-                            <li>✅ 持续维护，长期合作</li>
-                            <li>✅ 100% 私有化部署</li>
-                            <li>✅ 高效交付，免去沟通内耗</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============================== -->
-            <!-- 服务能力                        -->
-            <!-- ============================== -->
-            <section class="section-block">
-                <h3 class="section-title">服务能力</h3>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon" aria-hidden="true">🧩</div>
-                        <h4 class="service-name">电商系统定制化改造</h4>
-                        <p class="service-desc">基于各大电商后台生态，深度整合积加 ERP 等内部数据接口，定制包含自动化风控与透视分析的闭环中控后台。</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon" aria-hidden="true">🔒</div>
-                        <h4 class="service-name">OpenClaw 架构私有化部署</h4>
-                        <p class="service-desc">深入企业服务器或云环境，完整部署 OpenClaw 架构。支持本地化知识库与精细化的 Agent 工程，核心数据 100% 私有。</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon" aria-hidden="true">🔗</div>
-                        <h4 class="service-name">企业协同生态深度融合</h4>
-                        <p class="service-desc">通过 Python/Flask 接口服务，将业务大盘无缝嵌入飞书、微信等办公流，支持动态互动卡片推送与审批交互。</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon" aria-hidden="true">🕵️</div>
-                        <h4 class="service-name">无头浏览器自动化采集</h4>
-                        <p class="service-desc">AdsPower / 紫鸟防关联浏览器 + Playwright 无缝对接，高并发竞品监控，±5% 异常阈值实时告警。</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon" aria-hidden="true">🌐</div>
-                        <h4 class="service-name">GEO 流量截流代运营</h4>
-                        <p class="service-desc">面向出海/品牌卖家的生成式引擎优化服务，多智能体技术干预大模型召回，让产品成为 AI 的推荐答案。</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon" aria-hidden="true">🧠</div>
-                        <h4 class="service-name">AI Agent 工作流设计</h4>
-                        <p class="service-desc">从需求分析到 Agent 编排、状态机设计、长记忆管理与异常重试，构建可稳定运行的企业级自动化工作流。</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============================== -->
-            <!-- WORKFLOW                        -->
-            <!-- ============================== -->
-            <section class="section-block">
-                <h3 class="section-title">交付方法论</h3>
-                <p class="bio-text" style="margin-bottom: 0;">所有交付系统遵循统一的四段式闭环结构：</p>
-                <div class="flow-wrap">
-                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img" aria-labelledby="flow-title2 flow-desc2">
-                        <title id="flow-title2">交付流程图</title>
-                        <desc id="flow-desc2">数据采集经 Agent 决策后进入业务执行，异常通过人工回环确认，形成闭环。</desc>
-                        <defs>
-                            <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                                <path d="M0,0 L10,5 L0,10 z" fill="#ffd700"></path>
-                            </marker>
-                        </defs>
-                        <line x1="195" y1="70" x2="255" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow2)"></line>
-                        <line x1="435" y1="70" x2="495" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow2)"></line>
-                        <line x1="675" y1="70" x2="735" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow2)"></line>
-                        <path d="M 810 110 C 810 190, 90 190, 90 110" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow2)"></path>
-                        <g>
-                            <rect x="15" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="105" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">01 · 数据采集</text>
-                            <text x="105" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Playwright +</text>
-                            <text x="105" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">指纹浏览器 / ERP API</text>
-                        </g>
-                        <g>
-                            <rect x="255" y="20" width="180" height="100" rx="8" fill="rgba(255,215,0,0.05)" stroke="#ffd700"></rect>
-                            <text x="345" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">02 · AI 决策</text>
-                            <text x="345" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">OpenClaw 多智能体</text>
-                            <text x="345" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">按 SOP 规则判定</text>
-                        </g>
-                        <g>
-                            <rect x="495" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="585" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">03 · 业务执行</text>
-                            <text x="585" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">调价 / 启停 / 清算</text>
-                            <text x="585" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">写回业务系统</text>
-                        </g>
-                        <g>
-                            <rect x="735" y="20" width="150" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="810" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">04 · 人工确认</text>
-                            <text x="810" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">飞书互动卡片</text>
-                            <text x="810" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">一键审批确认</text>
-                        </g>
-                        <text x="450" y="205" text-anchor="middle" fill="#555" font-size="11" font-family="Helvetica, Arial, sans-serif">虚线：高风险决策不自动执行，回流人工确认，形成闭环</text>
-                    </svg>
-                    <p class="flow-caption">
-                        采集层保证数据不失真，AI 决策层承担可解释的规则判断，执行层直接写回企业现有系统，回环层将最终决策权留给业务负责人。
-                    </p>
-                </div>
-            </section>
-
-            <!-- ============================== -->
-            <!-- 技术能力 / 重新表述              -->
-            <!-- ============================== -->
-            <section class="section-block">
-                <h3 class="section-title">技术能力</h3>
-                <p class="testimonials-subtitle" style="margin-bottom: 20px;">体系化技术栈支撑工业级交付。</p>
-                <div class="capability-grid">
-                    <div class="capability-item">
-                        <div class="capability-name">AI Agent 工作流编排</div>
-                        <div class="capability-tech">OpenClaw / Coze / 状态机</div>
-                    </div>
-                    <div class="capability-item">
-                        <div class="capability-name">自动化浏览器采集</div>
-                        <div class="capability-tech">Playwright / AdsPower / 紫鸟</div>
-                    </div>
-                    <div class="capability-item">
-                        <div class="capability-name">企业协同集成</div>
-                        <div class="capability-tech">飞书互动卡片 / 企业微信 / 消息推送</div>
-                    </div>
-                    <div class="capability-item">
-                        <div class="capability-name">私有化部署</div>
-                        <div class="capability-tech">服务器部署 / 云环境 / 数据物理隔离</div>
-                    </div>
-                    <div class="capability-item">
-                        <div class="capability-name">知识库与 RAG</div>
-                        <div class="capability-tech">向量数据库 / 混合检索 / Embedding</div>
-                    </div>
-                    <div class="capability-item">
-                        <div class="capability-name">企业级后端支撑</div>
-                        <div class="capability-tech">Python / Flask / ERP API 集成</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============================== -->
-            <!-- 适合合作的企业                   -->
-            <!-- ============================== -->
-            <section class="section-block">
-                <h3 class="section-title">适合合作的企业</h3>
-                <p class="testimonials-subtitle" style="margin-bottom: 20px;">如果你符合以下任意一条，我们值得聊聊。</p>
-                <div class="fit-grid">
-                    <div class="fit-item">
-                        <span class="fit-icon" aria-hidden="true" style="color: var(--gold);">✓</span>
-                        <div>
-                            <div class="fit-name">跨境电商</div>
-                            <div class="fit-desc">年 GMV 1000 万以上，多平台多店铺运营</div>
-                        </div>
-                    </div>
-                    <div class="fit-item">
-                        <span class="fit-icon" aria-hidden="true" style="color: var(--gold);">✓</span>
-                        <div>
-                            <div class="fit-name">品牌卖家</div>
-                            <div class="fit-desc">自营品牌出海，需要系统化数据管理</div>
-                        </div>
-                    </div>
-                    <div class="fit-item">
-                        <span class="fit-icon" aria-hidden="true" style="color: var(--gold);">✓</span>
-                        <div>
-                            <div class="fit-name">中大型运营团队</div>
-                            <div class="fit-desc">运营/供应链团队 20 人以上，手动操作过多</div>
-                        </div>
-                    </div>
-                    <div class="fit-item">
-                        <span class="fit-icon" aria-hidden="true" style="color: var(--gold);">✓</span>
-                        <div>
-                            <div class="fit-name">AI 落地需求</div>
-                            <div class="fit-desc">希望将 AI Agent、RAG 真正跑进业务流程</div>
-                        </div>
-                    </div>
-                    <div class="fit-item">
-                        <span class="fit-icon" aria-hidden="true" style="color: var(--gold);">✓</span>
-                        <div>
-                            <div class="fit-name">自动化升级</div>
-                            <div class="fit-desc">现有工作流依赖人工，希望打通系统孤岛</div>
-                        </div>
-                    </div>
-                    <div class="fit-item">
-                        <span class="fit-icon" aria-hidden="true" style="color: var(--gold);">✓</span>
-                        <div>
-                            <div class="fit-name">数据安全优先</div>
-                            <div class="fit-desc">核心业务数据不能暴露于第三方平台</div>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top: 24px; text-align: center;">
-                    <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" style="display: inline-block; padding: 14px 36px; font-size: 12px;">
-                        预约 15 分钟免费咨询
-                    </a>
-                </div>
-            </section>
-
-            <!-- ============================== -->
-            <!-- FAQ                              -->
-            <!-- ============================== -->
-            <section class="section-block">
-                <h3 class="section-title">常见问题</h3>
-                <div class="faq-list">
-                    <details class="faq-item">
-                        <summary class="faq-question">交付周期多久？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">根据项目复杂度，一般 2～8 周。需求确认后会提供阶段性交付计划，每阶段都有可验证的交付物。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">如何收费？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">根据需求复杂度、系统规模及交付内容报价。可先预约 15 分钟免费咨询，了解需求后提供方案和预算评估。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">支持。可部署到企业物理服务器、云服务器或本地网络环境，核心业务数据 100% 自主掌控，不经过第三方平台。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">如何保密？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">支持签署 NDA（保密协议）。涉及商业数据或核心业务流程的项目，所有交付物和数据均受保密条款约束。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">后期谁维护？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">提供部署支持、Bug 修复及按约定的维护服务。可根据项目需求提供长期技术支持与持续迭代合作，而非"交付即结束"。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">依赖的 API 失效了怎么办？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">系统设计预留 RPA 兜底层——官方 API 停服时自动或快速切换至浏览器自动化方案，上层推送逻辑零修改，保障业务连续性不受影响。</p>
-                    </details>
-                </div>
-            </section>
-
-            <!-- ============================== -->
-            <!-- TESTIMONIALS                    -->
-            <!-- ============================== -->
-            <section class="section-block">
-                <h3 class="section-title">客户反馈</h3>
-                <div class="testimonials-header">
-                    <p class="testimonials-subtitle">来自真实项目交付后的匿名反馈。根据 NDA 协议，不公开企业名称。</p>
-                </div>
-                <div class="testimonial-grid">
-
-                    <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · GMV 约3000万</div>
-                        <div class="project-name" style="font-size: 14px;">广告与库存联动日报</div>
-                        <hr class="project-divider">
-                        <div class="project-metrics two-col" style="margin-bottom: 10px;">
-                            <div class="metric-item">
-                                <span class="metric-value">45min→3min</span>
-                                <span class="metric-label">日报生成</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-value">约2h/天</span>
-                                <span class="metric-label">解放人力</span>
-                            </div>
-                        </div>
-                        <div class="project-quote">
-                            <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">广告日报终于不用人工汇总了，FBA 没货自动取万邑通库存——这种细节说明是真的懂我们业务逻辑。</span>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · GMV 约5000万</div>
-                        <div class="project-name" style="font-size: 14px;">竞品价格监控</div>
-                        <hr class="project-divider">
-                        <div class="project-metrics two-col" style="margin-bottom: 10px;">
-                            <div class="metric-item">
-                                <span class="metric-value">&lt;5min</span>
-                                <span class="metric-label">异常响应</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-value">↓95%</span>
-                                <span class="metric-label">盯盘减少</span>
-                            </div>
-                        </div>
-                        <div class="project-quote">
-                            <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">波动超过 5% 自动标出来提醒，不用每天人工一个个比价，异常才提醒的设计减少了很多无效信息干扰。</span>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · GMV 约8000万</div>
-                        <div class="project-name" style="font-size: 14px;">库存与物流风控</div>
-                        <hr class="project-divider">
-                        <div class="project-metrics two-col" style="margin-bottom: 10px;">
-                            <div class="metric-item">
-                                <span class="metric-value">TOP 5</span>
-                                <span class="metric-label">高危单锁定</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-value">3/6月</span>
-                                <span class="metric-label">库龄预警</span>
-                            </div>
-                        </div>
-                        <div class="project-quote">
-                            <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">不只是关注短期的销售和广告，长期库存健康度也照顾到了，看得出是站在整体运营视角设计的。</span>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="project-industry">跨境电商 · GMV 约2亿</div>
-                        <div class="project-name" style="font-size: 14px;">ERP 自动化应急</div>
-                        <hr class="project-divider">
-                        <div class="project-metrics two-col" style="margin-bottom: 10px;">
-                            <div class="metric-item">
-                                <span class="metric-value">&lt;24h</span>
-                                <span class="metric-label">API→RPA切换</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-value">0 天</span>
-                                <span class="metric-label">业务中断</span>
-                            </div>
-                        </div>
-                        <div class="project-quote">
-                            <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">接口说停就停，但业务不能跟着停。不等官方修复，直接换 RPA 兜底，业务方几乎无感知。</span>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="project-industry">跨境集团 · GMV 约5亿</div>
-                        <div class="project-name" style="font-size: 14px;">私有化自动化中枢</div>
-                        <hr class="project-divider">
-                        <div class="project-metrics two-col" style="margin-bottom: 10px;">
-                            <div class="metric-item">
-                                <span class="metric-value">100%</span>
-                                <span class="metric-label">数据安全</span>
-                            </div>
-                            <div class="metric-item">
                                 <span class="metric-value">7 类</span>
-                                <span class="metric-label">自动报表</span>
+                                <span class="metric-label">日报/周报自动推送</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">↓80%</span>
+                                <span class="metric-label">人工操作减少</span>
                             </div>
                         </div>
                         <div class="project-quote">
                             <span class="project-quote-mark" aria-hidden="true">"</span>
-                            <span class="project-quote-text">每天打开飞书就能看到所有运营情况，不用再登录四五个平台，零学习成本，团队接受度很高。</span>
+                            <span class="project-quote-text">每天打开飞书就能看到所有运营情况，不用再登录四五个平台。新系统零学习成本，团队接受度很高。</span>
                         </div>
                     </div>
 
-                </div>
-            </section>
-
-            <!-- ============================== -->
-            <!-- FINAL CTA                       -->
-            <!-- ============================== -->
-            <section class="section-block" style="margin-bottom: 40px;">
-                <div style="border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; padding: 40px; text-align: center; background: rgba(255,215,0,0.03);">
-                    <div style="font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-weight: 700; margin-bottom: 12px;">Let's Talk</div>
-                    <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; color: #fff;">你的业务适合自动化吗？</h2>
-                    <p style="font-size: 14px; color: #aaa; line-height: 1.7; max-width: 460px; margin: 0 auto 24px;">
-                        15 分钟免费咨询，了解你的业务场景是否适合 AI 自动化，以及需要投入什么、能得到什么。
-                    </p>
-                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
-                        <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" style="display: inline-block; padding: 14px 36px; font-size: 12px;">
-                            预约免费咨询
-                        </a>
-                        <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 14px 32px; font-size: 12px;">
-                            查看完整案例
-                        </a>
-                    </div>
                 </div>
             </section>
 
         </div>
-
     </main>
 
     <script>

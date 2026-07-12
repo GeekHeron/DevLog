@@ -927,66 +927,223 @@
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">04 / Featured Full-Stack Workflows</h3>
-                <div style="border-left: 2px solid #333; padding-left: 30px;">
+                <h3 class="section-title">代表案例</h3>
+                <p class="testimonials-subtitle" style="margin-bottom: 24px;">来自跨境电商、品牌卖家的真实项目交付。</p>
+                <div class="testimonial-grid">
 
-                    <div style="margin-bottom: 48px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨境电商智能调度 | Amazon Ads & Competitor Defense</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">广告 & 竞品价格双线防御中枢</a>
-                        </h4>
-                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            覆盖 10 款核心 SKU · 8 项广告指标全自动日报化 · 竞品价格 ±5% 波动实时预警
-                        </p>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 运营每天要在广告后台、库存表、竞品页面之间手动核对数据，广告花费与库存脱节导致超卖或断货式投放，价格战一旦错过响应窗口就是实打实的利润损失。<br>
-                            • <strong>全栈方案：</strong> 广告日报脚本同时拉取"运营数据"与"库存追踪"两张飞书多维表，按 SKU 自动匹配在库数量——优先取 FBA 在库，为 0 时自动切换万邑通仓，并支持同前缀子 SKU（如颜色变体）库存自动聚合，管理层不用再手动加总。竞品价格侧则通过紫鸟指纹浏览器 + Playwright 接管真实浏览器环境抓取 Amazon 前台价格，与前一日历史价格比对，波动 ≥±5% 自动标红并推送飞书卡片，无需人工盯盘。
-                        </p>
+                    <!-- Case 1: 广告日报 -->
+                    <div class="testimonial-card">
+                        <div class="project-industry">跨境电商 · 消费电子 · GMV 约3000万</div>
+                        <div class="project-name">广告与库存联动日报</div>
+                        <div class="project-client-detail">运营团队 20+ 人 · 12 店铺</div>
+                        <div class="project-tags">
+                            <span class="project-tag">Amazon</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">ERP</span>
+                            <span class="project-tag gold">3 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">运营每天在广告后台、库存表、竞品页面手动核对数据，广告花费与库存脱节导致超卖或断货。</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">脚本拉取飞书多维表，按 SKU 自动匹配在库，FBA→万邑通自动降级，竞品 ±5% 波动实时预警。</p>
+                        </div>
+                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                            <div class="metric-item">
+                                <span class="metric-value">45min→3min</span>
+                                <span class="metric-label">日报生成时间</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">约2h/天</span>
+                                <span class="metric-label">节省人力</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">广告日报终于不用人工汇总了，FBA没货自动取万邑通库存，这种细节说明是真的懂我们业务。</span>
+                        </div>
                     </div>
 
-                    <div style="margin-bottom: 48px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">企业级库存与物流风控 | Inventory & Logistics Risk Control</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">全链路库存与物流风控体系</a>
-                        </h4>
-                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            延期订单自动锁定 TOP 5 高危单 · 超期库龄按 3/6 个月双阈值分层预警
-                        </p>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 长周期压货和物流延期往往要等到月结才被发现，仓储、物流、运营三方数据分散在不同表格里，异常单据容易被淹没在大量正常数据中。<br>
-                            • <strong>全栈方案：</strong> 物流延期脚本按"计划到仓时间"与当前日期自动计算延期天数，剔除已到仓订单后按延期天数降序取 TOP 5 推送并 @ 责任人，管理层第一眼就能看到最紧急的单子，而不是被几十条数据淹没。库龄侧同时监控 3 个月与 6 个月两张超期表，配合产品货值周报形成"哪些货压了多久、值多少钱"的完整视图，全部按周/日自动推送，不需要人工去查表汇总。
-                        </p>
+                    <!-- Case 2: 竞品监控 -->
+                    <div class="testimonial-card">
+                        <div class="project-industry">跨境电商 · 户外用品 · GMV 约5000万</div>
+                        <div class="project-name">竞品价格实时监控</div>
+                        <div class="project-client-detail">运营团队 30+ 人 · 50+ SKU</div>
+                        <div class="project-tags">
+                            <span class="project-tag">Amazon</span>
+                            <span class="project-tag gold">AdsPower</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag gold">2 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">深夜竞品恶意调价无法及时发现，运营每天人工比价，错过价格响应窗口就是实打实的利润损失。</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">指纹浏览器 + Playwright 接管真实环境抓取前台价格，±5% 过滤信息噪声，飞书卡片实时推送。</p>
+                        </div>
+                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                            <div class="metric-item">
+                                <span class="metric-value">&lt;5min</span>
+                                <span class="metric-label">异常响应延迟</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">↓95%</span>
+                                <span class="metric-label">人工盯盘减少</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">异常才提醒，不用每天一个个比价，这个设计减少了很多无效信息干扰。</span>
+                        </div>
                     </div>
 
-                    <div style="margin-bottom: 48px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">工程韧性案例 | When the Official API Breaks</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">官方 API 失效后：RPA 无缝补位的差评监控</a>
-                        </h4>
-                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            ERP 官方网关认证失效当天完成 RPA 方案切换，监控未中断一天
-                        </p>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 差评监控原本依赖积加 ERP 官方 API，但对方网关出现认证失效、长期不可用的情况——这在依赖第三方接口的自动化系统里是常见的"断供"风险，很多方案在这一步就直接停摆。<br>
-                            • <strong>全栈方案：</strong> 不等官方修复，直接把数据抓取层换成 Playwright RPA，模拟真实登录态从 ERP 前台抓取差评数据，上层的飞书卡片生成与推送逻辑完全复用，业务方几乎无感知。这也是全栈工程师和"只会调 API"的本质区别——接口说停就停，但业务监控不能跟着停。
-                        </p>
+                    <!-- Case 3: 库存物流 -->
+                    <div class="testimonial-card">
+                        <div class="project-industry">跨境电商 · 家居 · GMV 约8000万</div>
+                        <div class="project-name">库存与物流风控体系</div>
+                        <div class="project-client-detail">供应链团队 50+ 人 · 全球多仓</div>
+                        <div class="project-tags">
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">OpenClaw</span>
+                            <span class="project-tag">Winit</span>
+                            <span class="project-tag gold">4 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">长周期压货和物流延期月结才能发现，仓储、物流、运营三方数据分散，异常被淹没在大量数据中。</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">自动计算延期天数，TOP 5 高危单推送 @ 责任人，库龄 3/6 个月双阈值分层预警 + 货值周报。</p>
+                        </div>
+                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                            <div class="metric-item">
+                                <span class="metric-value">TOP 5</span>
+                                <span class="metric-label">自动锁定高风险单</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">3/6月</span>
+                                <span class="metric-label">双阈值库龄预警</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">库龄、货值这些周报级数据也覆盖到了，不只是关注短期销售，长期库存健康度也照顾得到。</span>
+                        </div>
                     </div>
 
-                    <div style="margin-bottom: 40px;">
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">跨部门运营数据中枢 | Multi-Report Automation Matrix</div>
-                        <h4 style="font-size: 18px; margin-bottom: 10px;">
-                            <a href="works.html" class="inline-link">自动化运营报表矩阵：广告 / 销售 / 物流 / 库龄 / 竞品 / 差评</a>
-                        </h4>
-                        <p style="font-size: 13px; color: var(--gold); margin-bottom: 12px; font-weight: 700;">
-                            7 类日报/周报/预警统一中枢 · 支持 --dry-run 预演，不触达真实群聊即可验收
-                        </p>
-                        <p style="font-size: 14px; color: #999; line-height: 1.8;">
-                            • <strong>核心痛点：</strong> 团队每天要在飞书多维表、ERP 后台、Amazon 卖家后台之间手动核对广告花费、库存、物流时效、竞品价格等多类数据，任何一类漏看都可能导致断货或资金占用，人工日报耗时且容易滞后。<br>
-                            • <strong>全栈方案：</strong> 交付了一整套定时脚本矩阵，统一从飞书多维表（Bitable）拉取结构化数据，用 Playwright + 指纹浏览器补齐无官方 API 的抓取场景，再统一汇总为飞书 Interactive Card 推送到对应责任人群：广告日报、销售日报、空运物流汇总、物流延期预警、超期库龄统计、产品货值周报、竞品价格波动监控、ERP 差评监控。所有脚本支持 <code>--dry-run</code> 模式，可在不触达真实群聊的情况下预演输出，方便迭代和验收。<br>
-                            • <strong>工程细节：</strong> 抓取层与推送层解耦（各脚本拆成 <code>scrape_*.py</code> / <code>report_*.py</code>），单个数据源故障不影响其余报表按时推送；还有一个脚本专门用 Playwright 操作飞书多维表连接器的配置页面（这块飞书没开放官方 API），自动把"查询时间"参数改成前一天并保存，把原本必须人工点击的操作也纳入无人值守流程。
-                        </p>
+                    <!-- Case 4: RPA -->
+                    <div class="testimonial-card">
+                        <div class="project-industry">跨境电商 · 3C数码 · GMV 约2亿</div>
+                        <div class="project-name">ERP 自动化应急监控</div>
+                        <div class="project-client-detail">运营团队 100+ 人 · 多品牌</div>
+                        <div class="project-tags">
+                            <span class="project-tag gold">Playwright</span>
+                            <span class="project-tag">ERP</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag gold">24h 应急</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">积加 ERP 官方 API 认证网关失效，依赖接口的整个差评监控停摆——第三方断供在自动化项目中是常态。</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">不等官方修复，24 小时内将抓取层切换为 Playwright RPA，模拟登录态从前台抓取，上层推送零修改。</p>
+                        </div>
+                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                            <div class="metric-item">
+                                <span class="metric-value">&lt;24h</span>
+                                <span class="metric-label">API停服→RPA 切换</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">0 天</span>
+                                <span class="metric-label">业务监控中断</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">不等于官方修复，直接抓取层换 RPA，上层逻辑零修改，业务几乎无感知。接口停但业务不能停。</span>
+                        </div>
                     </div>
 
+                    <!-- Case 5: 私有化 -->
+                    <div class="testimonial-card">
+                        <div class="project-industry">跨境集团 · 综合 · GMV 约5亿</div>
+                        <div class="project-name">OpenClaw 私有化自动化中枢</div>
+                        <div class="project-client-detail">全团队 200+ 人 · 多系统集成</div>
+                        <div class="project-tags">
+                            <span class="project-tag gold">OpenClaw</span>
+                            <span class="project-tag gold">私有化部署</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag gold">6 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">核心运营数据接入公共云存在商业机密泄露风险，多个系统相互孤立，管理层缺乏统一数据视图。</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">全栈 OpenClaw 私有化部署，7 类日报/周报统一推送至飞书，核心数据 100% 物理隔离。</p>
+                        </div>
+                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                            <div class="metric-item">
+                                <span class="metric-value">100%</span>
+                                <span class="metric-label">核心数据物理隔离</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">↓80%</span>
+                                <span class="metric-label">人工重复操作减少</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">每天打开飞书就能看到所有运营情况，不用再登录四五个平台，零学习成本，团队接受度很高。</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 12px 28px; font-size: 12px;">查看完整商业案例 →</a>
+                </div>
+            </section>
+
+            <!-- WHY GEEKHERON -->
+            <section class="section-block">
+                <h3 class="section-title">为什么选择 GeekHeron</h3>
+                <p class="testimonials-subtitle" style="margin-bottom: 24px;">AI 自动化交付不是拼功能，是拼系统能不能真正跑在你的业务里。</p>
+                <div class="compare-grid">
+                    <div class="compare-card compare-worse">
+                        <div class="compare-label" style="color: var(--danger);">普通外包模式</div>
+                        <ul class="compare-list">
+                            <li>❌ 多个团队各管一段</li>
+                            <li>❌ 只交付功能模块</li>
+                            <li>❌ API 失效即停摆</li>
+                            <li>❌ 交付即结束</li>
+                            <li>❌ 数据暴露在公共云</li>
+                            <li>❌ 多方沟通内耗严重</li>
+                        </ul>
+                    </div>
+                    <div class="compare-card compare-better">
+                        <div class="compare-label" style="color: var(--gold);">GeekHeron 交付</div>
+                        <ul class="compare-list">
+                            <li>✅ 一人打通全链路</li>
+                            <li>✅ 交付业务闭环系统</li>
+                            <li>✅ RPA 兜底，自愈能力</li>
+                            <li>✅ 持续维护，长期合作</li>
+                            <li>✅ 100% 私有化部署</li>
+                            <li>✅ 高效交付，免去沟通内耗</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 

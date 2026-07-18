@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层" - GeekHeron</title>
     <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
-    <meta name="description" content="制造企业引入 AI 的最大误区就是直接接 LangChain。本文提出分层的企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → Agent 编排 → LangGraph 流程管理，附带完整的制造业本体设计方案。">
-    <meta name="keywords" content="GeekHeron, 制造业AI, 企业AI架构, LangChain, LangGraph, RAG, 知识图谱, Ontology, 本体建模, 数据治理, 智能制造">
+    <meta name="description" content="制造企业引入 AI 的最大误区就是直接接 LangChain。分层企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → MCP 接入标准 → Agent 编排 → LangGraph，附完整的制造业本体设计方案。">
+    <meta name="keywords" content="GeekHeron, 制造业AI, 企业AI架构, LangChain, LangGraph, RAG, 知识图谱, Ontology, MCP, Model Context Protocol, 数据治理, 智能制造">
     <link rel="icon" type="image/png" href="logo.png">
     
     <style>
@@ -335,7 +335,7 @@
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"",
-  "description": "制造企业引入 AI 的最大误区就是直接接 LangChain。本文提出分层的企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → Agent 编排 → LangGraph 流程管理，附带完整的制造业本体设计方案。",
+  "description": "制造企业引入 AI 的最大误区就是直接接 LangChain。分层企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → MCP 接入标准 → Agent 编排 → LangGraph，附完整的制造业本体设计方案。",
   "author": {
     "@type": "Person",
     "name": "王鉴锋 (GeekHeron)",
@@ -799,6 +799,96 @@ production_tool = StructuredTool.from_function(
                     <li><strong>统一返回 JSON</strong> — 所有 Tool 统一 JSON 字符串，方便 Agent 解析和组合</li>
                     <li><strong>Schema 标准化</strong> — Pydantic 定义输入，LangChain 自动生成 Function Calling 定义</li>
                 </ol>
+
+                <!-- ============ 四点五、MCP ============ -->
+
+                <h2>四点五、企业 Agent 接入标准：MCP</h2>
+
+                <p>Tool 封装解决了单个能力的服务化问题，但企业迟早要面对一个新问题：<strong>每个新系统（MES/ERP/WMS/CRM…）都需要写一套自定义的 Tool，怎么做到一次接入、到处可用？</strong></p>
+
+                <p><strong>MCP（Model Context Protocol）</strong> 是答案。MCP 是 Anthropic 提出的一种开放协议，它定义了 Agent ↔ 企业数据源之间的标准通信方式。理解 MCP 的最佳方式是类比 USB-C 接口——不管后面接的是显示器、硬盘还是扩展坞，前面都是同一个口子。</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">🧠 LangChain / LangGraph Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:50%;">🔌 MCP Client（标准接口）</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┴────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">MES</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">RAG</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">文件系统</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>MCP 的核心价值</h3>
+                <ul>
+                    <li><strong>协议化接入，不是代码化接入</strong> — 不再需要为每个业务系统专门写一个 LangChain Tool。新系统上线时，只需部署一个 MCP Server（几十行 Python），集团 Agent 零代码接入。</li>
+                    <li><strong>动态发现能力</strong> — MCP Server 可以实时宣告自己有哪些 Tool（Resources + Tools），Agent 端无需预先注册。</li>
+                    <li><strong>安全边界清晰</strong> — MCP Client 和 Server 之间是标准化的认证/授权机制，可以在企业网络边界统一管控。</li>
+                    <li><strong>多 Agent 复用</strong> — 同一个 MCP Server（如 MES API）可以被生产 Agent、质量 Agent、交付 Agent 同时调用，不重复开发 Tool。</li>
+                </ul>
+
+                <p>一个 MCP Server 的典型实现（Python，使用 <code>mcp</code> 库）：</p>
+
+                <div class="code-block">
+from mcp import Server, tool
+
+server = Server("mes-production")
+
+@tool()
+async def get_production_status(order_id: str):
+    """查询生产订单状态"""
+    # 内部调用 MES 接口
+    return await mes_client.query(order_id)
+
+@tool()
+async def get_equipment_status(equipment_id: str):
+    """查询设备运行状态"""
+    return await equipment_client.query(equipment_id)
+
+if __name__ == "__main__":
+    server.run("stdio")  # 支持 stdio 和 SSE 两种传输模式
+                </div>
+
+                <h3>MCP 在企业架构中的位置</h3>
+                <p>在之前的分层架构中，MCP 位于「Tool 封装层」之上——它不是替代 Tool，而是给 Tool 提供一个<strong>标准化的对外接口</strong>：</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node highlight">🧠 Agent Orchestration<br><span style="font-size:11px;color:#888;">LangGraph / LangChain</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">🔌 MCP Protocol Layer</div>
+                        <div class="arch-arrow">┌────────┼────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MySQL 查询</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MES API</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">文档检索 RAG</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🗄 企业数据源</div>
+                    </div>
+                </div>
+
+                <h3>MCP vs. 直接 Tool 封装：什么时候选哪个</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>场景</th><th>推荐方式</th><th>理由</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>单个 Agent、单一系统</td><td>直接 Tool 封装</td><td>简单直接，复杂度最低</td></tr>
+                        <tr><td>多个 Agent 共享同一数据源</td><td>MCP</td><td>一次接入，多 Agent 复用</td></tr>
+                        <tr><td>新系统频繁接入</td><td>MCP</td><td>标准化接入，新人/新系统上手快</td></tr>
+                        <tr><td>安全审计要求高</td><td>MCP</td><td>边界统一的认证/授权机制</td></tr>
+                        <tr><td>仅仅做一个 Demo 验证</td><td>直接 Tool</td><td>先跑通，不要过度工程设计</td></tr>
+                    </tbody>
+                </table>
+
+                <p>最后说一点：<strong>MCP 不是银弹</strong>。如果你的数据层（一、二章）本身一团糟，上了 MCP 也只是把混乱标准化了而已。理清数据、建好知识层，MCP 是在这个基础上的锦上添花。</p>
 
                 <!-- ============ 五、权限体系 ============ -->
 

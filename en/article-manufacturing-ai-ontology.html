@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manufacturing AI Architecture: Don't Jump into LangChain — Build the "Data Capability Layer" First - GeekHeron</title>
     <link rel="canonical" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
-    <meta name="description" content="The biggest mistake manufacturing companies make when adopting AI is jumping straight into LangChain. This article presents a layered enterprise AI architecture: Data Layer → Knowledge Layer → Ontology → Tools → Agent Orchestration → LangGraph, with a complete manufacturing ontology design.">
-    <meta name="keywords" content="GeekHeron, Manufacturing AI, Enterprise AI Architecture, LangChain, LangGraph, RAG, Knowledge Graph, Ontology, Data Governance, Smart Manufacturing">
+    <meta name="description" content="The biggest mistake manufacturing companies make with AI is jumping straight into LangChain. A layered enterprise AI architecture: Data Layer → Knowledge Layer → Ontology → Tools → MCP Standard → Agent → LangGraph, with a complete manufacturing ontology design.">
+    <meta name="keywords" content="GeekHeron, Manufacturing AI, Enterprise AI Architecture, LangChain, LangGraph, RAG, Knowledge Graph, Ontology, MCP, Model Context Protocol, Data Governance, Smart Manufacturing">
     <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
     <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
     <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
@@ -144,7 +144,7 @@
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Manufacturing AI Architecture: Don't Jump into LangChain — Build the 'Data Capability Layer' First",
-  "description": "The biggest mistake manufacturing companies make when adopting AI is jumping straight into LangChain. A layered enterprise AI architecture: Data Layer → Knowledge Layer → Ontology → Tools → Agent → LangGraph, with a complete manufacturing ontology design.",
+  "description": "The biggest mistake manufacturing companies make with AI is jumping straight into LangChain. A layered enterprise AI architecture: Data Layer → Knowledge Layer → Ontology → Tools → MCP → Agent → LangGraph, with a complete manufacturing ontology design.",
   "author": { "@type": "Person", "name": "Wang Jianfeng (GeekHeron)", "url": "https://geekheron.space/about-en.html" },
   "publisher": { "@type": "Organization", "name": "GeekHeron", "logo": { "@type": "ImageObject", "url": "https://geekheron.space/logo.png" } },
   "mainEntityOfPage": { "@type": "WebPage", "@id": "https://geekheron.space/en/article-manufacturing-ai-ontology.html" },
@@ -512,6 +512,96 @@ production_tool = StructuredTool.from_function(
                     <li><strong>Unified JSON return</strong> — all Tools return JSON strings, easy for the Agent to parse and compose</li>
                     <li><strong>Standardized schema</strong> — Pydantic defines input schema; LangChain auto-generates Function Calling definitions</li>
                 </ol>
+
+                <!-- ============ 4.5. MCP ============ -->
+
+                <h2>4.5 Enterprise Agent Integration Standard: MCP</h2>
+
+                <p>Tool encapsulation solves the service-ification of individual capabilities. But enterprises inevitably face another question: <strong>Every new system (MES/ERP/WMS/CRM…) requires custom Tool code — how do we build once and use everywhere?</strong></p>
+
+                <p><strong>MCP (Model Context Protocol)</strong> is the answer. MCP is an open protocol proposed by Anthropic that standardizes communication between Agents and enterprise data sources. The best analogy is USB-C — whatever's on the other end (monitor, hard drive, docking station), the front-end interface is the same.</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">🧠 LangChain / LangGraph Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:50%;">🔌 MCP Client (Standard Interface)</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┴────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">MES</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">RAG</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">File System</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Why MCP Matters</h3>
+                <ul>
+                    <li><strong>Protocol-based, not code-based</strong> — No more writing a custom LangChain Tool for each business system. When a new system comes online, just deploy an MCP Server (a few dozen lines of Python); corporate Agents connect with zero code changes.</li>
+                    <li><strong>Dynamic discovery</strong> — MCP Servers can announce their Tools (Resources + Tools) in real time. No pre-registration needed on the Agent side.</li>
+                    <li><strong>Clean security boundary</strong> — Standardized authentication/authorization between MCP Client and Server, manageable at the enterprise network edge.</li>
+                    <li><strong>Multi-Agent reuse</strong> — The same MCP Server (e.g., MES API) can be called by the Production Agent, Quality Agent, and Delivery Agent simultaneously — no duplicate Tool development.</li>
+                </ul>
+
+                <p>A typical MCP Server implementation (Python, using the <code>mcp</code> library):</p>
+
+                <div class="code-block">
+from mcp import Server, tool
+
+server = Server("mes-production")
+
+@tool()
+async def get_production_status(order_id: str):
+    """Query production order status"""
+    # Internal call to MES API
+    return await mes_client.query(order_id)
+
+@tool()
+async def get_equipment_status(equipment_id: str):
+    """Query equipment run status"""
+    return await equipment_client.query(equipment_id)
+
+if __name__ == "__main__":
+    server.run("stdio")  # Supports both stdio and SSE transport modes
+                </div>
+
+                <h3>Where MCP Fits in the Architecture</h3>
+                <p>In the layered architecture from earlier sections, MCP sits <strong>above the Tool encapsulation layer</strong> — it doesn't replace Tools, but provides a <strong>standardized external interface</strong> for them:</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node highlight">🧠 Agent Orchestration<br><span style="font-size:11px;color:#888;">LangGraph / LangChain</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">🔌 MCP Protocol Layer</div>
+                        <div class="arch-arrow">┌────────┼────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MySQL Query</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MES API</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">Doc Retrieval RAG</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🗄 Enterprise Data Sources</div>
+                    </div>
+                </div>
+
+                <h3>MCP vs. Direct Tool Encapsulation: When to Choose Which</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Scenario</th><th>Recommended</th><th>Rationale</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Single Agent, single system</td><td>Direct Tool</td><td>Simple and straightforward, minimal complexity</td></tr>
+                        <tr><td>Multiple Agents sharing same data source</td><td>MCP</td><td>Build once, reuse across Agents</td></tr>
+                        <tr><td>Frequent new system onboarding</td><td>MCP</td><td>Standardized, faster onboarding</td></tr>
+                        <tr><td>High security/compliance requirements</td><td>MCP</td><td>Unified auth/authorization boundary</td></tr>
+                        <tr><td>Quick validation / Demo</td><td>Direct Tool</td><td>Ship first, don't over-engineer</td></tr>
+                    </tbody>
+                </table>
+
+                <p>One last note: <strong>MCP is not a silver bullet</strong>. If your data layer (sections 1 &amp; 2) is a mess, MCP simply standardizes the chaos. Get your data straight, build the knowledge layer — then MCP is the icing on the cake.</p>
 
                 <!-- ============ 5. Permission System ============ -->
 

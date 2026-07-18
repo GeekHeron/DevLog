@@ -265,6 +265,24 @@
             .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
             .hamburger.active span:nth-child(2) { opacity: 0; }
             .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+            /* --- 移动端架构图优化 --- */
+            .article-body .arch-box { padding: 16px 12px; gap: 3px; }
+            .arch-node { font-size: 12px; padding: 7px 10px; min-width: 52px; }
+            .arch-node.small { font-size: 11px; padding: 5px 8px; min-width: 44px; }
+            .arch-row { gap: 6px; }
+            .arch-arrow { font-size: 10px; letter-spacing: 0; }
+            .tool-grid { grid-template-columns: 1fr; gap: 8px; }
+            .tool-card { padding: 12px; }
+            .tool-card .tool-name { font-size: 12px; word-break: break-all; }
+            .tool-card .tool-desc { font-size: 12px; }
+            .onto-chain { gap: 4px; }
+            .onto-node { font-size: 12px; padding: 4px 8px; }
+            .onto-arrow { font-size: 12px; }
+            .onto-label { font-size: 10px; top: 0; margin: 0; }
+            .flow-node { font-size: 12px; padding: 5px 12px; }
+            .flow-arrow { font-size: 9px; }
+            .flow-branch { gap: 12px; flex-direction: column; align-items: center; }
         }
     </style>
 
@@ -661,12 +679,12 @@
                             <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识检索</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史任务</span></div>
                         </div>
-                        <div class="arch-arrow">│&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;│</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
                         <div class="arch-row">
                             <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
                             <div class="arch-node small" style="border-color:#888;">知识库/向量</div>
                         </div>
-                        <div class="arch-arrow">└─────────┼─────────┘</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└────┼────┘</div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-node warn" style="width:60%;">🔧 数据治理层<br><span style="font-size:11px;color:#888;">接入 / 清洗 / 本体建模</span></div>
                         <div class="arch-arrow">▼</div>
@@ -725,13 +743,13 @@
                             <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Milvus</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">MES/ERP</span></div>
                         </div>
-                        <div class="arch-arrow">│&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;│</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
                         <div class="arch-row">
                             <div class="arch-node small" style="color:#888;">知识图谱</div>
                             <div class="arch-node small" style="color:#888;">向量库</div>
                             <div class="arch-node small" style="color:#888;">业务系统</div>
                         </div>
-                        <div class="arch-arrow">└────────┴────────┘</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-node warn" style="width:70%;">🗄 企业数据源<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · 文件 · 钉钉</span></div>
                     </div>

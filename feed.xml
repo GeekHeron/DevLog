@@ -23,6 +23,15 @@
     </item>
 
     <item>
+      <title>Manufacturing AI Architecture: Don't Jump into LangChain First</title>
+      <link>https://geekheron.space/en/article-manufacturing-ai-ontology.html</link>
+      <description>The biggest mistake manufacturing companies make with AI is jumping straight into LangChain. A complete layered enterprise AI architecture: Data Layer → Ontology → Tools → Agent → LangGraph, with a full manufacturing ontology design.</description>
+      <pubDate>Sat, 18 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/en/article-manufacturing-ai-ontology.html</guid>
+      <category>ARCHITECTURE</category>
+    </item>
+
+    <item>
       <title>2026 年中科技趋势观察：AI 进入系统化落地的分水岭</title>
       <link>https://geekheron.space/article-2026-midyear-trends.html</link>
       <description>Grok 4.5、Meta 超级智能眼镜、深度伪造检测、自动驾驶监管——AI 从单点创新转向系统化落地的关键转折点。五大信号与下半年的三个判断。</description>

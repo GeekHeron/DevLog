@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing AI Architecture: Don't Jump into LangChain — Build the "Data Capability Layer" First - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
+    <meta name="description" content="The biggest mistake manufacturing companies make when adopting AI is jumping straight into LangChain. This article presents a layered enterprise AI architecture: Data Layer → Knowledge Layer → Ontology → Tools → Agent Orchestration → LangGraph, with a complete manufacturing ontology design.">
+    <meta name="keywords" content="GeekHeron, Manufacturing AI, Enterprise AI Architecture, LangChain, LangGraph, RAG, Knowledge Graph, Ontology, Data Governance, Smart Manufacturing">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
+    <link rel="icon" type="image/png" href="../logo.png">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 0; pointer-events: none; }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8); backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { display: flex; align-items: center; gap: 15px; z-index: 102; color: #fff; text-decoration: none; }
+        .logo img { height: 70px; width: auto; border-radius: 6px; box-shadow: 0 0 10px rgba(0,150,255,0.3); }
+        .logo span { font-size: 24px; letter-spacing: 4px; font-weight: 800; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002; }
+        .hamburger span { width: 25px; height: 2px; background: #fff; transition: 0.3s; }
+        .header-right { font-family: monospace; font-size: 12px; color: #aaa; }
+        .container { max-width: 850px; margin: 0 auto; padding: 120px 20px; position: relative; z-index: 10; }
+        .article-header { margin-bottom: 60px; border-left: 4px solid #fff; padding-left: 30px; }
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px 0; }
+        .article-body h4 { color: #ddd; font-size: 17px; margin: 20px 0 10px 0; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul { margin-bottom: 25px; padding-left: 20px; }
+        .article-body li { margin-bottom: 15px; }
+        .article-body ol { margin-bottom: 25px; padding-left: 20px; }
+        .article-body ol li { margin-bottom: 15px; }
+        .article-body .code-block { background: #111; border: 1px solid #333; padding: 20px; font-family: monospace; font-size: 14px; color: #0f0; margin-bottom: 25px; white-space: pre-wrap; overflow-x: auto; line-height: 1.6; }
+        .article-body blockquote { border-left: 3px solid #555; padding-left: 20px; margin: 30px 0; color: #999; font-style: italic; }
+        .article-body blockquote strong { color: #ccc; }
+        .arch-box { background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 28px 24px; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .arch-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; width: 100%; }
+        .arch-node { background: #161616; border: 1px solid #444; border-radius: 6px; padding: 10px 18px; text-align: center; color: #ddd; font-size: 14px; font-weight: 500; min-width: 80px; }
+        .arch-node.highlight { border-color: #6af; background: #0a1a2a; }
+        .arch-node.accent { border-color: #8f8; background: #0a1a0a; }
+        .arch-node.warn { border-color: #fa8; background: #1a100a; }
+        .arch-node.small { font-size: 12px; padding: 6px 12px; min-width: 60px; }
+        .arch-arrow { color: #555; font-size: 12px; line-height: 1; padding: 2px 0; letter-spacing: 1px; }
+        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 30px; }
+        .tool-card { background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 16px; }
+        .tool-card .tool-name { color: #0f0; font-family: monospace; font-size: 13px; margin-bottom: 4px; word-break: break-all; }
+        .tool-card .tool-desc { color: #888; font-size: 13px; line-height: 1.5; }
+        .onto-chain { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin-bottom: 30px; }
+        .onto-node { background: #0a1a0a; border: 1px solid #3a3; border-radius: 6px; padding: 6px 14px; color: #8f8; font-size: 13px; font-weight: 500; }
+        .onto-arrow { color: #3a3; font-size: 14px; }
+        .onto-label { color: #6a6; font-size: 11px; margin: 0 2px; }
+        .flow-chart { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-bottom: 30px; }
+        .flow-node { background: #161616; border: 1px solid #555; border-radius: 6px; padding: 8px 20px; color: #ddd; font-size: 13px; text-align: center; }
+        .flow-node.cond { border-radius: 4px; border-color: #fa8; background: #1a100a; color: #fa8; }
+        .flow-arrow { color: #555; font-size: 10px; line-height: 1; padding: 1px 0; }
+        .data-table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 13px; margin-bottom: 25px; color: #ccc; }
+        .data-table th { background: #1a1a2a; border: 1px solid #333; padding: 8px 6px; text-align: center; color: #6af; font-weight: 600; }
+        .data-table td { border: 1px solid #333; padding: 8px 6px; text-align: center; }
+        .data-table tr:hover td { background: rgba(255,255,255,0.03); }
+        .cta-footer { margin-top: 80px; padding: 40px 0; border-top: 1px solid #222; }
+        .cta-footer h3 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; text-align: center; }
+        .cta-footer .cta-sub { font-size: 14px; color: #888; text-align: center; margin-bottom: 24px; }
+        .cta-col ul { list-style: none; padding: 0; margin: 0 auto; }
+        .cta-col ul li { font-size: 14px; color: #ccc; padding: 8px 0; margin: 0; }
+        .cta-qr-wrap { text-align: center; }
+        .cta-qr-wrap img { width: 120px; height: 120px; border: 1px solid #333; border-radius: 8px; padding: 6px; background: #fff; }
+        .cta-qr-wrap p { font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0; }
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.95); backdrop-filter: blur(100px); z-index: 101; flex-direction: column; justify-content: center; align-items: center; gap: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 24px; font-weight: 800; color: #fff; margin-left: 0; }
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(0,0,0,0.95); flex-direction: column; justify-content: center; align-items: center; transition: 0.5s ease; gap: 40px; z-index: 1001; }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-6px); }
+            .arch-box { padding: 12px 10px; gap: 2px; }
+            .arch-node { font-size: 11px; padding: 6px 8px; min-width: 44px; word-break: break-word; overflow-wrap: break-word; }
+            .arch-node.small { font-size: 10px; padding: 4px 6px; min-width: 36px; }
+            .arch-node[style*="width"] { width: 100% !important; }
+            .arch-row { gap: 4px; }
+            .arch-arrow { font-size: 9px; letter-spacing: 0; white-space: nowrap; overflow: hidden; }
+            .tool-grid { grid-template-columns: 1fr; gap: 6px; }
+            .tool-card { padding: 10px; }
+            .tool-card .tool-name { font-size: 11px; }
+            .tool-card .tool-desc { font-size: 11px; }
+            .onto-chain { gap: 2px; }
+            .onto-node { font-size: 11px; padding: 3px 6px; }
+            .onto-arrow { font-size: 10px; }
+            .onto-label { font-size: 9px; }
+            .flow-chart { gap: 1px; }
+            .flow-node { font-size: 11px; padding: 4px 10px; width: 100%; word-break: break-word; }
+            .flow-arrow { font-size: 8px; }
+            .code-block { font-size: 11px; padding: 12px; overflow-x: auto; }
+            .data-table { font-size: 11px; }
+            .data-table th, .data-table td { padding: 5px 3px; }
+            .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+            .cta-footer h3 { font-size: 18px; }
+            .cta-footer .cta-sub { font-size: 13px; }
+            .cta-col ul li { font-size: 13px; }
+            .cta-qr-wrap img { width: 100px; height: 100px; }
+            .article-body h2 { font-size: 20px; }
+            .article-body h3 { font-size: 16px; }
+            .article-body h4 { font-size: 15px; }
+            .article-body p, .article-body li { font-size: 15px; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Manufacturing AI Architecture: Don't Jump into LangChain — Build the 'Data Capability Layer' First",
+  "description": "The biggest mistake manufacturing companies make when adopting AI is jumping straight into LangChain. A layered enterprise AI architecture: Data Layer → Knowledge Layer → Ontology → Tools → Agent → LangGraph, with a complete manufacturing ontology design.",
+  "author": { "@type": "Person", "name": "Wang Jianfeng (GeekHeron)", "url": "https://geekheron.space/about-en.html" },
+  "publisher": { "@type": "Organization", "name": "GeekHeron", "logo": { "@type": "ImageObject", "url": "https://geekheron.space/logo.png" } },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://geekheron.space/en/article-manufacturing-ai-ontology.html" },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "en",
+  "datePublished": "2026-07-18"
+}
+    </script>
+    <link rel="stylesheet" href="../site-nav.css">
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Business Cases</a></li>
+                <li><a href="../fuxi-engine.html">Source Delivery</a></li>
+                <li><a href="../about-en.html">About &amp; Collaboration</a></li>
+                <li><a href="../article-manufacturing-ai-ontology.html" class="lang-btn" hreflang="zh-CN" lang="zh-CN" style="border:1px solid rgba(255,255,255,0.3);padding:4px 10px;border-radius:4px;font-size:12px;">中文</a></li>
+            </ul>
+        </nav>
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ARCHITECTURE &amp; MANUFACTURING</span>
+                <h1 class="article-title">Manufacturing AI Architecture: Don't Jump into LangChain — Build the "Data Capability Layer" First</h1>
+                <div class="article-meta">
+                    <span>SEO: Enterprise AI Architecture, Knowledge Graph, Ontology Modeling, LangGraph Workflow, Data Governance, RAG Knowledge Base</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.07.18</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: ARCHITECTURE</span>
+                </div>
+                <div style="margin-top:16px;padding:12px 20px;background:rgba(255,255,255,0.03);border:1px solid #222;border-radius:6px;font-size:14px;color:#aaa;line-height:1.6;">
+                    <strong style="color:#fff;">Author: Wang Jianfeng (GeekHeron)</strong><br>
+                    AI Agent Architect specializing in enterprise Agent systems, RAG, and intelligent business automation.
+                </div>
+            </div>
+
+            <div class="article-body">
+
+                <p>After years of delivering AI systems for factories and manufacturers, I've seen this pattern over and over again: <strong>"Let's jump into AI — plug in DeepSeek via API, wrap it with LangChain Agent, and we're done."</strong></p>
+
+                <p>And then what? Data silos remain. MES data doesn't talk to ERP. CRM calls it SKU, the shop floor calls it material code. The AI is clueless — not because the model is bad, but because the foundation was never built.</p>
+
+                <p>This article isn't about demos or hype. It's a practical, layered enterprise AI architecture, and why you should build your <strong>Data Capability Layer</strong> before touching LangChain.</p>
+
+                <!-- ============ 1. Data Layer ============ -->
+
+                <h2>1. Don't Jump into LangChain — Build the "Data Capability Layer" First</h2>
+
+                <p>A typical manufacturing plant has data sources like:</p>
+                <ul>
+                    <li><strong>MES</strong> — Manufacturing Execution System (work orders, processes, equipment, yield)</li>
+                    <li><strong>ERP</strong> — Enterprise Resource Planning (procurement, inventory, finance)</li>
+                    <li><strong>CRM</strong> — Customer Relationship Management (customers, contracts, requirements)</li>
+                    <li><strong>File Server</strong> — Process documents, SOPs, quality standards, equipment drawings</li>
+                    <li><strong>OA / DingTalk</strong> — Approval workflows, project docs, communication logs</li>
+                </ul>
+
+                <p>The biggest problem isn't a lack of data — it's <strong>data silos</strong>. Each system operates independently, calling the same things by different names.</p>
+
+                <p>Step one — and the most commonly skipped — is building the <strong>Enterprise Data Access Layer</strong>:</p>
+
+                <div class="arch-box">
+                    <div class="arch-row">
+                        <div class="arch-node" style="border-color:#6af;">MES</div>
+                        <div class="arch-node" style="border-color:#6af;">ERP</div>
+                        <div class="arch-node" style="border-color:#6af;">CRM</div>
+                        <div class="arch-node">Files</div>
+                        <div class="arch-node">OA</div>
+                    </div>
+                    <div class="arch-arrow">│  │  │  │  │</div>
+                    <div class="arch-arrow">▼  ▼  ▼  ▼  ▼</div>
+                    <div class="arch-node highlight" style="width:80%;">Enterprise Data Access Layer<br><span style="font-size:11px;color:#888;">API / DB Direct / ETL / Doc Parsing</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:60%;">Unified Data Foundation<br><span style="font-size:11px;color:#888;">PostgreSQL / ClickHouse / Vector DB</span></div>
+                </div>
+
+                <h3>Structured Data Access</h3>
+                <p>Business system data from MES/ERP/CRM gets ingested via:</p>
+                <ul>
+                    <li><strong>API</strong> — RESTful / GraphQL endpoints</li>
+                    <li><strong>Database Direct</strong> — Read replicas with CDC (Change Data Capture)</li>
+                    <li><strong>ETL Pipelines</strong> — Scheduled batch processing with data cleaning</li>
+                </ul>
+
+                <p>Example MES production table:</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Order ID</th><th>Product</th><th>Process</th><th>Machine</th><th>Yield</th><th>Time</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>MO-20260701</td><td>Molded-Part-A100</td><td>Process-3</td><td>Machine-5</td><td>95%</td><td>14:30</td></tr>
+                    </tbody>
+                </table>
+
+                <p>Unified target: <strong>PostgreSQL</strong> (transaction queries) or <strong>ClickHouse</strong> (analytics).</p>
+
+                <h3>Unstructured Data Access</h3>
+                <p>PDFs, Word docs, Excel files, process drawings, SOPs — these go through a different pipeline:</p>
+                <ul>
+                    <li><strong>Document Parsing</strong> — PDF parsing, OCR, table extraction</li>
+                    <li><strong>Chunking &amp; Embedding</strong> — Text splitting + vectorization</li>
+                    <li><strong>Vector Storage</strong> — Building the RAG knowledge base</li>
+                </ul>
+
+                <!-- ============ 2. Knowledge Layer ============ -->
+
+                <h2>2. Build the Enterprise Knowledge Layer (RAG / LlamaIndex)</h2>
+
+                <p>Once data is ingested, don't throw raw data at the Agent. Classify it:</p>
+
+                <h3>Structured Knowledge → Database Query</h3>
+                <p>Clear schema and relationships — use SQL or API directly:</p>
+                <div class="code-block">Order A → Production Line 1 → Process 3 → Defect Rate 5%</div>
+
+                <h3>Unstructured Knowledge → RAG Retrieval</h3>
+                <p>Documents like "Injection Molding Process Spec" or "Quality Incident Handling Procedure" need RAG:</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node">📄 Files (PDF / Word / Excel / Drawings)</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">🔍 Document Parsing (PDF / OCR / Table Extraction)</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">✂️ Text Chunking</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;">🧬 Embedding Vectorization</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">🗄 Vector Database<br><span style="font-size:11px;color:#888;">Milvus / pgvector / Chroma</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#fa8;">🔎 Semantic Retrieval<br><span style="font-size:11px;color:#888;">LlamaIndex / LangChain Retriever</span></div>
+                    </div>
+                </div>
+
+                <p>Recommended stack: <strong>LlamaIndex</strong> for document management, <strong>Milvus</strong> or <strong>pgvector</strong> for storage, <strong>LangChain Retriever</strong> for access.</p>
+
+                <!-- ============ 3. Ontology ============ -->
+
+                <h2>3. Build Business Knowledge Modeling (Ontology)</h2>
+
+                <p>This step is critical but often skipped. Manufacturing especially needs ontology because different systems use different names for the same thing:</p>
+                <ul>
+                    <li>MES calls it <strong>Product Code</strong> = "100-A"</li>
+                    <li>ERP calls it <strong>Material Code</strong> = "M001"</li>
+                    <li>CRM calls it <strong>SKU</strong> = "A100"</li>
+                </ul>
+                <p>The AI doesn't know these refer to the same entity. You expect it to reason about "why an order is delayed," but it can't even match data across systems.</p>
+
+                <h3>What Ontology Does</h3>
+                <p>Ontology creates an <strong>Enterprise Business World Model</strong>:</p>
+
+                <h4>Core Entities</h4>
+                <div class="code-block">Product → Customer → Order → Material → Equipment → Process → Employee → Supplier</div>
+
+                <h4>Relations</h4>
+                <div class="onto-chain">
+                    <div class="onto-node">Customer</div><span class="onto-label">places</span><span class="onto-arrow">→</span>
+                    <div class="onto-node">Sales Order</div><span class="onto-label">generates</span><span class="onto-arrow">→</span>
+                    <div class="onto-node">Production Order</div><span class="onto-label">uses</span><span class="onto-arrow">→</span>
+                    <div class="onto-node">Material</div>
+                </div>
+                <div class="onto-chain" style="margin-top:-16px;">
+                    <div class="onto-node">Production Order</div><span class="onto-label">undergoes</span><span class="onto-arrow">→</span>
+                    <div class="onto-node">Process</div><span class="onto-label">uses</span><span class="onto-arrow">→</span>
+                    <div class="onto-node">Equipment</div><span class="onto-label">generates</span><span class="onto-arrow">→</span>
+                    <div class="onto-node">Quality Data</div>
+                </div>
+
+                <h4>Attributes</h4>
+                <div class="code-block">Product: { ID, Model, Spec, Customer }
+Equipment: { ID, Status, Location, MaintenanceInterval }
+QualityIssue: { DefectType, Severity, RootCause, Solution }</div>
+
+                <h3>Without Ontology vs With Ontology</h3>
+
+                <p><strong>Without Ontology:</strong> The boss asks "Why is Customer A's order delayed?" The Agent says "let me check the order table" — but it doesn't know which production line, equipment, or supplier is connected to that order.</p>
+
+                <p><strong>With Ontology:</strong> The Agent understands the chain:</p>
+                <div class="code-block">Customer A → Order B → Product C → Work Order D → Process 3 → Equipment E → Anomaly Record F</div>
+                <p>Then automatically plans:</p>
+                <ol>
+                    <li>Check order status</li>
+                    <li>Check production progress</li>
+                    <li>Check equipment run logs</li>
+                    <li>Check quality anomalies</li>
+                    <li>Check material supply</li>
+                </ol>
+                <p>This is <strong>knowledge-driven AI</strong> — traceable, explainable reasoning, not a black box.</p>
+
+                <h3>Ontology + RAG Fusion Architecture</h3>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="arch-node">💬 User Question</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">🧠 Ontology Identifies Entities &amp; Relations</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">📌 Locate Relevant Data Sources &amp; Documents</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;">📚 RAG Supplements Knowledge Details</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#fa8;">🤖 Agent Reasoning &amp; Decision</div>
+                    </div>
+                </div>
+
+                <p>Example: "Why has this customer's delivery been consistently late?" Ontology traces: <code>Customer → Order → Product → Process → Equipment</code>. RAG retrieves the "Equipment Anomaly Handling SOP." The Agent outputs: "Equipment X failed twice on Line 3, causing Process-3 delays. Recommended action: replace the core module per SOP."</p>
+
+                <!-- ============ 4. Tool Encapsulation ============ -->
+
+                <h2>4. Encapsulate Enterprise Capabilities as Tools / Skills</h2>
+
+                <p>Only after the data and knowledge foundation is built do we enter the Agent layer.</p>
+                <p>Rule: <strong>Never let the Agent access databases directly.</strong> Each capability must be wrapped as an independent Tool.</p>
+
+                <h3>Tool Catalog</h3>
+
+                <div class="tool-grid">
+                    <div class="tool-card"><div class="tool-name">get_production_status(order_id)</div><div class="tool-desc">Query current production order status, completion rate, and anomalies</div></div>
+                    <div class="tool-card"><div class="tool-name">get_quality_issue(product_id)</div><div class="tool-desc">Query product quality anomalies and historical resolutions</div></div>
+                    <div class="tool-card"><div class="tool-name">get_inventory(material_id)</div><div class="tool-desc">Query material inventory and supplier lead times</div></div>
+                    <div class="tool-card"><div class="tool-name">get_customer_history(customer_id)</div><div class="tool-desc">Query customer order history and delivery records</div></div>
+                    <div class="tool-card"><div class="tool-name">query_process_sop(keyword)</div><div class="tool-desc">Retrieve process specifications / SOP documents</div></div>
+                </div>
+
+                <p>The Agent only sees these capabilities. Behind the scenes, they may call MES or ERP — the Agent doesn't need to know. This is the <strong>Adapter Pattern</strong>.</p>
+
+                <!-- ============ 5. Permission System ============ -->
+
+                <h2>5. Add a Permission System to the Agent</h2>
+
+                <p>Tools are ready, but one key question remains: <strong>Who can call what?</strong></p>
+                <p>Manufacturing data has natural hierarchy. The CEO should see everything. The plant manager sees only their line. The operator sees only their station. Without permission control, the same Agent response goes to everyone — which is unacceptable.</p>
+
+                <p>The correct design: <strong>embed permission checks in the Tool call chain</strong>.</p>
+
+                <div class="flow-chart" style="gap:3px;width:100%;margin-bottom:30px;">
+                    <div class="arch-node" style="border-color:#6af;">👤 User Identity</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node highlight">🔐 Permission Filter<br><span style="font-size:11px;color:#888;">Role → Access Scope</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node highlight">🔧 Tool Call<br><span style="font-size:11px;color:#888;">With Permission Context</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node" style="border-color:#8f8;">📊 Data Return<br><span style="font-size:11px;color:#888;">Only Permission-Scoped Data</span></div>
+                </div>
+
+                <h3>Permission Design Example</h3>
+
+                <div class="tool-grid">
+                    <div class="tool-card"><div class="tool-name" style="color:#fa8;">👑 Admin (CEO)</div><div class="tool-desc">All data: all lines, all orders, quality reports, financials</div></div>
+                    <div class="tool-card"><div class="tool-name" style="color:#6af;">🏭 Plant Manager</div><div class="tool-desc">Own line: work orders, equipment status, anomaly logs, yield stats</div></div>
+                    <div class="tool-card"><div class="tool-name" style="color:#888;">🔧 Operator</div><div class="tool-desc">Own station: shift orders, operating instructions, self-inspection records</div></div>
+                </div>
+
+                <h3>Two Implementation Approaches</h3>
+
+                <p><strong>Approach 1: Tool-Level Filtering (Recommended)</strong></p>
+                <p>Each Tool accepts a <code>user_role</code> parameter and applies permission filters in the query:</p>
+
+                <div class="code-block">
+def get_production_status(order_id, user_role):
+    if user_role == 'operator':
+        return query("SELECT * FROM production WHERE station = :station", station=user.station)
+    elif user_role == 'manager':
+        return query("SELECT * FROM production WHERE line_id = :line", line=user.line)
+    elif user_role == 'admin':
+        return query("SELECT * FROM production")
+                </div>
+
+                <p><strong>Approach 2: Data-Layer Filtering (More thorough)</strong></p>
+                <p>PostgreSQL Row-Level Security:</p>
+
+                <div class="code-block">
+CREATE POLICY production_policy ON production
+    USING (
+        current_user = 'admin' OR
+        (current_user = 'manager' AND line_id IN (SELECT line_id FROM user_lines WHERE user_id = current_user_id())) OR
+        (current_user = 'operator' AND station_id = current_station())
+    );
+                </div>
+
+                <p><strong>Approach 1 is recommended</strong> for most enterprises: Tools are already an abstraction layer, natural for access control. No need to modify legacy databases (many old MES systems lack RLS). Permission changes only affect Tool logic. Approach 2 can be used for greenfield systems.</p>
+
+                <!-- ============ 6. LangChain ============ -->
+
+                <h2>6. LangChain Handles Agent Orchestration</h2>
+
+                <p>Now LangChain enters the picture — as the Agent orchestration layer.</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 User</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:70%;">LangChain Agent (ReAct)<br><span style="font-size:11px;color:#888;">Thought → Action → Observation → Reasoning</span></div>
+                        <div class="arch-arrow">┌──────┼──────┐──────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Tool1<br><span style="color:#888;">MES</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tool2<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Knowledge</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">History</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <p><strong>Real scenario:</strong> Boss asks "Why is Order A delayed?"</p>
+                <ol>
+                    <li><strong>Call MES Tool:</strong> Query Order A's production progress</li>
+                    <li><strong>Discover:</strong> Process 3 has high anomaly rate</li>
+                    <li><strong>Call Quality Tool:</strong> Check historical resolution for that anomaly</li>
+                    <li><strong>Call RAG:</strong> Retrieve relevant SOPs and process specs</li>
+                    <li><strong>Generate report:</strong> Delay cause + solution + recovery recommendation</li>
+                </ol>
+
+                <!-- ============ 7. LangGraph ============ -->
+
+                <h2>7. For Complex Scenarios, Use LangGraph</h2>
+
+                <p>LangChain Agent works for simple tasks. Manufacturing often involves <strong>stateful workflows</strong> — which calls for <strong>LangGraph</strong>.</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="flow-node" style="border-color:#6af;">🚀 Start</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">📋 Query Order</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ Is it delayed?</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">⚙️ Query Production Progress</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ Assess Quality</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">📄 Generate Report</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#fa8;">✋ Human Approval</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#8f8;">✅ End</div>
+                    </div>
+                </div>
+
+                <p>This isn't chat — it's a <strong>process</strong>. Clear nodes, branches, state transitions, and human-in-the-loop checkpoints. LangGraph's directed graph (DAG) model is a natural fit.</p>
+
+                <!-- ============ 8. Final Architecture ============ -->
+
+                <h2>8. Final Architecture Diagram</h2>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 User</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">📱 Enterprise AI Assistant (Feishu / DingTalk / Web)</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:60%;">🧠 LangGraph Agent Orchestration</div>
+                        <div class="arch-arrow">┌─────────┼─────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">Capabilities</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Knowledge</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">History</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
+                            <div class="arch-node small" style="border-color:#888;">Knowledge Base</div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└────┼────┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🔧 Data Governance Layer<br><span style="font-size:11px;color:#888;">Ingestion / Cleaning / Ontology</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-row">
+                            <div class="arch-node small">MES</div>
+                            <div class="arch-node small">ERP</div>
+                            <div class="arch-node small">CRM</div>
+                            <div class="arch-node small">Files</div>
+                            <div class="arch-node small">OA</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Core design principle: <strong>separation of concerns</strong>. Data layer doesn't care how it's used. Knowledge layer manages semantics. Tool layer wraps capabilities. Agent layer only orchestrates.</p>
+
+                <!-- ============ 9. Start Small ============ -->
+
+                <h2>9. Don't Build the "Universal Agent" First</h2>
+
+                <p>The most common mistake in manufacturing AI: "Let's build a universal AI assistant." Tempting, but it will likely die before completion.</p>
+
+                <p>Start with <strong>three vertical Agents</strong>:</p>
+
+                <h3>1. Production Operations Agent</h3>
+                <ul>
+                    <li><strong>User:</strong> Production Manager</li>
+                    <li><strong>Capabilities:</strong> Check order status, line capacity, anomaly work orders</li>
+                </ul>
+
+                <h3>2. Quality Agent</h3>
+                <ul>
+                    <li><strong>User:</strong> Quality Manager</li>
+                    <li><strong>Capabilities:</strong> Check defect data, root causes, SOPs</li>
+                </ul>
+
+                <h3>3. Sales &amp; Delivery Agent</h3>
+                <ul>
+                    <li><strong>User:</strong> Sales Manager</li>
+                    <li><strong>Capabilities:</strong> Check customer info, order progress, estimated delivery</li>
+                </ul>
+
+                <p>Each Agent does one thing. Once solid, merge and expand.</p>
+
+                <!-- ============ 10. Tech Stack ============ -->
+
+                <h2>10. Technology Architecture Overview</h2>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node highlight">🤖 Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">LangGraph</div>
+                        <div class="arch-arrow">┌────────┼────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Ontology<br><span style="color:#888;">Neo4j</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Milvus</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">MES/ERP</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="color:#888;">Knowledge Graph</div>
+                            <div class="arch-node small" style="color:#888;">Vector Store</div>
+                            <div class="arch-node small" style="color:#888;">Biz Systems</div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:70%;">🗄 Enterprise Data Sources<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · Files · OA</span></div>
+                    </div>
+                </div>
+
+                <p>Key components:</p>
+                <ul>
+                    <li><strong>Ontology Storage:</strong> Neo4j or other graph databases</li>
+                    <li><strong>RAG Vector Store:</strong> Milvus / pgvector</li>
+                    <li><strong>Ontology Editor:</strong> Protégé or custom RDF/OWL</li>
+                    <li><strong>Agent Orchestration:</strong> LangGraph / LangChain</li>
+                    <li><strong>Structured Data:</strong> PostgreSQL / ClickHouse</li>
+                    <li><strong>Enterprise Interface:</strong> Feishu / DingTalk Bot</li>
+                </ul>
+
+                <!-- ============ 11. Roadmap ============ -->
+
+                <h2>11. Recommended Roadmap</h2>
+
+                <p><strong>Phase 1: RAG + Tools</strong></p>
+                <p>Solve "query, search, and execute." Integrate data, wrap Tools, build the basic RAG knowledge base.</p>
+
+                <p><strong>Phase 2: Business Ontology</strong></p>
+                <p>Map core entity relationships across systems — "M001 = A100 = 100-A" — enabling cross-system semantic alignment.</p>
+
+                <p><strong>Phase 3: GraphRAG</strong></p>
+                <p>Combine knowledge graphs with vector retrieval for complex multi-hop reasoning — "Equipment downtime → process delay → order impact."</p>
+
+                <blockquote>
+                    <strong>Don't try to build the "complete knowledge graph" from day one.</strong> Many projects die here. Ontology evolves iteratively.
+                </blockquote>
+
+                <p>Manufacturing is a natural fit for ontology — BOM structures, process routing, equipment relationships, supply chains, quality traceability. These are essentially knowledge graphs. But take it step by step, solving one pain point at a time.</p>
+
+            </div>
+
+            <footer class="cta-footer">
+                <h3>Exploring Enterprise AI Implementation?</h3>
+                <p class="cta-sub">One free AI Feasibility Assessment</p>
+
+                <div class="cta-grid" style="grid-template-columns:1fr;max-width:480px;margin:0 auto 36px;">
+                    <div class="cta-col" style="text-align:center;">
+                        <ul style="display:inline-block;text-align:left;">
+                            <li>✓ <strong style="color:#fff;">AI Scenario Feasibility Analysis</strong></li>
+                            <li>✓ <strong style="color:#fff;">Enterprise Data Capability Assessment</strong></li>
+                            <li>✓ <strong style="color:#fff;">Agent Implementation Roadmap</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cta-qr-wrap">
+                    <img src="../wechat.png" alt="Scan to add GeekHeron on WeChat" width="120" height="120" loading="lazy">
+                    <p>Scan to connect · Note: "AI Consult"</p>
+                </div>
+
+                <div style="margin-top:32px;padding-top:24px;border-top:1px solid #222;text-align:center;">
+                    <a href="../about-en.html" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #333;border-radius:8px;padding:10px 20px;font-size:13px;color:#888;background:rgba(0,0,0,0.4);transition:0.3s;">
+                        <span>Learn More →</span>
+                        <span style="color:#666;font-size:11px;">About GeekHeron</span>
+                    </a>
+                </div>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        (function(){
+            var hamburger = document.querySelector('.hamburger');
+            var navLinks = document.querySelector('.nav-links');
+            function toggleMenu(){
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            }
+            if(hamburger) hamburger.addEventListener('click', toggleMenu);
+        })();
+
+        var canvas = document.getElementById('galaxy-field');
+        var ctx = canvas.getContext('2d');
+        var width, height;
+        var particles = [];
+        var numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        function Particle() {
+            this.x = Math.random() * width; this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+            this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+        }
+        Particle.prototype.update = function() {
+            this.x += this.vx; this.y += this.vy;
+            if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+            if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+        };
+        Particle.prototype.draw = function() {
+            ctx.fillStyle = 'rgba(255,255,255,' + this.alpha + ')';
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        };
+        function init() { resize(); for(var i=0;i<numParticles;i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0,0,width,height); particles.forEach(function(p){p.update();p.draw();}); requestAnimationFrame(animate); }
+        window.addEventListener('resize', function(){ resize(); particles.length=0; init(); });
+        init(); animate();
+    </script>
+    <script src="../site-nav.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@
     <title>Manufacturing AI Architecture: Don't Jump into LangChain — Build the "Data Capability Layer" First - GeekHeron</title>
     <link rel="canonical" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
     <meta name="description" content="The biggest mistake manufacturing companies make with AI is jumping straight into LangChain. A layered enterprise AI architecture: Data Layer → Knowledge Layer → Ontology → Tools → MCP Standard → Agent → LangGraph, with a complete manufacturing ontology design.">
-    <meta name="keywords" content="GeekHeron, Manufacturing AI, Enterprise AI Architecture, LangChain, LangGraph, RAG, Knowledge Graph, Ontology, MCP, Model Context Protocol, Data Governance, Smart Manufacturing">
+    <meta name="keywords" content="GeekHeron, Manufacturing AI, Enterprise AI Architecture, LangChain, LangGraph, RAG, Knowledge Graph, Ontology, MCP, Model Context Protocol, AgentOps, Agent Runtime, Data Governance, Smart Manufacturing">
     <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
     <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
     <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
@@ -807,6 +807,93 @@ print(result["report"])
 
                 <p>Compare with LangChain Agent: everything crammed into a ReAct loop — state in memory, branches in prompts, human approval barely controllable. LangGraph defines every node, every branch, every state transition <strong>explicitly</strong>. The difference in maintainability, traceability, and testability is night and day.</p>
 
+                <!-- ============ 7.5. AgentOps ============ -->
+
+                <h2>7.5 Agent Runtime Governance (AgentOps / Observability)</h2>
+
+                <p>The previous sections cover how to build an Agent. But before going to production, every enterprise asks the same question: <strong>What happens when the AI gets it wrong?</strong></p>
+
+                <p>Production isn't about retrying until it works — every error is a real cost. The right approach is to add an <strong>Agent Runtime Governance Layer</strong> between the Agent and its Tools, to trace, log, and score every single run.</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">🧠 LangChain / LangGraph Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:65%;">⚙️ Agent Runtime / Governance</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┼────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">📝 Prompt Versioning</div>
+                            <div class="arch-node small" style="border-color:#8f8;">📋 Tool Call Logging</div>
+                            <div class="arch-node small" style="border-color:#fa8;">💰 Token Cost</div>
+                            <div class="arch-node small" style="border-color:#fa8;">⭐ Answer Quality</div>
+                            <div class="arch-node small" style="border-color:#6af;">👤 Human Feedback</div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┴───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="width:60%;">🔌 MCP / Tool Layer</div>
+                    </div>
+                </div>
+
+                <h3>Core Governance Capabilities</h3>
+
+                <h4>1. Prompt Version Management</h4>
+                <p>In production, Prompts never stay the same. Product says "add this rule," QA says "this edge case is wrong." Without version control, every change is terrifying — you don't know what changed or what it broke.</p>
+                <p><strong>Approach:</strong> Every Prompt change goes through versioning: new version → A/B test → canary release → full rollout. Use LangSmith Hub or a custom Git + YAML setup.</p>
+
+                <h4>2. Tool Call Logging</h4>
+                <p>Every Tool call's parameters, return values, and duration must be logged. This is the only way to debug agent behavior — no logs means no observability.</p>
+                <p>Recommended log structure:</p>
+                <ul>
+                    <li><strong>run_id</strong> — Unique conversation ID, links all traces</li>
+                    <li><strong>tool_name</strong> — Which Tool was called</li>
+                    <li><strong>input_params</strong> — Parameters (sanitize sensitive data)</li>
+                    <li><strong>output</strong> — Return value summary</li>
+                    <li><strong>duration_ms</strong> — Call duration</li>
+                    <li><strong>success</strong> — Whether it succeeded</li>
+                    <li><strong>error_message</strong> — Failure details</li>
+                </ul>
+                <p>LangSmith handles this automatically. For data-residency requirements, use OpenTelemetry self-hosted.</p>
+
+                <h4>3. Token Cost Tracking</h4>
+                <p>Enterprises fear two things with Agents: errors and unexpected costs. Every conversation's token consumption must be quantifiable.</p>
+                <p><strong>Tracking dimensions:</strong></p>
+                <ul>
+                    <li><strong>Per call</strong> — Input tokens + output tokens</li>
+                    <li><strong>Per cost</strong> — Converted by model pricing</li>
+                    <li><strong>Daily/weekly/monthly</strong> — Grouped by Agent, department, scenario</li>
+                    <li><strong>Anomaly alerts</strong> — Auto-alert when single call exceeds threshold</li>
+                </ul>
+
+                <h4>4. Answer Quality Scoring</h4>
+                <p>Agent answer quality shouldn't be gut-feel — it needs <strong>quantifiable standards</strong>.</p>
+                <ul>
+                    <li><strong>Auto-scoring</strong> — Use LLM-as-Judge (relevance, accuracy, completeness)</li>
+                    <li><strong>User ratings</strong> — Thumbs up/down on every response</li>
+                    <li><strong>Regression testing</strong> — Maintain a test set, auto-run on every Prompt/model change</li>
+                </ul>
+
+                <h4>5. Human Feedback Loop</h4>
+                <p>This is the most important yet most overlooked piece. Agents won't be 100% correct — what matters is <strong>what happens after an error</strong>.</p>
+                <p><strong>Feedback loop:</strong></p>
+                <ul>
+                    <li>Agent responds → User flags "wrong"</li>
+                    <li>Context + Agent reasoning chain + Tool call chain saved</li>
+                    <li>Pushed to human review queue</li>
+                    <li>Reviewer provides correct answer / fix</li>
+                    <li>Fix fed back into test set to prevent regression</li>
+                </ul>
+
+                <h3>Recommended Tools</h3>
+                <ul>
+                    <li><strong>LangSmith</strong> — Native to the LangChain ecosystem. Trace / Prompt versioning / evaluation / cost tracking in one place. Best if you're on LangChain.</li>
+                    <li><strong>OpenTelemetry</strong> — Enterprise standard, data stays in-house. Standard trace format, integrates with APM systems like Grafana Tempo.</li>
+                    <li><strong>Arize Phoenix</strong> — Open-source LLM observability with trace / evaluation / drift detection. Good for custom MLOps stacks.</li>
+                </ul>
+
+                <blockquote>
+                    <strong>Core principle:</strong> An Agent without traces is an Agent that hasn't shipped. If you can't show logs to answer "what went wrong," it's Schrödinger's Agent — nobody knows if it's working today.
+                </blockquote>
+
                 <!-- ============ 8. Final Architecture ============ -->
 
                 <h2>8. Final Architecture Diagram</h2>
@@ -818,13 +905,14 @@ print(result["report"])
                         <div class="arch-node" style="border-color:#6af;">📱 Enterprise AI Assistant (Feishu / DingTalk / Web)</div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-node highlight" style="width:60%;">🧠 LangGraph Agent Orchestration</div>
-                        <div class="arch-arrow">┌─────────┼─────────┐</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┐</div>
                         <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Agent Runtime<br><span style="color:#888;">Governance</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">Capabilities</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Knowledge</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">History</span></div>
                         </div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │ &emsp; │</div>
                         <div class="arch-row">
                             <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
                             <div class="arch-node small" style="border-color:#888;">Knowledge Base</div>
@@ -843,7 +931,7 @@ print(result["report"])
                     </div>
                 </div>
 
-                <p>Core design principle: <strong>separation of concerns</strong>. Data layer doesn't care how it's used. Knowledge layer manages semantics. Tool layer wraps capabilities. Agent layer only orchestrates.</p>
+                <p>Core design principle: <strong>separation of concerns</strong>. Data layer doesn't care how it's used. Knowledge layer manages semantics. Tool layer wraps capabilities. Governance layer ensures production quality. Agent layer only orchestrates.</p>
 
                 <!-- ============ 9. Start Small ============ -->
 

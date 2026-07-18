@@ -6,7 +6,7 @@
     <title>制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层" - GeekHeron</title>
     <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
     <meta name="description" content="制造企业引入 AI 的最大误区就是直接接 LangChain。分层企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → MCP 接入标准 → Agent 编排 → LangGraph，附完整的制造业本体设计方案。">
-    <meta name="keywords" content="GeekHeron, 制造业AI, 企业AI架构, LangChain, LangGraph, RAG, 知识图谱, Ontology, MCP, Model Context Protocol, 数据治理, 智能制造">
+    <meta name="keywords" content="GeekHeron, 制造业AI, 企业AI架构, LangChain, LangGraph, RAG, 知识图谱, Ontology, MCP, Model Context Protocol, AgentOps, Agent Runtime, 数据治理, 智能制造">
     <link rel="icon" type="image/png" href="logo.png">
     
     <style>
@@ -1118,6 +1118,110 @@ print(result["report"])
 
                 <p>对比 LangChain Agent：所有逻辑挤在 ReAct 循环里，状态存内存、分支靠提示词、人工审批几乎不可控。而 LangGraph 把每个节点、每个分支、每个状态转换都<strong>显式定义</strong>了——可维护性、可追踪性、可测试性完全是两个档次。</p>
 
+                <!-- ============ 七点五、AgentOps ============ -->
+
+                <h2>七点五、Agent 运行治理层（AgentOps / 可观测性）</h2>
+
+                <p>前面六章讲的都是 Agent 怎么做，但企业真正决定上线前一定会问：<strong>AI 出错怎么办？</strong></p>
+
+                <p>生产环境不能只靠「再跑一次」——每一次错误都是真实成本。正确的做法是在 Agent 和 Tool 之间加一层 <strong>Agent 运行治理层（Agent Runtime）</strong>，把每一次运行都记录、追踪、评分。</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">🧠 LangChain / LangGraph Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:65%;">⚙️ Agent 运行治理层<br><span style="font-size:11px;color:#888;">Agent Runtime / Governance</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┼────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">📝 Prompt 版本管理</div>
+                            <div class="arch-node small" style="border-color:#8f8;">📋 Tool 调用日志</div>
+                            <div class="arch-node small" style="border-color:#fa8;">💰 Token 成本</div>
+                            <div class="arch-node small" style="border-color:#fa8;">⭐ 答案质量评分</div>
+                            <div class="arch-node small" style="border-color:#6af;">👤 人工反馈闭环</div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┴───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="width:60%;">🔌 MCP / Tool 层</div>
+                    </div>
+                </div>
+
+                <h3>治理层核心功能</h3>
+
+                <h4>1. Prompt 版本管理</h4>
+                <p>生产环境中 Prompt 不可能一成不变。业务方今天说「加个规则」，明天 QA 说「某个案例错了」。没有版本管理的话，每次改 Prompt 都是提心吊胆——因为不知道改了什么，也不知道改了之后影响什么。</p>
+                <p><strong>做法：</strong>每次修改 Prompt 必须走版本化流程：写新版本 → A/B 测试 → 灰度上线 → 全量切换。LangSmith 的 Hub 或自定义 Git + YAML 都可以。</p>
+
+                <div class="code-block">
+# prompt-history.yaml
+prompts:
+  production_agent_v1:
+    content: "你是生产管理专家，查询生产信息，给出分析。"
+    created: 2026-03-01
+  production_agent_v2:
+    content: "你是生产管理专家，查询生产信息，分析异常原因，给出建议。"
+    created: 2026-04-15
+    diff: "增加了分析异常原因和建议"
+  production_agent_v3:
+    content: "你是生产管理专家，查询生产信息，分析异常原因给出建议，如果异常连续出现需标记红线。"
+    created: 2026-05-20
+    diff: "增加红线标记逻辑"
+                </div>
+
+                <h4>2. Tool 调用日志</h4>
+                <p>Agent 每次调用 Tool 的参数、返回值、耗时都必须记录。这是排查 Agent 行为的唯一手段——没有日志就没有可观测性。</p>
+                <p>建议日志结构：</p>
+                <ul>
+                    <li><strong>run_id</strong> — 每次对话的唯一 ID，关联所有 Trace</li>
+                    <li><strong>tool_name</strong> — 调用了哪个 Tool</li>
+                    <li><strong>input_params</strong> — 传入参数（注意脱敏）</li>
+                    <li><strong>output</strong> — 返回值摘要</li>
+                    <li><strong>duration_ms</strong> — 调用耗时</li>
+                    <li><strong>success</strong> — 是否成功</li>
+                    <li><strong>error_message</strong> — 失败原因</li>
+                </ul>
+                <p>LangSmith 自动完成这些，但如果企业要求数据不出网，可以用 OpenTelemetry 自搭。</p>
+
+                <h4>3. Token 成本追踪</h4>
+                <p>企业上 Agent 最怕的除了出错就是超预算。每个对话的 Token 消耗必须可量化。</p>
+                <p><strong>追踪维度：</strong></p>
+                <ul>
+                    <li><strong>每次调用</strong> — 输入 Token + 输出 Token</li>
+                    <li><strong>每笔成本</strong> — 按模型定价换算</li>
+                    <li><strong>每日/周/月汇总</strong> — 按 Agent、部门、场景分类</li>
+                    <li><strong>异常告警</strong> — 单次成本超过阈值时自动告警</li>
+                </ul>
+                <p>LangSmith 提供开箱即用的成本追踪面板。Arize Phoenix 也支持 Token 用量监控。</p>
+
+                <h4>4. 答案质量评分</h4>
+                <p>Agent 回答得好不好不能只靠感觉，需要<strong>可量化的质量标准</strong>。</p>
+                <ul>
+                    <li><strong>自动评分</strong> — 用 LLM-as-Judge 对答案质量打分（相关性、准确性、完整性）</li>
+                    <li><strong>用户评分</strong> — 每次回复提供「有用/没用」按钮，收集用户反馈</li>
+                    <li><strong>回归测试</strong> — 维护评测集，每次改 Prompt 或换模型自动跑一遍，看分数是否下降</li>
+                </ul>
+
+                <h4>5. 人工反馈闭环</h4>
+                <p>这是治理层最重要但也最容易被忽略的一环。Agent 不可能百分之百正确，关键是<strong>出错了之后走什么流程</strong>。</p>
+                <p><strong>闭环设计：</strong></p>
+                <ul>
+                    <li>Agent 回答 → 用户标记「不对」</li>
+                    <li>记录上下文 + Agent 推理链 + Tool 调用链</li>
+                    <li>推送到人工审核队列</li>
+                    <li>审核员给出正确答案 / 修复方案</li>
+                    <li>修复结果反哺到评测集，防止相同错误再次出现</li>
+                </ul>
+
+                <h3>推荐工具</h3>
+                <ul>
+                    <li><strong>LangSmith</strong> — LangChain 生态原生，Trace / Prompt 版本管理 / 评测 / 成本一站式。适合已用 LangChain 的场景。</li>
+                    <li><strong>OpenTelemetry</strong> — 企业标准，数据不出网。Trace 格式标准，可以与 APM 系统（如 Grafana Tempo）集成。</li>
+                    <li><strong>Arize Phoenix</strong> — 开源 LLM 可观测性，支持 Trace / 评测 / 漂移检测。对自建 MLOps 体系友好。</li>
+                </ul>
+
+                <blockquote>
+                    <strong>核心原则：</strong>Agent 上线后的第一条守则——没有 Trace 的 Agent 等于没上线。拍不了桌子的 Agent 就是薛定谔的 Agent，没人知道它今天好不好。
+                </blockquote>
+
                 <!-- ============ 八、最终架构 ============ -->
 
                 <h2>八、最终架构图</h2>
@@ -1129,13 +1233,14 @@ print(result["report"])
                         <div class="arch-node" style="border-color:#6af;">📱 企业 AI 助手（飞书 / 钉钉 / Web）</div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-node highlight" style="width:60%;">🧠 LangGraph Agent 编排层</div>
-                        <div class="arch-arrow">┌─────────┼─────────┐</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┐</div>
                         <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Agent Runtime<br><span style="color:#888;">治理层</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">功能封装</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识检索</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史任务</span></div>
                         </div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │ &emsp; │</div>
                         <div class="arch-row">
                             <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
                             <div class="arch-node small" style="border-color:#888;">知识库/向量</div>
@@ -1154,7 +1259,7 @@ print(result["report"])
                     </div>
                 </div>
 
-                <p>这个架构的核心思想是<strong>分层</strong>：数据层不关心上层怎么用，知识层只管理语义，Tool 层只封装能力，Agent 层只做编排。</p>
+                <p>这个架构的核心思想是<strong>分层</strong>：数据层不关心上层怎么用，知识层只管理语义，Tool 层只封装能力，治理层保障运行质量，Agent 层只做编排。</p>
 
                 <!-- ============ 九、分阶段策略 ============ -->
 

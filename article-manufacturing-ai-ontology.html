@@ -231,26 +231,14 @@
         }
         .cta-footer .cta-sub {
             font-size: 14px; color: #888;
-            text-align: center; margin-bottom: 32px;
-        }
-        .cta-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 20px; max-width: 700px; margin: 0 auto 36px;
-        }
-        .cta-col h4 {
-            font-size: 13px; font-weight: 700; color: #fa8;
-            margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
+            text-align: center; margin-bottom: 24px;
         }
         .cta-col ul {
-            list-style: none; padding: 0; margin: 0;
+            list-style: none; padding: 0; margin: 0 auto;
         }
         .cta-col ul li {
             font-size: 14px; color: #ccc;
-            padding: 6px 0; margin: 0;
-            position: relative; padding-left: 16px;
-        }
-        .cta-col ul li::before {
-            content: '›'; position: absolute; left: 0; color: #666;
+            padding: 8px 0; margin: 0;
         }
         .cta-qr-wrap {
             text-align: center;
@@ -264,7 +252,6 @@
             font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;
         }
         @media (max-width: 768px) {
-            .cta-grid { grid-template-columns: 1fr; gap: 24px; }
             .cta-footer h3 { font-size: 18px; }
             .cta-footer .cta-sub { font-size: 13px; }
             .cta-col ul li { font-size: 13px; }
@@ -950,33 +937,33 @@ CREATE POLICY production_policy ON production
 
             </div>
 
-            <footer class="cta-footer">
-                <h3>企业 AI 落地咨询</h3>
-                <p class="cta-sub">如果你的企业正在探索：</p>
 
-                <div class="cta-grid">
-                    <div class="cta-col">
-                        <h4>▸ 探索方向</h4>
-                        <ul>
-                            <li>制造业 AI 助手</li>
-                            <li>企业知识库</li>
-                            <li>AI Agent 自动化</li>
-                            <li>MES/ERP 数据智能化</li>
-                        </ul>
-                    </div>
-                    <div class="cta-col">
-                        <h4>▸ 我可以提供</h4>
-                        <ul>
-                            <li><strong style="color:#fff;">AI 场景诊断</strong> — 分析企业哪些流程适合 AI 改造</li>
-                            <li><strong style="color:#fff;">数据能力评估</strong> — 评估 MES、ERP、文档体系是否支持 AI</li>
-                            <li><strong style="color:#fff;">Agent 架构设计</strong> — 设计企业级 RAG、Ontology、Tool、Agent 架构</li>
+            <footer class="cta-footer">
+                <h3>正在探索企业 AI 落地？</h3>
+                <p class="cta-sub">免费提供一次：</p>
+
+                <div class="cta-grid" style="grid-template-columns:1fr;max-width:480px;">
+                    <div class="cta-col" style="text-align:center;">
+                        <ul style="display:inline-block;text-align:left;">
+                            <li>✓ <strong style="color:#fff;">AI 场景可行性分析</strong></li>
+                            <li>✓ <strong style="color:#fff;">企业数据能力评估</strong></li>
+                            <li>✓ <strong style="color:#fff;">Agent 落地路线建议</strong></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="cta-qr-wrap">
-                    <img src="wechat.png" alt="扫码添加 GeekHeron 微信咨询" width="120" height="120" loading="lazy">
-                    <p>扫码添加微信 · 备注「AI 咨询」</p>
+                    <img src="wechat.png" alt="扫码添加微信 AI 咨询" width="120" height="120" loading="lazy">
+                    <p>扫码联系 · 备注「AI咨询」</p>
+                </div>
+
+                <div style="margin-top:32px;padding-top:24px;border-top:1px solid #222;text-align:center;">
+                    <a href="about.html" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #333;border-radius:8px;padding:10px 20px;font-size:13px;color:#888;background:rgba(0,0,0,0.4);transition:0.3s;">
+                        <span>了解更多 →</span>
+                        <span style="color:#666;font-size:11px;">关于 GeekHeron</span>
+                    </a>
+                </div>
+            </footer>
                 </div>
             </footer>
         </article>

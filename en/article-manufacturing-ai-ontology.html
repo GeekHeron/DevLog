@@ -519,9 +519,9 @@ production_tool = StructuredTool.from_function(
                     <li><strong>Standardized schema</strong> — Pydantic defines input schema; LangChain auto-generates Function Calling definitions</li>
                 </ol>
 
-                <!-- ============ 4.5. MCP ============ -->
+                <!-- ============ 5. MCP ============ -->
 
-                <h2>4.5 Enterprise Agent Integration Standard: MCP</h2>
+                <h2>5. Enterprise Agent Integration Standard: MCP</h2>
 
                 <p>Tool encapsulation solves the service-ification of individual capabilities. But enterprises inevitably face another question: <strong>Every new system (MES/ERP/WMS/CRM…) requires custom Tool code — how do we build once and use everywhere?</strong></p>
 
@@ -610,9 +610,9 @@ if __name__ == "__main__":
 
                 <p>One last note: <strong>MCP is not a silver bullet</strong>. If your data layer (sections 1 &amp; 2) is a mess, MCP simply standardizes the chaos. Get your data straight, build the knowledge layer — then MCP is the icing on the cake.</p>
 
-                <!-- ============ 5. Permission System ============ -->
+                <!-- ============ 6. Permission System ============ -->
 
-                <h2>5. Add a Permission System to the Agent</h2>
+                <h2>6. Add a Permission System to the Agent</h2>
 
                 <p>Tools are ready, but one key question remains: <strong>Who can call what?</strong></p>
                 <p>Manufacturing data has natural hierarchy. The CEO should see everything. The plant manager sees only their line. The operator sees only their station. Without permission control, the same Agent response goes to everyone — which is unacceptable.</p>
@@ -666,9 +666,9 @@ CREATE POLICY production_policy ON production
 
                 <p><strong>Approach 1 is recommended</strong> for most enterprises: Tools are already an abstraction layer, natural for access control. No need to modify legacy databases (many old MES systems lack RLS). Permission changes only affect Tool logic. Approach 2 can be used for greenfield systems.</p>
 
-                <!-- ============ 6. LangChain ============ -->
+                <!-- ============ 7. LangChain ============ -->
 
-                <h2>6. LangChain Handles Agent Orchestration</h2>
+                <h2>7. LangChain Handles Agent Orchestration</h2>
 
                 <p>Now LangChain enters the picture — as the Agent orchestration layer.</p>
 
@@ -697,9 +697,9 @@ CREATE POLICY production_policy ON production
                     <li><strong>Generate report:</strong> Delay cause + solution + recovery recommendation</li>
                 </ol>
 
-                <!-- ============ 7. LangGraph ============ -->
+                <!-- ============ 8. LangGraph ============ -->
 
-                <h2>7. For Complex Scenarios, Use LangGraph</h2>
+                <h2>8. For Complex Scenarios, Use LangGraph</h2>
 
                 <p>LangChain Agent works for simple tasks. Manufacturing often involves <strong>stateful workflows</strong> — which calls for <strong>LangGraph</strong>.</p>
 
@@ -815,9 +815,9 @@ print(result["report"])
 
                 <p>Compare with LangChain Agent: everything crammed into a ReAct loop — state in memory, branches in prompts, human approval barely controllable. LangGraph defines every node, every branch, every state transition <strong>explicitly</strong>. The difference in maintainability, traceability, and testability is night and day.</p>
 
-                <!-- ============ 7.5. AgentOps ============ -->
+                <!-- ============ 9. AgentOps ============ -->
 
-                <h2>7.5 Agent Runtime Governance (AgentOps / Observability)</h2>
+                <h2>9. Agent Runtime Governance (AgentOps / Observability)</h2>
 
                 <p>The previous sections cover how to build an Agent. But before going to production, every enterprise asks the same question: <strong>What happens when the AI gets it wrong?</strong></p>
 
@@ -902,9 +902,9 @@ print(result["report"])
                     <strong>Core principle:</strong> An Agent without traces is an Agent that hasn't shipped. If you can't show logs to answer "what went wrong," it's Schrödinger's Agent — nobody knows if it's working today.
                 </blockquote>
 
-                <!-- ============ 8. Final Architecture ============ -->
+                <!-- ============ 10. Final Architecture ============ -->
 
-                <h2>8. Final Architecture Diagram</h2>
+                <h2>10. Final Architecture Diagram</h2>
 
                 <div class="arch-box">
                     <div class="flow-chart" style="gap:3px;width:100%;">
@@ -943,9 +943,9 @@ print(result["report"])
 
                 <p>Core design principle: <strong>separation of concerns</strong>. Data governance unifies enterprise data sources; knowledge layer models business semantics; MCP standardizes the interface; Tool/RAG/Memory each have clear responsibilities; the governance layer handles Trace, cost, and quality; the Agent layer only orchestrates — it doesn't care about the underlying implementation.</p>
 
-                <!-- ============ 9. Start Small ============ -->
+                <!-- ============ 11. Start Small ============ -->
 
-                <h2>9. Don't Build the "Universal Agent" First</h2>
+                <h2>11. Don't Build the "Universal Agent" First</h2>
 
                 <p>The most common mistake in manufacturing AI: "Let's build a universal AI assistant." Tempting, but it will likely die before completion.</p>
 
@@ -971,9 +971,9 @@ print(result["report"])
 
                 <p>Each Agent does one thing. Once solid, merge and expand.</p>
 
-                <!-- ============ 10. Tech Stack ============ -->
+                <!-- ============ 12. Tech Stack ============ -->
 
-                <h2>10. Technology Architecture Overview</h2>
+                <h2>12. Technology Architecture Overview</h2>
 
                 <div class="arch-box">
                     <div class="flow-chart" style="gap:4px;width:100%;">
@@ -1008,9 +1008,9 @@ print(result["report"])
                     <li><strong>Enterprise Interface:</strong> Feishu / DingTalk Bot</li>
                 </ul>
 
-                <!-- ============ 11. Roadmap ============ -->
+                <!-- ============ 13. Roadmap ============ -->
 
-                <h2>11. Recommended Roadmap</h2>
+                <h2>13. Recommended Roadmap</h2>
 
                 <p><strong>Phase 1: RAG + Tools</strong></p>
                 <p>Solve "query, search, and execute." Integrate data, wrap Tools, build the basic RAG knowledge base.</p>
@@ -1027,9 +1027,9 @@ print(result["report"])
 
                 <p>Manufacturing is a natural fit for ontology — BOM structures, process routing, equipment relationships, supply chains, quality traceability. These are essentially knowledge graphs. But take it step by step, solving one pain point at a time.</p>
 
-                <!-- ============ 12. Common Failure Modes ============ -->
+                <!-- ============ 14. Common Failure Modes ============ -->
 
-                <h2>12. Common Failure Modes &amp; How to Avoid Them</h2>
+                <h2>14. Common Failure Modes &amp; How to Avoid Them</h2>
 
                 <p>The architecture above looks solid on paper, but every layer can fail in production. Here are the most common failure patterns I've seen across real projects:</p>
 
@@ -1049,7 +1049,7 @@ print(result["report"])
                 <p>An order delay diagnosis requires 5 Tool calls, and the MES query takes 5 seconds. The entire reasoning chain gets stuck on one slow query. Worse, if an internal API goes down, the Agent throws an exception and exits instead of degrading gracefully.</p>
                 <p><strong>Countermeasure:</strong> Set a timeout on every Tool (3-5 seconds recommended). On timeout, return "service temporarily unavailable" rather than raising an exception. Build fallback paths for critical Tools — if MES is down, at least return "order ID exists, detailed information unavailable" so the reasoning can continue.</p>
 
-                <h3>5. Permission Layer: Missing Checks Cause Data Leaks</h3>
+                <h3>6. Permission Layer: Missing Checks Cause Data Leaks</h3>
                 <p>A developer adds a new Tool but forgets the user_role filter. Suddenly an operator can query the entire company's order data through the Agent. This isn't hypothetical — it has happened.</p>
                 <p><strong>Countermeasure:</strong> Every Tool registration must declare a minimum permission role. No permission declaration = no deployment. Write an e2e test that runs the same query with admin/manager/operator roles and asserts the output scope is correct.</p>
 

@@ -217,6 +217,9 @@
                     <li><strong>MES</strong> — Manufacturing Execution System (work orders, processes, equipment, yield)</li>
                     <li><strong>ERP</strong> — Enterprise Resource Planning (procurement, inventory, finance)</li>
                     <li><strong>CRM</strong> — Customer Relationship Management (customers, contracts, requirements)</li>
+                    <li><strong>PLM</strong> — Product Lifecycle Management (product data, BOM, drawing versions)</li>
+                    <li><strong>WMS</strong> — Warehouse Management System (receiving, shipping, bin location, lots)</li>
+                    <li><strong>IoT</strong> — Industrial IoT (equipment sensors, temperature/pressure/vibration, real-time streams)</li>
                     <li><strong>File Server</strong> — Process documents, SOPs, quality standards, equipment drawings</li>
                     <li><strong>OA / DingTalk</strong> — Approval workflows, project docs, communication logs</li>
                 </ul>
@@ -230,6 +233,9 @@
                         <div class="arch-node" style="border-color:#6af;">MES</div>
                         <div class="arch-node" style="border-color:#6af;">ERP</div>
                         <div class="arch-node" style="border-color:#6af;">CRM</div>
+                        <div class="arch-node" style="border-color:#6af;">PLM</div>
+                        <div class="arch-node" style="border-color:#6af;">WMS</div>
+                        <div class="arch-node" style="border-color:#6af;">IoT</div>
                         <div class="arch-node">Files</div>
                         <div class="arch-node">OA</div>
                     </div>
@@ -530,8 +536,9 @@ production_tool = StructuredTool.from_function(
                         <div class="arch-row">
                             <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">MES</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">ERP</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">RAG</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">File System</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">WMS</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">PLM</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">IoT</span></div>
                         </div>
                     </div>
                 </div>
@@ -576,9 +583,9 @@ if __name__ == "__main__":
                         <div class="arch-node" style="border-color:#6af;">🔌 MCP Protocol Layer</div>
                         <div class="arch-arrow">┌────────┼────────┐</div>
                         <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MySQL Query</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MES API</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">Doc Retrieval RAG</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MES/ERP/WMS</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">PLM API</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">IoT Stream</span></div>
                         </div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
                         <div class="arch-arrow">▼</div>
@@ -674,6 +681,7 @@ CREATE POLICY production_policy ON production
                         <div class="arch-row">
                             <div class="arch-node small" style="border-color:#8f8;">Tool1<br><span style="color:#888;">MES</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Tool2<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tool3<br><span style="color:#888;">WMS</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Knowledge</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">History</span></div>
                         </div>
@@ -912,8 +920,8 @@ print(result["report"])
                         <div class="arch-node" style="border-color:#6af;width:50%;">🔌 MCP Protocol Layer<br><span style="font-size:11px;color:#888;">Standardized Agent ↔ Enterprise Interface</span></div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┐</div>
                         <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool Encapsulation<br><span style="color:#888;">MES/ERP API</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">📚 RAG Retrieval<br><span style="color:#888;">Vector + Graph</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool Encapsulation<br><span style="color:#888;">MES/ERP/WMS/PLM</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">📚 RAG Retrieval<br><span style="color:#888;">IoT + Vector + Graph</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">💾 Memory<br><span style="color:#888;">History Context</span></div>
                         </div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┘</div>
@@ -924,6 +932,9 @@ print(result["report"])
                             <div class="arch-node small">MES</div>
                             <div class="arch-node small">ERP</div>
                             <div class="arch-node small">CRM</div>
+                            <div class="arch-node small">PLM</div>
+                            <div class="arch-node small">WMS</div>
+                            <div class="arch-node small">IoT</div>
                             <div class="arch-node small">Files</div>
                             <div class="arch-node small">OA</div>
                         </div>
@@ -983,7 +994,7 @@ print(result["report"])
                         </div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
                         <div class="arch-arrow">▼</div>
-                        <div class="arch-node warn" style="width:70%;">🗄 Enterprise Data Sources<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · Files · OA</span></div>
+                        <div class="arch-node warn" style="width:70%;">🗄 Enterprise Data Sources<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · PLM · WMS · IoT · Files · OA</span></div>
                     </div>
                 </div>
 

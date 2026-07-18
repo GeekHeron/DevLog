@@ -431,6 +431,9 @@
                     <li><strong>MES</strong> — 生产制造执行系统（工单、工序、设备、良率）</li>
                     <li><strong>ERP</strong> — 企业资源计划（采购、库存、财务）</li>
                     <li><strong>CRM</strong> — 客户关系管理（客户、合同、需求）</li>
+                    <li><strong>PLM</strong> — 产品生命周期管理（产品数据、BOM、图纸版本）</li>
+                    <li><strong>WMS</strong> — 仓储管理系统（入库、出库、库位、批次）</li>
+                    <li><strong>IoT</strong> — 工业物联网（设备传感器、温度/压力/振动、实时数据流）</li>
                     <li><strong>文件服务器</strong> — 工艺文件、SOP、质量标准、设备图纸</li>
                     <li><strong>OA/钉钉</strong> — 审批流程、项目文档、沟通记录</li>
                 </ul>
@@ -444,6 +447,9 @@
                         <div class="arch-node" style="border-color:#6af;">MES</div>
                         <div class="arch-node" style="border-color:#6af;">ERP</div>
                         <div class="arch-node" style="border-color:#6af;">CRM</div>
+                        <div class="arch-node" style="border-color:#6af;">PLM</div>
+                        <div class="arch-node" style="border-color:#6af;">WMS</div>
+                        <div class="arch-node" style="border-color:#6af;">IoT</div>
                         <div class="arch-node">文件</div>
                         <div class="arch-node">钉钉</div>
                     </div>
@@ -821,8 +827,9 @@ production_tool = StructuredTool.from_function(
                         <div class="arch-row">
                             <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">MES</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">ERP</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">RAG</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">文件系统</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">WMS</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">PLM</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">IoT</span></div>
                         </div>
                     </div>
                 </div>
@@ -867,9 +874,9 @@ if __name__ == "__main__":
                         <div class="arch-node" style="border-color:#6af;">🔌 MCP Protocol Layer</div>
                         <div class="arch-arrow">┌────────┼────────┐</div>
                         <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MySQL 查询</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MES API</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">文档检索 RAG</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MES/ERP/WMS</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">PLM API</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">IoT 数据流</span></div>
                         </div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
                         <div class="arch-arrow">▼</div>
@@ -986,6 +993,7 @@ CREATE POLICY production_policy ON production
                         <div class="arch-row">
                             <div class="arch-node small" style="border-color:#8f8;">Tool1<br><span style="color:#888;">MES</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Tool2<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tool3<br><span style="color:#888;">WMS</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识库</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史</span></div>
                         </div>
@@ -1244,8 +1252,8 @@ prompts:
                         <div class="arch-node" style="border-color:#6af;width:50%;">🔌 MCP 协议层<br><span style="font-size:11px;color:#888;">标准化 Agent ↔ 企业数据接口</span></div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┐</div>
                         <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool 封装<br><span style="color:#888;">MES/ERP API</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">📚 RAG 知识检索<br><span style="color:#888;">向量 + 图谱</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool 封装<br><span style="color:#888;">MES/ERP/WMS/PLM</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">📚 RAG 知识检索<br><span style="color:#888;">IoT + 向量 + 图谱</span></div>
                             <div class="arch-node small" style="border-color:#8f8;">💾 Memory<br><span style="color:#888;">历史上下文</span></div>
                         </div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┘</div>
@@ -1256,6 +1264,9 @@ prompts:
                             <div class="arch-node small">MES</div>
                             <div class="arch-node small">ERP</div>
                             <div class="arch-node small">CRM</div>
+                            <div class="arch-node small">PLM</div>
+                            <div class="arch-node small">WMS</div>
+                            <div class="arch-node small">IoT</div>
                             <div class="arch-node small">文件</div>
                             <div class="arch-node small">钉钉</div>
                         </div>
@@ -1315,7 +1326,7 @@ prompts:
                         </div>
                         <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
                         <div class="arch-arrow">▼</div>
-                        <div class="arch-node warn" style="width:70%;">🗄 企业数据源<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · 文件 · 钉钉</span></div>
+                        <div class="arch-node warn" style="width:70%;">🗄 企业数据源<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · PLM · WMS · IoT · 文件 · 钉钉</span></div>
                     </div>
                 </div>
 

@@ -114,6 +114,99 @@
             white-space: pre-wrap; overflow-x: auto; line-height: 1.5;
         }
         .article-body .arch-diagram strong { color: #fff; }
+        .arch-diagram strong { color: #fff; }
+
+        /* --- 优化架构图样式 --- */
+        .article-body .arch-box {
+            background: #0a0a0a; border: 1px solid #333; border-radius: 8px;
+            padding: 28px 24px; margin-bottom: 30px;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+        }
+        .arch-layer {
+            display: flex; flex-direction: column; align-items: center; width: 100%;
+        }
+        .arch-row {
+            display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; width: 100%;
+        }
+        .arch-node {
+            background: #161616; border: 1px solid #444; border-radius: 6px;
+            padding: 10px 18px; text-align: center;
+            color: #ddd; font-size: 14px; font-weight: 500;
+            min-width: 80px; transition: all 0.2s;
+        }
+        .arch-node.highlight {
+            border-color: #6af; background: #0a1a2a;
+        }
+        .arch-node.accent {
+            border-color: #8f8; background: #0a1a0a;
+        }
+        .arch-node.warn {
+            border-color: #fa8; background: #1a100a;
+        }
+        .arch-node.small { font-size: 12px; padding: 6px 12px; min-width: 60px; }
+        .arch-node.label { border: none; background: none; font-size: 11px; color: #666; padding: 2px 8px; min-width: auto; }
+        .arch-arrow {
+            color: #555; font-size: 12px; line-height: 1;
+            padding: 2px 0; letter-spacing: 1px;
+        }
+        .arch-bracket {
+            color: #444; font-size: 11px; font-family: monospace; line-height: 1;
+            padding: 1px 0;
+        }
+        .arch-title {
+            color: #888; font-size: 11px; font-family: monospace; margin-bottom: 12px;
+        }
+
+        /* Tool 卡片 */
+        .tool-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px; margin-bottom: 30px;
+        }
+        .tool-card {
+            background: #0a0a0a; border: 1px solid #333; border-radius: 8px;
+            padding: 16px;
+        }
+        .tool-card .tool-name {
+            color: #0f0; font-family: monospace; font-size: 13px; margin-bottom: 4px;
+        }
+        .tool-card .tool-desc {
+            color: #888; font-size: 13px; line-height: 1.5;
+        }
+
+        /* 本体关系图 */
+        .onto-chain {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+            gap: 6px; margin-bottom: 30px;
+        }
+        .onto-node {
+            background: #0a1a0a; border: 1px solid #3a3; border-radius: 6px;
+            padding: 6px 14px; color: #8f8; font-size: 13px; font-weight: 500;
+        }
+        .onto-arrow {
+            color: #3a3; font-size: 14px;
+        }
+        .onto-label {
+            color: #6a6; font-size: 11px;
+            position: relative; top: -8px; margin: 0 2px;
+        }
+
+        /* 流程图 */
+        .flow-chart {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            margin-bottom: 30px;
+        }
+        .flow-node {
+            background: #161616; border: 1px solid #555; border-radius: 6px;
+            padding: 8px 20px; color: #ddd; font-size: 13px; text-align: center;
+        }
+        .flow-node.cond {
+            border-radius: 4px; border-color: #fa8;
+            background: #1a100a; color: #fa8;
+        }
+        .flow-arrow { color: #555; font-size: 10px; line-height: 1; padding: 1px 0; }
+        .flow-branch {
+            display: flex; justify-content: center; gap: 40px; width: 100%;
+        }
         .article-body blockquote {
             border-left: 3px solid #555; padding-left: 20px; margin: 30px 0;
             color: #999; font-style: italic;
@@ -276,20 +369,19 @@
 
                 <p>所以第一步——也是最容易被跳过的一步——是建设<strong>企业数据接入层</strong>：</p>
 
-                <div class="arch-diagram">
-                ┌──────────────┐
-                │    用户       │
-                ├───────┬──────┤
-                │  MES  │ ERP  │
-                │  CRM  │ 文件  │
-                │  钉钉  │ ...  │
-                ├───┬───┴──┬───┤
-                │  数据接入层    │
-                └───────┬──────┘
-                        │
-                ┌───────┴──────┐
-                │  统一数据底座  │
-                └──────────────┘
+                <div class="arch-box">
+                    <div class="arch-row">
+                        <div class="arch-node" style="border-color:#6af;">MES</div>
+                        <div class="arch-node" style="border-color:#6af;">ERP</div>
+                        <div class="arch-node" style="border-color:#6af;">CRM</div>
+                        <div class="arch-node">文件</div>
+                        <div class="arch-node">钉钉</div>
+                    </div>
+                    <div class="arch-arrow">│  │  │  │  │</div>
+                    <div class="arch-arrow">▼  ▼  ▼  ▼  ▼</div>
+                    <div class="arch-node highlight" style="width:80%;">企业数据接入层<br><span style="font-size:11px;color:#888;">API / 数据库直连 / ETL / 文档解析</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:60%;">统一数据底座<br><span style="font-size:11px;color:#888;">PostgreSQL / ClickHouse / 向量库</span></div>
                 </div>
 
                 <h3>结构化数据接入</h3>
@@ -338,23 +430,20 @@
                 <h3>非结构化知识 → RAG 检索</h3>
                 <p>《注塑工艺规范》、《质量异常处理流程》这类文档，适合通过 RAG 检索：</p>
 
-                <div class="arch-diagram">
-                文件
-                  │
-                  ↓
-                解析 (PDF / OCR / Table)
-                  │
-                  ↓
-                切片 (Chunking)
-                  │
-                  ↓
-                Embedding
-                  │
-                  ↓
-                向量数据库 (Milvus / pgvector)
-                  │
-                  ↓
-                语义检索 (LlamaIndex / LangChain Retriever)
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node">📄 文件（PDF / Word / Excel / 图纸）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">🔍 文档解析（PDF解析 / OCR / 表格提取）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">✂️ 文本切片（Chunking）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;">🧬 Embedding 向量化</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">🗄 向量数据库<br><span style="font-size:11px;color:#888;">Milvus / pgvector / Chroma</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#fa8;">🔎 语义检索<br><span style="font-size:11px;color:#888;">LlamaIndex / LangChain Retriever</span></div>
+                    </div>
                 </div>
 
                 <p>推荐技术栈：<strong>LlamaIndex</strong> 做文档管理和索引，<strong>Milvus</strong> 或 <strong>pgvector</strong> 做向量存储，<strong>LangChain Retriever</strong> 做检索接入。</p>
@@ -382,13 +471,29 @@
                 </div>
 
                 <h4>关系（Relation）</h4>
-                <div class="code-block">
-客户 ───下达───→ 销售订单
-销售订单 ──生成──→ 生产订单
-生产订单 ──使用──→ 物料
-生产订单 ──经过──→ 工序
-工序 ────使用───→ 设备
-设备 ────产生───→ 质量数据
+                <div class="onto-chain">
+                    <div class="onto-node">客户</div>
+                    <span class="onto-label">下达</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">销售订单</div>
+                    <span class="onto-label">生成</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">生产订单</div>
+                    <span class="onto-label">使用</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">物料</div>
+                </div>
+                <div class="onto-chain" style="margin-top:-16px;">
+                    <div class="onto-node">生产订单</div>
+                    <span class="onto-label">经过</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">工序</div>
+                    <span class="onto-label">使用</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">设备</div>
+                    <span class="onto-label">产生</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">质量数据</div>
                 </div>
 
                 <h4>属性（Attribute）</h4>
@@ -421,20 +526,18 @@
 
                 <h3>Ontology + RAG 的融合架构</h3>
 
-                <div class="arch-diagram">
-用户问题
-    │
-    ↓
-本体理解问题中的实体与关系
-    │
-    ↓
-定位相关数据源和文档
-    │
-    ↓
-RAG 补充知识细节
-    │
-    ↓
-Agent 推理与决策
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="arch-node">💬 用户问题</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">🧠 本体理解问题中的实体与关系</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">📌 定位相关数据源和文档</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;">📚 RAG 补充知识细节</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#fa8;">🤖 Agent 推理与决策</div>
+                    </div>
                 </div>
 
                 <p>举个例子：问"为什么这个客户最近交付总是延期？"</p>
@@ -454,28 +557,27 @@ Agent 推理与决策
 
                 <h3>Tool 清单示例</h3>
 
-                <div class="code-block">
-┌─────────────────────────────────────────┐
-│  生产查询 Tool                           │
-│  get_production_status(order_id)        │
-│  描述：查询当前生产订单状态、完成率、异常情况  │
-├─────────────────────────────────────────┤
-│  质量分析 Tool                           │
-│  get_quality_issue(product_id)          │
-│  描述：查询产品质量异常和历史处理方案        │
-├─────────────────────────────────────────┤
-│  库存查询 Tool                           │
-│  get_inventory(material_id)             │
-│  描述：查询物料库存和供应商交期             │
-├─────────────────────────────────────────┤
-│  客户分析 Tool                           │
-│  get_customer_history(customer_id)      │
-│  描述：查询客户历史订单和交付记录           │
-├─────────────────────────────────────────┤
-│  工艺知识 Tool                           │
-│  query_process_sop(keyword)             │
-│  描述：检索工艺规范/SOP 文件              │
-└─────────────────────────────────────────┘
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">get_production_status(order_id)</div>
+                        <div class="tool-desc">查询当前生产订单状态、完成率、异常情况</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_quality_issue(product_id)</div>
+                        <div class="tool-desc">查询产品质量异常和历史处理方案</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_inventory(material_id)</div>
+                        <div class="tool-desc">查询物料库存和供应商交期</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_customer_history(customer_id)</div>
+                        <div class="tool-desc">查询客户历史订单和交付记录</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">query_process_sop(keyword)</div>
+                        <div class="tool-desc">检索工艺规范 / SOP 文件</div>
+                    </div>
                 </div>
 
                 <p>Agent 看到的就是这些能力：<strong>生产查询、质量分析、库存查询、客户分析、工艺知识检索</strong>。</p>
@@ -487,17 +589,19 @@ Agent 推理与决策
 
                 <p>到了这一步，LangChain 才正式登场——作为 Agent 编排层，负责任务的拆解与执行。</p>
 
-                <div class="arch-diagram">
-        用户
-          │
-          ↓
-    LangChain Agent (ReAct)
-          │
-    ┌─────┼─────┐─────┐
-    │     │     │     │
-  Tool1  Tool2 RAG  Memory
-    │     │     │     │
-  MES   ERP  知识库  历史
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 用户</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:70%;">LangChain Agent (ReAct)<br><span style="font-size:11px;color:#888;">思考 → 行动 → 观察 → 推理</span></div>
+                        <div class="arch-arrow">┌──────┼──────┐──────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Tool1<br><span style="color:#888;">MES</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tool2<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识库</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史</span></div>
+                        </div>
+                    </div>
                 </div>
 
                 <p><strong>实际场景：</strong>老板问"为什么订单 A 延期？"</p>
@@ -518,33 +622,24 @@ Agent 推理与决策
 
                 <p>因为制造流程天然是状态驱动的：</p>
 
-                <div class="arch-diagram">
-               开始
-                 │
-                 ↓
-            查询订单
-                 │
-            ┌────┴────┐
-            │ 是否延期? │
-            └────┬────┘
-                 │
-                 ↓
-            查询生产进度
-                 │
-            ┌────┴────┐
-            │ 判断质量 │
-            └────┬────┘
-                 │
-            ┌────┴────┐
-            │ 生成报告 │
-            └────┬────┘
-                 │
-            ┌────┴────┐
-            │ 人工审批 │
-            └────┬────┘
-                 │
-                 ↓
-               结束
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="flow-node" style="border-color:#6af;">🚀 开始</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">📋 查询订单</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ 是否延期？</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">⚙️ 查询生产进度</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ 判断质量</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">📄 生成报告</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#fa8;">✋ 人工审批</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#8f8;">✅ 结束</div>
+                    </div>
                 </div>
 
                 <p>这不是聊天，是<strong>流程</strong>。有明确的节点、分支、状态转换和人工介入点。LangGraph 的有向图（DAG）模型天然适合这类场景。</p>
@@ -553,43 +648,36 @@ Agent 推理与决策
 
                 <h2>七、最终架构图</h2>
 
-                <div class="arch-diagram">
-                       用户
-                         │
-                   企业 AI 助手
-                 (飞书 / 钉钉 / Web)
-                         │
-                         ↓
-                 ┌──────────────┐
-                 │ LangGraph    │
-                 │ Agent 编排层  │
-                 └──────┬───────┘
-                        │
-            ┌───────────┼───────────┐
-            │           │           │
-         Tools        RAG       Memory
-         (功能封装)   (知识检索)  (历史任务)
-            │           │           │
-    ┌───────┴───────┐   │           │
-    │  MES/ERP/CRM  │   │           │
-    │  结构化数据    │   │           │
-    └───────────────┘   │           │
-                        │           │
-                ┌───────┴───────┐   │
-                │  知识库/向量库  │   │
-                │  文件/SOP/图纸 │   │
-                └───────────────┘   │
-                                    │
-                ┌───────────────────┘
-                │
-        ┌───────┴──────────┐
-        │   数据治理层       │
-        │ (接入 / 清洗 / 本体)│
-        └───────┬──────────┘
-                │
-    ┌───────┬───┴───┬───────┬───────┐
-    │ MES   │  ERP  │  CRM  │  文件  │  钉钉
-    └───────┴───────┴───────┴───────┘
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 用户</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">📱 企业 AI 助手（飞书 / 钉钉 / Web）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:60%;">🧠 LangGraph Agent 编排层</div>
+                        <div class="arch-arrow">┌─────────┼─────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">功能封装</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识检索</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史任务</span></div>
+                        </div>
+                        <div class="arch-arrow">│&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;│</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
+                            <div class="arch-node small" style="border-color:#888;">知识库/向量</div>
+                        </div>
+                        <div class="arch-arrow">└─────────┼─────────┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🔧 数据治理层<br><span style="font-size:11px;color:#888;">接入 / 清洗 / 本体建模</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-row">
+                            <div class="arch-node small">MES</div>
+                            <div class="arch-node small">ERP</div>
+                            <div class="arch-node small">CRM</div>
+                            <div class="arch-node small">文件</div>
+                            <div class="arch-node small">钉钉</div>
+                        </div>
+                    </div>
                 </div>
 
                 <p>这个架构的核心思想是<strong>分层</strong>：数据层不关心上层怎么用，知识层只管理语义，Tool 层只封装能力，Agent 层只做编排。</p>
@@ -626,24 +714,27 @@ Agent 推理与决策
 
                 <h2>九、技术架构全景</h2>
 
-                <div class="arch-diagram">
-           Agent
-             │
-         LangGraph
-             │
-    ┌────────┼────────┐
-    │        │        │
- Ontology   RAG    Tools
-    │        │        │
- Neo4j    Milvus   MES/ERP
- (知识图谱) (向量库)  (业务系统)
-    │        │        │
-    └────────┴────────┘
-             │
-    ┌────────┴────────┐
-    │  MES ERP CRM    │
-    │  文件 钉钉 ...  │
-    └─────────────────┘
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node highlight">🤖 Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">LangGraph</div>
+                        <div class="arch-arrow">┌────────┼────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Ontology<br><span style="color:#888;">Neo4j</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Milvus</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">MES/ERP</span></div>
+                        </div>
+                        <div class="arch-arrow">│&emsp;&emsp;&emsp;&emsp;│&emsp;&emsp;&emsp;&emsp;│</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="color:#888;">知识图谱</div>
+                            <div class="arch-node small" style="color:#888;">向量库</div>
+                            <div class="arch-node small" style="color:#888;">业务系统</div>
+                        </div>
+                        <div class="arch-arrow">└────────┴────────┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:70%;">🗄 企业数据源<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · 文件 · 钉钉</span></div>
+                    </div>
                 </div>
 
                 <p>关键组件：</p>

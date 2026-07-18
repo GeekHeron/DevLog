@@ -221,6 +221,56 @@
         }
         .seo-link:hover { color: #00ffc3; }
 
+        /* --- CTA 底部 --- */
+        .cta-footer {
+            margin-top: 80px; padding: 40px 0; border-top: 1px solid #222;
+        }
+        .cta-footer h3 {
+            font-size: 22px; font-weight: 700; color: #fff;
+            margin-bottom: 8px; text-align: center;
+        }
+        .cta-footer .cta-sub {
+            font-size: 14px; color: #888;
+            text-align: center; margin-bottom: 32px;
+        }
+        .cta-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 20px; max-width: 700px; margin: 0 auto 36px;
+        }
+        .cta-col h4 {
+            font-size: 13px; font-weight: 700; color: #fa8;
+            margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .cta-col ul {
+            list-style: none; padding: 0; margin: 0;
+        }
+        .cta-col ul li {
+            font-size: 14px; color: #ccc;
+            padding: 6px 0; margin: 0;
+            position: relative; padding-left: 16px;
+        }
+        .cta-col ul li::before {
+            content: '›'; position: absolute; left: 0; color: #666;
+        }
+        .cta-qr-wrap {
+            text-align: center;
+        }
+        .cta-qr-wrap img {
+            width: 120px; height: 120px;
+            border: 1px solid #333; border-radius: 8px;
+            padding: 6px; background: #fff;
+        }
+        .cta-qr-wrap p {
+            font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .cta-grid { grid-template-columns: 1fr; gap: 24px; }
+            .cta-footer h3 { font-size: 18px; }
+            .cta-footer .cta-sub { font-size: 13px; }
+            .cta-col ul li { font-size: 13px; }
+            .cta-qr-wrap img { width: 100px; height: 100px; }
+        }
+
         /* --- 5. 移动端适配 --- */
         @media (max-width: 768px) {
             header { padding: 20px; }
@@ -872,9 +922,34 @@ CREATE POLICY production_policy ON production
 
             </div>
 
-            <footer class="seo-footer">
-                <p>关于企业 AI 架构设计与系统集成：</p>
-                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            <footer class="cta-footer">
+                <h3>企业 AI 落地咨询</h3>
+                <p class="cta-sub">如果你的企业正在探索：</p>
+
+                <div class="cta-grid">
+                    <div class="cta-col">
+                        <h4>▸ 探索方向</h4>
+                        <ul>
+                            <li>制造业 AI 助手</li>
+                            <li>企业知识库</li>
+                            <li>AI Agent 自动化</li>
+                            <li>MES/ERP 数据智能化</li>
+                        </ul>
+                    </div>
+                    <div class="cta-col">
+                        <h4>▸ 我可以提供</h4>
+                        <ul>
+                            <li><strong style="color:#fff;">AI 场景诊断</strong> — 分析企业哪些流程适合 AI 改造</li>
+                            <li><strong style="color:#fff;">数据能力评估</strong> — 评估 MES、ERP、文档体系是否支持 AI</li>
+                            <li><strong style="color:#fff;">Agent 架构设计</strong> — 设计企业级 RAG、Ontology、Tool、Agent 架构</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cta-qr-wrap">
+                    <img src="wechat.png" alt="扫码添加 GeekHeron 微信咨询" width="120" height="120" loading="lazy">
+                    <p>扫码添加微信 · 备注「AI 咨询」</p>
+                </div>
             </footer>
         </article>
     </main>

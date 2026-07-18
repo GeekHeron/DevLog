@@ -14,6 +14,15 @@
     </image>
 
     <item>
+      <title>制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"</title>
+      <link>https://geekheron.space/article-manufacturing-ai-ontology.html</link>
+      <description>制造企业引入 AI 的最大误区就是直接接 LangChain。完整的分层企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → Agent 编排 → LangGraph 流程管理，附完整的制造业本体设计方案。</description>
+      <pubDate>Sat, 18 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-manufacturing-ai-ontology.html</guid>
+      <category>ARCHITECTURE</category>
+    </item>
+
+    <item>
       <title>2026 年中科技趋势观察：AI 进入系统化落地的分水岭</title>
       <link>https://geekheron.space/article-2026-midyear-trends.html</link>
       <description>Grok 4.5、Meta 超级智能眼镜、深度伪造检测、自动驾驶监管——AI 从单点创新转向系统化落地的关键转折点。五大信号与下半年的三个判断。</description>

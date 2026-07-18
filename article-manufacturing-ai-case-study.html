@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业级 AI Agent 平台落地案例：从数据治理到业务闭环 - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-case-study.html">
+    <meta name="description" content="一个真实制造工厂的 AI 落地案例全拆解：数据治理 → 企业知识层 → RAG → Tool 封装 → Agent 编排 → 业务闭环。附完整架构设计与简历价值分析。">
+    <meta name="keywords" content="GeekHeron, 制造业AI案例, AI Agent落地, 企业AI平台, 数据治理, RAG, LangGraph, Ontology, 制造业数字化转型, AI架构师">
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <style>
+        /* --- 1. 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 (含手机端汉堡菜单) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* 汉堡按钮 */
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: #fff; transition: 0.3s;
+        }
+
+        /* --- 4. 文章排版 --- */
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 120px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 30px;
+        }
+
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px 0; }
+        .article-body h4 { color: #ddd; font-size: 17px; margin: 20px 0 10px 0; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul { margin-bottom: 25px; padding-left: 20px; }
+        .article-body li { margin-bottom: 15px; }
+        .article-body ol { margin-bottom: 25px; padding-left: 20px; }
+        .article-body ol li { margin-bottom: 15px; }
+        .article-body .code-block {
+            background: #111; border: 1px solid #333; padding: 20px;
+            font-family: monospace; font-size: 14px; color: #0f0; margin-bottom: 25px;
+            white-space: pre-wrap; overflow-x: auto; line-height: 1.6;
+        }
+        .article-body .arch-diagram {
+            background: #0a0a0a; border: 1px solid #333; padding: 24px;
+            font-family: monospace; font-size: 13px; color: #aaa; margin-bottom: 25px;
+            white-space: pre-wrap; overflow-x: auto; line-height: 1.5;
+        }
+        .article-body .arch-diagram strong { color: #fff; }
+
+        /* --- 架构图样式 --- */
+        .article-body .arch-box {
+            background: #0a0a0a; border: 1px solid #333; border-radius: 8px;
+            padding: 28px 24px; margin-bottom: 30px;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+        }
+        .arch-layer {
+            display: flex; flex-direction: column; align-items: center; width: 100%;
+        }
+        .arch-row {
+            display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; width: 100%;
+        }
+        .arch-node {
+            background: #161616; border: 1px solid #444; border-radius: 6px;
+            padding: 10px 18px; text-align: center;
+            color: #ddd; font-size: 14px; font-weight: 500;
+            min-width: 80px; transition: all 0.2s;
+        }
+        .arch-node.highlight {
+            border-color: #6af; background: #0a1a2a;
+        }
+        .arch-node.accent {
+            border-color: #8f8; background: #0a1a0a;
+        }
+        .arch-node.warn {
+            border-color: #fa8; background: #1a100a;
+        }
+        .arch-node.small { font-size: 12px; padding: 6px 12px; min-width: 60px; }
+        .arch-node.label { border: none; background: none; font-size: 11px; color: #666; padding: 2px 8px; min-width: auto; }
+        .arch-arrow {
+            color: #555; font-size: 12px; line-height: 1;
+            padding: 2px 0; letter-spacing: 1px;
+        }
+        .arch-bracket {
+            color: #444; font-size: 11px; font-family: monospace; line-height: 1;
+            padding: 1px 0;
+        }
+        .arch-title {
+            color: #888; font-size: 11px; font-family: monospace; margin-bottom: 12px;
+        }
+
+        /* Tool 卡片 */
+        .tool-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px; margin-bottom: 30px;
+        }
+        .tool-card {
+            background: #0a0a0a; border: 1px solid #333; border-radius: 8px;
+            padding: 16px;
+        }
+        .tool-card .tool-name {
+            color: #0f0; font-family: monospace; font-size: 13px; margin-bottom: 4px;
+        }
+        .tool-card .tool-desc {
+            color: #888; font-size: 13px; line-height: 1.5;
+        }
+
+        /* 本体关系图 */
+        .onto-chain {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+            gap: 6px; margin-bottom: 30px;
+        }
+        .onto-node {
+            background: #0a1a0a; border: 1px solid #3a3; border-radius: 6px;
+            padding: 6px 14px; color: #8f8; font-size: 13px; font-weight: 500;
+        }
+        .onto-arrow {
+            color: #3a3; font-size: 14px;
+        }
+        .onto-label {
+            color: #6a6; font-size: 11px;
+            position: relative; top: -8px; margin: 0 2px;
+        }
+
+        /* 流程图 */
+        .flow-chart {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            margin-bottom: 30px;
+        }
+        .flow-node {
+            background: #161616; border: 1px solid #555; border-radius: 6px;
+            padding: 8px 20px; color: #ddd; font-size: 13px; text-align: center;
+        }
+        .flow-node.cond {
+            border-radius: 4px; border-color: #fa8;
+            background: #1a100a; color: #fa8;
+        }
+        .flow-arrow { color: #555; font-size: 10px; line-height: 1; padding: 1px 0; }
+        .flow-branch {
+            display: flex; justify-content: center; gap: 40px; width: 100%;
+        }
+        .article-body blockquote {
+            border-left: 3px solid #555; padding-left: 20px; margin: 30px 0;
+            color: #999; font-style: italic;
+        }
+        .article-body blockquote strong { color: #ccc; }
+
+        .seo-footer {
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
+        }
+        .seo-link {
+            display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
+        }
+        .seo-link:hover { color: #00ffc3; }
+
+        /* --- 5. 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+            /* --- 移动端架构图优化 --- */
+            .article-body .arch-box { padding: 12px 10px; gap: 2px; }
+            .arch-node { font-size: 11px; padding: 6px 8px; min-width: 44px; word-break: break-word; overflow-wrap: break-word; }
+            .arch-node.small { font-size: 10px; padding: 4px 6px; min-width: 36px; }
+            .arch-node[style*="width"] { width: 100% !important; }
+            .arch-row { gap: 4px; }
+            .arch-arrow { font-size: 9px; letter-spacing: 0; white-space: nowrap; overflow: hidden; }
+            .tool-grid { grid-template-columns: 1fr; gap: 6px; }
+            .tool-card { padding: 10px; }
+            .tool-card .tool-name { font-size: 11px; word-break: break-all; }
+            .tool-card .tool-desc { font-size: 11px; }
+            .onto-chain { gap: 2px; }
+            .onto-node { font-size: 11px; padding: 3px 6px; }
+            .onto-arrow { font-size: 10px; }
+            .onto-label { font-size: 9px; top: auto; margin: 0; display: inline; }
+            .flow-chart { gap: 1px; }
+            .flow-node { font-size: 11px; padding: 4px 10px; width: 100%; word-break: break-word; }
+            .flow-arrow { font-size: 8px; }
+            .flow-branch { gap: 8px; flex-direction: column; align-items: center; }
+            .code-block { font-size: 11px; padding: 12px; overflow-x: auto; }
+            .article-body h2 { font-size: 20px; }
+            .article-body h3 { font-size: 16px; }
+            .article-body h4 { font-size: 15px; }
+            .article-body p, .article-body li { font-size: 15px; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "企业级 AI Agent 平台落地案例：从数据治理到业务闭环",
+  "description": "一个真实制造工厂的 AI 落地案例全拆解：数据治理 → 企业知识层 → RAG → Tool 封装 → Agent 编排 → 业务闭环。附完整架构设计与简历价值分析。",
+  "author": {
+    "@type": "Person",
+    "name": "王鉴锋 (GeekHeron)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/article-manufacturing-ai-case-study.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "zh-CN",
+  "datePublished": "2026-07-18"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">CASE STUDY & MANUFACTURING</span>
+                <h1 class="article-title">企业级 AI Agent 平台落地案例：从数据治理到业务闭环</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：制造业 AI 案例, 企业 AI Agent 平台, 数据治理, RAG, LangGraph, Ontology, 制造业数字化转型</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.07.18</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: CASE STUDY</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+
+                <p>我和一家注塑件制造工厂有过一次深度交流。他们的需求听起来很简单："上 AI，接个 DeepSeek，套个 LangChain Agent，完事。"</p>
+
+                <p>但调研了三周之后，我发现根本不是那回事。这家工厂的数据源多到吓人：</p>
+
+                <ul>
+                    <li><strong>MES</strong>（生产制造执行）—— 工单、工序、设备、良率</li>
+                    <li><strong>ERP</strong>（企业资源计划）—— 采购单、库存、财务</li>
+                    <li><strong>CRM</strong>（客户关系）—— 客户信息、合同、需求</li>
+                    <li><strong>文件服务器</strong>—— 工艺文件、SOP、质量标准、设备图纸</li>
+                    <li><strong>钉钉</strong>—— 审批流程、项目文档、沟通记录</li>
+                </ul>
+
+                <p>最大问题？<strong>不是没有数据，是数据之间互相不认识。</strong></p>
+
+                <p>MES 说的"产品编码 100-A"，到 ERP 叫"物料编码 M001"，到 CRM 叫"SKU A100"。AI 看到三个字段，以为有三个东西——其实是一个。</p>
+
+                <p>所以结论很清晰：<strong>不要一上来就想"做一个万能 Agent"，正确的路径应该是：</strong></p>
+
+                <div class="code-block">
+数据治理 → 企业知识层 → RAG → 工具封装 → Agent 编排 → 业务闭环
+                </div>
+
+                <p>这篇文章就是这个案例的完整拆解。它既是我做交付的真实路径，也是一个可以写进简历的完整项目叙事。</p>
+
+                <!-- ============ 一、企业数据接入层 ============ -->
+
+                <h2>一、先做数据接入层</h2>
+
+                <p>大多数制造企业说"做 AI"，第一反应是训练模型或接 API。但我选择从最底层开始——<strong>先把数据打通</strong>。</p>
+
+                <h3>结构化数据接入</h3>
+
+                <p>MES、ERP、CRM 这类业务系统的数据是结构化的，有清晰的表和字段。接入方案有三个：</p>
+
+                <ul>
+                    <li><strong>API 直连</strong>——如果系统有 RESTful 接口</li>
+                    <li><strong>数据库只读从库</strong>——拉一份只读副本，不影响生产</li>
+                    <li><strong>ETL 管道</strong>——定时批处理，清洗和标准化</li>
+                </ul>
+
+                <p>以 MES 的生产表为例：</p>
+
+                <div class="code-block">
+┌─────────────┬──────────────┬──────┬──────┬──────┬──────┐
+│   订单号     │    产品      │ 工序  │ 设备  │ 良率  │ 时间  │
+├─────────────┼──────────────┼──────┼──────┼──────┼──────┤
+│ MO-20260701 │ 注塑件-A100  │ 工序3 │ 机台5 │ 95%  │ 14:30│
+└─────────────┴──────────────┴──────┴──────┴──────┴──────┘
+                </div>
+
+                <p>统一接入到 <strong>PostgreSQL</strong>（事务查询）和 <strong>ClickHouse</strong>（分析查询），构建企业级数据仓库。这一步做完，就解决了"数据散落"的问题。</p>
+
+                <h3>非结构化数据接入</h3>
+
+                <p>PDF 工艺文件、Word 标准作业流程、Excel 质量记录、设备图纸——这些数据无法直接用 SQL 查，需要另一条路线：</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node">📄 PDF / Word / Excel / 图纸</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">🔍 解析 + OCR + 表格提取</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">✂️ Chunking 切分</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;">🧬 Embedding 向量化</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">🗄 向量数据库（Milvus / pgvector）</div>
+                    </div>
+                </div>
+
+                <p>数据接入层做完之后，数据不再散落在各系统里了，但问题还没完全解决：<strong>AI 还是不知道怎么用这些数据</strong>。</p>
+
+                <!-- ============ 二、企业知识层 ============ -->
+
+                <h2>二、建立企业知识层：区分结构化与非结构化</h2>
+
+                <p>数据接进来了，但不要把所有东西直接丢给 Agent。需要分类处理：</p>
+
+                <h3>结构化知识 → 数据库查询</h3>
+
+                <p>这类知识有明确的字段定义和关系结构，适合 SQL 直接查。比如：</p>
+
+                <div class="code-block">
+"订单 A 的当前生产状态是什么？"
+-- 一个 JOIN 就够了
+SELECT so.order_status, p.completion_rate, p.defect_rate
+FROM sales_orders so
+JOIN production_orders p ON so.order_id = p.order_id
+WHERE so.order_id = 'MO-20260701';
+                </div>
+
+                <p>不需要向量检索，不需要大模型推理。数据库就是最好的答案。</p>
+
+                <h3>非结构化知识 → RAG 检索</h3>
+
+                <p>《注塑工艺规范》、《质量异常处理流程》这类文档，适合通过 RAG 检索：</p>
+
+                <ul>
+                    <li><strong>LlamaIndex</strong> 做文档管理和索引</li>
+                    <li><strong>Milvus / pgvector</strong> 做向量存储</li>
+                    <li><strong>LangChain Retriever</strong> 做检索接入</li>
+                </ul>
+
+                <p>推荐技术栈：先上 <strong>pgvector</strong>（和 PostgreSQL 同库，省一个运维），量级上来了再切 <strong>Milvus</strong>。</p>
+
+                <!-- ============ 三、业务知识模型（Ontology） ============ -->
+
+                <h2>三、做业务知识模型（Ontology）</h2>
+
+                <p>这是整个案例中最有价值的一步，也是最容易被跳过的。</p>
+
+                <p>前面说过同一个东西在三个系统里叫三个名字。如果不解决这个语义对齐问题，AI 永远不可能做对多系统推理。</p>
+
+                <p>解决方案是：<strong>建立企业业务本体（Ontology）</strong>。</p>
+
+                <h3>核心实体</h3>
+
+                <div class="code-block">
+产品 | 客户 | 订单 | 物料 | 设备 | 工序 | 员工 | 供应商
+                </div>
+
+                <h3>关系定义</h3>
+
+                <div class="onto-chain">
+                    <div class="onto-node">客户</div>
+                    <span class="onto-label">下达</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">订单</div>
+                    <span class="onto-label">包含</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">产品</div>
+                    <span class="onto-label">消耗</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">物料</div>
+                </div>
+                <div class="onto-chain" style="margin-top:-16px;">
+                    <div class="onto-node">产品</div>
+                    <span class="onto-label">经过</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">工序</div>
+                    <span class="onto-label">使用</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">设备</div>
+                    <span class="onto-label">产生</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">质量数据</div>
+                </div>
+
+                <h3>属性定义</h3>
+
+                <div class="code-block">
+产品:     { 编号, 型号, 规格, 客户, BOM }
+设备:     { 编号, 状态, 位置, 维护周期, 上次停机 }
+质量记录: { 缺陷类型, 严重等级, 原因, 处理方案, 责任人 }
+                </div>
+
+                <h3>有这个模型之后发生了什么改变？</h3>
+
+                <p><strong>没有 Ontology 时：</strong></p>
+
+                <p>用户问"为什么最近客户 A 的订单总是延期？"</p>
+
+                <p>Agent 调用了一个 Tool，查了订单表，返回"订单状态：延迟"。然后呢？不知道原因。因为 Agent 不知道订单和生产线、设备、物料之间的关系。</p>
+
+                <p><strong>有 Ontology 后：</strong></p>
+
+                <p>Agent 理解了实体之间的链路：</p>
+
+                <div class="code-block">
+客户A → 订单B → 产品C → 工单D → 工序3 → 设备E(机台5) → 异常记录F
+                </div>
+
+                <p>然后自动拆解任务：</p>
+
+                <ol>
+                    <li>查订单 B 的当前状态和计划交期</li>
+                    <li>查生产工单 D 的进度和完成率</li>
+                    <li>查设备 E（机台 5）的运行记录</li>
+                    <li>查工序 3 的历史质量异常</li>
+                    <li>查物料供应是否正常</li>
+                </ol>
+
+                <p>这就是<strong>知识驱动 Agent</strong>——不是黑盒推理，而是有路径、可追溯、可解释的推理。</p>
+
+                <!-- ============ 四、Tool 封装 ============ -->
+
+                <h2>四、把企业能力封装成 Tool</h2>
+
+                <p>数据和知识层建好之后，<strong>才</strong>进入 Agent 层。</p>
+
+                <p><strong>核心原则：不要让 Agent 直接访问数据库。</strong></p>
+
+                <p>每一层的能力都封装为独立的 Tool，像微服务一样暴露给 Agent：</p>
+
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">get_production_status(order_id)</div>
+                        <div class="tool-desc">查询当前生产订单状态、完成率、异常情况<br><span style="font-size:11px;color:#666;">来源：MES</span></div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_quality_issue(product_id)</div>
+                        <div class="tool-desc">查询产品质量异常和历史处理方案<br><span style="font-size:11px;color:#666;">来源：MES + 知识库</span></div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_inventory(material_id)</div>
+                        <div class="tool-desc">查询物料库存和供应商交期<br><span style="font-size:11px;color:#666;">来源：ERP</span></div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_customer_history(customer_id)</div>
+                        <div class="tool-desc">查询客户历史订单和交付记录<br><span style="font-size:11px;color:#666;">来源：CRM</span></div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">query_process_sop(keyword)</div>
+                        <div class="tool-desc">检索工艺规范 / SOP 文件<br><span style="font-size:11px;color:#666;">来源：RAG 知识库</span></div>
+                    </div>
+                </div>
+
+                <p>Agent 看到的世界就是这几个 Tool 组成的：<strong>生产查询、质量分析、库存查询、客户分析、工艺知识检索</strong>。</p>
+
+                <p>至于背后是 MES 数据库直连还是 ERP API 调用，Agent 完全不关心。这就是标准的<strong>适配器模式</strong>。</p>
+
+                <!-- ============ 五、Agent 编排 ============ -->
+
+                <h2>五、LangChain + LangGraph 编排 Agent</h2>
+
+                <p>到了这一步，LangChain 才登场——作为 Agent 编排层，负责把 Tool 串起来。</p>
+
+                <h3>简单场景：LangChain Agent</h3>
+
+                <p>用户问"订单 A 为什么延期？"</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 用户：订单A为什么延期？</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">LangChain Agent (ReAct)</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-row" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                            <div class="arch-node" style="width:60%;">1️⃣ get_production_status('MO-A') → 工序3异常</div>
+                            <div class="arch-node" style="width:60%;">2️⃣ get_quality_issue('注塑件-A100') → 历史异常记录</div>
+                            <div class="arch-node" style="width:60%;">3️⃣ query_process_sop('工序3 异常处理') → SOP方案</div>
+                        </div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;width:70%;">📋 生成：延期原因 + 解决方案 + 恢复步骤</div>
+                    </div>
+                </div>
+
+                <p>Agent 按步骤调用 Tool，将每一步的返回组合成完整答案。这就是 ReAct 模式——<strong>思考 → 行动 → 观察 → 推理</strong>。</p>
+
+                <h3>复杂场景：LangGraph 流程管理</h3>
+
+                <p>但在制造业，很多场景不是简单的问答，而是<strong>有状态的工作流</strong>。</p>
+
+                <p>比如"订单异常分析"这个场景，天然就是一个流程：</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="flow-node" style="border-color:#6af;">🚀 开始：收到异常警报</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">📋 查询订单信息</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ 是否延期？</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">⚙️ 查询生产进度 + 质量数据</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ 是否有已知处理方案？</div>
+                        <div class="arch-row" style="width:100%;margin:2px 0;">
+                            <div class="arch-node small" style="color:#8f8;">是 → 套用历史方案</div>
+                            <div class="arch-node small" style="color:#fa8;">否 → 触发研发介入</div>
+                        </div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#fa8;">✋ 人工审批确认</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#8f8;">✅ 结束：生成报告 + 更新知识库</div>
+                    </div>
+                </div>
+
+                <p>这不是聊天，是<strong>流程</strong>。有节点、有分支、有状态转换、有人工介入点。LangGraph 的有向图（DAG）模型天然适合这类场景。</p>
+
+                <p>所以在实际交付中，我选择：</p>
+                <ul>
+                    <li><strong>简单场景</strong>（单轮查询、信息聚合）→ LangChain Agent（ReAct）</li>
+                    <li><strong>复杂场景</strong>（多步骤、人工审批、状态流转）→ LangGraph</li>
+                </ul>
+
+                <!-- ============ 六、架构全貌 ============ -->
+
+                <h2>六、最终架构图</h2>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 用户</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">📱 企业 AI 助手（飞书 / 钉钉 Bot）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:60%;">🧠 LangGraph Agent 编排层</div>
+                        <div class="arch-arrow">┌─────────┼─────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">MES/ERP/CRM</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识库</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史任务</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
+                            <div class="arch-node small" style="border-color:#888;">知识库/向量</div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└────┼────┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🔧 数据治理层<br><span style="font-size:11px;color:#888;">接入 / 清洗 / 本体建模</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-row">
+                            <div class="arch-node small">MES</div>
+                            <div class="arch-node small">ERP</div>
+                            <div class="arch-node small">CRM</div>
+                            <div class="arch-node small">文件</div>
+                            <div class="arch-node small">钉钉</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>核心思想：<strong>每一层只做一件事</strong>。</p>
+                <ul>
+                    <li>数据层不关心上层怎么用</li>
+                    <li>知识层只管理语义</li>
+                    <li>Tool 层只封装能力</li>
+                    <li>Agent 层只做编排</li>
+                </ul>
+
+                <!-- ============ 七、分阶段落地 ============ -->
+
+                <h2>七、不要做"大一统 Agent"</h2>
+
+                <p>制造企业做 AI 最容易犯的错：做一个万能 AI 助手，什么都能问。这想法很诱人，但大概率死在半路上。</p>
+
+                <p>我的建议是<strong>先做三个垂直 Agent</strong>，每个只服务一个角色：</p>
+
+                <h3>1️⃣ 生产运营 Agent</h3>
+                <ul>
+                    <li><strong>用户：</strong>生产经理</li>
+                    <li><strong>能力：</strong>查订单状态、查产线产能、查异常工单、查生产日报</li>
+                </ul>
+
+                <h3>2️⃣ 质量 Agent</h3>
+                <ul>
+                    <li><strong>用户：</strong>质量经理</li>
+                    <li><strong>能力：</strong>查不良数据、查缺陷原因、查 SOP 规范、查历史处理方案</li>
+                </ul>
+
+                <h3>3️⃣ 销售交付 Agent</h3>
+                <ul>
+                    <li><strong>用户：</strong>业务经理</li>
+                    <li><strong>能力：</strong>查客户信息、查订单进度、查预计交期、查应收账款</li>
+                </ul>
+
+                <p>每个 Agent 只做一件事。做稳了再合并、交叉、扩展。最终聚合成一个<strong>企业智能助手</strong>，但那是后面的事。</p>
+
+                <!-- ============ 八、简历价值 ============ -->
+
+                <h2>八、这个项目给你的简历带来什么</h2>
+
+                <blockquote>
+                    <strong>如果你按照这个架构去做一个真实项目，你的定位将从"AI 自动化工程师"直接接近"制造业 AI 应用架构师 / AI 解决方案工程师"。</strong>
+                </blockquote>
+
+                <p>这个场景比纯聊天机器人有价值得多，因为它真正涉及：</p>
+
+                <ul>
+                    <li><strong>RAG</strong> — 企业非结构化知识检索</li>
+                    <li><strong>Agent</strong> — 多 Tool 编排与 ReAct</li>
+                    <li><strong>Skill/Tool 封装</strong> — 企业系统适配层</li>
+                    <li><strong>企业系统集成</strong> — MES / ERP / CRM / 钉钉</li>
+                    <li><strong>业务知识建模</strong> — Ontology / 本体建模</li>
+                </ul>
+
+                <p>这些正是现在企业愿意付费的方向。纯聊天机器人在卷价格，但<strong>能搞定企业系统集成的人永远稀缺</strong>。</p>
+
+                <!-- ============ 九、推荐落地路线 ============ -->
+
+                <h2>九、推荐的落地路线</h2>
+
+                <p><strong>第一阶段：RAG + Tool</strong></p>
+                <p>先解决"能查、能问、能执行"。接数据、封装 Tool、搭 RAG 知识库。这个阶段价值最大、风险最小。</p>
+
+                <p><strong>第二阶段：业务本体</strong></p>
+                <p>建立企业核心实体的映射关系。让 AI 理解"100-A = M001 = A100"是同一个东西。</p>
+
+                <p><strong>第三阶段：GraphRAG + LangGraph</strong></p>
+                <p>复杂流程编排和多跳推理。设备停机 → 工序延迟 → 订单延期这条链路，AI 能推出来。</p>
+
+                <blockquote>
+                    <strong>不要一开始就做完整的知识图谱。</strong>很多项目死在这里。本体是逐步演化的，不是一次建成的。
+                </blockquote>
+
+                <p>制造业天然适合知识图谱——BOM、工艺路线、设备关系、供应链、质量追溯——这些本质就是图。但做得太大、太快，反而会成为做不完的坑。</p>
+
+                <p>渐进式推进，每次只解决一个痛点。这是企业 AI 落地最朴素的真理。</p>
+
+                <p style="margin-top:50px;color:#666;">延伸阅读：<a href="article-manufacturing-ai-ontology.html" style="color:#6af;text-decoration:underline;">制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"</a></p>
+
+            </div>
+
+            <footer class="seo-footer">
+                <p>关于企业 AI 架构设计与系统集成：</p>
+                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000; 
+        
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+    <script src="site-nav.js"></script>
+</body>
+</html>

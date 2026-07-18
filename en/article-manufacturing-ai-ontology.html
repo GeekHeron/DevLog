@@ -261,6 +261,21 @@
 
                 <p>Unified target: <strong>PostgreSQL</strong> (transaction queries) or <strong>ClickHouse</strong> (analytics).</p>
 
+                <h3>Tech Selection: PostgreSQL vs ClickHouse</h3>
+
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#6af;">Choose PostgreSQL when:</div>
+                        <div class="tool-desc">Order queries, work order status, transactional permissions — real-time writes with row-level updates, data under 1TB</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#fa8;">Choose ClickHouse when:</div>
+                        <div class="tool-desc">Equipment vibration metrics, yield trend analysis, supply chain aggregations — wide-table analytics, 10TB+</div>
+                    </div>
+                </div>
+
+                <p>Rule of thumb: <strong>PG for transactions, CK for analytics.</strong> If your dataset is modest (&lt;500M rows per table), PG with materialized views is sufficient — no need to bring in ClickHouse.</p>
+
                 <h3>Unstructured Data Access</h3>
                 <p>PDFs, Word docs, Excel files, process drawings, SOPs — these go through a different pipeline:</p>
                 <ul>
@@ -299,6 +314,23 @@
                 </div>
 
                 <p>Recommended stack: <strong>LlamaIndex</strong> for document management, <strong>Milvus</strong> or <strong>pgvector</strong> for storage, <strong>LangChain Retriever</strong> for access.</p>
+
+                <h3>Tech Selection: pgvector vs Milvus vs Chroma</h3>
+
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#8f8;">pgvector</div>
+                        <div class="tool-desc">&lt;1M documents, don't want extra infrastructure. Lives inside your PostgreSQL cluster — simple backups, great for starting out.</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#6af;">Milvus</div>
+                        <div class="tool-desc">1M+ documents, need distributed retrieval and high throughput. The right choice for production-scale document libraries.</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#fa8;">Chroma</div>
+                        <div class="tool-desc">Prototypes, demos, POCs — one line of code to get started. Don't use it for persistent production storage.</div>
+                    </div>
+                </div>
 
                 <!-- ============ 3. Ontology ============ -->
 
@@ -389,6 +421,97 @@ QualityIssue: { DefectType, Severity, RootCause, Solution }</div>
                 </div>
 
                 <p>The Agent only sees these capabilities. Behind the scenes, they may call MES or ERP — the Agent doesn't need to know. This is the <strong>Adapter Pattern</strong>.</p>
+
+                <h3>Real Tool Implementation: Production Query Tool in Python</h3>
+
+                <p>Here's a complete implementation of a production query Tool that connects to a real MES database, demonstrating the full chain from raw SQL query to LangChain-callable Function::</p>
+
+                <div class="code-block">
+import json
+from typing import Optional
+from pydantic import BaseModel, Field
+
+# ---- 1. Tool Schema (LangChain tool signature) ----
+
+class ProductionStatusInput(BaseModel):
+    order_id: str = Field(description="Production order ID, e.g. MO-20260701")
+    user_role: str = Field(default="admin", description="Caller role: admin/manager/operator")
+
+# ---- 2. Data layer: connect to MES database ----
+
+import psycopg2
+from psycopg2.extras import RealDictCursor
+
+DB_CONFIG = {
+    "host": "10.3.0.10", "port": 5432,
+    "dbname": "mes_production",
+    "user": "mes_readonly", "password": "***",
+}
+
+def _query_mes(sql: str, params: dict) -> list[dict]:
+    """Read-only replica query"""
+    conn = psycopg2.connect(**DB_CONFIG)
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(sql, params)
+            return [dict(row) for row in cur.fetchall()]
+    finally:
+        conn.close()
+
+# ---- 3. Permission layer: row-level data filtering ----
+
+ROLE_FILTERS = {
+    "admin":    "",
+    "manager":  "AND line_id IN (SELECT line_id FROM user_lines WHERE user_id = %(user_id)s)",
+    "operator": "AND station_id = (SELECT station_id FROM users WHERE user_id = %(user_id)s)",
+}
+
+# ---- 4. Tool implementation ----
+
+def get_production_status(order_id: str, user_role: str = "admin") -> str:
+    """Query production order status, completion rate, and anomalies"""
+    filter_sql = ROLE_FILTERS.get(user_role, "")
+    sql = f"""
+        SELECT o.order_id, o.product_name, o.quantity,
+               o.completed_qty, o.status,
+               (SELECT COUNT(*) FROM quality_anomalies
+                WHERE order_id = o.order_id AND severity = 'high'
+               ) AS critical_anomalies
+        FROM production_orders o
+        WHERE o.order_id = %(order_id)s {filter_sql}
+    """
+    rows = _query_mes(sql, {"order_id": order_id})
+    if not rows:
+        return json.dumps({"error": "Order not found or no access permission"})
+    row = rows[0]
+    rate = round(row["completed_qty"] / row["quantity"] * 100, 1)
+    return json.dumps({
+        "order_id": row["order_id"],
+        "product": row["product_name"],
+        "status": row["status"],
+        "completion_rate": f"{rate}%",
+        "critical_anomalies": row["critical_anomalies"],
+    }, ensure_ascii=False)
+
+# ---- 5. Register as a LangChain Tool ----
+
+from langchain_core.tools import StructuredTool
+
+production_tool = StructuredTool.from_function(
+    func=get_production_status,
+    name="get_production_status",
+    description="Query production order status, completion rate, and anomaly count",
+    args_schema=ProductionStatusInput,
+)
+                </div>
+
+                <p>Key design points:</p>
+                <ol>
+                    <li><strong>Read-only replica</strong> — the Tool connects to a read replica, never the production database</li>
+                    <li><strong>Permission-embedded SQL</strong> — user_role parameter filters row-level data directly in the query</li>
+                    <li><strong>Unified JSON return</strong> — all Tools return JSON strings, easy for the Agent to parse and compose</li>
+                    <li><strong>Standardized schema</strong> — Pydantic defines input schema; LangChain auto-generates Function Calling definitions</li>
+                </ol>
 
                 <!-- ============ 5. Permission System ============ -->
 
@@ -503,6 +626,96 @@ CREATE POLICY production_policy ON production
                 </div>
 
                 <p>This isn't chat — it's a <strong>process</strong>. Clear nodes, branches, state transitions, and human-in-the-loop checkpoints. LangGraph's directed graph (DAG) model is a natural fit.</p>
+
+                <h3>LangGraph Node Definition Example</h3>
+
+                <p>Here's how the order delay diagnosis flow looks in LangGraph, showing how state propagates between nodes:</p>
+
+                <div class="code-block">
+from typing import Literal
+from typing_extensions import TypedDict
+from langgraph.graph import StateGraph, END
+
+# ---- 1. Define State (shared context across the workflow) ----
+
+class OrderState(TypedDict):
+    order_id: str
+    user_role: str
+    status: str | None
+    completion_rate: float | None
+    is_delayed: bool | None
+    anomalies: list | None
+    report: str | None
+
+# ---- 2. Define nodes (each node is a function) ----
+
+def fetch_order(state: OrderState) -> dict:
+    """Node A: fetch the order status"""
+    result = get_production_status(state["order_id"], state["user_role"])
+    data = json.loads(result)
+    rate = float(data.get("completion_rate", "0").replace("%", ""))
+    return {"status": data["status"], "completion_rate": rate}
+
+def check_delay(state: OrderState) -> dict:
+    """Node B: check if the order is delayed"""
+    delayed = state["completion_rate"] &lt; 80 or state["status"] == "delayed"
+    return {"is_delayed": delayed}
+
+def diagnose(state: OrderState) -> dict:
+    """Node C: diagnose quality issues"""
+    issues = get_quality_issue(state["order_id"])
+    return {"anomalies": json.loads(issues)}
+
+def generate_report(state: OrderState) -> dict:
+    """Node D: generate the diagnosis report"""
+    r = f"Order {state['order_id']} Diagnosis Report\n"
+    r += f"- Status: {state['status']}\n"
+    r += f"- Completion Rate: {state['completion_rate']}%\n"
+    if state.get("anomalies"):
+        r += f"- Anomalies: {state['anomalies'][:3]}\n"
+    r += "- Recommendation: Check equipment per SOP"
+    return {"report": r}
+
+def approve(state: OrderState) -> dict:
+    """Node E: human approval gate"""
+    return {"report": state["report"] + "\n(pending human approval)"}
+
+# ---- 3. Conditional edge (router) ----
+
+def router(state: OrderState) -> str:
+    if state["is_delayed"]:
+        return "diagnose"
+    return "generate_report"
+
+# ---- 4. Build the graph ----
+
+builder = StateGraph(OrderState)
+builder.add_node("fetch", fetch_order)
+builder.add_node("check", check_delay)
+builder.add_node("diagnose", diagnose)
+builder.add_node("gen_report", generate_report)
+builder.add_node("approval", approve)
+
+builder.set_entry_point("fetch")
+builder.add_edge("fetch", "check")
+builder.add_conditional_edges("check", router)
+builder.add_edge("diagnose", "gen_report")
+builder.add_edge("gen_report", "approval")
+builder.add_edge("approval", END)
+builder.add_edge("gen_report", END)
+
+app = builder.compile()
+
+# ---- 5. Execute ----
+
+result = app.invoke({
+    "order_id": "MO-20260701",
+    "user_role": "admin",
+})
+print(result["report"])
+                </div>
+
+                <p>Compare with LangChain Agent: everything crammed into a ReAct loop — state in memory, branches in prompts, human approval barely controllable. LangGraph defines every node, every branch, every state transition <strong>explicitly</strong>. The difference in maintainability, traceability, and testability is night and day.</p>
 
                 <!-- ============ 8. Final Architecture ============ -->
 
@@ -625,6 +838,51 @@ CREATE POLICY production_policy ON production
                 </blockquote>
 
                 <p>Manufacturing is a natural fit for ontology — BOM structures, process routing, equipment relationships, supply chains, quality traceability. These are essentially knowledge graphs. But take it step by step, solving one pain point at a time.</p>
+
+                <!-- ============ 12. Common Failure Modes ============ -->
+
+                <h2>12. Common Failure Modes &amp; How to Avoid Them</h2>
+
+                <p>The architecture above looks solid on paper, but every layer can fail in production. Here are the most common failure patterns I've seen across real projects:</p>
+
+                <h3>1. Data Layer: Schema Changes Break the Pipeline</h3>
+                <p>MES tables change structure constantly — Excel import templates change, column names get renamed, a field switches from strings to enums. Without schema versioning, your ETL pipeline silently corrupts data while the AI happily queries garbage.</p>
+                <p><strong>Countermeasure:</strong> Add schema validation and alerts to your ETL pipeline. Pause and notify on any field name or type change. Use <strong>Great Expectations</strong> for data quality assertions — generate a quality report every time ETL runs.</p>
+
+                <h3>2. Knowledge Layer: RAG Noise Causes Hallucinations</h3>
+                <p>Unstructured documents vary wildly in quality — SOPs from 2019, PDF scans with 60% OCR accuracy. Once the Agent is misled by low-quality retrieval, the output is <em>worse</em> than having no knowledge at all — it confidently fabricates wrong answers.</p>
+                <p><strong>Countermeasure:</strong> Add a relevance threshold to retrieval results (skip anything below 0.7). Tag documents with metadata (version, department, effective date). Always cite sources and confidence levels in responses. Most importantly: <strong>if the Agent can't find reliable knowledge, it must say so</strong> — never force an answer.</p>
+
+                <h3>3. Ontology Layer: Entity Explosion Kills Maintainability</h3>
+                <p>You start with 10 entities. Six months later you have 200. Entity relationships, attribute updates, cross-system mappings — all maintained manually. Nobody in the company can describe the ontology anymore. It becomes a monster nobody dares to touch.</p>
+                <p><strong>Countermeasure:</strong> Build ontology only to the point of "good enough." Cover core entities first (Product-Order-Material-Process), then extend by demand. All ontology changes must go through an approval process with regression testing. Periodically purge unused entities and relationships.</p>
+
+                <h3>4. Tool Layer: Long Chains Cause Timeouts &amp; Cascading Failures</h3>
+                <p>An order delay diagnosis requires 5 Tool calls, and the MES query takes 5 seconds. The entire reasoning chain gets stuck on one slow query. Worse, if an internal API goes down, the Agent throws an exception and exits instead of degrading gracefully.</p>
+                <p><strong>Countermeasure:</strong> Set a timeout on every Tool (3-5 seconds recommended). On timeout, return "service temporarily unavailable" rather than raising an exception. Build fallback paths for critical Tools — if MES is down, at least return "order ID exists, detailed information unavailable" so the reasoning can continue.</p>
+
+                <h3>5. Permission Layer: Missing Checks Cause Data Leaks</h3>
+                <p>A developer adds a new Tool but forgets the user_role filter. Suddenly an operator can query the entire company's order data through the Agent. This isn't hypothetical — it has happened.</p>
+                <p><strong>Countermeasure:</strong> Every Tool registration must declare a minimum permission role. No permission declaration = no deployment. Write an e2e test that runs the same query with admin/manager/operator roles and asserts the output scope is correct.</p>
+
+                <!-- ============ FAQ ============ -->
+
+                <h2>Frequently Asked Questions (FAQ)</h2>
+
+                <h3>Q: Do I have to use Neo4j? Can I store ontologies in a relational database?</h3>
+                <p>Yes, you can. For &lt;500 entities, a relational database works perfectly. Neo4j shines on multi-hop queries — "equipment downtime → which orders are affected → which customers are impacted?" SQL JOIN chains get unwieldy; Cypher navigates paths natively. You can start with relational tables and migrate to a graph DB later.</p>
+
+                <h3>Q: LangChain versions change fast. How do I trust it in production?</h3>
+                <p>Lock a major version — use <code>langchain==0.3.x</code> and don't chase the latest. LangChain's core abstraction (Tool + ReAct loop) is stable within major versions. If you're really worried, implement Tool scheduling yourself — the core logic is under 200 lines of Python.</p>
+
+                <h3>Q: Which Embedding model should I use for RAG?</h3>
+                <p>For Chinese documents: <strong>BAAI/bge-large-zh-v1.5</strong> or <strong>text2vec-large-chinese</strong> — consistently top-rated on the MTEB Chinese leaderboard. For mixed Chinese-English documents: <strong>multilingual-e5-large</strong>. Avoid OpenAI's text-embedding-3 for Chinese RAG — the latency and cost don't scale well with enterprise document volumes.</p>
+
+                <h3>Q: What's the minimum team for manufacturing AI delivery?</h3>
+                <p>Minimum crew: 1 backend engineer (Python + SQL), 1 business analyst (understands manufacturing), 1 project manager. AI algorithm capability can be outsourced via API (DeepSeek / Qwen) — no need to train your own model. The non-technical capability is the key: the business analyst needs to draw the full chain from Product → Order → Process → Equipment.</p>
+
+                <h3>Q: Does this architecture compete with low-code AI platforms (Dify / Coze)?</h3>
+                <p>No. Low-code platforms can replace the top layers (Agent orchestration, RAG). But the <strong>bottom three layers</strong> — data ingestion, ontology modeling, Tool encapsulation — every platform still needs them. This article focuses on getting the bottom layers right; the top layer can be any tool you prefer.</p>
 
             </div>
 

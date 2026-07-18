@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层" - GeekHeron</title>
     <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
     <meta name="description" content="制造企业引入 AI 的最大误区就是直接接 LangChain。分层企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → MCP 接入标准 → Agent 编排 → LangGraph，附完整的制造业本体设计方案。">
     <meta name="keywords" content="GeekHeron, 制造业AI, 企业AI架构, LangChain, LangGraph, RAG, 知识图谱, Ontology, MCP, Model Context Protocol, AgentOps, Agent Runtime, 数据治理, 智能制造">
     <link rel="icon" type="image/png" href="logo.png">
@@ -384,6 +387,7 @@
                 <li><a href="works.html">商业案例</a></li>
                 <li><a href="fuxi-engine.html">伏羲引擎</a></li>
                 <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+                <li><a href="en/article-manufacturing-ai-ontology.html" class="lang-btn" hreflang="en" lang="en" style="border:1px solid rgba(255,255,255,0.3);padding:4px 10px;border-radius:4px;font-size:12px;">English</a></li>
             </ul>
         </nav>
 
@@ -1421,61 +1425,40 @@ prompts:
                     </a>
                 </div>
             </footer>
-                </div>
-            </footer>
         </article>
     </main>
 
-    <script>const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        hamburger.addEventListener('click', toggleMenu);
+    <script>
+        (function(){
+            var hamburger = document.querySelector('.hamburger');
+            var navLinks = document.querySelector('.nav-links');
+            if(hamburger) hamburger.addEventListener('click', function(){ hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        })();
 
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('nav-links');
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        const canvas = document.getElementById('galaxy-field');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        const particles = [];
-        const numParticles = 2000; 
-        
+        var canvas = document.getElementById('galaxy-field');
+        var ctx = canvas.getContext('2d');
+        var width, height;
+        var particles = [];
+        var numParticles = 2000;
         function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width; this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
-                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
-                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
+        function Particle() {
+            this.x = Math.random() * width; this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+            this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
         }
-        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
-        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        Particle.prototype.update = function() {
+            this.x += this.vx; this.y += this.vy;
+            if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+            if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+        };
+        Particle.prototype.draw = function() {
+            ctx.fillStyle = 'rgba(255,255,255,' + this.alpha + ')';
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        };
+        function init() { resize(); for(var i=0;i<numParticles;i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0,0,width,height); particles.forEach(function(p){p.update();p.draw();}); requestAnimationFrame(animate); }
+        window.addEventListener('resize', function(){ resize(); particles.length=0; init(); });
         init(); animate();
-    
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-        if(hamburger) hamburger.addEventListener('click', toggleMenu);
 </script>
     <script src="site-nav.js"></script>
 </body>

@@ -260,6 +260,71 @@
             animation: fadeIn 1s ease-out 3s forwards; 
         }
 
+        /* --- 最新文章卡片 --- */
+        .latest-article {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 4s forwards;
+        }
+        .latest-article a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 13px;
+            color: #aaa;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .latest-article a:hover {
+            border-color: #6af;
+            color: #fff;
+            background: rgba(0,20,40,0.8);
+        }
+        .latest-article .la-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: monospace;
+        }
+        .latest-article .la-title {
+            font-weight: 600;
+            color: #ddd;
+        }
+        .latest-article .la-arrow {
+            font-size: 14px;
+            color: #666;
+        }
+        .latest-article a:hover .la-arrow {
+            color: #6af;
+        }
+
+        @media (max-width: 768px) {
+            .latest-article {
+                bottom: 80px;
+                left: 20px;
+                right: 20px;
+                transform: none;
+            }
+            .latest-article a {
+                width: 100%;
+                justify-content: center;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+            .latest-article .la-label { display: none; }
+        }
+
         .btn:hover {
             background-color: #fff;
             color: #000;
@@ -409,6 +474,14 @@
             </p>
         </article>
     </main>
+
+    <div class="latest-article">
+        <a href="article-manufacturing-ai-ontology.html">
+            <span class="la-label">Latest</span>
+            <span class="la-title">制造业 AI 落地架构</span>
+            <span class="la-arrow">→</span>
+        </a>
+    </div>
 
     <div class="hud-decoration">
         <div class="hud-line"></div>

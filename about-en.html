@@ -673,7 +673,8 @@
             header { padding: 20px; justify-content: space-between; }
             .logo img { height: 40px; }
             .logo span { font-size: 18px; letter-spacing: 2px; }
-            .hamburger { display: block; }
+            .hamburger { display: block; z-index: 102; }
+            .header-right { display: none; }
             .nav-links {
                 position: fixed;
                 top: 0;
@@ -698,25 +699,7 @@
                 margin-left: 0;
             }
 
-            .hamburger { display: block; }
-
-            .nav-links {
-                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(100px);
-                z-index: 101;
-                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
-                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex;
-            }
-            .nav-links.active { transform: translateX(0); }
-
-            .nav-links a {
-                font-size: 24px;
-                margin-left: 0;
-                font-weight: 700;
-            }
-
-            .lang-btn {
+.lang-btn {
                 margin-left: 0;
                 margin-top: 20px;
                 padding: 10px 30px;
@@ -742,44 +725,6 @@
             }
 
             .testimonial-grid { grid-template-columns: 1fr; }
-
-            /* --- Mobile layout optimization --- */
-            .container { padding-top: 40px !important; gap: 40px !important; }
-            .section-block { margin-bottom: 40px !important; }
-            .section-title { font-size: 20px !important; }
-            .profile-name { font-size: 24px !important; }
-            .profile-title { font-size: 13px !important; line-height: 1.5 !important; }
-            .avatar-container { width: 100px !important; height: 100px !important; }
-            .avatar-image { width: 100px !important; height: 100px !important; }
-            .cta-group { flex-direction: column !important; gap: 10px !important; }
-            .cta-group a { width: 100% !important; text-align: center !important; padding: 12px 20px !important; font-size: 13px !important; }
-            .advantage-card { padding: 20px !important; }
-            .advantage-card p { font-size: 13px !important; }
-            .service-card { padding: 20px !important; }
-            .service-name { font-size: 15px !important; }
-            .service-desc { font-size: 13px !important; }
-            .risk-grid { grid-template-columns: 1fr !important; }
-            .social-proof-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
-            .proof-stat { padding: 14px 8px !important; }
-            .proof-num { font-size: 22px !important; }
-            .proof-desc { font-size: 10px !important; }
-            .capability-grid { grid-template-columns: 1fr !important; }
-            .capability-item { padding: 14px 16px !important; }
-            .fit-grid { grid-template-columns: 1fr !important; }
-            .fit-item { padding: 14px !important; }
-            .faq-item { padding: 14px !important; }
-            .faq-question { font-size: 14px !important; }
-            .faq-answer { font-size: 13px !important; }
-            .project-metrics.two-col { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
-            .testimonial-card { padding: 20px !important; }
-            .testimonial-text { font-size: 13px !important; }
-            .testimonial-author { font-size: 13px !important; }
-            .metric-value { font-size: 18px !important; }
-            .metric-label { font-size: 9px !important; }
-            .social-grid { gap: 6px !important; }
-            .social-item { padding: 8px 4px !important; }
-            .social-qr { width: 70px !important; height: 70px !important; }
-            .social-text { font-size: 9px !important; white-space: normal !important; transform: none !important; margin-top: 4px !important; }
         }
 
         /* Respect the user's reduced-motion system setting */

@@ -469,13 +469,41 @@
 
                 <p>典型的 MES 生产表结构示例：</p>
 
-                <div class="code-block">
-┌─────────────┬──────────────┬──────┬──────┬──────┬──────┐
-│   订单号     │    产品      │ 工序  │ 设备  │ 良率  │ 时间  │
-├─────────────┼──────────────┼──────┼──────┼──────┼──────┤
-│ MO-20260701 │ 注塑件-A100  │ 工序3 │ 机台5 │ 95%  │ 14:30│
-└─────────────┴──────────────┴──────┴──────┴──────┴──────┘
-                </div>
+                <style>
+                .data-table {
+                    width: 100%; border-collapse: collapse;
+                    font-family: monospace; font-size: 13px;
+                    margin-bottom: 25px; color: #ccc;
+                }
+                .data-table th {
+                    background: #1a1a2a; border: 1px solid #333;
+                    padding: 8px 6px; text-align: center;
+                    color: #6af; font-weight: 600;
+                }
+                .data-table td {
+                    border: 1px solid #333;
+                    padding: 8px 6px; text-align: center;
+                }
+                .data-table tr:hover td { background: rgba(255,255,255,0.03); }
+                @media (max-width: 768px) {
+                    .data-table { font-size: 11px; }
+                    .data-table th,
+                    .data-table td { padding: 5px 3px; }
+                    .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+                }
+                </style>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>订单号</th><th>产品</th><th>工序</th><th>设备</th><th>良率</th><th>时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MO-20260701</td><td>注塑件-A100</td><td>工序3</td><td>机台5</td><td>95%</td><td>14:30</td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <p>统一接入目标：<strong>PostgreSQL</strong>（事务查询）或 <strong>ClickHouse</strong>（分析查询），构建企业级数据仓库。</p>
 

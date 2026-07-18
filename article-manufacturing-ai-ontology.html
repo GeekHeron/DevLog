@@ -267,22 +267,29 @@
             .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
             /* --- 移动端架构图优化 --- */
-            .article-body .arch-box { padding: 16px 12px; gap: 3px; }
-            .arch-node { font-size: 12px; padding: 7px 10px; min-width: 52px; }
-            .arch-node.small { font-size: 11px; padding: 5px 8px; min-width: 44px; }
-            .arch-row { gap: 6px; }
-            .arch-arrow { font-size: 10px; letter-spacing: 0; }
-            .tool-grid { grid-template-columns: 1fr; gap: 8px; }
-            .tool-card { padding: 12px; }
-            .tool-card .tool-name { font-size: 12px; word-break: break-all; }
-            .tool-card .tool-desc { font-size: 12px; }
-            .onto-chain { gap: 4px; }
-            .onto-node { font-size: 12px; padding: 4px 8px; }
-            .onto-arrow { font-size: 12px; }
-            .onto-label { font-size: 10px; top: 0; margin: 0; }
-            .flow-node { font-size: 12px; padding: 5px 12px; }
-            .flow-arrow { font-size: 9px; }
-            .flow-branch { gap: 12px; flex-direction: column; align-items: center; }
+            .article-body .arch-box { padding: 12px 10px; gap: 2px; }
+            .arch-node { font-size: 11px; padding: 6px 8px; min-width: 44px; word-break: break-word; overflow-wrap: break-word; }
+            .arch-node.small { font-size: 10px; padding: 4px 6px; min-width: 36px; }
+            .arch-node[style*="width"] { width: 100% !important; }
+            .arch-row { gap: 4px; }
+            .arch-arrow { font-size: 9px; letter-spacing: 0; white-space: nowrap; overflow: hidden; }
+            .tool-grid { grid-template-columns: 1fr; gap: 6px; }
+            .tool-card { padding: 10px; }
+            .tool-card .tool-name { font-size: 11px; word-break: break-all; }
+            .tool-card .tool-desc { font-size: 11px; }
+            .onto-chain { gap: 2px; }
+            .onto-node { font-size: 11px; padding: 3px 6px; }
+            .onto-arrow { font-size: 10px; }
+            .onto-label { font-size: 9px; top: auto; margin: 0; display: inline; }
+            .flow-chart { gap: 1px; }
+            .flow-node { font-size: 11px; padding: 4px 10px; width: 100%; word-break: break-word; }
+            .flow-arrow { font-size: 8px; }
+            .flow-branch { gap: 8px; flex-direction: column; align-items: center; }
+            .code-block { font-size: 11px; padding: 12px; overflow-x: auto; }
+            .article-body h2 { font-size: 20px; }
+            .article-body h3 { font-size: 16px; }
+            .article-body h4 { font-size: 15px; }
+            .article-body p, .article-body li { font-size: 15px; }
         }
     </style>
 

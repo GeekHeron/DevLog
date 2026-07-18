@@ -899,27 +899,26 @@ print(result["report"])
                 <h2>8. Final Architecture Diagram</h2>
 
                 <div class="arch-box">
-                    <div class="flow-chart" style="gap:4px;width:100%;">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
                         <div class="arch-node" style="border-color:#6af;">👤 User</div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-node" style="border-color:#6af;">📱 Enterprise AI Assistant (Feishu / DingTalk / Web)</div>
                         <div class="arch-arrow">▼</div>
-                        <div class="arch-node highlight" style="width:60%;">🧠 LangGraph Agent Orchestration</div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┐</div>
-                        <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#8f8;">Agent Runtime<br><span style="color:#888;">Governance</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">Capabilities</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Knowledge</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">History</span></div>
-                        </div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │ &emsp; │</div>
-                        <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
-                            <div class="arch-node small" style="border-color:#888;">Knowledge Base</div>
-                        </div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">└────┼────┘</div>
+                        <div class="arch-node highlight" style="width:55%;">🧠 Agent Orchestration<br><span style="font-size:11px;color:#888;">LangGraph / LangChain</span></div>
                         <div class="arch-arrow">▼</div>
-                        <div class="arch-node warn" style="width:60%;">🔧 Data Governance Layer<br><span style="font-size:11px;color:#888;">Ingestion / Cleaning / Ontology</span></div>
+                        <div class="arch-node" style="border-color:#fa8;width:50%;">⚙️ Agent Runtime / Governance<br><span style="font-size:11px;color:#888;">Trace · Logging · Cost · Eval · Feedback</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;width:50%;">🔌 MCP Protocol Layer<br><span style="font-size:11px;color:#888;">Standardized Agent ↔ Enterprise Interface</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool Encapsulation<br><span style="color:#888;">MES/ERP API</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">📚 RAG Retrieval<br><span style="color:#888;">Vector + Graph</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">💾 Memory<br><span style="color:#888;">History Context</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🔧 Data Governance Layer<br><span style="font-size:11px;color:#888;">Ingestion / Cleaning / Ontology / Permissions</span></div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-row">
                             <div class="arch-node small">MES</div>
@@ -931,7 +930,7 @@ print(result["report"])
                     </div>
                 </div>
 
-                <p>Core design principle: <strong>separation of concerns</strong>. Data layer doesn't care how it's used. Knowledge layer manages semantics. Tool layer wraps capabilities. Governance layer ensures production quality. Agent layer only orchestrates.</p>
+                <p>Core design principle: <strong>separation of concerns</strong>. Data governance unifies enterprise data sources; knowledge layer models business semantics; MCP standardizes the interface; Tool/RAG/Memory each have clear responsibilities; the governance layer handles Trace, cost, and quality; the Agent layer only orchestrates — it doesn't care about the underlying implementation.</p>
 
                 <!-- ============ 9. Start Small ============ -->
 

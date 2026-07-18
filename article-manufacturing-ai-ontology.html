@@ -1231,27 +1231,26 @@ prompts:
                 <h2>八、最终架构图</h2>
 
                 <div class="arch-box">
-                    <div class="flow-chart" style="gap:4px;width:100%;">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
                         <div class="arch-node" style="border-color:#6af;">👤 用户</div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-node" style="border-color:#6af;">📱 企业 AI 助手（飞书 / 钉钉 / Web）</div>
                         <div class="arch-arrow">▼</div>
-                        <div class="arch-node highlight" style="width:60%;">🧠 LangGraph Agent 编排层</div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┐</div>
-                        <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#8f8;">Agent Runtime<br><span style="color:#888;">治理层</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">功能封装</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识检索</span></div>
-                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史任务</span></div>
-                        </div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │ &emsp; │</div>
-                        <div class="arch-row">
-                            <div class="arch-node small" style="border-color:#888;">MES/ERP/CRM</div>
-                            <div class="arch-node small" style="border-color:#888;">知识库/向量</div>
-                        </div>
-                        <div class="arch-arrow" style="width:100%;text-align:center;">└────┼────┘</div>
+                        <div class="arch-node highlight" style="width:55%;">🧠 Agent 编排层<br><span style="font-size:11px;color:#888;">LangGraph / LangChain</span></div>
                         <div class="arch-arrow">▼</div>
-                        <div class="arch-node warn" style="width:60%;">🔧 数据治理层<br><span style="font-size:11px;color:#888;">接入 / 清洗 / 本体建模</span></div>
+                        <div class="arch-node" style="border-color:#fa8;width:50%;">⚙️ Agent 运行治理层<br><span style="font-size:11px;color:#888;">Trace · Logging · Cost · Eval · Feedback</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;width:50%;">🔌 MCP 协议层<br><span style="font-size:11px;color:#888;">标准化 Agent ↔ 企业数据接口</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool 封装<br><span style="color:#888;">MES/ERP API</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">📚 RAG 知识检索<br><span style="color:#888;">向量 + 图谱</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">💾 Memory<br><span style="color:#888;">历史上下文</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🔧 数据治理层<br><span style="font-size:11px;color:#888;">接入 / 清洗 / 本体建模 / 权限</span></div>
                         <div class="arch-arrow">▼</div>
                         <div class="arch-row">
                             <div class="arch-node small">MES</div>
@@ -1263,7 +1262,7 @@ prompts:
                     </div>
                 </div>
 
-                <p>这个架构的核心思想是<strong>分层</strong>：数据层不关心上层怎么用，知识层只管理语义，Tool 层只封装能力，治理层保障运行质量，Agent 层只做编排。</p>
+                <p>这个架构的核心思想是<strong>分层</strong>：数据治理层统一接入企业数据源；知识层建模业务语义；MCP 协议层标准化接口；Tool/RAG/Memory 各司其职；治理层保障 Trace、成本和质量；Agent 层只做编排，不关心底层实现。</p>
 
                 <!-- ============ 九、分阶段策略 ============ -->
 

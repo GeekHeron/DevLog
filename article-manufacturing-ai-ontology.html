@@ -498,6 +498,21 @@
 
                 <p>统一接入目标：<strong>PostgreSQL</strong>（事务查询）或 <strong>ClickHouse</strong>（分析查询），构建企业级数据仓库。</p>
 
+<h3>技术选型决策：PostgreSQL vs ClickHouse</h3>
+
+<div class="tool-grid">
+    <div class="tool-card">
+        <div class="tool-name" style="color:#6af;">选 PostgreSQL 当：</div>
+        <div class="tool-desc">订单查询、工单状态、权限事务——需要实时写入和行级更新，数据量在 TB 以下</div>
+    </div>
+    <div class="tool-card">
+        <div class="tool-name" style="color:#fa8;">选 ClickHouse 当：</div>
+        <div class="tool-desc">设备振动秒级指标、良率趋势分析、供应链聚合——场景以宽表聚合为主，数据量 10TB+</div>
+    </div>
+</div>
+
+<p>经验法则：<strong>事务场景用 PG，分析场景用 CK</strong>。如果规模不大（单表 &lt;5 亿行），PG + 物化视图基本够用，没必要为了大数据而上 ClickHouse。</p>
+
                 <h3>非结构化数据接入</h3>
                 <p>PDF、Word、Excel、工艺图纸、SOP 等非结构化文档，接入方案完全不同：</p>
                 <ul>
@@ -541,6 +556,23 @@
                 </div>
 
                 <p>推荐技术栈：<strong>LlamaIndex</strong> 做文档管理和索引，<strong>Milvus</strong> 或 <strong>pgvector</strong> 做向量存储，<strong>LangChain Retriever</strong> 做检索接入。</p>
+
+<h3>技术选型决策：pgvector vs Milvus vs Chroma</h3>
+
+<div class="tool-grid">
+    <div class="tool-card">
+        <div class="tool-name" style="color:#8f8;">pgvector</div>
+        <div class="tool-desc">文档数 &lt;100 万，不想维护额外组件。嵌入 PostgreSQL 同一集群，备份简单，适合起步。</div>
+    </div>
+    <div class="tool-card">
+        <div class="tool-name" style="color:#6af;">Milvus</div>
+        <div class="tool-desc">文档数 100 万+，需要分布式检索和高吞吐。适合二次检索和长文档库的正式生产环境。</div>
+    </div>
+    <div class="tool-card">
+        <div class="tool-name" style="color:#fa8;">Chroma</div>
+        <div class="tool-desc">开发原型、Demo、POC 阶段。一行代码跑起来，但不要在生产环境持久化使用。</div>
+    </div>
+</div>
 
                 <!-- ============ 三、Ontology ============ -->
 
@@ -676,6 +708,97 @@
 
                 <p>Agent 看到的就是这些能力：<strong>生产查询、质量分析、库存查询、客户分析、工艺知识检索</strong>。</p>
                 <p>至于背后是 MES 数据库还是 ERP 接口，Agent 不需要关心。这是标准的<strong>适配器模式</strong>。</p>
+
+                <h3>真实 Tool 实现：用 Python 写一个生产查询 Tool</h3>
+
+                <p>以下是一个对接真实 MES 数据库的生产查询 Tool 实现，展示了从原始 SQL 查询到 Agent 可调用的 Function 的完整链路：</p>
+
+                <div class="code-block">
+import json
+from typing import Optional
+from pydantic import BaseModel, Field
+
+# ---- 1. Tool Schema（LangChain Tool 签名） ----
+
+class ProductionStatusInput(BaseModel):
+    order_id: str = Field(description="生产订单号，如 MO-20260701")
+    user_role: str = Field(default="admin", description="调用者角色")
+
+# ---- 2. 数据层：对接 MES 数据库 ----
+
+import psycopg2
+from psycopg2.extras import RealDictCursor
+
+DB_CONFIG = {
+    "host": "10.3.0.10", "port": 5432,
+    "dbname": "mes_production",
+    "user": "mes_readonly", "password": "***",
+}
+
+def _query_mes(sql: str, params: dict) -> list[dict]:
+    """只读从库查询"""
+    conn = psycopg2.connect(**DB_CONFIG)
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(sql, params)
+            return [dict(row) for row in cur.fetchall()]
+    finally:
+        conn.close()
+
+# ---- 3. 权限层：行级数据过滤 ----
+
+ROLE_FILTERS = {
+    "admin":    "",
+    "manager":  "AND line_id IN (SELECT line_id FROM user_lines WHERE user_id = %(user_id)s)",
+    "operator": "AND station_id = (SELECT station_id FROM users WHERE user_id = %(user_id)s)",
+}
+
+# ---- 4. Tool 实现 ----
+
+def get_production_status(order_id: str, user_role: str = "admin") -> str:
+    """查询生产订单状态、完成率、异常情况"""
+    filter_sql = ROLE_FILTERS.get(user_role, "")
+    sql = f"""
+        SELECT o.order_id, o.product_name, o.quantity,
+               o.completed_qty, o.status,
+               (SELECT COUNT(*) FROM quality_anomalies
+                WHERE order_id = o.order_id AND severity = 'high'
+               ) AS critical_anomalies
+        FROM production_orders o
+        WHERE o.order_id = %(order_id)s {filter_sql}
+    """
+    rows = _query_mes(sql, {"order_id": order_id})
+    if not rows:
+        return json.dumps({"error": "订单不存在或无权访问"})
+    row = rows[0]
+    rate = round(row["completed_qty"] / row["quantity"] * 100, 1)
+    return json.dumps({
+        "order_id": row["order_id"],
+        "product": row["product_name"],
+        "status": row["status"],
+        "completion_rate": f"{rate}%",
+        "critical_anomalies": row["critical_anomalies"],
+    }, ensure_ascii=False)
+
+# ---- 5. 注册为 LangChain Tool ----
+
+from langchain_core.tools import StructuredTool
+
+production_tool = StructuredTool.from_function(
+    func=get_production_status,
+    name="get_production_status",
+    description="查询生产订单状态、完成率和异常情况",
+    args_schema=ProductionStatusInput,
+)
+                </div>
+
+                <p>关键设计要点：</p>
+                <ol>
+                    <li><strong>只读从库</strong> — Tool 只连接只读副本，绝不写生产库</li>
+                    <li><strong>权限内嵌 SQL</strong> — user_role 参数在 SQL 层直接过滤行级数据</li>
+                    <li><strong>统一返回 JSON</strong> — 所有 Tool 统一 JSON 字符串，方便 Agent 解析和组合</li>
+                    <li><strong>Schema 标准化</strong> — Pydantic 定义输入，LangChain 自动生成 Function Calling 定义</li>
+                </ol>
 
                 <!-- ============ 五、权限体系 ============ -->
 
@@ -815,6 +938,96 @@ CREATE POLICY production_policy ON production
 
                 <p>这不是聊天，是<strong>流程</strong>。有明确的节点、分支、状态转换和人工介入点。LangGraph 的有向图（DAG）模型天然适合这类场景。</p>
 
+                <h3>LangGraph 节点定义示例</h3>
+
+                <p>下面用 LangGraph 实现上面的订单延期诊断流程，展示 state 如何在节点间传递：</p>
+
+                <div class="code-block">
+from typing import Literal
+from typing_extensions import TypedDict
+from langgraph.graph import StateGraph, END
+
+# ---- 1. 定义 State（贯穿全流程的上下文） ----
+
+class OrderState(TypedDict):
+    order_id: str
+    user_role: str
+    status: str | None
+    completion_rate: float | None
+    is_delayed: bool | None
+    anomalies: list | None
+    report: str | None
+
+# ---- 2. 定义节点（函数） ----
+
+def fetch_order(state: OrderState) -> dict:
+    """节点 A：查询订单"""
+    result = get_production_status(state["order_id"], state["user_role"])
+    data = json.loads(result)
+    rate = float(data.get("completion_rate", "0").replace("%", ""))
+    return {"status": data["status"], "completion_rate": rate}
+
+def check_delay(state: OrderState) -> dict:
+    """节点 B：判断是否延期"""
+    delayed = state["completion_rate"] &lt; 80 or state["status"] == "delayed"
+    return {"is_delayed": delayed}
+
+def diagnose(state: OrderState) -> dict:
+    """节点 C：诊断质量问题"""
+    issues = get_quality_issue(state["order_id"])
+    return {"anomalies": json.loads(issues)}
+
+def generate_report(state: OrderState) -> dict:
+    """节点 D：生成报告"""
+    r = f"订单 {state['order_id']} 诊断报告\n"
+    r += f"- 状态：{state['status']}\n"
+    r += f"- 完成率：{state['completion_rate']}%\n"
+    if state.get("anomalies"):
+        r += f"- 异常：{state['anomalies'][:3]}\n"
+    r += "- 建议：按 SOP 检查设备"
+    return {"report": r}
+
+def approve(state: OrderState) -> dict:
+    """节点 E：人工审批"""
+    return {"report": state["report"] + "\n（待人工审批）"}
+
+# ---- 3. 条件边（路由器） ----
+
+def router(state: OrderState) -> str:
+    if state["is_delayed"]:
+        return "diagnose"
+    return "generate_report"
+
+# ---- 4. 构建图 ----
+
+builder = StateGraph(OrderState)
+builder.add_node("fetch", fetch_order)
+builder.add_node("check", check_delay)
+builder.add_node("diagnose", diagnose)
+builder.add_node("gen_report", generate_report)
+builder.add_node("approval", approve)
+
+builder.set_entry_point("fetch")
+builder.add_edge("fetch", "check")
+builder.add_conditional_edges("check", router)
+builder.add_edge("diagnose", "gen_report")
+builder.add_edge("gen_report", "approval")
+builder.add_edge("approval", END)
+builder.add_edge("gen_report", END)
+
+app = builder.compile()
+
+# ---- 5. 执行 ----
+
+result = app.invoke({
+    "order_id": "MO-20260701",
+    "user_role": "admin",
+})
+print(result["report"])
+                </div>
+
+                <p>对比 LangChain Agent：所有逻辑挤在 ReAct 循环里，状态存内存、分支靠提示词、人工审批几乎不可控。而 LangGraph 把每个节点、每个分支、每个状态转换都<strong>显式定义</strong>了——可维护性、可追踪性、可测试性完全是两个档次。</p>
+
                 <!-- ============ 八、最终架构 ============ -->
 
                 <h2>八、最终架构图</h2>
@@ -938,6 +1151,51 @@ CREATE POLICY production_policy ON production
                 <p>制造业天然适合本体——产品结构（BOM）、工艺路线、设备关系、供应链关系、质量追溯——这些本质就是知识图谱。但做得太大、太快，反而会变成一把干不完的活。</p>
 
                 <p>渐进式推进，每次只解决一个痛点，才是制造企业 AI 落地的正确姿势。</p>
+
+                <!-- ============ 十二、常见失败模式与避坑指南 ============ -->
+
+                <h2>十二、常见失败模式与避坑指南</h2>
+
+                <p>上面的架构看起来很完整，但实际交付中，每一层都可能翻车。以下是我在各种项目里见过最多的死法：</p>
+
+                <h3>1. 数据接入层：Schema 变更导致管道断裂</h3>
+                <p>MES 系统的表结构三天两头变——Excel 导入模板改了、字段名变了、某列从数字变成枚举了。如果没有 schema 版本管理，ETL 管道会静默吞掉数据而不报错，AI 查到的数据其实是残缺的。</p>
+                <p><strong>对策：</strong>ETL 链路加 schema 校验和告警，检测到字段名或类型变化自动暂停管道并通知。用 <strong>Great Expectations</strong> 做数据质量断言，每次 ETL 跑完自动生成质量报告。</p>
+
+                <h3>2. 知识层：RAG 召回噪声导致 Agent 幻觉</h3>
+                <p>非结构化文档质量参差不齐——有的 SOP 是 2019 年的旧版本，有的 PDF 扫描件 OCR 识别率只有 60%。Agent 一旦被低质量召回内容误导，输出比没有知识更危险——它会自信地编造一个错误答案。</p>
+                <p><strong>对策：</strong>对召回结果加相关性打分阈值，低于 0.7 的不返回 Agent。给文档加元数据（版本号、部门、生效日期），回答中标注来源和置信度。最关键的一条：如果 Agent 找不到相关知识，让它<strong>明确说不知道</strong>，不要强行回答。</p>
+
+                <h3>3. 本体层：本体膨胀后维护成本爆炸</h3>
+                <p>一开始只建了 10 个实体，半年后膨胀到 200 个。实体间的关系定义、属性更新、跨系统映射校准全部靠人工维护，全公司没人能说清楚本体图长什么样。最后成了一个没人敢动的怪物。</p>
+                <p><strong>对策：</strong>本体只建到够用为止。先覆盖核心业务（产品-订单-物料-工序），其他按需扩展。本体变更走审批流程和回归测试。定期清理无人使用的实体和关系。</p>
+
+                <h3>4. Tool 层：Agent 链路长超时和级联失败</h3>
+                <p>一个订单延期诊断涉及 5 个 Tool 调用，其中 MES 数据库查询需要 5 秒。整个推理链被一个慢查询卡死。更糟糕的是，某个内部 API 挂了，Agent 不会优雅降级，直接抛异常退出。</p>
+                <p><strong>对策：</strong>每个 Tool 设超时（建议 3-5 秒），超时后返回服务暂不可用而不是抛异常。关键 Tool 做降级——MES 查不到时至少返回订单 ID 存在但详细信息暂不可用，而不是直接报错打断推理。</p>
+
+                <h3>5. 权限层：权限遗漏导致数据泄露</h3>
+                <p>新增了一个 Tool，开发忘了加 user_role 过滤，结果车间工人通过 Agent 能查到全公司的订单和财务数据。这不是假设，这是真实发生过的事。</p>
+                <p><strong>对策：</strong>Tool 注册时强制要求声明最低权限角色，没有权限声明的 Tool 不允许上线。写一个 e2e 测试脚本，用 admin / manager / operator 三种角色身份跑同一个查询，断言输出范围符合预期。</p>
+
+                <!-- ============ FAQ ============ -->
+
+                <h2>常见问题（FAQ）</h2>
+
+                <h3>Q：一定要用 Neo4j 吗？能不能用关系数据库存本体？</h3>
+                <p>可以用。实体数 &lt;500 时关系数据库完全够用。Neo4j 的优势在于多跳查询——设备停机会影响哪些订单，进而影响哪些客户？SQL 的 JOIN 链会越来越长，Cypher 天生支持路径遍历。从关系表起步完全 OK，后期迁移到图库也不复杂。</p>
+
+                <h3>Q：LangChain 版本迭代太快，上生产不放心怎么办？</h3>
+                <p>锁定大版本，用 <code>langchain==0.3.x</code> 不要追最新版。LangChain 的核心是 Tool 抽象和 ReAct 循环，这两个 API 在大版本内是稳定的。如果确实担心，可以绕过 LangChain 自己实现 Tool 调度——核心代码不到 200 行。</p>
+
+                <h3>Q：做 RAG 应该用哪种 Embedding 模型？</h3>
+                <p>中文场景推荐 <strong>BAAI/bge-large-zh-v1.5</strong> 或 <strong>text2vec-large-chinese</strong>，在 MTEB 中文榜上表现稳定。中英混排文档用 <strong>multilingual-e5-large</strong>。不建议用 OpenAI 的 text-embedding-3 做中文 RAG——不是效果不行，而是延迟和成本在制造企业的文档量级下撑不住。</p>
+
+                <h3>Q：制造企业 AI 团队至少要什么配置？</h3>
+                <p>最小配置：1 个后端（懂 Python + SQL），1 个业务分析（懂制造流程），1 个项目经理。AI 算法能力可以外采 API（DeepSeek / Qwen），不需要自训模型。关键是非技术能力——懂业务的那个人需要能画清楚产品→订单→工序→设备的链路图。</p>
+
+                <h3>Q：你这套架构和低代码 AI 平台（Dify / Coze）冲突吗？</h3>
+                <p>不冲突。低代码平台可以替代上层的 Agent 编排和 RAG 搭建。但<strong>下三层的基建</strong>——数据接入、本体建模、Tool 封装——无论用什么平台都绕不开。这篇文章讲的就是把下三层做好，上层用什么工具挂上去反而可以灵活选择。</p>
 
             </div>
 

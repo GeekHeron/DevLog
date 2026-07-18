@@ -601,9 +601,86 @@
                 <p>Agent 看到的就是这些能力：<strong>生产查询、质量分析、库存查询、客户分析、工艺知识检索</strong>。</p>
                 <p>至于背后是 MES 数据库还是 ERP 接口，Agent 不需要关心。这是标准的<strong>适配器模式</strong>。</p>
 
-                <!-- ============ 五、LangChain Agent 编排 ============ -->
+                <!-- ============ 五、权限体系 ============ -->
 
-                <h2>五、LangChain 负责 Agent 编排</h2>
+                <h2>五、给 Agent 加上权限体系</h2>
+
+                <p>工具封装好了，但还有一个关键问题没解决：<strong>谁可以调用什么？</strong></p>
+
+                <p>制造企业的数据天然有层级。老板应该能看到全部数据，生产经理只看得了自己那条产线，产线工人只能看到自己的工位。如果不做权限控制，一个 Agent 的返回结果对车间主任和 CEO 是一样的——这显然不合理。</p>
+
+                <p>正确的设计是：<strong>权限层嵌入在 Tool 调用链中</strong>。</p>
+
+                <div class="flow-chart" style="gap:3px;width:100%;margin-bottom:30px;">
+                    <div class="arch-node" style="border-color:#6af;">👤 用户身份</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node highlight">🔐 权限过滤器<br><span style="font-size:11px;color:#888;">角色 → 可访问范围</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node highlight">🔧 Tool 调用<br><span style="font-size:11px;color:#888;">携带权限上下文</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node" style="border-color:#8f8;">📊 数据返回<br><span style="font-size:11px;color:#888;">仅返回权限范围内的数据</span></div>
+                </div>
+
+                <h3>权限设计示例</h3>
+
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#fa8;">👑 老板</div>
+                        <div class="tool-desc">全部数据：所有产线、所有订单、质量报告、财务数据</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#6af;">🏭 生产经理</div>
+                        <div class="tool-desc">本产线数据：工单状态、设备运行、异常记录、良率统计</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#888;">🔧 产线员工</div>
+                        <div class="tool-desc">本工位数据：当班工单、操作指引、自检记录</div>
+                    </div>
+                </div>
+
+                <h3>两种实现方式</h3>
+
+                <p><strong>方式一：Tool 层面过滤（推荐）</strong></p>
+                <p>每个 Tool 在定义时就接受 <code>user_role</code> 参数，在数据查询阶段直接拼接权限过滤条件：</p>
+
+                <div class="code-block">
+def get_production_status(order_id, user_role):
+    if user_role == 'operator':
+        # 只返回该员工所在工位的数据
+        return query("SELECT * FROM production WHERE station = :station", station=user.station)
+    elif user_role == 'manager':
+        # 返回该经理管辖产线的数据
+        return query("SELECT * FROM production WHERE line_id = :line", line=user.line)
+    elif user_role == 'admin':
+        # 返回全部数据
+        return query("SELECT * FROM production")
+                </div>
+
+                <p><strong>方式二：数据层统一过滤（更彻底）</strong></p>
+                <p>在数据库/API 网关层实施行级安全（RLS），Tool 层无需关心权限逻辑，数据层自动根据用户身份过滤：</p>
+
+                <div class="code-block">
+-- PostgreSQL Row Level Security
+CREATE POLICY production_policy ON production
+    USING (
+        current_user = 'admin' OR
+        (current_user = 'manager' AND line_id IN (SELECT line_id FROM user_lines WHERE user_id = current_user_id())) OR
+        (current_user = 'operator' AND station_id = current_station())
+    );
+                </div>
+
+                <p>对企业来说，<strong>推荐方式一</strong>：Tool 层权限过滤。原因有三：</p>
+                <ul>
+                    <li>Agent 的 Tool 本身就是抽象层，天然适合在此做权限控制</li>
+                    <li>不需要改造底层数据库（很多老旧 MES 根本没 RLS 能力）</li>
+                    <li>权限变更时可以只改 Tool 逻辑，不影响数据层</li>
+                </ul>
+
+                <p>但方式二更适合<strong>新建系统</strong>或有能力改造数据层的场景。两种也可以混合使用：数据层做基础行级隔离，Tool 层做业务层权限增强。</p>
+
+                <!-- ============ 六、LangChain Agent 编排 ============ -->
+
+                <h2>六、LangChain 负责 Agent 编排</h2>
 
                 <p>到了这一步，LangChain 才正式登场——作为 Agent 编排层，负责任务的拆解与执行。</p>
 
@@ -632,9 +709,9 @@
                     <li><strong>生成报告：</strong>延期原因 + 解决方案 + 恢复建议</li>
                 </ol>
 
-                <!-- ============ 六、LangGraph ============ -->
+                <!-- ============ 七、LangGraph ============ -->
 
-                <h2>六、复杂场景建议用 LangGraph</h2>
+                <h2>七、复杂场景建议用 LangGraph</h2>
 
                 <p>LangChain 的 Agent 适合简单任务。制造业很多场景是<strong>有状态的流程</strong>，这时候应该上 <strong>LangGraph</strong>。</p>
 
@@ -662,9 +739,9 @@
 
                 <p>这不是聊天，是<strong>流程</strong>。有明确的节点、分支、状态转换和人工介入点。LangGraph 的有向图（DAG）模型天然适合这类场景。</p>
 
-                <!-- ============ 七、最终架构 ============ -->
+                <!-- ============ 八、最终架构 ============ -->
 
-                <h2>七、最终架构图</h2>
+                <h2>八、最终架构图</h2>
 
                 <div class="arch-box">
                     <div class="flow-chart" style="gap:4px;width:100%;">
@@ -700,9 +777,9 @@
 
                 <p>这个架构的核心思想是<strong>分层</strong>：数据层不关心上层怎么用，知识层只管理语义，Tool 层只封装能力，Agent 层只做编排。</p>
 
-                <!-- ============ 八、分阶段策略 ============ -->
+                <!-- ============ 九、分阶段策略 ============ -->
 
-                <h2>八、第一阶段不要做"大一统 Agent"</h2>
+                <h2>九、第一阶段不要做"大一统 Agent"</h2>
 
                 <p>制造企业做 AI 最容易犯的错就是："做一个万能 AI 助手"。这个想法很诱人，但大概率死在路上。</p>
 
@@ -728,9 +805,9 @@
 
                 <p>每个 Agent 只做一件事，做好了再合并、交叉、扩展。</p>
 
-                <!-- ============ 九、技术实现路线图 ============ -->
+                <!-- ============ 十、技术实现路线图 ============ -->
 
-                <h2>九、技术架构全景</h2>
+                <h2>十、技术架构全景</h2>
 
                 <div class="arch-box">
                     <div class="flow-chart" style="gap:4px;width:100%;">
@@ -765,9 +842,9 @@
                     <li><strong>企业接入：</strong>飞书 / 钉钉 Bot</li>
                 </ul>
 
-                <!-- ============ 十、路线图 ============ -->
+                <!-- ============ 十一、路线图 ============ -->
 
-                <h2>十、推荐落地路线</h2>
+                <h2>十一、推荐落地路线</h2>
 
                 <p><strong>第一阶段：RAG + Tool</strong></p>
                 <p>先解决"能查、能问、能执行"的问题。集成数据、封装 Tool、搭建基础 RAG 知识库。</p>

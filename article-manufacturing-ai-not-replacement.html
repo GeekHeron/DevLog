@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动 - GeekHeron</title>
-    <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
-    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
-    <meta name="description" content="AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。逐个岗位拆解：计划员、质量工程师、供应链专员、销售支持、数据分析师...哪些被替代，哪些永远不会。附 ROI 计算与业务流程图。">
-    <meta name="keywords" content="GeekHeron, 制造业AI, AI替代岗位, 数字员工, 生产计划, 质量工程, 供应链AI, 智能制造, AI落地, 企业AI, AI ROI, AI业务流程图">
+    <title>制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层" - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-manufacturing-ai-ontology.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-ontology.html">
+    <meta name="description" content="制造企业引入 AI 的最大误区就是直接接 LangChain。分层企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → MCP 接入标准 → Agent 编排 → LangGraph，附完整的制造业本体设计方案。">
+    <meta name="keywords" content="GeekHeron, 制造业AI, 企业AI架构, LangChain, LangGraph, RAG, 知识图谱, Ontology, MCP, Model Context Protocol, AgentOps, Agent Runtime, 数据治理, 智能制造">
     <link rel="icon" type="image/png" href="logo.png">
     
     <style>
@@ -215,29 +216,6 @@
         }
         .article-body blockquote strong { color: #ccc; }
 
-        /* 数据表格 */
-        .data-table {
-            width: 100%; border-collapse: collapse;
-            font-family: monospace; font-size: 13px;
-            margin-bottom: 25px; color: #ccc;
-        }
-        .data-table th {
-            background: #1a1a2a; border: 1px solid #333;
-            padding: 8px 6px; text-align: center;
-            color: #6af; font-weight: 600;
-        }
-        .data-table td {
-            border: 1px solid #333;
-            padding: 8px 6px; text-align: center;
-        }
-        .data-table tr:hover td { background: rgba(255,255,255,0.03); }
-        @media (max-width: 768px) {
-            .data-table { font-size: 11px; }
-            .data-table th,
-            .data-table td { padding: 5px 3px; }
-            .data-table { display: block; overflow-x: auto; white-space: nowrap; }
-        }
-
         .seo-footer {
             margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
         }
@@ -245,132 +223,6 @@
             display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
         }
         .seo-link:hover { color: #00ffc3; }
-
-        /* --- ROI 高亮卡片 --- */
-        .roi-card {
-            background: linear-gradient(135deg, #0a1a0a, #0a0a0a);
-            border: 1px solid #3a3;
-            border-radius: 12px;
-            padding: 28px 24px;
-            margin-bottom: 30px;
-        }
-        .roi-card .roi-number {
-            font-size: 36px;
-            font-weight: 800;
-            color: #8f8;
-            line-height: 1.2;
-            margin-bottom: 4px;
-        }
-        .roi-card .roi-label {
-            font-size: 14px;
-            color: #6a6;
-            margin-bottom: 16px;
-        }
-        .roi-card .roi-detail {
-            font-size: 14px;
-            color: #aaa;
-            line-height: 1.7;
-        }
-        .roi-card .roi-detail strong {
-            color: #8f8;
-        }
-
-        /* 对比流 */
-        .compare-flow {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .compare-flow .cf-side {
-            background: #0a0a0a;
-            border: 1px solid #333;
-            border-radius: 10px;
-            padding: 20px;
-        }
-        .compare-flow .cf-side h4 {
-            text-align: center;
-            font-size: 16px;
-            margin-bottom: 16px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #222;
-        }
-        .compare-flow .cf-side.before h4 { color: #fa8; }
-        .compare-flow .cf-side.after h4 { color: #8f8; }
-        .compare-flow .cf-side.before { border-color: #553; }
-        .compare-flow .cf-side.after { border-color: #353; }
-        .cf-step {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 0;
-            font-size: 13px;
-            color: #aaa;
-        }
-        .cf-step .cf-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        .cf-side.before .cf-dot { background: #fa8; }
-        .cf-side.after .cf-dot { background: #8f8; }
-        .cf-step .cf-time {
-            font-family: monospace;
-            font-size: 11px;
-            color: #555;
-            margin-left: auto;
-            flex-shrink: 0;
-        }
-        .cf-side.after .cf-summary {
-            margin-top: 16px;
-            padding-top: 14px;
-            border-top: 1px solid #333;
-            text-align: center;
-            font-size: 15px;
-        }
-        .cf-side.after .cf-summary strong { color: #8f8; }
-
-        /* CTA 咨询卡片 */
-        .cta-assessment {
-            background: linear-gradient(135deg, #0a1a2a, #0a0a0a);
-            border: 1px solid #3af;
-            border-radius: 12px;
-            padding: 32px 28px;
-            margin-bottom: 24px;
-        }
-        .cta-assessment h3 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 6px;
-            text-align: center;
-        }
-        .cta-assessment .cta-sub {
-            font-size: 14px;
-            color: #6af;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .cta-assessment ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 auto 20px;
-            max-width: 400px;
-        }
-        .cta-assessment ul li {
-            font-size: 14px;
-            color: #ccc;
-            padding: 7px 0;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .cta-assessment ul li::before {
-            content: "▸";
-            color: #6af;
-            font-weight: bold;
-        }
 
         /* --- CTA 底部 --- */
         .cta-footer {
@@ -478,12 +330,6 @@
             .article-body h3 { font-size: 16px; }
             .article-body h4 { font-size: 15px; }
             .article-body p, .article-body li { font-size: 15px; }
-
-            .compare-flow { grid-template-columns: 1fr; }
-            .roi-card .roi-number { font-size: 28px; }
-            .cta-assessment { padding: 24px 16px; }
-            .cta-assessment h3 { font-size: 17px; }
-            .cta-assessment ul li { font-size: 13px; }
         }
     </style>
 
@@ -491,8 +337,8 @@
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动",
-  "description": "AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。逐个岗位拆解：计划员、质量工程师、供应链专员...哪些被替代，哪些永远不会。",
+  "headline": "制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"",
+  "description": "制造企业引入 AI 的最大误区就是直接接 LangChain。分层企业 AI 架构：数据接入层 → 知识层 → 本体建模 → Tool 封装 → MCP 接入标准 → Agent 编排 → LangGraph，附完整的制造业本体设计方案。",
   "author": {
     "@type": "Person",
     "name": "王鉴锋 (GeekHeron)",
@@ -508,11 +354,11 @@
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://geekheron.space/article-manufacturing-ai-not-replacement.html"
+    "@id": "https://geekheron.space/article-manufacturing-ai-ontology.html"
   },
   "image": "https://geekheron.space/logo.png",
   "inLanguage": "zh-CN",
-  "datePublished": "2026-07-19"
+  "datePublished": "2026-07-18"
 }
     </script>
     <link rel="stylesheet" href="site-nav.css">
@@ -541,6 +387,7 @@
                 <li><a href="works.html">商业案例</a></li>
                 <li><a href="fuxi-engine.html">伏羲引擎</a></li>
                 <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+                <li><a href="en/article-manufacturing-ai-ontology.html" class="lang-btn" hreflang="en" lang="en" style="border:1px solid rgba(255,255,255,0.3);padding:4px 10px;border-radius:4px;font-size:12px;">English</a></li>
             </ul>
         </nav>
 
@@ -550,15 +397,15 @@
     <main class="container">
         <article>
             <div class="article-header">
-                <span class="tag">AI &amp; MANUFACTURING</span>
-                <h1 class="article-title">制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动</h1>
+                <span class="tag">ARCHITECTURE & MANUFACTURING</span>
+                <h1 class="article-title">制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"</h1>
                 <div class="article-meta">
-                    <span>SEO 关键词：制造业 AI, AI替代岗位, 数字员工, 智能制造, 生产计划AI, 质量工程AI, 供应链AI, 企业AI落地</span>
+                    <span>SEO 关键词：制造业 AI 架构, 企业知识图谱, Ontology 本体建模, LangGraph 工作流, 数据治理层, RAG 知识库</span>
                 </div>
                 <div class="article-meta">
-                    <span>DATE: 2026.07.19</span>
+                    <span>DATE: 2026.07.18</span>
                     <span>AUTHOR: GEEKHERON</span>
-                    <span>CATEGORY: AI &amp; MANUFACTURING</span>
+                    <span>CATEGORY: ARCHITECTURE</span>
                 </div>
                 <div style="margin-top:16px;padding:12px 20px;background:rgba(255,255,255,0.03);border:1px solid #222;border-radius:6px;font-size:14px;color:#aaa;line-height:1.6;">
                     <strong style="color:#fff;">作者：王鉴锋</strong><br>
@@ -568,648 +415,1037 @@
 
             <div class="article-body">
 
-                <blockquote>
-                    <strong>不要跟老板说「AI 能替代工人」，说「AI 能让你的经理变成超人」</strong>
-                </blockquote>
+                <p>做 AI 交付久了，我见过最多的一种场景：<strong>一个制造工厂找来说，我要上 AI，API 接个 DeepSeek，再套个 LangChain Agent，完事。</strong></p>
 
-                <p>我上一篇<a href="article-manufacturing-ai-ontology.html" style="color:#6af;text-decoration:underline;"><strong>《制造业 AI 落地架构》</strong></a>讲了一套从数据层到 Agent 编排的分层架构。</p>
+                <p>然后呢？数据孤岛依然在，MES 的数据 ERP 不认识，CRM 叫的 SKU 在车间叫物料编码，AI 一问三不知——不是模型不行，是底座没搭。</p>
 
-                <p>技术层面它解决了「怎么落地」的问题。但有一个更根本的问题没聊透：</p>
+                <p>这篇文章，不讲 Demo，不画饼。直接给一套分层的、可落地的企业 AI 架构，以及为什么你应该在接触 LangChain 之前，先把"数据能力层"建好。</p>
 
-                <blockquote>
-                    这玩意儿到底替代了谁？
-                </blockquote>
+                <p style="padding:16px 20px;background:rgba(0,255,255,0.03);border:1px solid #3af;border-radius:8px;font-size:15px;color:#aaa;">
+                    📎 <strong style="color:#6af;">相关阅读：</strong>
+                    <a href="article-manufacturing-ai-not-replacement.html" style="color:#6af;text-decoration:underline;"><strong>《制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动》</strong></a>
+                    — 本文讲技术架构怎么搭；那篇讲这套架构对每个岗位意味着什么，哪些工作被自动化，哪些工作永远不会被替代。两篇建议配合阅读。
+                </p>
 
-                <p>市面上充斥着两极分化的论调。一边是「AI 要消灭 X 万个岗位」，另一边是「AI 只是工具不可能替代人」。</p>
+                <!-- ============ 一、企业数据接入层 ============ -->
 
-                <p>都太极端。</p>
+                <h2>一、不要直接接 LangChain，先做"企业数据能力层"</h2>
 
-                <p>我做了大量制造企业 AI 交付后，得出的结论是：</p>
+                <p>一个典型的制造工厂，数据来源通常是这样的：</p>
 
-                <p><strong>AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。</strong></p>
-
-                <p>它更像一个「数字员工助手」——先吃掉大量低价值脑力劳动，把人的时间释放出来做真正需要人的事。</p>
-
-                <p>下面逐个岗位拆开看。注意，下面的比例不是你有多大几率被裁，而是<strong>你工作中多少重复信息处理工作可以被自动化。</strong></p>
-
-                <!-- ============ 1. 生产计划员 ============ -->
-
-                <h2>1. 生产计划员——可以自动化 30%~60% 的重复信息处理工作</h2>
-
-                <p><strong>以前：</strong></p>
-
-                <p>生产计划员每天——</p>
                 <ul>
-                    <li>查订单交期</li>
-                    <li>查库存</li>
-                    <li>查产能</li>
-                    <li>查设备状态</li>
-                    <li>调整排产</li>
-                    <li>做日报表</li>
-                    <li>找延期原因</li>
+                    <li><strong>MES</strong> — 生产制造执行系统（工单、工序、设备、良率）</li>
+                    <li><strong>ERP</strong> — 企业资源计划（采购、库存、财务）</li>
+                    <li><strong>CRM</strong> — 客户关系管理（客户、合同、需求）</li>
+                    <li><strong>PLM</strong> — 产品生命周期管理（产品数据、BOM、图纸版本）</li>
+                    <li><strong>WMS</strong> — 仓储管理系统（入库、出库、库位、批次）</li>
+                    <li><strong>IoT</strong> — 工业物联网（设备传感器、温度/压力/振动、实时数据流）</li>
+                    <li><strong>文件服务器</strong> — 工艺文件、SOP、质量标准、设备图纸</li>
+                    <li><strong>OA/钉钉</strong> — 审批流程、项目文档、沟通记录</li>
                 </ul>
 
-                <p>大量时间花在 <strong>「到处找数据，然后做 Excel。」</strong></p>
+                <p>最大的问题不是没有数据，而是<strong>数据孤岛</strong>。各系统各自为政，同样的东西叫不同名字，且彼此互不相通。</p>
 
-                <p><strong>有了 AI 之后：</strong></p>
+                <p>所以第一步——也是最容易被跳过的一步——是建设<strong>企业数据接入层</strong>：</p>
 
-                <p>老板问「哪些订单可能延期？」</p>
-
-                <p>AI 自动走通链路：</p>
-
-                <div class="code-block">
-订单 → 库存 → 生产进度 → 设备状态 → 人员产能 → 风险预测
+                <div class="arch-box">
+                    <div class="arch-row">
+                        <div class="arch-node" style="border-color:#6af;">MES</div>
+                        <div class="arch-node" style="border-color:#6af;">ERP</div>
+                        <div class="arch-node" style="border-color:#6af;">CRM</div>
+                        <div class="arch-node" style="border-color:#6af;">PLM</div>
+                        <div class="arch-node" style="border-color:#6af;">WMS</div>
+                        <div class="arch-node" style="border-color:#6af;">IoT</div>
+                        <div class="arch-node">文件</div>
+                        <div class="arch-node">钉钉</div>
+                    </div>
+                    <div class="arch-arrow">│  │  │  │  │</div>
+                    <div class="arch-arrow">▼  ▼  ▼  ▼  ▼</div>
+                    <div class="arch-node highlight" style="width:80%;">企业数据接入层<br><span style="font-size:11px;color:#888;">API / 数据库直连 / ETL / 文档解析</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:60%;">统一数据底座<br><span style="font-size:11px;color:#888;">PostgreSQL / ClickHouse / 向量库</span></div>
                 </div>
 
-                <p>输出：</p>
-
-                <div class="code-block" style="color:#fa8;">
-未来 7 天有 5 个订单存在延期风险，原因分别是：
-- 物料不足（3 个订单）
-- 设备停机（1 个订单）
-- 产能不足（1 个订单）
-                </div>
-
-                <p><strong>替代了什么：</strong></p>
+                <h3>结构化数据接入</h3>
+                <p>MES / ERP / CRM 等业务系统的结构化数据，通过以下方式接入：</p>
                 <ul>
-                    <li>✅ Excel 排产分析</li>
-                    <li>✅ 手工数据汇总</li>
-                    <li>✅ 延期统计</li>
+                    <li><strong>API</strong> — 系统开放接口（RESTful / GraphQL）</li>
+                    <li><strong>数据库直连</strong> — 只读从库，定时同步 CDC（Change Data Capture）</li>
+                    <li><strong>ETL 管道</strong> — 定时批处理，数据清洗与标准化</li>
                 </ul>
 
-                <p><strong>不会被替代：</strong></p>
-                <ul>
-                    <li>❌ 最终生产决策</li>
-                    <li>❌ 协调供应商</li>
-                    <li>❌ 处理异常冲突</li>
-                </ul>
-
-                <p>人的价值从 <strong>「做表的人」</strong> 变成了 <strong>「做决定的人」</strong>。</p>
-
-                <!-- ============ 2. 质量工程师 ============ -->
-
-                <h2>2. 质量工程师 QE——可以自动化 30%~50% 的重复信息处理工作</h2>
-
-                <p><strong>以前：</strong></p>
-
-                <p>质量工程师要——</p>
-                <ul>
-                    <li>查不良记录</li>
-                    <li>查历史案例</li>
-                    <li>查 SOP</li>
-                    <li>写 8D 报告</li>
-                    <li>分析异常原因</li>
-                </ul>
-
-                <p><strong>有了 AI 之后：</strong></p>
-
-                <p>问题「为什么这个批次不良率上涨？」</p>
-
-                <p>AI 自动查：</p>
-
-                <div class="code-block">
-质量数据库 + 设备数据 + 工艺参数 + 历史案例 + SOP
-                </div>
-
-                <p>输出：</p>
-
-                <div class="code-block" style="color:#6af;">
-可能原因：
-1. 温度参数偏移（置信度 85%）
-2. 设备压力异常（置信度 72%）
-3. 原材料批次变化（置信度 60%）
-
-参考案例：2025 年类似问题处理方案
-                </div>
-
-                <p><strong>替代：</strong></p>
-                <ul>
-                    <li>✅ 初步分析</li>
-                    <li>✅ 数据统计</li>
-                    <li>✅ 报告生成</li>
-                </ul>
-
-                <p><strong>不会被替代：</strong></p>
-                <ul>
-                    <li>❌ 现场判断</li>
-                    <li>❌ 工艺优化</li>
-                    <li>❌ 质量签字责任</li>
-                </ul>
-
-                <p>质量报告可以 AI 写，但 <strong>质量责任永远是人背。</strong></p>
-
-                <!-- ============ 3. 供应链专员 ============ -->
-
-                <h2>3. 供应链专员——可以自动化约 40% 的重复信息处理工作</h2>
-
-                <p><strong>以前：</strong></p>
-
-                <p>每天——</p>
-                <ul>
-                    <li>查采购订单</li>
-                    <li>催供应商</li>
-                    <li>查库存</li>
-                    <li>做缺料分析</li>
-                </ul>
-
-                <p><strong>有了 AI 之后：</strong></p>
-
-                <p>问「哪些物料会影响生产？」</p>
-
-                <p>AI 自动：</p>
-
-                <div class="code-block">
-未来订单 → BOM → 库存 → 供应商交期
-                </div>
-
-                <p>直接告诉：</p>
-
-                <div class="code-block" style="color:#fa8;">
-A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
-                </div>
-
-                <p><strong>替代：</strong></p>
-                <ul>
-                    <li>✅ 缺料分析</li>
-                    <li>✅ 库存查询</li>
-                    <li>✅ 供应风险预警</li>
-                </ul>
-
-                <p><strong>不会被替代：</strong></p>
-                <ul>
-                    <li>❌ 商务谈判</li>
-                    <li>❌ 供应商关系维护</li>
-                    <li>❌ 判断供应商靠不靠谱</li>
-                </ul>
-
-                <!-- ============ 4. 售前 / 销售支持 ============ -->
-
-                <h2>4. 售前 / 销售支持——可以自动化 40%~70% 的重复信息处理工作</h2>
-
-                <p><strong>以前：</strong></p>
-
-                <p>客户问「我的订单什么时候交？」</p>
-
-                <p>销售开始找人：ERP → MES → 生产经理。一天很大比例的时间消耗在这种查询上。</p>
-
-                <p><strong>有了 AI 之后：</strong></p>
-
-                <p>客户端输入「查询订单进度」，AI 自动：</p>
-
-                <div class="code-block">
-客户 → 订单 → 生产状态 → 物流
-                </div>
-
-                <p>回答：</p>
-
-                <div class="code-block" style="color:#8f8;">
-当前完成 82%，预计 7 月 22 日交付。
-                </div>
-
-                <p><strong>替代：</strong></p>
-                <ul>
-                    <li>✅ 查订单</li>
-                    <li>✅ 写回复</li>
-                    <li>✅ 做客户报告</li>
-                </ul>
-
-                <p><strong>不会被替代：</strong></p>
-                <ul>
-                    <li>❌ 建立信任</li>
-                    <li>❌ 商务谈判</li>
-                    <li>❌ 拿订单</li>
-                </ul>
-
-                <p>一个销售如果每天省下两小时查单时间，那这两个小时可能多谈下一个客户。</p>
-
-                <!-- ============ 5. 数据分析师 ============ -->
-
-                <h2>5. 数据分析师——可以自动化约 50% 的重复信息处理工作</h2>
-
-                <p><strong>以前：</strong></p>
-
-                <p>业务想看「最近哪个产线效率下降了？」</p>
-
-                <p>数据分析师：SQL → 拉数据 → 做 BI → 做报表。</p>
-
-                <p><strong>有了 AI 之后：</strong></p>
-
-                <p>自然语言输入「分析最近三个月产线效率」，AI 自动 SQL 查询 + 分析 + 出图。</p>
-
-                <p><strong>替代：</strong></p>
-                <ul>
-                    <li>✅ 临时分析</li>
-                    <li>✅ 报表制作</li>
-                    <li>✅ 数据查询</li>
-                </ul>
-
-                <p><strong>不会被替代：</strong></p>
-                <ul>
-                    <li>❌ 指标体系设计</li>
-                    <li>❌ 业务洞察</li>
-                    <li>❌ 数据治理决策</li>
-                </ul>
-
-                <!-- ============ 6. IT 支持 ============ -->
-
-                <h2>6. 企业内部 IT 支持——可以自动化约 60% 的重复信息处理工作</h2>
-
-                <p><strong>以前：</strong></p>
-
-                <p>员工问「ERP 怎么申请采购？」</p>
-
-                <p>得找 IT 或者翻半天手册。</p>
-
-                <p><strong>有了 AI 之后：</strong></p>
-
-                <p>直接告诉员工：「打开采购申请 → 填写供应商 → 提交审批。」</p>
-
-                <p><strong>替代：</strong></p>
-                <ul>
-                    <li>✅ 系统使用咨询</li>
-                    <li>✅ 流程查询</li>
-                </ul>
-
-                <p>这是一个被严重低估的场景——<strong>制造企业内部的系统操作咨询量极大</strong>，IT 部门常被这类问题淹没。</p>
-
-                <!-- ============ 真正不会被替代的岗位 ============ -->
-
-                <h2>真正不会被替代的岗位</h2>
-
-                <p>上面说的都是偏「信息处理型」的工作。制造业还有大量岗位的核心职责不在这个范畴。</p>
-
-                <h3>生产经理 / 厂长</h3>
-
-                <p>AI 可以分析产能、预测延期、给排产建议、找异常原因。</p>
-
-                <p>但它不能——协调多个部门资源、决定优先生产哪个客户订单、处理突发事故、管理人员情绪和冲突、对生产结果负责。</p>
-
-                <p>AI 说「A 订单延期风险 80%，建议调整排产」。</p>
-
-                <p>生产经理知道「这个客户是战略客户，必须优先交付，牺牲 B 订单」。</p>
-
-                <p>这是<strong>业务权衡</strong>，不是数据分析。</p>
-
-                <h3>工艺工程师 PE</h3>
-
-                <p>AI 可以查历史工艺参数、推荐类似案例、检索 SOP、分析异常趋势。</p>
-
-                <p>但它不能——新产品工艺设计、参数优化实验、工艺创新、现场调试。</p>
-
-                <p>AI 说「建议温度调整到 220℃」。</p>
-
-                <p>工程师发现「这个材料批次特殊，需要重新验证」。</p>
-
-                <h3>设备工程师 / 维修工程师</h3>
-
-                <p>AI 可以预测故障、分析振动数据、提醒维护周期、推荐维修方案。</p>
-
-                <p>但它不能——拆设备、判断机械异常、现场维修、改造设备。</p>
-
-                <p>未来的变化是：</p>
-
-                <blockquote>
-                    以前：坏了再修。<br>
-                    以后：AI 说「72 小时后可能故障」，工程师提前处理。
-                </blockquote>
-
-                <h3>研发工程师</h3>
-
-                <p>AI 可以搜索技术资料、生成设计方案、辅助仿真、写技术文档。</p>
-
-                <p>但不能——产品方向判断、创新设计、工程取舍。</p>
-
-                <p>客户要「一个更轻、更强、更便宜的零件」。AI 可以提供方案，但<strong>成本 vs 性能 vs 可制造性</strong>的权衡，还是工程师做决定。</p>
-
-                <h3>采购经理 &amp; 销售经理</h3>
-
-                <p>AI 可以分析价格、预测缺料、自动比价、生成采购报告。</p>
-
-                <p>但不能——商务谈判、建立供应商关系、判断供应商靠不靠谱。</p>
-
-                <p>制造业采购很多时候不是最低价格最好。大订单很多靠老板和销售的长期关系。</p>
-
-                <h3>质量经理 &amp; 班组长</h3>
-
-                <p>质量经理的最终质量判断、客诉处理、供应商质量谈判——全是 AI 接不了的班。</p>
-
-                <p>班组长的现场协调、安全管理、临时处理问题——这些「场上的感觉」也是 AI 做不到的。</p>
-
-                <h3>企业管理层（CEO / 总经理）</h3>
-
-                <p>AI 可以给经营分析、财务分析、市场信息整理、风险预测。</p>
-
-                <p>但不做战略选择、企业文化建设、投资决策、不承担风险。</p>
-
-                <!-- ============ 一张表说清楚 ============ -->
-
-                <h2>一张表说清楚</h2>
-
+                <p>典型的 MES 生产表结构示例：</p>
+
+                <style>
+                .data-table {
+                    width: 100%; border-collapse: collapse;
+                    font-family: monospace; font-size: 13px;
+                    margin-bottom: 25px; color: #ccc;
+                }
+                .data-table th {
+                    background: #1a1a2a; border: 1px solid #333;
+                    padding: 8px 6px; text-align: center;
+                    color: #6af; font-weight: 600;
+                }
+                .data-table td {
+                    border: 1px solid #333;
+                    padding: 8px 6px; text-align: center;
+                }
+                .data-table tr:hover td { background: rgba(255,255,255,0.03); }
+                @media (max-width: 768px) {
+                    .data-table { font-size: 11px; }
+                    .data-table th,
+                    .data-table td { padding: 5px 3px; }
+                    .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+                }
+                </style>
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>岗位</th>
-                            <th>AI 替代程度</th>
-                            <th>未来变化</th>
+                            <th>订单号</th><th>产品</th><th>工序</th><th>设备</th><th>良率</th><th>时间</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>数据录入员</td>
-                            <td style="color:#fff;">★★★★★</td>
-                            <td>大量减少</td>
-                        </tr>
-                        <tr>
-                            <td>报表分析员</td>
-                            <td style="color:#fff;">★★★★</td>
-                            <td>转型业务分析</td>
-                        </tr>
-                        <tr>
-                            <td>计划员</td>
-                            <td style="color:#fff;">★★★</td>
-                            <td>变成 AI 辅助计划</td>
-                        </tr>
-                        <tr>
-                            <td>质量分析员</td>
-                            <td style="color:#fff;">★★★</td>
-                            <td>AI 增强</td>
-                        </tr>
-                        <tr>
-                            <td>采购专员</td>
-                            <td style="color:#fff;">★★</td>
-                            <td>保留谈判</td>
-                        </tr>
-                        <tr>
-                            <td>销售</td>
-                            <td style="color:#fff;">★★</td>
-                            <td>AI 辅助</td>
-                        </tr>
-                        <tr>
-                            <td>工艺工程师</td>
-                            <td style="color:#fff;">★</td>
-                            <td>能力增强</td>
-                        </tr>
-                        <tr>
-                            <td>设备工程师</td>
-                            <td style="color:#fff;">★</td>
-                            <td>预测维修</td>
-                        </tr>
-                        <tr>
-                            <td>生产经理</td>
-                            <td style="color:#fff;">★</td>
-                            <td>决策增强</td>
-                        </tr>
-                        <tr>
-                            <td>厂长 / 老板</td>
-                            <td style="color:#fff;">★</td>
-                            <td>经营增强</td>
+                            <td>MO-20260701</td><td>注塑件-A100</td><td>工序3</td><td>机台5</td><td>95%</td><td>14:30</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <p>注意一个模式：</p>
+                <p>统一接入目标：<strong>PostgreSQL</strong>（事务查询）或 <strong>ClickHouse</strong>（分析查询），构建企业级数据仓库。</p>
 
-                <p><strong>替代强度越高的岗位，本来就是「信息处理型」工作的比例越高。</strong></p>
+<h3>技术选型决策：PostgreSQL vs ClickHouse</h3>
 
-                <p>这就是我的架构真正对应的市场定位——<strong>不是机器人替代工人，而是把企业里大量靠 Excel、微信群、人工查询维持运转的知识工作自动化。</strong></p>
+<div class="tool-grid">
+    <div class="tool-card">
+        <div class="tool-name" style="color:#6af;">选 PostgreSQL 当：</div>
+        <div class="tool-desc">订单查询、工单状态、权限事务——需要实时写入和行级更新，数据量在 TB 以下</div>
+    </div>
+    <div class="tool-card">
+        <div class="tool-name" style="color:#fa8;">选 ClickHouse 当：</div>
+        <div class="tool-desc">设备振动秒级指标、良率趋势分析、供应链聚合——场景以宽表聚合为主，数据量 10TB+</div>
+    </div>
+</div>
 
-                <!-- ============ ROI 计算：企业为什么愿意花钱 ============ -->
+<p>经验法则：<strong>事务场景用 PG，分析场景用 CK</strong>。如果规模不大（单表 &lt;5 亿行），PG + 物化视图基本够用，没必要为了大数据而上 ClickHouse。</p>
 
-                <h2>企业为什么愿意花钱？算一笔 ROI</h2>
+                <h3>非结构化数据接入</h3>
+                <p>PDF、Word、Excel、工艺图纸、SOP 等非结构化文档，接入方案完全不同：</p>
+                <ul>
+                    <li><strong>文档解析</strong> — PDF 解析、OCR 识别、表格提取</li>
+                    <li><strong>切分与向量化</strong> — Chunking + Embedding</li>
+                    <li><strong>存入向量数据库</strong> — 构建 RAG 知识库底座</li>
+                </ul>
 
-                <p>前面聊了这么多岗位，老板最后一定会问一个问题：</p>
+                <!-- ============ 二、企业知识层 ============ -->
 
-                <blockquote>
-                    <strong>「那我要花多少钱？能省多少？」</strong>
-                </blockquote>
+                <h2>二、建立企业知识层（RAG / LlamaIndex）</h2>
 
-                <p>这是个好问题。我们来算。</p>
+                <p>数据接入之后，不要急着把原始数据丢给 Agent。需要分类处理：</p>
 
-                <p><strong>拿生产经理举例：</strong></p>
+                <h3>结构化知识 → 数据库查询</h3>
+                <p>这类知识有明确的字段定义和关系结构，适合通过 SQL 或 API 直接查询：</p>
 
-                <div class="roi-card">
-                    <div class="roi-number">¥2 万 / 月</div>
-                    <div class="roi-label">一个生产经理的月薪 (含社保)</div>
-                    <div class="roi-detail">
-                        每天的工作时间中，大约 <strong>3~4 小时</strong> 花在：查数据、问进度、找原因、做报表。<br><br>
-                        如果 AI Agent 自动化其中 <strong>2 小时</strong>：<br>
-                        → 每天释放 <strong>2 小时</strong> 高价值管理时间<br>
-                        → 每月释放 <strong>40+ 小时</strong><br>
-                        → 每年释放 <strong>500+ 小时</strong><br><br>
-                        <strong>500 小时</strong> 意味着什么？<br>
-                        相当于这个经理可以多管理 <strong>1~2 条产线</strong>，或者亲自处理更多客户大单。
+                <div class="code-block">
+订单A → 生产线1 → 工序3 → 异常率5%
+                </div>
+
+                <p>不需要向量检索，一个 JOIN 就能解决。</p>
+
+                <h3>非结构化知识 → RAG 检索</h3>
+                <p>《注塑工艺规范》、《质量异常处理流程》这类文档，适合通过 RAG 检索：</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node">📄 文件（PDF / Word / Excel / 图纸）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">🔍 文档解析（PDF解析 / OCR / 表格提取）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">✂️ 文本切片（Chunking）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;">🧬 Embedding 向量化</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">🗄 向量数据库<br><span style="font-size:11px;color:#888;">Milvus / pgvector / Chroma</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#fa8;">🔎 语义检索<br><span style="font-size:11px;color:#888;">LlamaIndex / LangChain Retriever</span></div>
                     </div>
                 </div>
 
-                <p><strong>换算成钱：</strong></p>
+                <p>推荐技术栈：<strong>LlamaIndex</strong> 做文档管理和索引，<strong>Milvus</strong> 或 <strong>pgvector</strong> 做向量存储，<strong>LangChain Retriever</strong> 做检索接入。</p>
+
+<h3>技术选型决策：pgvector vs Milvus vs Chroma</h3>
+
+<div class="tool-grid">
+    <div class="tool-card">
+        <div class="tool-name" style="color:#8f8;">pgvector</div>
+        <div class="tool-desc">文档数 &lt;100 万，不想维护额外组件。嵌入 PostgreSQL 同一集群，备份简单，适合起步。</div>
+    </div>
+    <div class="tool-card">
+        <div class="tool-name" style="color:#6af;">Milvus</div>
+        <div class="tool-desc">文档数 100 万+，需要分布式检索和高吞吐。适合二次检索和长文档库的正式生产环境。</div>
+    </div>
+    <div class="tool-card">
+        <div class="tool-name" style="color:#fa8;">Chroma</div>
+        <div class="tool-desc">开发原型、Demo、POC 阶段。一行代码跑起来，但不要在生产环境持久化使用。</div>
+    </div>
+</div>
+
+                <!-- ============ 三、Ontology ============ -->
+
+                <h2>三、做业务知识建模（Ontology / 知识建模）</h2>
+
+                <p>这一步非常关键，但很多团队会忽略。制造业尤其需要本体建模，因为不同系统间的叫法太乱了。</p>
+
+                <p>一个真实例子：</p>
+                <ul>
+                    <li>MES 里的 <strong>产品编码</strong> = "100-A"</li>
+                    <li>ERP 里的 <strong>物料编码</strong> = "M001"</li>
+                    <li>CRM 里的 <strong>SKU</strong> = "A100"</li>
+                </ul>
+                <p>这三个字段，AI 看到后不知道它们指向的是同一个东西。你期待 AI 能推理"订单延期原因"，但它连哪条数据对应什么都分不清。</p>
+
+                <h3>本体做什么？</h3>
+                <p>本体（Ontology）解决的就是这个问题——建立一个<strong>企业业务世界模型</strong>，让 AI 理解这个企业的数据世界是什么样的。</p>
+
+                <h4>核心实体（Entity）</h4>
+                <div class="code-block">
+产品  →  客户  →  订单  →  物料  →  设备  →  工序  →  员工  →  供应商
+                </div>
+
+                <h4>关系（Relation）</h4>
+                <div class="onto-chain">
+                    <div class="onto-node">客户</div>
+                    <span class="onto-label">下达</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">销售订单</div>
+                    <span class="onto-label">生成</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">生产订单</div>
+                    <span class="onto-label">使用</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">物料</div>
+                </div>
+                <div class="onto-chain" style="margin-top:-16px;">
+                    <div class="onto-node">生产订单</div>
+                    <span class="onto-label">经过</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">工序</div>
+                    <span class="onto-label">使用</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">设备</div>
+                    <span class="onto-label">产生</span>
+                    <span class="onto-arrow">→</span>
+                    <div class="onto-node">质量数据</div>
+                </div>
+
+                <h4>属性（Attribute）</h4>
+                <p>例如产品实体：</p>
+                <div class="code-block">
+产品: { 编号, 型号, 规格, 客户 }
+设备: { 编号, 状态, 位置, 维护周期 }
+质量问题: { 缺陷类型, 严重等级, 原因, 解决方案 }
+                </div>
+
+                <h3>有本体 vs 无本体</h3>
+
+                <p><strong>没有本体时：</strong></p>
+                <p>老板问"为什么客户 A 的订单延期？" Agent 只会说"我去查一下订单表"——但不知道订单关联哪条生产线、哪个设备、哪个物料、哪个供应商。</p>
+
+                <p><strong>有本体后：</strong></p>
+                <p>Agent 理解这条链路：</p>
+                <div class="code-block">
+客户A → 订单B → 产品C → 工单D → 工序3 → 设备E → 异常记录F
+                </div>
+                <p>然后自动规划：</p>
+                <ol>
+                    <li>查订单状态</li>
+                    <li>查生产进度</li>
+                    <li>查设备运行记录</li>
+                    <li>查质量异常</li>
+                    <li>查物料供应情况</li>
+                </ol>
+                <p>这就是<strong>知识驱动 Agent</strong>——不是黑盒推理，而是有路径、可追溯、可解释的推理。</p>
+
+                <h3>Ontology + RAG 的融合架构</h3>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="arch-node">💬 用户问题</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight">🧠 本体理解问题中的实体与关系</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node">📌 定位相关数据源和文档</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#8f8;">📚 RAG 补充知识细节</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#fa8;">🤖 Agent 推理与决策</div>
+                    </div>
+                </div>
+
+                <p>举个例子：问"为什么这个客户最近交付总是延期？"</p>
+                <p>本体识别出链路：</p>
+                <div class="code-block">
+客户 → 订单 → 产品 → 工序 → 设备
+                </div>
+                <p>RAG 检索到《设备异常处理规范》，发现 3 号线的某台设备连续两次停机导致工序 3 延迟。Agent 综合输出："因设备 X 故障导致，建议按 SOP 更换核心模块。"</p>
+
+                <!-- ============ 四、Tool 封装 ============ -->
+
+                <h2>四、把企业能力封装成 Tool / Skill</h2>
+
+                <p>完成数据和知识层面的基建之后，<strong>才</strong>进入 Agent 层。</p>
+
+                <p>原则：<strong>不要让 Agent 直接访问数据库</strong>。每一层的能力都需要封装为独立的 Tool。</p>
+
+                <h3>Tool 清单示例</h3>
+
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">get_production_status(order_id)</div>
+                        <div class="tool-desc">查询当前生产订单状态、完成率、异常情况</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_quality_issue(product_id)</div>
+                        <div class="tool-desc">查询产品质量异常和历史处理方案</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_inventory(material_id)</div>
+                        <div class="tool-desc">查询物料库存和供应商交期</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">get_customer_history(customer_id)</div>
+                        <div class="tool-desc">查询客户历史订单和交付记录</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name">query_process_sop(keyword)</div>
+                        <div class="tool-desc">检索工艺规范 / SOP 文件</div>
+                    </div>
+                </div>
+
+                <p>Agent 看到的就是这些能力：<strong>生产查询、质量分析、库存查询、客户分析、工艺知识检索</strong>。</p>
+                <p>至于背后是 MES 数据库还是 ERP 接口，Agent 不需要关心。这是标准的<strong>适配器模式</strong>。</p>
+
+                <h3>真实 Tool 实现：用 Python 写一个生产查询 Tool</h3>
+
+                <p>以下是一个对接真实 MES 数据库的生产查询 Tool 实现，展示了从原始 SQL 查询到 Agent 可调用的 Function 的完整链路：</p>
+
+                <div class="code-block">
+import json
+from typing import Optional
+from pydantic import BaseModel, Field
+
+# ---- 1. Tool Schema（LangChain Tool 签名） ----
+
+class ProductionStatusInput(BaseModel):
+    order_id: str = Field(description="生产订单号，如 MO-20260701")
+    user_role: str = Field(default="admin", description="调用者角色")
+
+# ---- 2. 数据层：对接 MES 数据库 ----
+
+import psycopg2
+from psycopg2.extras import RealDictCursor
+
+DB_CONFIG = {
+    "host": "10.3.0.10", "port": 5432,
+    "dbname": "mes_production",
+    "user": "mes_readonly", "password": "***",
+}
+
+def _query_mes(sql: str, params: dict) -> list[dict]:
+    """只读从库查询"""
+    conn = psycopg2.connect(**DB_CONFIG)
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(sql, params)
+            return [dict(row) for row in cur.fetchall()]
+    finally:
+        conn.close()
+
+# ---- 3. 权限层：行级数据过滤 ----
+
+ROLE_FILTERS = {
+    "admin":    "",
+    "manager":  "AND line_id IN (SELECT line_id FROM user_lines WHERE user_id = %(user_id)s)",
+    "operator": "AND station_id = (SELECT station_id FROM users WHERE user_id = %(user_id)s)",
+}
+
+# ---- 4. Tool 实现 ----
+
+def get_production_status(order_id: str, user_role: str = "admin") -> str:
+    """查询生产订单状态、完成率、异常情况"""
+    filter_sql = ROLE_FILTERS.get(user_role, "")
+    sql = f"""
+        SELECT o.order_id, o.product_name, o.quantity,
+               o.completed_qty, o.status,
+               (SELECT COUNT(*) FROM quality_anomalies
+                WHERE order_id = o.order_id AND severity = 'high'
+               ) AS critical_anomalies
+        FROM production_orders o
+        WHERE o.order_id = %(order_id)s {filter_sql}
+    """
+    rows = _query_mes(sql, {"order_id": order_id})
+    if not rows:
+        return json.dumps({"error": "订单不存在或无权访问"})
+    row = rows[0]
+    rate = round(row["completed_qty"] / row["quantity"] * 100, 1)
+    return json.dumps({
+        "order_id": row["order_id"],
+        "product": row["product_name"],
+        "status": row["status"],
+        "completion_rate": f"{rate}%",
+        "critical_anomalies": row["critical_anomalies"],
+    }, ensure_ascii=False)
+
+# ---- 5. 注册为 LangChain Tool ----
+
+from langchain_core.tools import StructuredTool
+
+production_tool = StructuredTool.from_function(
+    func=get_production_status,
+    name="get_production_status",
+    description="查询生产订单状态、完成率和异常情况",
+    args_schema=ProductionStatusInput,
+)
+                </div>
+
+                <p>关键设计要点：</p>
+                <ol>
+                    <li><strong>只读从库</strong> — Tool 只连接只读副本，绝不写生产库</li>
+                    <li><strong>权限内嵌 SQL</strong> — user_role 参数在 SQL 层直接过滤行级数据</li>
+                    <li><strong>统一返回 JSON</strong> — 所有 Tool 统一 JSON 字符串，方便 Agent 解析和组合</li>
+                    <li><strong>Schema 标准化</strong> — Pydantic 定义输入，LangChain 自动生成 Function Calling 定义</li>
+                </ol>
+
+                <!-- ============ 五、MCP ============ -->
+
+                <h2>五、企业 Agent 接入标准：MCP</h2>
+
+                <p>Tool 封装解决了单个能力的服务化问题，但企业迟早要面对一个新问题：<strong>每个新系统（MES/ERP/WMS/CRM…）都需要写一套自定义的 Tool，怎么做到一次接入、到处可用？</strong></p>
+
+                <p><strong>MCP（Model Context Protocol）</strong> 是答案。MCP 是 Anthropic 提出的一种开放协议，它定义了 Agent ↔ 企业数据源之间的标准通信方式。理解 MCP 的最佳方式是类比 USB-C 接口——不管后面接的是显示器、硬盘还是扩展坞，前面都是同一个口子。</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">🧠 LangChain / LangGraph Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:50%;">🔌 MCP Client（标准接口）</div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┴────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">MES</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">WMS</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">PLM</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">MCP Server<br><span style="color:#888;">IoT</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>MCP 的核心价值</h3>
+                <ul>
+                    <li><strong>协议化接入，不是代码化接入</strong> — 不再需要为每个业务系统专门写一个 LangChain Tool。新系统上线时，只需部署一个 MCP Server（几十行 Python），集团 Agent 零代码接入。</li>
+                    <li><strong>动态发现能力</strong> — MCP Server 可以实时宣告自己有哪些 Tool（Resources + Tools），Agent 端无需预先注册。</li>
+                    <li><strong>安全边界清晰</strong> — MCP Client 和 Server 之间是标准化的认证/授权机制，可以在企业网络边界统一管控。</li>
+                    <li><strong>多 Agent 复用</strong> — 同一个 MCP Server（如 MES API）可以被生产 Agent、质量 Agent、交付 Agent 同时调用，不重复开发 Tool。</li>
+                </ul>
+
+                <p>一个 MCP Server 的典型实现（Python，使用 <code>mcp</code> 库）：</p>
+
+                <div class="code-block">
+from mcp import Server, tool
+
+server = Server("mes-production")
+
+@tool()
+async def get_production_status(order_id: str):
+    """查询生产订单状态"""
+    # 内部调用 MES 接口
+    return await mes_client.query(order_id)
+
+@tool()
+async def get_equipment_status(equipment_id: str):
+    """查询设备运行状态"""
+    return await equipment_client.query(equipment_id)
+
+if __name__ == "__main__":
+    server.run("stdio")  # 支持 stdio 和 SSE 两种传输模式
+                </div>
+
+                <h3>MCP 在企业架构中的位置</h3>
+                <p>在之前的分层架构中，MCP 位于「Tool 封装层」之上——它不是替代 Tool，而是给 Tool 提供一个<strong>标准化的对外接口</strong>：</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node highlight">🧠 Agent Orchestration<br><span style="font-size:11px;color:#888;">LangGraph / LangChain</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">🔌 MCP Protocol Layer</div>
+                        <div class="arch-arrow">┌────────┼────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">MES/ERP/WMS</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">PLM API</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool<br><span style="color:#888;">IoT 数据流</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🗄 企业数据源</div>
+                    </div>
+                </div>
+
+                <h3>MCP vs. 直接 Tool 封装：什么时候选哪个</h3>
 
                 <table class="data-table">
                     <thead>
-                        <tr>
-                            <th>项目</th>
-                            <th>传统模式</th>
-                            <th>AI Agent 辅助</th>
-                        </tr>
+                        <tr><th>场景</th><th>推荐方式</th><th>理由</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>管理产线数</td>
-                            <td>2~3 条</td>
-                            <td style="color:#8f8;">4~6 条</td>
-                        </tr>
-                        <tr>
-                            <td>数据处理时间占比</td>
-                            <td>~60%</td>
-                            <td style="color:#8f8;">~15%</td>
-                        </tr>
-                        <tr>
-                            <td>发现问题到定位原因</td>
-                            <td>半天 ~1 天</td>
-                            <td style="color:#8f8;">5~15 分钟</td>
-                        </tr>
-                        <tr>
-                            <td>人均产出</td>
-                            <td>1x 基准</td>
-                            <td style="color:#8f8;">1.5x ~ 2x</td>
-                        </tr>
+                        <tr><td>单个 Agent、单一系统</td><td>直接 Tool 封装</td><td>简单直接，复杂度最低</td></tr>
+                        <tr><td>多个 Agent 共享同一数据源</td><td>MCP</td><td>一次接入，多 Agent 复用</td></tr>
+                        <tr><td>新系统频繁接入</td><td>MCP</td><td>标准化接入，新人/新系统上手快</td></tr>
+                        <tr><td>安全审计要求高</td><td>MCP</td><td>边界统一的认证/授权机制</td></tr>
+                        <tr><td>仅仅做一个 Demo 验证</td><td>直接 Tool</td><td>先跑通，不要过度工程设计</td></tr>
                     </tbody>
                 </table>
 
-                <p>核心逻辑：<strong>价值不是省掉一个人，而是同样团队管理更多订单、更快响应问题。</strong></p>
+                <p>最后说一点：<strong>MCP 不是银弹</strong>。如果你的数据层（一、二章）本身一团糟，上了 MCP 也只是把混乱标准化了而已。理清数据、建好知识层，MCP 是在这个基础上的锦上添花。</p>
 
-                <p>一个年产值 1 亿的工厂，如果 AI Agent 让生产经理效率提升 30%，对交付及时率的改善哪怕只有 2%，带来的是 <strong>200 万以上的客户满意度收益</strong>——远超过 AI 的投入成本。</p>
+                <!-- ============ 六、权限体系 ============ -->
 
-                <p>所以老板问「多少钱」的时候，答案不是成本，而是<strong>投入产出比</strong>。</p>
+                <h2>六、给 Agent 加上权限体系</h2>
 
-                <!-- ============ 一个真实业务流程图 ============ -->
+                <p>工具封装好了，但还有一个关键问题没解决：<strong>谁可以调用什么？</strong></p>
 
-                <h2>以前 vs 现在：一个真实业务流程对比</h2>
+                <p>制造企业的数据天然有层级。老板应该能看到全部数据，生产经理只看得了自己那条产线，产线工人只能看到自己的工位。如果不做权限控制，一个 Agent 的返回结果对车间主任和 CEO 是一样的——这显然不合理。</p>
 
-                <p>拿工厂里最常见的场景——<strong>老板问「为什么订单延期？」</strong></p>
+                <p>正确的设计是：<strong>权限层嵌入在 Tool 调用链中</strong>。</p>
 
-                <p>来看看 AI Agent 加入前后，流程的天壤之别。</p>
-
-                <div class="compare-flow">
-
-                    <div class="cf-side before">
-                        <h4>🔴 以前</h4>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>老板问延期原因</span>
-                            <span class="cf-time">0</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>老板找生产经理</span>
-                            <span class="cf-time">+5min</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>经理找计划员</span>
-                            <span class="cf-time">+15min</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>计划员查 MES</span>
-                            <span class="cf-time">+30min</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>问设备状态</span>
-                            <span class="cf-time">+20min</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>问采购物料</span>
-                            <span class="cf-time">+30min</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>整理到 Excel</span>
-                            <span class="cf-time">+60min</span>
-                        </div>
-                        <div class="cf-step" style="color:#fa8;">
-                            <span class="cf-dot"></span>
-                            <strong>⏱ 合计：半天</strong>
-                            <span class="cf-time" style="color:#fa8;">~3h</span>
-                        </div>
-                    </div>
-
-                    <div class="cf-side after">
-                        <h4>🟢 现在</h4>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>老板问延期原因</span>
-                            <span class="cf-time">0</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>AI Agent 接收问题</span>
-                            <span class="cf-time">+10s</span>
-                        </div>
-                        <div class="arch-box" style="padding:12px 10px;gap:2px;margin-bottom:0;">
-                            <div class="arch-row">
-                                <span class="arch-node small" style="border-color:#3af;">MES</span>
-                                <span class="arch-node small" style="border-color:#3af;">ERP</span>
-                                <span class="arch-node small" style="border-color:#3af;">WMS</span>
-                                <span class="arch-node small" style="border-color:#3af;">设备数据</span>
-                                <span class="arch-node small" style="border-color:#3af;">SOP</span>
-                            </div>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>AI 自动关联分析</span>
-                            <span class="cf-time">+2min</span>
-                        </div>
-                        <div class="cf-step">
-                            <span class="cf-dot"></span>
-                            <span>输出原因报告</span>
-                            <span class="cf-time">+3min</span>
-                        </div>
-                        <div class="cf-summary">
-                            <strong>⏱ 合计：5 分钟</strong><br>
-                            <span style="font-size:12px;color:#6a6;">附带根因分析和建议方案</span>
-                        </div>
-                    </div>
-
+                <div class="flow-chart" style="gap:3px;width:100%;margin-bottom:30px;">
+                    <div class="arch-node" style="border-color:#6af;">👤 用户身份</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node highlight">🔐 权限过滤器<br><span style="font-size:11px;color:#888;">角色 → 可访问范围</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node highlight">🔧 Tool 调用<br><span style="font-size:11px;color:#888;">携带权限上下文</span></div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node" style="border-color:#8f8;">📊 数据返回<br><span style="font-size:11px;color:#888;">仅返回权限范围内的数据</span></div>
                 </div>
 
-                <p><strong>对比：</strong></p>
-                <ul>
-                    <li>以前：半天（3 小时），需要牵动 3~4 个人</li>
-                    <li>现在：5 分钟，一个人都不需要停下手头的工作</li>
-                </ul>
+                <h3>权限设计示例</h3>
 
-                <p>这还不是省时间的问题——<strong>以前老板可能等不了半天，就不问了。信息差的代价是错过决策时机。</strong></p>
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#fa8;">👑 老板</div>
+                        <div class="tool-desc">全部数据：所有产线、所有订单、质量报告、财务数据</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#6af;">🏭 生产经理</div>
+                        <div class="tool-desc">本产线数据：工单状态、设备运行、异常记录、良率统计</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-name" style="color:#888;">🔧 产线员工</div>
+                        <div class="tool-desc">本工位数据：当班工单、操作指引、自检记录</div>
+                    </div>
+                </div>
 
-                <p>有了 AI Agent，老板可以每天早会上花 5 分钟看报告，而不是花 3 小时去「追根问底」。这才是真正的效率提升。</p>
+                <h3>两种实现方式</h3>
 
-                <!-- ============ 如果站在老板角度 ============ -->
-
-                <h2>如果站在老板角度</h2>
-
-                <p>他买这个系统，不是为了裁员，而是为了：</p>
-
-                <p><strong>以前：</strong></p>
+                <p><strong>方式一：Tool 层面过滤（推荐）</strong></p>
+                <p>每个 Tool 在定义时就接受 <code>user_role</code> 参数，在数据查询阶段直接拼接权限过滤条件：</p>
 
                 <div class="code-block">
-10 个人
-每天 80% 时间找数据
-20% 时间做决策
+def get_production_status(order_id, user_role):
+    if user_role == 'operator':
+        # 只返回该员工所在工位的数据
+        return query("SELECT * FROM production WHERE station = :station", station=user.station)
+    elif user_role == 'manager':
+        # 返回该经理管辖产线的数据
+        return query("SELECT * FROM production WHERE line_id = :line", line=user.line)
+    elif user_role == 'admin':
+        # 返回全部数据
+        return query("SELECT * FROM production")
                 </div>
 
-                <p><strong>变成：</strong></p>
+                <p><strong>方式二：数据层统一过滤（更彻底）</strong></p>
+                <p>在数据库/API 网关层实施行级安全（RLS），Tool 层无需关心权限逻辑，数据层自动根据用户身份过滤：</p>
 
-                <div class="code-block" style="color:#8f8;">
-10 个人
-20% 时间找数据
-80% 时间解决问题
+                <div class="code-block">
+-- PostgreSQL Row Level Security
+CREATE POLICY production_policy ON production
+    USING (
+        current_user = 'admin' OR
+        (current_user = 'manager' AND line_id IN (SELECT line_id FROM user_lines WHERE user_id = current_user_id())) OR
+        (current_user = 'operator' AND station_id = current_station())
+    );
                 </div>
 
-                <p>或者：一个生产经理可以管理更多产线。</p>
+                <p>对企业来说，<strong>推荐方式一</strong>：Tool 层权限过滤。原因有三：</p>
+                <ul>
+                    <li>Agent 的 Tool 本身就是抽象层，天然适合在此做权限控制</li>
+                    <li>不需要改造底层数据库（很多老旧 MES 根本没 RLS 能力）</li>
+                    <li>权限变更时可以只改 Tool 逻辑，不影响数据层</li>
+                </ul>
 
-                <p>商业价值不是「少雇了几个人」，而是 <strong>「同样的人，产出了乘以几倍的价值。」</strong></p>
+                <p>但方式二更适合<strong>新建系统</strong>或有能力改造数据层的场景。两种也可以混合使用：数据层做基础行级隔离，Tool 层做业务层权限增强。</p>
 
-                <!-- ============ 第一批被改变的 ============ -->
+                <!-- ============ 七、LangChain Agent 编排 ============ -->
 
-                <h2>第一批被改变的，不是工人</h2>
+                <h2>七、LangChain 负责 Agent 编排</h2>
 
-                <p>我上一篇架构文章讲的是 <strong>技术架构</strong>——数据层、知识层、Ontology、Tool 封装、MCP、LangGraph。</p>
+                <p>到了这一步，LangChain 才正式登场——作为 Agent 编排层，负责任务的拆解与执行。</p>
 
-                <p>这篇讲的是 <strong>人的架构</strong>——从岗位上拆解来看，AI 到底拿走了什么、留下了什么。</p>
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 用户</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:70%;">LangChain Agent (ReAct)<br><span style="font-size:11px;color:#888;">思考 → 行动 → 观察 → 推理</span></div>
+                        <div class="arch-arrow">┌──────┼──────┐──────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Tool1<br><span style="color:#888;">MES</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tool2<br><span style="color:#888;">ERP</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tool3<br><span style="color:#888;">WMS</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">知识库</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Memory<br><span style="color:#888;">历史</span></div>
+                        </div>
+                    </div>
+                </div>
 
-                <p>从我的架构角度看，<strong>第一批被改变的不是「工人」，而是制造企业里的白领知识岗位：</strong></p>
+                <p><strong>实际场景：</strong>老板问"为什么订单 A 延期？"</p>
 
-                <p>以前是 <strong>人花 80% 时间找数据、做表格、写报告。</strong></p>
+                <ol>
+                    <li><strong>调用 MES Tool：</strong>查询订单 A 的生产进度</li>
+                    <li><strong>发现：</strong>工序 3 异常率上升</li>
+                    <li><strong>调用质量分析 Tool：</strong>查该异常的历史处理方案</li>
+                    <li><strong>调用 RAG：</strong>查相关 SOP 和工艺规范</li>
+                    <li><strong>生成报告：</strong>延期原因 + 解决方案 + 恢复建议</li>
+                </ol>
 
-                <p>以后是 <strong>AI 花 80% 时间整理分析，人负责判断和执行。</strong></p>
+                <!-- ============ 八、LangGraph ============ -->
 
-                <p>所以这个架构最适合切入的客户，不应该宣传「替代员工」，而应该宣传：</p>
+                <h2>八、复杂场景建议用 LangGraph</h2>
+
+                <p>LangChain 的 Agent 适合简单任务。制造业很多场景是<strong>有状态的流程</strong>，这时候应该上 <strong>LangGraph</strong>。</p>
+
+                <p>因为制造流程天然是状态驱动的：</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="flow-node" style="border-color:#6af;">🚀 开始</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">📋 查询订单</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ 是否延期？</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">⚙️ 查询生产进度</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node cond">❓ 判断质量</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node">📄 生成报告</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#fa8;">✋ 人工审批</div>
+                        <div class="flow-arrow">▼</div>
+                        <div class="flow-node" style="border-color:#8f8;">✅ 结束</div>
+                    </div>
+                </div>
+
+                <p>这不是聊天，是<strong>流程</strong>。有明确的节点、分支、状态转换和人工介入点。LangGraph 的有向图（DAG）模型天然适合这类场景。</p>
+
+                <h3>LangGraph 节点定义示例</h3>
+
+                <p>下面用 LangGraph 实现上面的订单延期诊断流程，展示 state 如何在节点间传递：</p>
+
+                <div class="code-block">
+from typing import Literal
+from typing_extensions import TypedDict
+from langgraph.graph import StateGraph, END
+
+# ---- 1. 定义 State（贯穿全流程的上下文） ----
+
+class OrderState(TypedDict):
+    order_id: str
+    user_role: str
+    status: str | None
+    completion_rate: float | None
+    is_delayed: bool | None
+    anomalies: list | None
+    report: str | None
+
+# ---- 2. 定义节点（函数） ----
+
+def fetch_order(state: OrderState) -> dict:
+    """节点 A：查询订单"""
+    result = get_production_status(state["order_id"], state["user_role"])
+    data = json.loads(result)
+    rate = float(data.get("completion_rate", "0").replace("%", ""))
+    return {"status": data["status"], "completion_rate": rate}
+
+def check_delay(state: OrderState) -> dict:
+    """节点 B：判断是否延期"""
+    delayed = state["completion_rate"] &lt; 80 or state["status"] == "delayed"
+    return {"is_delayed": delayed}
+
+def diagnose(state: OrderState) -> dict:
+    """节点 C：诊断质量问题"""
+    issues = get_quality_issue(state["order_id"])
+    return {"anomalies": json.loads(issues)}
+
+def generate_report(state: OrderState) -> dict:
+    """节点 D：生成报告"""
+    r = f"订单 {state['order_id']} 诊断报告\n"
+    r += f"- 状态：{state['status']}\n"
+    r += f"- 完成率：{state['completion_rate']}%\n"
+    if state.get("anomalies"):
+        r += f"- 异常：{state['anomalies'][:3]}\n"
+    r += "- 建议：按 SOP 检查设备"
+    return {"report": r}
+
+def approve(state: OrderState) -> dict:
+    """节点 E：人工审批"""
+    return {"report": state["report"] + "\n（待人工审批）"}
+
+# ---- 3. 条件边（路由器） ----
+
+def router(state: OrderState) -> str:
+    if state["is_delayed"]:
+        return "diagnose"
+    return "generate_report"
+
+# ---- 4. 构建图 ----
+
+builder = StateGraph(OrderState)
+builder.add_node("fetch", fetch_order)
+builder.add_node("check", check_delay)
+builder.add_node("diagnose", diagnose)
+builder.add_node("gen_report", generate_report)
+builder.add_node("approval", approve)
+
+builder.set_entry_point("fetch")
+builder.add_edge("fetch", "check")
+builder.add_conditional_edges("check", router)
+builder.add_edge("diagnose", "gen_report")
+builder.add_edge("gen_report", "approval")
+builder.add_edge("approval", END)
+builder.add_edge("gen_report", END)
+
+app = builder.compile()
+
+# ---- 5. 执行 ----
+
+result = app.invoke({
+    "order_id": "MO-20260701",
+    "user_role": "admin",
+})
+print(result["report"])
+                </div>
+
+                <p>对比 LangChain Agent：所有逻辑挤在 ReAct 循环里，状态存内存、分支靠提示词、人工审批几乎不可控。而 LangGraph 把每个节点、每个分支、每个状态转换都<strong>显式定义</strong>了——可维护性、可追踪性、可测试性完全是两个档次。</p>
+
+                <!-- ============ 九、AgentOps ============ -->
+
+                <h2>九、Agent 运行治理层（AgentOps / 可观测性）</h2>
+
+                <p>前面八章讲的都是 Agent 怎么做，但企业真正决定上线前一定会问：<strong>AI 出错怎么办？</strong></p>
+
+                <p>生产环境不能只靠「再跑一次」——每一次错误都是真实成本。正确的做法是在 Agent 和 Tool 之间加一层 <strong>Agent 运行治理层（Agent Runtime）</strong>，把每一次运行都记录、追踪、评分。</p>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">🧠 LangChain / LangGraph Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:65%;">⚙️ Agent 运行治理层<br><span style="font-size:11px;color:#888;">Agent Runtime / Governance</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┼────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">📝 Prompt 版本管理</div>
+                            <div class="arch-node small" style="border-color:#8f8;">📋 Tool 调用日志</div>
+                            <div class="arch-node small" style="border-color:#fa8;">💰 Token 成本</div>
+                            <div class="arch-node small" style="border-color:#fa8;">⭐ 答案质量评分</div>
+                            <div class="arch-node small" style="border-color:#6af;">👤 人工反馈闭环</div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┴───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="width:60%;">🔌 MCP / Tool 层</div>
+                    </div>
+                </div>
+
+                <h3>治理层核心功能</h3>
+
+                <h4>1. Prompt 版本管理</h4>
+                <p>生产环境中 Prompt 不可能一成不变。业务方今天说「加个规则」，明天 QA 说「某个案例错了」。没有版本管理的话，每次改 Prompt 都是提心吊胆——因为不知道改了什么，也不知道改了之后影响什么。</p>
+                <p><strong>做法：</strong>每次修改 Prompt 必须走版本化流程：写新版本 → A/B 测试 → 灰度上线 → 全量切换。LangSmith 的 Hub 或自定义 Git + YAML 都可以。</p>
+
+                <div class="code-block">
+# prompt-history.yaml
+prompts:
+  production_agent_v1:
+    content: "你是生产管理专家，查询生产信息，给出分析。"
+    created: 2026-03-01
+  production_agent_v2:
+    content: "你是生产管理专家，查询生产信息，分析异常原因，给出建议。"
+    created: 2026-04-15
+    diff: "增加了分析异常原因和建议"
+  production_agent_v3:
+    content: "你是生产管理专家，查询生产信息，分析异常原因给出建议，如果异常连续出现需标记红线。"
+    created: 2026-05-20
+    diff: "增加红线标记逻辑"
+                </div>
+
+                <h4>2. Tool 调用日志</h4>
+                <p>Agent 每次调用 Tool 的参数、返回值、耗时都必须记录。这是排查 Agent 行为的唯一手段——没有日志就没有可观测性。</p>
+                <p>建议日志结构：</p>
+                <ul>
+                    <li><strong>run_id</strong> — 每次对话的唯一 ID，关联所有 Trace</li>
+                    <li><strong>tool_name</strong> — 调用了哪个 Tool</li>
+                    <li><strong>input_params</strong> — 传入参数（注意脱敏）</li>
+                    <li><strong>output</strong> — 返回值摘要</li>
+                    <li><strong>duration_ms</strong> — 调用耗时</li>
+                    <li><strong>success</strong> — 是否成功</li>
+                    <li><strong>error_message</strong> — 失败原因</li>
+                </ul>
+                <p>LangSmith 自动完成这些，但如果企业要求数据不出网，可以用 OpenTelemetry 自搭。</p>
+
+                <h4>3. Token 成本追踪</h4>
+                <p>企业上 Agent 最怕的除了出错就是超预算。每个对话的 Token 消耗必须可量化。</p>
+                <p><strong>追踪维度：</strong></p>
+                <ul>
+                    <li><strong>每次调用</strong> — 输入 Token + 输出 Token</li>
+                    <li><strong>每笔成本</strong> — 按模型定价换算</li>
+                    <li><strong>每日/周/月汇总</strong> — 按 Agent、部门、场景分类</li>
+                    <li><strong>异常告警</strong> — 单次成本超过阈值时自动告警</li>
+                </ul>
+                <p>LangSmith 提供开箱即用的成本追踪面板。Arize Phoenix 也支持 Token 用量监控。</p>
+
+                <h4>4. 答案质量评分</h4>
+                <p>Agent 回答得好不好不能只靠感觉，需要<strong>可量化的质量标准</strong>。</p>
+                <ul>
+                    <li><strong>自动评分</strong> — 用 LLM-as-Judge 对答案质量打分（相关性、准确性、完整性）</li>
+                    <li><strong>用户评分</strong> — 每次回复提供「有用/没用」按钮，收集用户反馈</li>
+                    <li><strong>回归测试</strong> — 维护评测集，每次改 Prompt 或换模型自动跑一遍，看分数是否下降</li>
+                </ul>
+
+                <h4>5. 人工反馈闭环</h4>
+                <p>这是治理层最重要但也最容易被忽略的一环。Agent 不可能百分之百正确，关键是<strong>出错了之后走什么流程</strong>。</p>
+                <p><strong>闭环设计：</strong></p>
+                <ul>
+                    <li>Agent 回答 → 用户标记「不对」</li>
+                    <li>记录上下文 + Agent 推理链 + Tool 调用链</li>
+                    <li>推送到人工审核队列</li>
+                    <li>审核员给出正确答案 / 修复方案</li>
+                    <li>修复结果反哺到评测集，防止相同错误再次出现</li>
+                </ul>
+
+                <h3>推荐工具</h3>
+                <ul>
+                    <li><strong>LangSmith</strong> — LangChain 生态原生，Trace / Prompt 版本管理 / 评测 / 成本一站式。适合已用 LangChain 的场景。</li>
+                    <li><strong>OpenTelemetry</strong> — 企业标准，数据不出网。Trace 格式标准，可以与 APM 系统（如 Grafana Tempo）集成。</li>
+                    <li><strong>Arize Phoenix</strong> — 开源 LLM 可观测性，支持 Trace / 评测 / 漂移检测。对自建 MLOps 体系友好。</li>
+                </ul>
 
                 <blockquote>
-                    <strong>「让一个生产经理、质量经理、供应链经理拥有一个懂企业数据的 AI 助理。」</strong>
+                    <strong>核心原则：</strong>Agent 上线后的第一条守则——没有 Trace 的 Agent 等于没上线。拍不了桌子的 Agent 就是薛定谔的 Agent，没人知道它今天好不好。
                 </blockquote>
 
-                <p>这个定位更容易被制造企业接受。</p>
+                <!-- ============ 十、最终架构 ============ -->
 
-                <p>制造业 AI 第一批落地通常不是机器人，而是「数字员工」。</p>
+                <h2>十、最终架构图</h2>
 
-                <p>因为在很多工厂里，<strong>先死在 Excel 里的，不是流水线上的工人，而是办公室里那帮做表做到凌晨的人。</strong></p>
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:3px;width:100%;">
+                        <div class="arch-node" style="border-color:#6af;">👤 用户</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">📱 企业 AI 助手（飞书 / 钉钉 / Web）</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node highlight" style="width:55%;">🧠 Agent 编排层<br><span style="font-size:11px;color:#888;">LangGraph / LangChain</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#fa8;width:50%;">⚙️ Agent 运行治理层<br><span style="font-size:11px;color:#888;">Trace · Logging · Cost · Eval · Feedback</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;width:50%;">🔌 MCP 协议层<br><span style="font-size:11px;color:#888;">标准化 Agent ↔ 企业数据接口</span></div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">┌────┼────┼────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">🛠 Tool 封装<br><span style="color:#888;">MES/ERP/WMS/PLM</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">📚 RAG 知识检索<br><span style="color:#888;">IoT + 向量 + 图谱</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">💾 Memory<br><span style="color:#888;">历史上下文</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:60%;">🔧 数据治理层<br><span style="font-size:11px;color:#888;">接入 / 清洗 / 本体建模 / 权限</span></div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-row">
+                            <div class="arch-node small">MES</div>
+                            <div class="arch-node small">ERP</div>
+                            <div class="arch-node small">CRM</div>
+                            <div class="arch-node small">PLM</div>
+                            <div class="arch-node small">WMS</div>
+                            <div class="arch-node small">IoT</div>
+                            <div class="arch-node small">文件</div>
+                            <div class="arch-node small">钉钉</div>
+                        </div>
+                    </div>
+                </div>
 
-                <p>先救他们。</p>
+                <p>这个架构的核心思想是<strong>分层</strong>：数据治理层统一接入企业数据源；知识层建模业务语义；MCP 协议层标准化接口；Tool/RAG/Memory 各司其职；治理层保障 Trace、成本和质量；Agent 层只做编排，不关心底层实现。</p>
+
+                <!-- ============ 架构→岗位 转化 CTA ============ -->
+
+                <div style="margin:50px 0;padding:28px 24px;background:linear-gradient(135deg,#0a1a2a,#0a0a0a);border:1px solid #3af;border-radius:12px;text-align:center;">
+                    <p style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">架构搭好了，然后呢？</p>
+                    <p style="font-size:15px;color:#aaa;margin-bottom:16px;line-height:1.7;">
+                        这套分层架构的本质是<strong style="color:#6af;">自动化企业里的信息处理工作</strong>。<br>
+                        它对每个岗位意味着什么？哪些人最需要，哪些人最抗拒？<br>
+                        哪些工作被彻底自动化，哪些反而变得更值钱？
+                    </p>
+                    <a href="article-manufacturing-ai-not-replacement.html" style="display:inline-block;padding:12px 32px;background:rgba(0,170,255,0.1);border:1px solid #3af;border-radius:8px;color:#6af;font-size:15px;font-weight:600;text-decoration:none;transition:0.3s;">
+                        → 读《制造业 AI 不是替代岗位，<br>是吃掉岗位里的低价值脑力劳动》
+                    </a>
+                </div>
+
+                <!-- ============ 十一、分阶段策略 ============ -->
+
+                <h2>十一、第一阶段不要做"大一统 Agent"</h2>
+
+                <p>制造企业做 AI 最容易犯的错就是："做一个万能 AI 助手"。这个想法很诱人，但大概率死在路上。</p>
+
+                <p>建议先做<strong>三个垂直 Agent</strong>。至于每个 Agent 对应哪些岗位、自动化了哪些工作、对人的影响是什么，可以配合阅读
+                    <a href="article-manufacturing-ai-not-replacement.html" style="color:#6af;text-decoration:underline;"><strong>《制造业 AI 不是替代岗位》</strong></a>
+                    ——那篇从岗位维度拆解得非常细。</p>
+
+                <h3>1. 生产运营 Agent</h3>
+                <ul>
+                    <li><strong>用户：</strong>生产经理</li>
+                    <li><strong>能力：</strong>查订单状态、查产线产能、查异常工单</li>
+                </ul>
+
+                <h3>2. 质量 Agent</h3>
+                <ul>
+                    <li><strong>用户：</strong>质量经理</li>
+                    <li><strong>能力：</strong>查不良数据、查缺陷原因、查 SOP 规范</li>
+                </ul>
+
+                <h3>3. 销售交付 Agent</h3>
+                <ul>
+                    <li><strong>用户：</strong>业务经理</li>
+                    <li><strong>能力：</strong>查客户信息、查订单进度、查预计交期</li>
+                </ul>
+
+                <p>每个 Agent 只做一件事，做好了再合并、交叉、扩展。</p>
+
+                <!-- ============ 十二、技术实现路线图 ============ -->
+
+                <h2>十二、技术架构全景</h2>
+
+                <div class="arch-box">
+                    <div class="flow-chart" style="gap:4px;width:100%;">
+                        <div class="arch-node highlight">🤖 Agent</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node" style="border-color:#6af;">LangGraph</div>
+                        <div class="arch-arrow">┌────────┼────────┐</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="border-color:#8f8;">Ontology<br><span style="color:#888;">Neo4j</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">RAG<br><span style="color:#888;">Milvus</span></div>
+                            <div class="arch-node small" style="border-color:#8f8;">Tools<br><span style="color:#888;">MES/ERP</span></div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">│ &emsp; │ &emsp; │</div>
+                        <div class="arch-row">
+                            <div class="arch-node small" style="color:#888;">知识图谱</div>
+                            <div class="arch-node small" style="color:#888;">向量库</div>
+                            <div class="arch-node small" style="color:#888;">业务系统</div>
+                        </div>
+                        <div class="arch-arrow" style="width:100%;text-align:center;">└───┴───┘</div>
+                        <div class="arch-arrow">▼</div>
+                        <div class="arch-node warn" style="width:70%;">🗄 企业数据源<br><span style="font-size:11px;color:#888;">MES · ERP · CRM · PLM · WMS · IoT · 文件 · 钉钉</span></div>
+                    </div>
+                </div>
+
+                <p>关键组件：</p>
+                <ul>
+                    <li><strong>Ontology 存储：</strong>Neo4j 或其他图数据库</li>
+                    <li><strong>RAG 向量库：</strong>Milvus / pgvector</li>
+                    <li><strong>本体建模工具：</strong>Protégé 或自定义 RDF/OWL</li>
+                    <li><strong>Agent 编排：</strong>LangGraph / LangChain</li>
+                    <li><strong>结构化数据：</strong>PostgreSQL / ClickHouse</li>
+                    <li><strong>企业接入：</strong>飞书 / 钉钉 Bot</li>
+                </ul>
+
+                <!-- ============ 十三、路线图 ============ -->
+
+                <h2>十三、推荐落地路线</h2>
+
+                <p><strong>第一阶段：RAG + Tool</strong></p>
+                <p>先解决"能查、能问、能执行"的问题。集成数据、封装 Tool、搭建基础 RAG 知识库。</p>
+
+                <p><strong>第二阶段：业务本体</strong></p>
+                <p>建立企业核心实体的映射关系，让 AI 理解"M001 = A100 = 100-A"这种跨系统语义对齐。</p>
+
+                <p><strong>第三阶段：GraphRAG</strong></p>
+                <p>结合知识图谱与向量检索，实现复杂的多跳推理——"设备停机导致工序延迟，进而影响订单交付"这类推理链。</p>
+
+                <blockquote>
+                    <strong>不要一开始就做"完整知识图谱"。</strong>很多项目死在这里。本体是逐步演化的，不是一次建成的。
+                </blockquote>
+
+                <p>制造业天然适合本体——产品结构（BOM）、工艺路线、设备关系、供应链关系、质量追溯——这些本质就是知识图谱。但做得太大、太快，反而会变成一把干不完的活。</p>
+
+                <p>渐进式推进，每次只解决一个痛点，才是制造企业 AI 落地的正确姿势。</p>
+
+                <!-- ============ 十四、常见失败模式与避坑指南 ============ -->
+
+                <h2>十四、常见失败模式与避坑指南</h2>
+
+                <p>上面的架构看起来很完整，但实际交付中，每一层都可能翻车。以下是我在各种项目里见过最多的死法：</p>
+
+                <h3>1. 数据接入层：Schema 变更导致管道断裂</h3>
+                <p>MES 系统的表结构三天两头变——Excel 导入模板改了、字段名变了、某列从数字变成枚举了。如果没有 schema 版本管理，ETL 管道会静默吞掉数据而不报错，AI 查到的数据其实是残缺的。</p>
+                <p><strong>对策：</strong>ETL 链路加 schema 校验和告警，检测到字段名或类型变化自动暂停管道并通知。用 <strong>Great Expectations</strong> 做数据质量断言，每次 ETL 跑完自动生成质量报告。</p>
+
+                <h3>2. 知识层：RAG 召回噪声导致 Agent 幻觉</h3>
+                <p>非结构化文档质量参差不齐——有的 SOP 是 2019 年的旧版本，有的 PDF 扫描件 OCR 识别率只有 60%。Agent 一旦被低质量召回内容误导，输出比没有知识更危险——它会自信地编造一个错误答案。</p>
+                <p><strong>对策：</strong>对召回结果加相关性打分阈值，低于 0.7 的不返回 Agent。给文档加元数据（版本号、部门、生效日期），回答中标注来源和置信度。最关键的一条：如果 Agent 找不到相关知识，让它<strong>明确说不知道</strong>，不要强行回答。</p>
+
+                <h3>3. 本体层：本体膨胀后维护成本爆炸</h3>
+                <p>一开始只建了 10 个实体，半年后膨胀到 200 个。实体间的关系定义、属性更新、跨系统映射校准全部靠人工维护，全公司没人能说清楚本体图长什么样。最后成了一个没人敢动的怪物。</p>
+                <p><strong>对策：</strong>本体只建到够用为止。先覆盖核心业务（产品-订单-物料-工序），其他按需扩展。本体变更走审批流程和回归测试。定期清理无人使用的实体和关系。</p>
+
+                <h3>4. Tool 层：Agent 链路长超时和级联失败</h3>
+                <p>一个订单延期诊断涉及 5 个 Tool 调用，其中 MES 数据库查询需要 5 秒。整个推理链被一个慢查询卡死。更糟糕的是，某个内部 API 挂了，Agent 不会优雅降级，直接抛异常退出。</p>
+                <p><strong>对策：</strong>每个 Tool 设超时（建议 3-5 秒），超时后返回服务暂不可用而不是抛异常。关键 Tool 做降级——MES 查不到时至少返回订单 ID 存在但详细信息暂不可用，而不是直接报错打断推理。</p>
+
+                <h3>5. 权限层：权限遗漏导致数据泄露</h3>
+                <p>新增了一个 Tool，开发忘了加 user_role 过滤，结果车间工人通过 Agent 能查到全公司的订单和财务数据。这不是假设，这是真实发生过的事。</p>
+                <p><strong>对策：</strong>Tool 注册时强制要求声明最低权限角色，没有权限声明的 Tool 不允许上线。写一个 e2e 测试脚本，用 admin / manager / operator 三种角色身份跑同一个查询，断言输出范围符合预期。</p>
+
+                <!-- ============ FAQ ============ -->
+
+                <h2>常见问题（FAQ）</h2>
+
+                <h3>Q：一定要用 Neo4j 吗？能不能用关系数据库存本体？</h3>
+                <p>可以用。实体数 &lt;500 时关系数据库完全够用。Neo4j 的优势在于多跳查询——设备停机会影响哪些订单，进而影响哪些客户？SQL 的 JOIN 链会越来越长，Cypher 天生支持路径遍历。从关系表起步完全 OK，后期迁移到图库也不复杂。</p>
+
+                <h3>Q：LangChain 版本迭代太快，上生产不放心怎么办？</h3>
+                <p>锁定大版本，用 <code>langchain==0.3.x</code> 不要追最新版。LangChain 的核心是 Tool 抽象和 ReAct 循环，这两个 API 在大版本内是稳定的。如果确实担心，可以绕过 LangChain 自己实现 Tool 调度——核心代码不到 200 行。</p>
+
+                <h3>Q：做 RAG 应该用哪种 Embedding 模型？</h3>
+                <p>中文场景推荐 <strong>BAAI/bge-large-zh-v1.5</strong> 或 <strong>text2vec-large-chinese</strong>，在 MTEB 中文榜上表现稳定。中英混排文档用 <strong>multilingual-e5-large</strong>。不建议用 OpenAI 的 text-embedding-3 做中文 RAG——不是效果不行，而是延迟和成本在制造企业的文档量级下撑不住。</p>
+
+                <h3>Q：制造企业 AI 团队至少要什么配置？</h3>
+                <p>最小配置：1 个后端（懂 Python + SQL），1 个业务分析（懂制造流程），1 个项目经理。AI 算法能力可以外采 API（DeepSeek / Qwen），不需要自训模型。关键是非技术能力——懂业务的那个人需要能画清楚产品→订单→工序→设备的链路图。</p>
+
+                <h3>Q：你这套架构和低代码 AI 平台（Dify / Coze）冲突吗？</h3>
+                <p>不冲突。低代码平台可以替代上层的 Agent 编排和 RAG 搭建。但<strong>下三层的基建</strong>——数据接入、本体建模、Tool 封装——无论用什么平台都绕不开。这篇文章讲的就是把下三层做好，上层用什么工具挂上去反而可以灵活选择。</p>
 
             </div>
 
 
             <footer class="cta-footer">
-                <div class="cta-assessment">
-                    <h3>你的企业适合部署 AI Agent 吗？</h3>
-                    <p class="cta-sub">免费评估 · 30 分钟线上诊断</p>
-                    <ul>
-                        <li><strong style="color:#fff;">哪些岗位</strong>可以优先 AI 化</li>
-                        <li><strong style="color:#fff;">哪些流程</strong>适合 Agent 自动化</li>
-                        <li><strong style="color:#fff;">数据基础</strong>是否满足落地条件</li>
-                        <li><strong style="color:#fff;">预计节省</strong>多少人工时间，ROI 估算</li>
+                <div style="margin-bottom:40px;padding:20px;background:rgba(255,255,255,0.02);border:1px solid #333;border-radius:8px;text-align:center;font-size:14px;color:#888;">
+                    📚 <strong style="color:#6af;">相关文章推荐</strong><br>
+                    <a href="article-manufacturing-ai-not-replacement.html" style="color:#6af;text-decoration:underline;">《制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动》</a>
+                    — 逐个岗位拆解 AI 替代了什么、留下了什么
+                </div>
+
+                <div class="cta-assessment" style="background:linear-gradient(135deg, #0a1a2a, #0a0a0a);border:1px solid #3af;border-radius:12px;padding:32px 28px;margin-bottom:24px;">
+                    <h3 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;text-align:center;">你的企业适合部署 AI Agent 吗？</h3>
+                    <p style="font-size:14px;color:#6af;text-align:center;margin-bottom:20px;">免费评估 · 30 分钟线上诊断</p>
+                    <ul style="list-style:none;padding:0;margin:0 auto 20px;max-width:400px;">
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">哪些岗位</strong>可以优先 AI 化</li>
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">哪些流程</strong>适合 Agent 自动化</li>
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">数据基础</strong>是否满足落地条件</li>
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">预计节省</strong>多少人工时间，ROI 估算</li>
                     </ul>
                 </div>
 
@@ -1259,7 +1495,7 @@ A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
         function animate() { ctx.clearRect(0,0,width,height); particles.forEach(function(p){p.update();p.draw();}); requestAnimationFrame(animate); }
         window.addEventListener('resize', function(){ resize(); particles.length=0; init(); });
         init(); animate();
-    </script>
+</script>
     <script src="site-nav.js"></script>
 </body>
 </html>

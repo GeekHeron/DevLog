@@ -48,7 +48,7 @@
         }
 
         body {
-            font-family: "SF Pro Display", "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
             background-color: #000;
             color: #fff;
             overflow: hidden; 
@@ -87,8 +87,8 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            filter: blur(0.4px);
-            mix-blend-mode: screen;
+            filter: blur(0.4px); /* 极轻微的模糊，消除颗粒感，增加晕染效果 */
+            mix-blend-mode: screen; /* 让流星和粒子的亮部融合得更自然 */
         }
 
         .overlay-gradient {
@@ -97,7 +97,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #000 15%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            background: linear-gradient(to right, #000 35%, rgba(0,0,0,0.6) 60%, transparent 100%);
             z-index: 1;
             pointer-events: none;
         }
@@ -115,6 +115,7 @@
             z-index: 100;
             font-size: 14px;
             font-weight: 700;
+            text-transform: uppercase;
             background: rgba(0, 0, 0, 0.2); 
             backdrop-filter: blur(2px);
         }
@@ -136,7 +137,7 @@
         }
 
         .logo span {
-            font-size: 20px;
+            font-size: 24px;
             letter-spacing: 4px;
             font-weight: 800;
             text-transform: uppercase;
@@ -202,12 +203,12 @@
             width: 100%;
             display: flex;
             align-items: center;
-            padding: 0 10%;
+            padding-left: 12%;
             z-index: 10;
         }
 
         .content {
-            max-width: 620px;
+            max-width: 600px;
         }
 
         h1 {
@@ -215,16 +216,17 @@
             font-weight: 700;
             margin-bottom: 20px;
             line-height: 1.1;
+            letter-spacing: -1px;
             color: #fff;
             animation: fadeIn 1.5s ease-out;
         }
 
         p.subtitle {
             font-size: 18px;
-            line-height: 1.8;
+            line-height: 1.6;
             color: #ddd;
             margin-bottom: 40px;
-            font-weight: 400;
+            font-weight: 300;
             min-height: 60px;
         }
 
@@ -261,7 +263,7 @@
         /* --- 最新文章卡片 --- */
         .latest-article {
             position: absolute;
-            bottom: 120px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
@@ -273,11 +275,11 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid #444;
+            border: 1px solid #333;
             border-radius: 8px;
             padding: 12px 24px;
             font-size: 13px;
-            color: #ccc;
+            color: #aaa;
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
             transition: all 0.3s;
@@ -290,7 +292,7 @@
         }
         .latest-article .la-label {
             font-size: 10px;
-            color: #999;
+            color: #666;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-family: monospace;
@@ -301,7 +303,7 @@
         }
         .latest-article .la-arrow {
             font-size: 14px;
-            color: #999;
+            color: #666;
         }
         .latest-article a:hover .la-arrow {
             color: #6af;
@@ -340,7 +342,7 @@
             right: 50px;
             text-align: right;
             font-family: monospace;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.4);
             font-size: 11px;
             z-index: 20;
             pointer-events: none;
@@ -396,7 +398,7 @@
                 width: 100%;
                 height: 100vh;
                 background: rgba(0, 0, 0, 0.95);
-                backdrop-filter: blur(20px); 
+                backdrop-filter: blur(100px); 
                 z-index: 101; 
                 display: flex;
                 flex-direction: column;
@@ -409,7 +411,7 @@
             nav ul { flex-direction: column; gap: 50px; text-align: center; }
             nav ul li a { font-size: 24px; font-weight: 800; letter-spacing: 2px; }
             .hero { padding-left: 20px; padding-right: 20px; justify-content: center; text-align: center; }
-            .overlay-gradient { background: linear-gradient(to top, #000 15%, rgba(0,0,0,0.5) 50%, transparent 100%); }
+            .overlay-gradient { background: linear-gradient(to top, #000 30%, rgba(0,0,0,0.5) 60%, transparent 100%); }
             h1 { font-size: 40px; }
             .hud-decoration { display: none; }
         }
@@ -457,7 +459,7 @@
         </div>
         
         <article class="seo-visually-hidden">
-            <h2>关于系统、AI 与判断的长期记录</h2>
+            <h1>关于系统、AI 与判断的长期记录</h1>
             <p>
                 这是一个个人技术与认知博客，持续记录我在复杂系统、AI 应用、
                 LLM 协作与工程判断中的思考与实践。
@@ -492,7 +494,7 @@
     </div>
 
     <script>
-        // --- 打字机效果模块 ---
+        // --- 1. 打字机效果模块 ---
         const textToType = "技术真正的价值，不在于展示智能，而在于稳定运行于真实业务。GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。";
         const typeElement = document.getElementById('typing-text');
         let typeIndex = 0;
@@ -507,13 +509,12 @@
         }
         setTimeout(typeWriter, 1200);
 
-        // --- 粒子与流星动画模块 (含 FPS 统计) ---
+        // --- 4. 粒子与流星动画模块 ---
         const canvas = document.getElementById('galaxy-field');
         const ctx = canvas.getContext('2d');
-        const fpsElement = document.getElementById('fps-counter');
         let width, height;
         const particles = [];
-        const numParticles = 1200;
+        const numParticles = 12000; // 性能优化：从 4000 降至 1200，保障多端流畅度
         const fieldOfView = 300; 
         const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
 
@@ -596,13 +597,7 @@
             particles.length = 0;
             for (let i = 0; i < numParticles; i++) particles.push(new Particle());
         }
-
-        // FPS 统计 (合并入主动画循环)
-        let fpsLastTime = 0;
-        let fpsCounter = 0;
-        let animFrameId;
-
-        function animate(timestamp) {
+        function animate() {
             ctx.clearRect(0, 0, width, height);
             particles.forEach(p => { p.update(); p.draw(); });
             if (Math.random() < 0.008) {
@@ -610,81 +605,66 @@
                 if (m) m.reset();
             }
             meteors.forEach(m => { m.update(); m.draw(); });
-
-            // FPS 统计
-            if (fpsElement) {
-                fpsCounter++;
-                if (!fpsLastTime) fpsLastTime = timestamp;
-                const elapsed = timestamp - fpsLastTime;
-                if (elapsed >= 1000) {
-                    fpsElement.textContent = `FRAME: ${Math.round(fpsCounter / (elapsed / 1000))}FPS`;
-                    fpsCounter = 0;
-                    fpsLastTime = timestamp;
-                }
-            }
-
-            animFrameId = requestAnimationFrame(animate);
+            requestAnimationFrame(animate);
         }
-
         resize();
         initParticles();
-        animFrameId = requestAnimationFrame(animate);
+        animate();
 
-        // 暴露暂停/恢复接口给 site-nav.js，移动端菜单打开时暂停动画省电
-        window.__pauseGalaxy = function () {
-            if (animFrameId) {
-                cancelAnimationFrame(animFrameId);
-                animFrameId = null;
-            }
-        };
-        window.__resumeGalaxy = function () {
-            if (!animFrameId) {
-                animFrameId = requestAnimationFrame(animate);
-            }
-        };
-
-        // --- 地理位置模块（带 localStorage 一日缓存） ---
+        // --- 5. 地理位置模块（优化版：采用免授权 IP 定位，提升留存与风骨） ---
         function initLocation() {
             const locElement = document.getElementById('user-location');
             if (!locElement) return;
 
-            const cached = (function() {
-                try {
-                    return {
-                        text: localStorage.getItem('hud-location'),
-                        time: localStorage.getItem('hud-location-time')
-                    };
-                } catch(e) { return {}; }
-            })();
-            if (cached.text && cached.time && (Date.now() - Number(cached.time)) < 86400000) {
-                locElement.textContent = cached.text;
-                return;
-            }
-
             fetch('https://ipapi.co/json/')
                 .then(response => response.json())
                 .then(data => {
-                    let text;
                     if (data.latitude && data.longitude) {
                         const lat = data.latitude;
                         const lon = data.longitude;
                         const latDir = lat >= 0 ? 'N' : 'S';
                         const lonDir = lon >= 0 ? 'E' : 'W';
-                        text = `LOC: ${Math.abs(lat).toFixed(2)}${latDir}, ${Math.abs(lon).toFixed(2)}${lonDir} / GEO.SYNC`;
+                        locElement.textContent = `LOC: ${Math.abs(lat).toFixed(2)}${latDir}, ${Math.abs(lon).toFixed(2)}${lonDir} / GEO.SYNC`;
                     } else {
-                        text = `LOC: PROXY.DETECTED / MASKED`;
+                        locElement.textContent = `LOC: PROXY.DETECTED / MASKED`;
                     }
-                    locElement.textContent = text;
-                    try {
-                        localStorage.setItem('hud-location', text);
-                        localStorage.setItem('hud-location-time', String(Date.now()));
-                    } catch(e) {}
                 })
                 .catch(() => {
                     locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
                 });
         }
         initLocation();
+
+        // --- 6. 真实 FPS 监听模块（让 HUD 的 60FPS 真正动起来） ---
+        function initFPSCounter() {
+            const fpsElement = document.getElementById('fps-counter');
+            if (!fpsElement) return;
+
+            let lastCalledTime;
+            let counter = 0;
+
+            function fpsLoop() {
+                if (!lastCalledTime) {
+                    lastCalledTime = performance.now();
+                    counter = 0;
+                    requestAnimationFrame(fpsLoop);
+                    return;
+                }
+                
+                counter++;
+                const delta = (performance.now() - lastCalledTime) / 1000;
+
+                if (delta >= 1) { 
+                    const fps = Math.round(counter / delta);
+                    fpsElement.textContent = `FRAME: ${fps}FPS`;
+                    counter = 0;
+                    lastCalledTime = performance.now();
+                }
+                requestAnimationFrame(fpsLoop);
+            }
+            requestAnimationFrame(fpsLoop);
+        }
+        initFPSCounter();
     </script>
     <script src="site-nav.js"></script>
 </body>

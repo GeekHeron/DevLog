@@ -717,18 +717,29 @@
                 margin-left: 0;
             }
 
-.lang-btn {
+            .lang-btn {
                 margin-left: 0;
                 margin-top: 20px;
                 padding: 10px 30px;
                 font-size: 14px;
             }
 
-            .container { grid-template-columns: 1fr; gap: 60px; padding-top: 40px; }
+            .container { grid-template-columns: 1fr; gap: 40px; padding: 80px 16px; }
             .profile-section { position: relative; top: 0; }
+            .avatar-container { width: 120px; height: 120px; margin-bottom: 20px; }
+            .profile-name { font-size: 28px; }
+            .section-block { margin-bottom: 50px; }
+            .section-title { font-size: 11px; }
+            .value-prop { font-size: 20px; }
+            .bio-text { font-size: 14px; }
             .services-grid { grid-template-columns: 1fr; }
-
+            .service-card { padding: 20px; }
+            .risk-box { padding: 24px; }
             .risk-grid { grid-template-columns: 1fr; }
+            .proof-box { padding: 16px; }
+            .faq-question { padding: 16px 18px; font-size: 14px; }
+            .faq-answer { padding: 0 18px 16px; font-size: 13px; }
+            .testimonial-card { padding: 18px; }
 
             .social-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -741,8 +752,47 @@
                 font-size: 9px; margin-top: 6px;
                 white-space: nowrap; transform: scale(0.9);
             }
-
             .testimonial-grid { grid-template-columns: 1fr; }
+            .project-metrics { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+            .project-metrics.two-col { grid-template-columns: repeat(2, 1fr); }
+            .metric-value { font-size: 16px; }
+            .flow-wrap { padding: 20px 12px; }
+            .flow-caption { font-size: 11px; }
+            .cta-group .secondary-btn, .cta-group .tertiary-btn { font-size: 11px; padding: 12px 0; }
+        }
+
+        @media (max-width: 480px) {
+            header { padding: 14px 16px; }
+            .logo img { height: 32px; }
+            .logo span { font-size: 15px; letter-spacing: 1px; }
+            .container { padding: 60px 12px; gap: 30px; }
+            .avatar-container { width: 90px; height: 90px; margin-bottom: 16px; }
+            .profile-name { font-size: 24px; }
+            .profile-id { font-size: 12px; }
+            .profile-title { font-size: 10px; margin-bottom: 24px; }
+            .value-prop { font-size: 17px; }
+            .bio-text { font-size: 13px; line-height: 1.7; }
+            .section-block { margin-bottom: 40px; }
+            .section-title::after { display: none; }
+            .service-card { padding: 16px; }
+            .service-name { font-size: 14px; }
+            .service-desc { font-size: 12px; }
+            .faq-question { padding: 14px 16px; font-size: 13px; }
+            .faq-answer { padding: 0 16px 14px; font-size: 12px; }
+            .testimonial-card { padding: 16px; }
+            .project-name { font-size: 14px; }
+            .project-client-detail { font-size: 11px; }
+            .social-grid { gap: 6px; }
+            .social-text { font-size: 8px; }
+            .social-qr { max-width: 70px; }
+            .social-item { padding: 8px 4px; }
+            .cta-group { gap: 10px; }
+            .contact-btn, .secondary-btn { padding: 12px 0; font-size: 11px; }
+            .flow-wrap { padding: 16px 10px; }
+            .risk-box { padding: 18px; margin: 24px 0; }
+            .terminal-box { padding: 14px; font-size: 11px; }
+            .tech-tag { font-size: 10px; padding: 3px 8px; }
+            .social-collapse-summary { padding: 12px 14px; font-size: 11px; }
         }
 
         /* Respect the user's reduced-motion system setting */

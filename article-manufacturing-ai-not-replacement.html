@@ -7,8 +7,8 @@
     <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
     <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
     <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
-    <meta name="description" content="AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。逐个岗位拆解：计划员、质量工程师、供应链专员、销售支持、数据分析师...哪些被替代，哪些永远不会。">
-    <meta name="keywords" content="GeekHeron, 制造业AI, AI替代岗位, 数字员工, 生产计划, 质量工程, 供应链AI, 智能制造, AI落地, 企业AI">
+    <meta name="description" content="AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。逐个岗位拆解：计划员、质量工程师、供应链专员、销售支持、数据分析师...哪些被替代，哪些永远不会。附 ROI 计算与业务流程图。">
+    <meta name="keywords" content="GeekHeron, 制造业AI, AI替代岗位, 数字员工, 生产计划, 质量工程, 供应链AI, 智能制造, AI落地, 企业AI, AI ROI, AI业务流程图">
     <link rel="icon" type="image/png" href="logo.png">
     
     <style>
@@ -246,6 +246,132 @@
         }
         .seo-link:hover { color: #00ffc3; }
 
+        /* --- ROI 高亮卡片 --- */
+        .roi-card {
+            background: linear-gradient(135deg, #0a1a0a, #0a0a0a);
+            border: 1px solid #3a3;
+            border-radius: 12px;
+            padding: 28px 24px;
+            margin-bottom: 30px;
+        }
+        .roi-card .roi-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #8f8;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        .roi-card .roi-label {
+            font-size: 14px;
+            color: #6a6;
+            margin-bottom: 16px;
+        }
+        .roi-card .roi-detail {
+            font-size: 14px;
+            color: #aaa;
+            line-height: 1.7;
+        }
+        .roi-card .roi-detail strong {
+            color: #8f8;
+        }
+
+        /* 对比流 */
+        .compare-flow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .compare-flow .cf-side {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .compare-flow .cf-side h4 {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #222;
+        }
+        .compare-flow .cf-side.before h4 { color: #fa8; }
+        .compare-flow .cf-side.after h4 { color: #8f8; }
+        .compare-flow .cf-side.before { border-color: #553; }
+        .compare-flow .cf-side.after { border-color: #353; }
+        .cf-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 13px;
+            color: #aaa;
+        }
+        .cf-step .cf-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .cf-side.before .cf-dot { background: #fa8; }
+        .cf-side.after .cf-dot { background: #8f8; }
+        .cf-step .cf-time {
+            font-family: monospace;
+            font-size: 11px;
+            color: #555;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+        .cf-side.after .cf-summary {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid #333;
+            text-align: center;
+            font-size: 15px;
+        }
+        .cf-side.after .cf-summary strong { color: #8f8; }
+
+        /* CTA 咨询卡片 */
+        .cta-assessment {
+            background: linear-gradient(135deg, #0a1a2a, #0a0a0a);
+            border: 1px solid #3af;
+            border-radius: 12px;
+            padding: 32px 28px;
+            margin-bottom: 24px;
+        }
+        .cta-assessment h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .cta-assessment .cta-sub {
+            font-size: 14px;
+            color: #6af;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .cta-assessment ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto 20px;
+            max-width: 400px;
+        }
+        .cta-assessment ul li {
+            font-size: 14px;
+            color: #ccc;
+            padding: 7px 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cta-assessment ul li::before {
+            content: "▸";
+            color: #6af;
+            font-weight: bold;
+        }
+
         /* --- CTA 底部 --- */
         .cta-footer {
             margin-top: 80px; padding: 40px 0; border-top: 1px solid #222;
@@ -352,6 +478,12 @@
             .article-body h3 { font-size: 16px; }
             .article-body h4 { font-size: 15px; }
             .article-body p, .article-body li { font-size: 15px; }
+
+            .compare-flow { grid-template-columns: 1fr; }
+            .roi-card .roi-number { font-size: 28px; }
+            .cta-assessment { padding: 24px 16px; }
+            .cta-assessment h3 { font-size: 17px; }
+            .cta-assessment ul li { font-size: 13px; }
         }
     </style>
 
@@ -458,11 +590,11 @@
 
                 <p>它更像一个「数字员工助手」——先吃掉大量低价值脑力劳动，把人的时间释放出来做真正需要人的事。</p>
 
-                <p>下面逐个岗位拆开看。</p>
+                <p>下面逐个岗位拆开看。注意，下面的比例不是你有多大几率被裁，而是<strong>你工作中多少重复信息处理工作可以被自动化。</strong></p>
 
                 <!-- ============ 1. 生产计划员 ============ -->
 
-                <h2>1. 生产计划员（替代 30%~60%）</h2>
+                <h2>1. 生产计划员——可以自动化 30%~60% 的重复信息处理工作</h2>
 
                 <p><strong>以前：</strong></p>
 
@@ -516,7 +648,7 @@
 
                 <!-- ============ 2. 质量工程师 ============ -->
 
-                <h2>2. 质量工程师 QE（替代 30%~50%）</h2>
+                <h2>2. 质量工程师 QE——可以自动化 30%~50% 的重复信息处理工作</h2>
 
                 <p><strong>以前：</strong></p>
 
@@ -568,7 +700,7 @@
 
                 <!-- ============ 3. 供应链专员 ============ -->
 
-                <h2>3. 供应链专员（替代 ~40%）</h2>
+                <h2>3. 供应链专员——可以自动化约 40% 的重复信息处理工作</h2>
 
                 <p><strong>以前：</strong></p>
 
@@ -612,7 +744,7 @@ A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
 
                 <!-- ============ 4. 售前 / 销售支持 ============ -->
 
-                <h2>4. 售前 / 销售支持（替代 40%~70%）</h2>
+                <h2>4. 售前 / 销售支持——可以自动化 40%~70% 的重复信息处理工作</h2>
 
                 <p><strong>以前：</strong></p>
 
@@ -652,7 +784,7 @@ A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
 
                 <!-- ============ 5. 数据分析师 ============ -->
 
-                <h2>5. 数据分析师（替代 ~50%）</h2>
+                <h2>5. 数据分析师——可以自动化约 50% 的重复信息处理工作</h2>
 
                 <p><strong>以前：</strong></p>
 
@@ -680,7 +812,7 @@ A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
 
                 <!-- ============ 6. IT 支持 ============ -->
 
-                <h2>6. 企业内部 IT 支持（替代 ~60%）</h2>
+                <h2>6. 企业内部 IT 支持——可以自动化约 60% 的重复信息处理工作</h2>
 
                 <p><strong>以前：</strong></p>
 
@@ -841,6 +973,177 @@ A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
 
                 <p>这就是我的架构真正对应的市场定位——<strong>不是机器人替代工人，而是把企业里大量靠 Excel、微信群、人工查询维持运转的知识工作自动化。</strong></p>
 
+                <!-- ============ ROI 计算：企业为什么愿意花钱 ============ -->
+
+                <h2>企业为什么愿意花钱？算一笔 ROI</h2>
+
+                <p>前面聊了这么多岗位，老板最后一定会问一个问题：</p>
+
+                <blockquote>
+                    <strong>「那我要花多少钱？能省多少？」</strong>
+                </blockquote>
+
+                <p>这是个好问题。我们来算。</p>
+
+                <p><strong>拿生产经理举例：</strong></p>
+
+                <div class="roi-card">
+                    <div class="roi-number">¥2 万 / 月</div>
+                    <div class="roi-label">一个生产经理的月薪 (含社保)</div>
+                    <div class="roi-detail">
+                        每天的工作时间中，大约 <strong>3~4 小时</strong> 花在：查数据、问进度、找原因、做报表。<br><br>
+                        如果 AI Agent 自动化其中 <strong>2 小时</strong>：<br>
+                        → 每天释放 <strong>2 小时</strong> 高价值管理时间<br>
+                        → 每月释放 <strong>40+ 小时</strong><br>
+                        → 每年释放 <strong>500+ 小时</strong><br><br>
+                        <strong>500 小时</strong> 意味着什么？<br>
+                        相当于这个经理可以多管理 <strong>1~2 条产线</strong>，或者亲自处理更多客户大单。
+                    </div>
+                </div>
+
+                <p><strong>换算成钱：</strong></p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>项目</th>
+                            <th>传统模式</th>
+                            <th>AI Agent 辅助</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>管理产线数</td>
+                            <td>2~3 条</td>
+                            <td style="color:#8f8;">4~6 条</td>
+                        </tr>
+                        <tr>
+                            <td>数据处理时间占比</td>
+                            <td>~60%</td>
+                            <td style="color:#8f8;">~15%</td>
+                        </tr>
+                        <tr>
+                            <td>发现问题到定位原因</td>
+                            <td>半天 ~1 天</td>
+                            <td style="color:#8f8;">5~15 分钟</td>
+                        </tr>
+                        <tr>
+                            <td>人均产出</td>
+                            <td>1x 基准</td>
+                            <td style="color:#8f8;">1.5x ~ 2x</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>核心逻辑：<strong>价值不是省掉一个人，而是同样团队管理更多订单、更快响应问题。</strong></p>
+
+                <p>一个年产值 1 亿的工厂，如果 AI Agent 让生产经理效率提升 30%，对交付及时率的改善哪怕只有 2%，带来的是 <strong>200 万以上的客户满意度收益</strong>——远超过 AI 的投入成本。</p>
+
+                <p>所以老板问「多少钱」的时候，答案不是成本，而是<strong>投入产出比</strong>。</p>
+
+                <!-- ============ 一个真实业务流程图 ============ -->
+
+                <h2>以前 vs 现在：一个真实业务流程对比</h2>
+
+                <p>拿工厂里最常见的场景——<strong>老板问「为什么订单延期？」</strong></p>
+
+                <p>来看看 AI Agent 加入前后，流程的天壤之别。</p>
+
+                <div class="compare-flow">
+
+                    <div class="cf-side before">
+                        <h4>🔴 以前</h4>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>老板问延期原因</span>
+                            <span class="cf-time">0</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>老板找生产经理</span>
+                            <span class="cf-time">+5min</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>经理找计划员</span>
+                            <span class="cf-time">+15min</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>计划员查 MES</span>
+                            <span class="cf-time">+30min</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>问设备状态</span>
+                            <span class="cf-time">+20min</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>问采购物料</span>
+                            <span class="cf-time">+30min</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>整理到 Excel</span>
+                            <span class="cf-time">+60min</span>
+                        </div>
+                        <div class="cf-step" style="color:#fa8;">
+                            <span class="cf-dot"></span>
+                            <strong>⏱ 合计：半天</strong>
+                            <span class="cf-time" style="color:#fa8;">~3h</span>
+                        </div>
+                    </div>
+
+                    <div class="cf-side after">
+                        <h4>🟢 现在</h4>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>老板问延期原因</span>
+                            <span class="cf-time">0</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>AI Agent 接收问题</span>
+                            <span class="cf-time">+10s</span>
+                        </div>
+                        <div class="arch-box" style="padding:12px 10px;gap:2px;margin-bottom:0;">
+                            <div class="arch-row">
+                                <span class="arch-node small" style="border-color:#3af;">MES</span>
+                                <span class="arch-node small" style="border-color:#3af;">ERP</span>
+                                <span class="arch-node small" style="border-color:#3af;">WMS</span>
+                                <span class="arch-node small" style="border-color:#3af;">设备数据</span>
+                                <span class="arch-node small" style="border-color:#3af;">SOP</span>
+                            </div>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>AI 自动关联分析</span>
+                            <span class="cf-time">+2min</span>
+                        </div>
+                        <div class="cf-step">
+                            <span class="cf-dot"></span>
+                            <span>输出原因报告</span>
+                            <span class="cf-time">+3min</span>
+                        </div>
+                        <div class="cf-summary">
+                            <strong>⏱ 合计：5 分钟</strong><br>
+                            <span style="font-size:12px;color:#6a6;">附带根因分析和建议方案</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p><strong>对比：</strong></p>
+                <ul>
+                    <li>以前：半天（3 小时），需要牵动 3~4 个人</li>
+                    <li>现在：5 分钟，一个人都不需要停下手头的工作</li>
+                </ul>
+
+                <p>这还不是省时间的问题——<strong>以前老板可能等不了半天，就不问了。信息差的代价是错过决策时机。</strong></p>
+
+                <p>有了 AI Agent，老板可以每天早会上花 5 分钟看报告，而不是花 3 小时去「追根问底」。这才是真正的效率提升。</p>
+
                 <!-- ============ 如果站在老板角度 ============ -->
 
                 <h2>如果站在老板角度</h2>
@@ -899,22 +1202,20 @@ A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
 
 
             <footer class="cta-footer">
-                <h3>正在探索企业 AI 落地？</h3>
-                <p class="cta-sub">提供一次 AI 落地可行性评估</p>
-
-                <div class="cta-grid" style="grid-template-columns:1fr;max-width:480px;margin:0 auto 36px;">
-                    <div class="cta-col" style="text-align:center;">
-                        <ul style="display:inline-block;text-align:left;">
-                            <li>✓ <strong style="color:#fff;">AI 场景可行性分析</strong></li>
-                            <li>✓ <strong style="color:#fff;">企业数据能力评估</strong></li>
-                            <li>✓ <strong style="color:#fff;">Agent 落地路线建议</strong></li>
-                        </ul>
-                    </div>
+                <div class="cta-assessment">
+                    <h3>你的企业适合部署 AI Agent 吗？</h3>
+                    <p class="cta-sub">免费评估 · 30 分钟线上诊断</p>
+                    <ul>
+                        <li><strong style="color:#fff;">哪些岗位</strong>可以优先 AI 化</li>
+                        <li><strong style="color:#fff;">哪些流程</strong>适合 Agent 自动化</li>
+                        <li><strong style="color:#fff;">数据基础</strong>是否满足落地条件</li>
+                        <li><strong style="color:#fff;">预计节省</strong>多少人工时间，ROI 估算</li>
+                    </ul>
                 </div>
 
                 <div class="cta-qr-wrap">
                     <img src="wechat.png" alt="扫码添加微信 AI 咨询" width="120" height="120" loading="lazy">
-                    <p>扫码联系 · 备注「AI咨询」</p>
+                    <p>扫码联系 · 备注「AI评估」</p>
                 </div>
 
                 <div style="margin-top:32px;padding-top:24px;border-top:1px solid #222;text-align:center;">
@@ -958,7 +1259,7 @@ A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
         function animate() { ctx.clearRect(0,0,width,height); particles.forEach(function(p){p.update();p.draw();}); requestAnimationFrame(animate); }
         window.addEventListener('resize', function(){ resize(); particles.length=0; init(); });
         init(); animate();
-</script>
+    </script>
     <script src="site-nav.js"></script>
 </body>
 </html>

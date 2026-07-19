@@ -668,22 +668,26 @@
 
             .testimonial-grid { grid-template-columns: 1fr; }
 
-            /* 移动端：信任墙场景网格 4列→2列 */
             .trust-grid { grid-template-columns: repeat(2, 1fr) !important; }
-
-            /* 移动端：信任墙数据指标 自动换行 */
             .trust-metrics { flex-wrap: wrap; gap: 16px !important; }
-
-            /* 移动端：核心技术能力 → 单列 */
             .tech-grid { grid-template-columns: 1fr; }
-
-            /* 移动端：分层架构 → 单列 */
             .arch-grid { grid-template-columns: 1fr; }
+            .section-block .three-col-grid { grid-template-columns: 1fr !important; }
 
-            /* 移动端：价值卡片 → 单列 */
-            .section-block .three-col-grid {
-                grid-template-columns: 1fr !important;
-            }
+            /* SVG 溢出滚动 */
+            .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
+            .flow-wrap svg { max-width: none; }
+
+            /* 服务卡片紧凑 */
+            .service-card { padding: 14px !important; }
+
+            /* 折叠面板适配 */
+            .section-block details { margin-top: 10px; }
+            .section-block details summary { font-size: 12px; padding: 10px 14px; }
+
+            /* 内容间距微调 */
+            .section-block { margin-bottom: 50px; }
+            .content-section { padding-top: 0; }
         }
             /* 移动端：flow-wrap SVG溢出隐藏 */
             .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }

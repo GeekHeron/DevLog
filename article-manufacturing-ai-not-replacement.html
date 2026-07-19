@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动 - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-manufacturing-ai-not-replacement.html">
+    <meta name="description" content="AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。逐个岗位拆解：计划员、质量工程师、供应链专员、销售支持、数据分析师...哪些被替代，哪些永远不会。">
+    <meta name="keywords" content="GeekHeron, 制造业AI, AI替代岗位, 数字员工, 生产计划, 质量工程, 供应链AI, 智能制造, AI落地, 企业AI">
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <style>
+        /* --- 1. 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 (含手机端汉堡菜单) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* 汉堡按钮 */
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: #fff; transition: 0.3s;
+        }
+
+        /* --- 4. 文章排版 --- */
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 120px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 30px;
+        }
+
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px 0; }
+        .article-body h4 { color: #ddd; font-size: 17px; margin: 20px 0 10px 0; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul { margin-bottom: 25px; padding-left: 20px; }
+        .article-body li { margin-bottom: 15px; }
+        .article-body ol { margin-bottom: 25px; padding-left: 20px; }
+        .article-body ol li { margin-bottom: 15px; }
+        .article-body .code-block {
+            background: #111; border: 1px solid #333; padding: 20px;
+            font-family: monospace; font-size: 14px; color: #0f0; margin-bottom: 25px;
+            white-space: pre-wrap; overflow-x: auto; line-height: 1.6;
+        }
+        .article-body .arch-diagram {
+            background: #0a0a0a; border: 1px solid #333; padding: 24px;
+            font-family: monospace; font-size: 13px; color: #aaa; margin-bottom: 25px;
+            white-space: pre-wrap; overflow-x: auto; line-height: 1.5;
+        }
+        .article-body .arch-diagram strong { color: #fff; }
+        .arch-diagram strong { color: #fff; }
+
+        /* --- 优化架构图样式 --- */
+        .article-body .arch-box {
+            background: #0a0a0a; border: 1px solid #333; border-radius: 8px;
+            padding: 28px 24px; margin-bottom: 30px;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+        }
+        .arch-layer {
+            display: flex; flex-direction: column; align-items: center; width: 100%;
+        }
+        .arch-row {
+            display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; width: 100%;
+        }
+        .arch-node {
+            background: #161616; border: 1px solid #444; border-radius: 6px;
+            padding: 10px 18px; text-align: center;
+            color: #ddd; font-size: 14px; font-weight: 500;
+            min-width: 80px; transition: all 0.2s;
+        }
+        .arch-node.highlight {
+            border-color: #6af; background: #0a1a2a;
+        }
+        .arch-node.accent {
+            border-color: #8f8; background: #0a1a0a;
+        }
+        .arch-node.warn {
+            border-color: #fa8; background: #1a100a;
+        }
+        .arch-node.small { font-size: 12px; padding: 6px 12px; min-width: 60px; }
+        .arch-node.label { border: none; background: none; font-size: 11px; color: #666; padding: 2px 8px; min-width: auto; }
+        .arch-arrow {
+            color: #555; font-size: 12px; line-height: 1;
+            padding: 2px 0; letter-spacing: 1px;
+        }
+        .arch-bracket {
+            color: #444; font-size: 11px; font-family: monospace; line-height: 1;
+            padding: 1px 0;
+        }
+        .arch-title {
+            color: #888; font-size: 11px; font-family: monospace; margin-bottom: 12px;
+        }
+
+        /* Tool 卡片 */
+        .tool-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px; margin-bottom: 30px;
+        }
+        .tool-card {
+            background: #0a0a0a; border: 1px solid #333; border-radius: 8px;
+            padding: 16px;
+        }
+        .tool-card .tool-name {
+            color: #0f0; font-family: monospace; font-size: 13px; margin-bottom: 4px;
+        }
+        .tool-card .tool-desc {
+            color: #888; font-size: 13px; line-height: 1.5;
+        }
+
+        /* 本体关系图 */
+        .onto-chain {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+            gap: 6px; margin-bottom: 30px;
+        }
+        .onto-node {
+            background: #0a1a0a; border: 1px solid #3a3; border-radius: 6px;
+            padding: 6px 14px; color: #8f8; font-size: 13px; font-weight: 500;
+        }
+        .onto-arrow {
+            color: #3a3; font-size: 14px;
+        }
+        .onto-label {
+            color: #6a6; font-size: 11px;
+            position: relative; top: -8px; margin: 0 2px;
+        }
+
+        /* 流程图 */
+        .flow-chart {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            margin-bottom: 30px;
+        }
+        .flow-node {
+            background: #161616; border: 1px solid #555; border-radius: 6px;
+            padding: 8px 20px; color: #ddd; font-size: 13px; text-align: center;
+        }
+        .flow-node.cond {
+            border-radius: 4px; border-color: #fa8;
+            background: #1a100a; color: #fa8;
+        }
+        .flow-arrow { color: #555; font-size: 10px; line-height: 1; padding: 1px 0; }
+        .flow-branch {
+            display: flex; justify-content: center; gap: 40px; width: 100%;
+        }
+        .article-body blockquote {
+            border-left: 3px solid #555; padding-left: 20px; margin: 30px 0;
+            color: #999; font-style: italic;
+        }
+        .article-body blockquote strong { color: #ccc; }
+
+        /* 数据表格 */
+        .data-table {
+            width: 100%; border-collapse: collapse;
+            font-family: monospace; font-size: 13px;
+            margin-bottom: 25px; color: #ccc;
+        }
+        .data-table th {
+            background: #1a1a2a; border: 1px solid #333;
+            padding: 8px 6px; text-align: center;
+            color: #6af; font-weight: 600;
+        }
+        .data-table td {
+            border: 1px solid #333;
+            padding: 8px 6px; text-align: center;
+        }
+        .data-table tr:hover td { background: rgba(255,255,255,0.03); }
+        @media (max-width: 768px) {
+            .data-table { font-size: 11px; }
+            .data-table th,
+            .data-table td { padding: 5px 3px; }
+            .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        }
+
+        .seo-footer {
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
+        }
+        .seo-link {
+            display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
+        }
+        .seo-link:hover { color: #00ffc3; }
+
+        /* --- CTA 底部 --- */
+        .cta-footer {
+            margin-top: 80px; padding: 40px 0; border-top: 1px solid #222;
+        }
+        .cta-footer h3 {
+            font-size: 22px; font-weight: 700; color: #fff;
+            margin-bottom: 8px; text-align: center;
+        }
+        .cta-footer .cta-sub {
+            font-size: 14px; color: #888;
+            text-align: center; margin-bottom: 24px;
+        }
+        .cta-col ul {
+            list-style: none; padding: 0; margin: 0 auto;
+        }
+        .cta-col ul li {
+            font-size: 14px; color: #ccc;
+            padding: 8px 0; margin: 0;
+        }
+        .cta-qr-wrap {
+            text-align: center;
+        }
+        .cta-qr-wrap img {
+            width: 120px; height: 120px;
+            border: 1px solid #333; border-radius: 8px;
+            padding: 6px; background: #fff;
+        }
+        .cta-qr-wrap p {
+            font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .cta-footer h3 { font-size: 18px; }
+            .cta-footer .cta-sub { font-size: 13px; }
+            .cta-col ul li { font-size: 13px; }
+            .cta-qr-wrap img { width: 100px; height: 100px; }
+        }
+
+        /* --- 5. 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+            /* --- 移动端架构图优化 --- */
+            .article-body .arch-box { padding: 12px 10px; gap: 2px; }
+            .arch-node { font-size: 11px; padding: 6px 8px; min-width: 44px; word-break: break-word; overflow-wrap: break-word; }
+            .arch-node.small { font-size: 10px; padding: 4px 6px; min-width: 36px; }
+            .arch-node[style*="width"] { width: 100% !important; }
+            .arch-row { gap: 4px; }
+            .arch-arrow { font-size: 9px; letter-spacing: 0; white-space: nowrap; overflow: hidden; }
+            .tool-grid { grid-template-columns: 1fr; gap: 6px; }
+            .tool-card { padding: 10px; }
+            .tool-card .tool-name { font-size: 11px; word-break: break-all; }
+            .tool-card .tool-desc { font-size: 11px; }
+            .onto-chain { gap: 2px; }
+            .onto-node { font-size: 11px; padding: 3px 6px; }
+            .onto-arrow { font-size: 10px; }
+            .onto-label { font-size: 9px; top: auto; margin: 0; display: inline; }
+            .flow-chart { gap: 1px; }
+            .flow-node { font-size: 11px; padding: 4px 10px; width: 100%; word-break: break-word; }
+            .flow-arrow { font-size: 8px; }
+            .flow-branch { gap: 8px; flex-direction: column; align-items: center; }
+            .code-block { font-size: 11px; padding: 12px; overflow-x: auto; }
+            .article-body h2 { font-size: 20px; }
+            .article-body h3 { font-size: 16px; }
+            .article-body h4 { font-size: 15px; }
+            .article-body p, .article-body li { font-size: 15px; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动",
+  "description": "AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。逐个岗位拆解：计划员、质量工程师、供应链专员...哪些被替代，哪些永远不会。",
+  "author": {
+    "@type": "Person",
+    "name": "王鉴锋 (GeekHeron)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/article-manufacturing-ai-not-replacement.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "zh-CN",
+  "datePublished": "2026-07-19"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">AI &amp; MANUFACTURING</span>
+                <h1 class="article-title">制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：制造业 AI, AI替代岗位, 数字员工, 智能制造, 生产计划AI, 质量工程AI, 供应链AI, 企业AI落地</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.07.19</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: AI &amp; MANUFACTURING</span>
+                </div>
+                <div style="margin-top:16px;padding:12px 20px;background:rgba(255,255,255,0.03);border:1px solid #222;border-radius:6px;font-size:14px;color:#aaa;line-height:1.6;">
+                    <strong style="color:#fff;">作者：王鉴锋</strong><br>
+                    AI Agent 架构师，专注企业 Agent、RAG 和业务智能化落地。
+                </div>
+            </div>
+
+            <div class="article-body">
+
+                <blockquote>
+                    <strong>不要跟老板说「AI 能替代工人」，说「AI 能让你的经理变成超人」</strong>
+                </blockquote>
+
+                <p>我上一篇<a href="article-manufacturing-ai-ontology.html" style="color:#6af;text-decoration:underline;"><strong>《制造业 AI 落地架构》</strong></a>讲了一套从数据层到 Agent 编排的分层架构。</p>
+
+                <p>技术层面它解决了「怎么落地」的问题。但有一个更根本的问题没聊透：</p>
+
+                <blockquote>
+                    这玩意儿到底替代了谁？
+                </blockquote>
+
+                <p>市面上充斥着两极分化的论调。一边是「AI 要消灭 X 万个岗位」，另一边是「AI 只是工具不可能替代人」。</p>
+
+                <p>都太极端。</p>
+
+                <p>我做了大量制造企业 AI 交付后，得出的结论是：</p>
+
+                <p><strong>AI 目前替代的不是一个岗位，而是每个岗位里的一部分「信息整理、查询、分析、重复决策辅助」工作。</strong></p>
+
+                <p>它更像一个「数字员工助手」——先吃掉大量低价值脑力劳动，把人的时间释放出来做真正需要人的事。</p>
+
+                <p>下面逐个岗位拆开看。</p>
+
+                <!-- ============ 1. 生产计划员 ============ -->
+
+                <h2>1. 生产计划员（替代 30%~60%）</h2>
+
+                <p><strong>以前：</strong></p>
+
+                <p>生产计划员每天——</p>
+                <ul>
+                    <li>查订单交期</li>
+                    <li>查库存</li>
+                    <li>查产能</li>
+                    <li>查设备状态</li>
+                    <li>调整排产</li>
+                    <li>做日报表</li>
+                    <li>找延期原因</li>
+                </ul>
+
+                <p>大量时间花在 <strong>「到处找数据，然后做 Excel。」</strong></p>
+
+                <p><strong>有了 AI 之后：</strong></p>
+
+                <p>老板问「哪些订单可能延期？」</p>
+
+                <p>AI 自动走通链路：</p>
+
+                <div class="code-block">
+订单 → 库存 → 生产进度 → 设备状态 → 人员产能 → 风险预测
+                </div>
+
+                <p>输出：</p>
+
+                <div class="code-block" style="color:#fa8;">
+未来 7 天有 5 个订单存在延期风险，原因分别是：
+- 物料不足（3 个订单）
+- 设备停机（1 个订单）
+- 产能不足（1 个订单）
+                </div>
+
+                <p><strong>替代了什么：</strong></p>
+                <ul>
+                    <li>✅ Excel 排产分析</li>
+                    <li>✅ 手工数据汇总</li>
+                    <li>✅ 延期统计</li>
+                </ul>
+
+                <p><strong>不会被替代：</strong></p>
+                <ul>
+                    <li>❌ 最终生产决策</li>
+                    <li>❌ 协调供应商</li>
+                    <li>❌ 处理异常冲突</li>
+                </ul>
+
+                <p>人的价值从 <strong>「做表的人」</strong> 变成了 <strong>「做决定的人」</strong>。</p>
+
+                <!-- ============ 2. 质量工程师 ============ -->
+
+                <h2>2. 质量工程师 QE（替代 30%~50%）</h2>
+
+                <p><strong>以前：</strong></p>
+
+                <p>质量工程师要——</p>
+                <ul>
+                    <li>查不良记录</li>
+                    <li>查历史案例</li>
+                    <li>查 SOP</li>
+                    <li>写 8D 报告</li>
+                    <li>分析异常原因</li>
+                </ul>
+
+                <p><strong>有了 AI 之后：</strong></p>
+
+                <p>问题「为什么这个批次不良率上涨？」</p>
+
+                <p>AI 自动查：</p>
+
+                <div class="code-block">
+质量数据库 + 设备数据 + 工艺参数 + 历史案例 + SOP
+                </div>
+
+                <p>输出：</p>
+
+                <div class="code-block" style="color:#6af;">
+可能原因：
+1. 温度参数偏移（置信度 85%）
+2. 设备压力异常（置信度 72%）
+3. 原材料批次变化（置信度 60%）
+
+参考案例：2025 年类似问题处理方案
+                </div>
+
+                <p><strong>替代：</strong></p>
+                <ul>
+                    <li>✅ 初步分析</li>
+                    <li>✅ 数据统计</li>
+                    <li>✅ 报告生成</li>
+                </ul>
+
+                <p><strong>不会被替代：</strong></p>
+                <ul>
+                    <li>❌ 现场判断</li>
+                    <li>❌ 工艺优化</li>
+                    <li>❌ 质量签字责任</li>
+                </ul>
+
+                <p>质量报告可以 AI 写，但 <strong>质量责任永远是人背。</strong></p>
+
+                <!-- ============ 3. 供应链专员 ============ -->
+
+                <h2>3. 供应链专员（替代 ~40%）</h2>
+
+                <p><strong>以前：</strong></p>
+
+                <p>每天——</p>
+                <ul>
+                    <li>查采购订单</li>
+                    <li>催供应商</li>
+                    <li>查库存</li>
+                    <li>做缺料分析</li>
+                </ul>
+
+                <p><strong>有了 AI 之后：</strong></p>
+
+                <p>问「哪些物料会影响生产？」</p>
+
+                <p>AI 自动：</p>
+
+                <div class="code-block">
+未来订单 → BOM → 库存 → 供应商交期
+                </div>
+
+                <p>直接告诉：</p>
+
+                <div class="code-block" style="color:#fa8;">
+A 订单预计 7 月 25 日缺 M001 物料，需要提前采购。
+                </div>
+
+                <p><strong>替代：</strong></p>
+                <ul>
+                    <li>✅ 缺料分析</li>
+                    <li>✅ 库存查询</li>
+                    <li>✅ 供应风险预警</li>
+                </ul>
+
+                <p><strong>不会被替代：</strong></p>
+                <ul>
+                    <li>❌ 商务谈判</li>
+                    <li>❌ 供应商关系维护</li>
+                    <li>❌ 判断供应商靠不靠谱</li>
+                </ul>
+
+                <!-- ============ 4. 售前 / 销售支持 ============ -->
+
+                <h2>4. 售前 / 销售支持（替代 40%~70%）</h2>
+
+                <p><strong>以前：</strong></p>
+
+                <p>客户问「我的订单什么时候交？」</p>
+
+                <p>销售开始找人：ERP → MES → 生产经理。一天很大比例的时间消耗在这种查询上。</p>
+
+                <p><strong>有了 AI 之后：</strong></p>
+
+                <p>客户端输入「查询订单进度」，AI 自动：</p>
+
+                <div class="code-block">
+客户 → 订单 → 生产状态 → 物流
+                </div>
+
+                <p>回答：</p>
+
+                <div class="code-block" style="color:#8f8;">
+当前完成 82%，预计 7 月 22 日交付。
+                </div>
+
+                <p><strong>替代：</strong></p>
+                <ul>
+                    <li>✅ 查订单</li>
+                    <li>✅ 写回复</li>
+                    <li>✅ 做客户报告</li>
+                </ul>
+
+                <p><strong>不会被替代：</strong></p>
+                <ul>
+                    <li>❌ 建立信任</li>
+                    <li>❌ 商务谈判</li>
+                    <li>❌ 拿订单</li>
+                </ul>
+
+                <p>一个销售如果每天省下两小时查单时间，那这两个小时可能多谈下一个客户。</p>
+
+                <!-- ============ 5. 数据分析师 ============ -->
+
+                <h2>5. 数据分析师（替代 ~50%）</h2>
+
+                <p><strong>以前：</strong></p>
+
+                <p>业务想看「最近哪个产线效率下降了？」</p>
+
+                <p>数据分析师：SQL → 拉数据 → 做 BI → 做报表。</p>
+
+                <p><strong>有了 AI 之后：</strong></p>
+
+                <p>自然语言输入「分析最近三个月产线效率」，AI 自动 SQL 查询 + 分析 + 出图。</p>
+
+                <p><strong>替代：</strong></p>
+                <ul>
+                    <li>✅ 临时分析</li>
+                    <li>✅ 报表制作</li>
+                    <li>✅ 数据查询</li>
+                </ul>
+
+                <p><strong>不会被替代：</strong></p>
+                <ul>
+                    <li>❌ 指标体系设计</li>
+                    <li>❌ 业务洞察</li>
+                    <li>❌ 数据治理决策</li>
+                </ul>
+
+                <!-- ============ 6. IT 支持 ============ -->
+
+                <h2>6. 企业内部 IT 支持（替代 ~60%）</h2>
+
+                <p><strong>以前：</strong></p>
+
+                <p>员工问「ERP 怎么申请采购？」</p>
+
+                <p>得找 IT 或者翻半天手册。</p>
+
+                <p><strong>有了 AI 之后：</strong></p>
+
+                <p>直接告诉员工：「打开采购申请 → 填写供应商 → 提交审批。」</p>
+
+                <p><strong>替代：</strong></p>
+                <ul>
+                    <li>✅ 系统使用咨询</li>
+                    <li>✅ 流程查询</li>
+                </ul>
+
+                <p>这是一个被严重低估的场景——<strong>制造企业内部的系统操作咨询量极大</strong>，IT 部门常被这类问题淹没。</p>
+
+                <!-- ============ 真正不会被替代的岗位 ============ -->
+
+                <h2>真正不会被替代的岗位</h2>
+
+                <p>上面说的都是偏「信息处理型」的工作。制造业还有大量岗位的核心职责不在这个范畴。</p>
+
+                <h3>生产经理 / 厂长</h3>
+
+                <p>AI 可以分析产能、预测延期、给排产建议、找异常原因。</p>
+
+                <p>但它不能——协调多个部门资源、决定优先生产哪个客户订单、处理突发事故、管理人员情绪和冲突、对生产结果负责。</p>
+
+                <p>AI 说「A 订单延期风险 80%，建议调整排产」。</p>
+
+                <p>生产经理知道「这个客户是战略客户，必须优先交付，牺牲 B 订单」。</p>
+
+                <p>这是<strong>业务权衡</strong>，不是数据分析。</p>
+
+                <h3>工艺工程师 PE</h3>
+
+                <p>AI 可以查历史工艺参数、推荐类似案例、检索 SOP、分析异常趋势。</p>
+
+                <p>但它不能——新产品工艺设计、参数优化实验、工艺创新、现场调试。</p>
+
+                <p>AI 说「建议温度调整到 220℃」。</p>
+
+                <p>工程师发现「这个材料批次特殊，需要重新验证」。</p>
+
+                <h3>设备工程师 / 维修工程师</h3>
+
+                <p>AI 可以预测故障、分析振动数据、提醒维护周期、推荐维修方案。</p>
+
+                <p>但它不能——拆设备、判断机械异常、现场维修、改造设备。</p>
+
+                <p>未来的变化是：</p>
+
+                <blockquote>
+                    以前：坏了再修。<br>
+                    以后：AI 说「72 小时后可能故障」，工程师提前处理。
+                </blockquote>
+
+                <h3>研发工程师</h3>
+
+                <p>AI 可以搜索技术资料、生成设计方案、辅助仿真、写技术文档。</p>
+
+                <p>但不能——产品方向判断、创新设计、工程取舍。</p>
+
+                <p>客户要「一个更轻、更强、更便宜的零件」。AI 可以提供方案，但<strong>成本 vs 性能 vs 可制造性</strong>的权衡，还是工程师做决定。</p>
+
+                <h3>采购经理 &amp; 销售经理</h3>
+
+                <p>AI 可以分析价格、预测缺料、自动比价、生成采购报告。</p>
+
+                <p>但不能——商务谈判、建立供应商关系、判断供应商靠不靠谱。</p>
+
+                <p>制造业采购很多时候不是最低价格最好。大订单很多靠老板和销售的长期关系。</p>
+
+                <h3>质量经理 &amp; 班组长</h3>
+
+                <p>质量经理的最终质量判断、客诉处理、供应商质量谈判——全是 AI 接不了的班。</p>
+
+                <p>班组长的现场协调、安全管理、临时处理问题——这些「场上的感觉」也是 AI 做不到的。</p>
+
+                <h3>企业管理层（CEO / 总经理）</h3>
+
+                <p>AI 可以给经营分析、财务分析、市场信息整理、风险预测。</p>
+
+                <p>但不做战略选择、企业文化建设、投资决策、不承担风险。</p>
+
+                <!-- ============ 一张表说清楚 ============ -->
+
+                <h2>一张表说清楚</h2>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>岗位</th>
+                            <th>AI 替代程度</th>
+                            <th>未来变化</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>数据录入员</td>
+                            <td style="color:#fff;">★★★★★</td>
+                            <td>大量减少</td>
+                        </tr>
+                        <tr>
+                            <td>报表分析员</td>
+                            <td style="color:#fff;">★★★★</td>
+                            <td>转型业务分析</td>
+                        </tr>
+                        <tr>
+                            <td>计划员</td>
+                            <td style="color:#fff;">★★★</td>
+                            <td>变成 AI 辅助计划</td>
+                        </tr>
+                        <tr>
+                            <td>质量分析员</td>
+                            <td style="color:#fff;">★★★</td>
+                            <td>AI 增强</td>
+                        </tr>
+                        <tr>
+                            <td>采购专员</td>
+                            <td style="color:#fff;">★★</td>
+                            <td>保留谈判</td>
+                        </tr>
+                        <tr>
+                            <td>销售</td>
+                            <td style="color:#fff;">★★</td>
+                            <td>AI 辅助</td>
+                        </tr>
+                        <tr>
+                            <td>工艺工程师</td>
+                            <td style="color:#fff;">★</td>
+                            <td>能力增强</td>
+                        </tr>
+                        <tr>
+                            <td>设备工程师</td>
+                            <td style="color:#fff;">★</td>
+                            <td>预测维修</td>
+                        </tr>
+                        <tr>
+                            <td>生产经理</td>
+                            <td style="color:#fff;">★</td>
+                            <td>决策增强</td>
+                        </tr>
+                        <tr>
+                            <td>厂长 / 老板</td>
+                            <td style="color:#fff;">★</td>
+                            <td>经营增强</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>注意一个模式：</p>
+
+                <p><strong>替代强度越高的岗位，本来就是「信息处理型」工作的比例越高。</strong></p>
+
+                <p>这就是我的架构真正对应的市场定位——<strong>不是机器人替代工人，而是把企业里大量靠 Excel、微信群、人工查询维持运转的知识工作自动化。</strong></p>
+
+                <!-- ============ 如果站在老板角度 ============ -->
+
+                <h2>如果站在老板角度</h2>
+
+                <p>他买这个系统，不是为了裁员，而是为了：</p>
+
+                <p><strong>以前：</strong></p>
+
+                <div class="code-block">
+10 个人
+每天 80% 时间找数据
+20% 时间做决策
+                </div>
+
+                <p><strong>变成：</strong></p>
+
+                <div class="code-block" style="color:#8f8;">
+10 个人
+20% 时间找数据
+80% 时间解决问题
+                </div>
+
+                <p>或者：一个生产经理可以管理更多产线。</p>
+
+                <p>商业价值不是「少雇了几个人」，而是 <strong>「同样的人，产出了乘以几倍的价值。」</strong></p>
+
+                <!-- ============ 第一批被改变的 ============ -->
+
+                <h2>第一批被改变的，不是工人</h2>
+
+                <p>我上一篇架构文章讲的是 <strong>技术架构</strong>——数据层、知识层、Ontology、Tool 封装、MCP、LangGraph。</p>
+
+                <p>这篇讲的是 <strong>人的架构</strong>——从岗位上拆解来看，AI 到底拿走了什么、留下了什么。</p>
+
+                <p>从我的架构角度看，<strong>第一批被改变的不是「工人」，而是制造企业里的白领知识岗位：</strong></p>
+
+                <p>以前是 <strong>人花 80% 时间找数据、做表格、写报告。</strong></p>
+
+                <p>以后是 <strong>AI 花 80% 时间整理分析，人负责判断和执行。</strong></p>
+
+                <p>所以这个架构最适合切入的客户，不应该宣传「替代员工」，而应该宣传：</p>
+
+                <blockquote>
+                    <strong>「让一个生产经理、质量经理、供应链经理拥有一个懂企业数据的 AI 助理。」</strong>
+                </blockquote>
+
+                <p>这个定位更容易被制造企业接受。</p>
+
+                <p>制造业 AI 第一批落地通常不是机器人，而是「数字员工」。</p>
+
+                <p>因为在很多工厂里，<strong>先死在 Excel 里的，不是流水线上的工人，而是办公室里那帮做表做到凌晨的人。</strong></p>
+
+                <p>先救他们。</p>
+
+            </div>
+
+
+            <footer class="cta-footer">
+                <h3>正在探索企业 AI 落地？</h3>
+                <p class="cta-sub">提供一次 AI 落地可行性评估</p>
+
+                <div class="cta-grid" style="grid-template-columns:1fr;max-width:480px;margin:0 auto 36px;">
+                    <div class="cta-col" style="text-align:center;">
+                        <ul style="display:inline-block;text-align:left;">
+                            <li>✓ <strong style="color:#fff;">AI 场景可行性分析</strong></li>
+                            <li>✓ <strong style="color:#fff;">企业数据能力评估</strong></li>
+                            <li>✓ <strong style="color:#fff;">Agent 落地路线建议</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cta-qr-wrap">
+                    <img src="wechat.png" alt="扫码添加微信 AI 咨询" width="120" height="120" loading="lazy">
+                    <p>扫码联系 · 备注「AI咨询」</p>
+                </div>
+
+                <div style="margin-top:32px;padding-top:24px;border-top:1px solid #222;text-align:center;">
+                    <a href="about.html" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #333;border-radius:8px;padding:10px 20px;font-size:13px;color:#888;background:rgba(0,0,0,0.4);transition:0.3s;">
+                        <span>了解更多 →</span>
+                        <span style="color:#666;font-size:11px;">关于 GeekHeron</span>
+                    </a>
+                </div>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        (function(){
+            var hamburger = document.querySelector('.hamburger');
+            var navLinks = document.querySelector('.nav-links');
+            if(hamburger) hamburger.addEventListener('click', function(){ hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        })();
+
+        var canvas = document.getElementById('galaxy-field');
+        var ctx = canvas.getContext('2d');
+        var width, height;
+        var particles = [];
+        var numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        function Particle() {
+            this.x = Math.random() * width; this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+            this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+        }
+        Particle.prototype.update = function() {
+            this.x += this.vx; this.y += this.vy;
+            if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+            if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+        };
+        Particle.prototype.draw = function() {
+            ctx.fillStyle = 'rgba(255,255,255,' + this.alpha + ')';
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        };
+        function init() { resize(); for(var i=0;i<numParticles;i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0,0,width,height); particles.forEach(function(p){p.update();p.draw();}); requestAnimationFrame(animate); }
+        window.addEventListener('resize', function(){ resize(); particles.length=0; init(); });
+        init(); animate();
+</script>
+    <script src="site-nav.js"></script>
+</body>
+</html>

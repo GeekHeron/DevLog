@@ -685,6 +685,22 @@
                 grid-template-columns: 1fr !important;
             }
         }
+            /* 移动端：flow-wrap SVG溢出隐藏 */
+            .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
+            
+            /* 移动端：合作流程标签间距 */
+            .section-block .flex-wrap-tags { gap: 6px; }
+            
+            /* 移动端：section 09 服务卡片紧凑 */
+            .service-card { padding: 14px !important; }
+            
+            /* 移动端：section 08 案例折叠 */
+            .section-block details { margin-top: 12px; }
+            .section-block details summary { font-size: 12px; padding: 10px 16px; }
+            
+            /* 移动端：section 04 场景标签 */
+            .trust-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+        
 
         /* 尊重用户的“减少动画”系统设置 */
         @media (prefers-reduced-motion: reduce) {
@@ -1035,7 +1051,7 @@
 
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">从数据接入到 Agent 编排，覆盖企业 AI 落地的完整分层架构。</p>
                 <div class="flow-wrap" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                    <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" style="min-width: 500px; width:100%; height:auto; display:block;" role="img" aria-labelledby="arch-title arch-desc">
+                    <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" style="min-width: 320px; width:100%; height:auto; display:block;" role="img" aria-labelledby="arch-title arch-desc">
                         <title id="arch-title">企业 AI 完整架构图</title>
                         <desc id="arch-desc">七层架构：数据源 → 数据治理层 → Tool/MCP层 → 知识层 → 治理层 → Agent编排层 → 用户界面</desc>
                         <defs>

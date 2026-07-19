@@ -1274,7 +1274,169 @@
             </section>
 
             <section class="section-block">
-                <h3 class="section-title">06 / 常见问题</h3>
+                <h3 class="section-title">06 / 企业 AI 完整架构图</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">从数据接入到 Agent 编排，覆盖企业 AI 落地的完整分层架构。</p>
+
+                <div class="flow-wrap" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                    <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" style="min-width: 500px; width:100%; height:auto; display:block;" role="img" aria-labelledby="arch-title arch-desc">
+                        <title id="arch-title">企业 AI 完整架构图</title>
+                        <desc id="arch-desc">七层架构：数据源 → 数据治理层 → Tool/MCP层 → 知识层 → 治理层 → Agent编排层 → 用户界面</desc>
+
+                        <defs>
+                            <marker id="arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#ffd700"></path>
+                            </marker>
+                            <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#555"></path>
+                            </marker>
+                            <linearGradient id="arch-bg" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(255,255,255,0.03)"/>
+                                <stop offset="100%" stop-color="rgba(255,255,255,0.06)"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- 背景框 -->
+                        <rect x="0" y="0" width="760" height="640" rx="12" fill="rgba(255,255,255,0.015)" stroke="#222" stroke-width="1"/>
+
+                        <!-- ====== 第 7 层：用户入口 ====== -->
+                        <g>
+                            <rect x="230" y="18" width="300" height="44" rx="8" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.3)" stroke-width="1.2"/>
+                            <text x="380" y="38" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Helvetica, Arial, sans-serif">👤 企业 AI 助手</text>
+                            <text x="380" y="53" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">飞书 / 钉钉 / Web 统一入口</text>
+                        </g>
+
+                        <!-- 连接线 7→6 -->
+                        <line x1="380" y1="62" x2="380" y2="88" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+
+                        <!-- ====== 第 6 层：Agent 编排层 ====== -->
+                        <g>
+                            <rect x="180" y="88" width="400" height="52" rx="8" fill="url(#arch-bg)" stroke="#ffd700" stroke-width="1.2"/>
+                            <text x="380" y="110" text-anchor="middle" fill="#ffd700" font-size="12" font-weight="800" font-family="Helvetica, Arial, sans-serif">🧠 Agent 编排层</text>
+                            <text x="380" y="128" text-anchor="middle" fill="#bbb" font-size="11" font-family="Helvetica, Arial, sans-serif">LangGraph / LangChain · 多 Agent 协同 · 有状态工作流</text>
+                        </g>
+
+                        <!-- 连接线 6→5 -->
+                        <line x1="380" y1="140" x2="380" y2="166" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+
+                        <!-- ====== 第 5 层：治理层 ====== -->
+                        <g>
+                            <rect x="180" y="166" width="400" height="52" rx="8" fill="url(#arch-bg)" stroke="#555" stroke-width="1"/>
+                            <text x="380" y="188" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Helvetica, Arial, sans-serif">⚙️ Agent 运行治理层</text>
+                            <text x="380" y="206" text-anchor="middle" fill="#999" font-size="11" font-family="Helvetica, Arial, sans-serif">Trace · Logging · 成本追踪 · 质量评分 · 反馈闭环</text>
+                        </g>
+
+                        <!-- 连接线 5→MCP -->
+                        <line x1="380" y1="218" x2="380" y2="244" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+
+                        <!-- ====== MCP 协议层 ====== -->
+                        <g>
+                            <rect x="200" y="244" width="360" height="40" rx="6" fill="rgba(255,215,0,0.04)" stroke="rgba(255,215,0,0.2)" stroke-dasharray="4 3" stroke-width="1.2"/>
+                            <text x="380" y="262" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" font-family="Helvetica, Arial, sans-serif">🔌 MCP 协议层</text>
+                            <text x="380" y="276" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">标准化 Agent ↔ 企业数据接口</text>
+                        </g>
+
+                        <!-- 3 条分支竖线 -->
+                        <line x1="180" y1="284" x2="180" y2="320" stroke="#555" stroke-width="1"/>
+                        <line x1="380" y1="284" x2="380" y2="320" stroke="#555" stroke-width="1"/>
+                        <line x1="580" y1="284" x2="580" y2="320" stroke="#555" stroke-width="1"/>
+                        <!-- 横线合并 -->
+                        <line x1="180" y1="320" x2="580" y2="320" stroke="#555" stroke-width="1"/>
+                        <!-- 下连线 -->
+                        <line x1="180" y1="320" x2="180" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <line x1="380" y1="320" x2="380" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <line x1="580" y1="320" x2="580" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+
+                        <!-- ====== 第 4 层：3 列 ====== -->
+                        <!-- Tool 封装 -->
+                        <g>
+                            <rect x="80" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/>
+                            <text x="180" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Helvetica, Arial, sans-serif">🛠 Tool 封装</text>
+                            <text x="180" y="376" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">MES / ERP / WMS / PLM</text>
+                            <text x="180" y="390" text-anchor="middle" fill="#888" font-size="9" font-family="Helvetica, Arial, sans-serif">只读从库 · 行级权限</text>
+                        </g>
+
+                        <!-- RAG 知识检索 -->
+                        <g>
+                            <rect x="280" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/>
+                            <text x="380" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Helvetica, Arial, sans-serif">📚 RAG 知识检索</text>
+                            <text x="380" y="376" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">向量检索 + 知识图谱</text>
+                            <text x="380" y="390" text-anchor="middle" fill="#888" font-size="9" font-family="Helvetica, Arial, sans-serif">Milvus / pgvector / Neo4j</text>
+                        </g>
+
+                        <!-- Memory -->
+                        <g>
+                            <rect x="480" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/>
+                            <text x="580" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Helvetica, Arial, sans-serif">💾 Memory</text>
+                            <text x="580" y="376" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">对话上下文 · 用户画像</text>
+                            <text x="580" y="390" text-anchor="middle" fill="#888" font-size="9" font-family="Helvetica, Arial, sans-serif">状态持久化</text>
+                        </g>
+
+                        <!-- 3 条下连线 -->
+                        <line x1="180" y1="398" x2="180" y2="424" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <line x1="380" y1="398" x2="380" y2="424" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <line x1="580" y1="398" x2="580" y2="424" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+
+                        <!-- ====== 第 3 层：数据治理层 ====== -->
+                        <g>
+                            <rect x="140" y="424" width="480" height="50" rx="8" fill="url(#arch-bg)" stroke="#555" stroke-width="1"/>
+                            <text x="380" y="446" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Helvetica, Arial, sans-serif">🔧 数据治理层</text>
+                            <text x="380" y="464" text-anchor="middle" fill="#999" font-size="11" font-family="Helvetica, Arial, sans-serif">数据接入 · 清洗标准化 · 本体建模 · 权限 &amp; 审计</text>
+                        </g>
+
+                        <!-- 连接线 3→2 -->
+                        <line x1="380" y1="474" x2="380" y2="500" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+
+                        <!-- ====== 第 2 层：数据源标题 ====== -->
+                        <g>
+                            <rect x="40" y="500" width="680" height="30" rx="6" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="380" y="520" text-anchor="middle" fill="#999" font-size="10" font-weight="600" font-family="Helvetica, Arial, sans-serif" letter-spacing="2">企业数据源</text>
+                        </g>
+
+                        <!-- ====== 第 1 层：8 个数据源 ====== -->
+                        <g>
+                            <rect x="40" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="79" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">MES</text>
+                        </g>
+                        <g>
+                            <rect x="126" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="165" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">ERP</text>
+                        </g>
+                        <g>
+                            <rect x="212" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="251" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">CRM</text>
+                        </g>
+                        <g>
+                            <rect x="298" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="337" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">PLM</text>
+                        </g>
+                        <g>
+                            <rect x="384" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="423" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">WMS</text>
+                        </g>
+                        <g>
+                            <rect x="470" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="509" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">IoT</text>
+                        </g>
+                        <g>
+                            <rect x="556" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="595" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">文件</text>
+                        </g>
+                        <g>
+                            <rect x="642" y="536" width="78" height="42" rx="4" fill="rgba(255,255,255,0.02)" stroke="#333" stroke-width="1"/>
+                            <text x="681" y="562" text-anchor="middle" fill="#ccc" font-size="11" font-family="Helvetica, Arial, sans-serif">钉钉</text>
+                        </g>
+
+                        <!-- 底部说明 -->
+                        <text x="380" y="608" text-anchor="middle" fill="#555" font-size="10" font-family="Helvetica, Arial, sans-serif">每一层独立部署、独立演进，上游层不关心下游实现细节</text>
+                        <text x="380" y="626" text-anchor="middle" fill="#444" font-size="9" font-family="Helvetica, Arial, sans-serif">全栈交付 = 数据治理 + 知识建模 + Tool 封装 + Agent 编排 + 可观测治理</text>
+
+                    </svg>
+                </div>
+
+            </section>
+
+            <section class="section-block">
+                <h3 class="section-title">07 / 常见问题</h3>
                 <div class="faq-list">
                     <details class="faq-item">
                         <summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary>

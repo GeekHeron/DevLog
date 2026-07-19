@@ -107,6 +107,21 @@
             outline-offset: 3px;
         }
 
+        /* 时钟样式 */
+        #clock {
+            font-family: "SF Mono", "Cascadia Code", "JetBrains Mono", monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            cursor: default;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        #clock:hover {
+            color: #fff;
+        }
+
         /* Visually hidden text that remains accessible */
         .visually-hidden {
             position: absolute; width: 1px; height: 1px;
@@ -764,7 +779,7 @@
             </ul>
         </nav>
 
-        <div class="header-right" id="clock">T+00: 00: 00</div>
+        <div class="header-right" id="clock">--:--:--</div>
     </header>
 
     <main class="container">
@@ -801,13 +816,15 @@
                     </div>
 
                     <div class="social-item">
-                        <img src="wechat.png" alt="Scan to add GeekHeron on WeChat for business inquiries" class="social-qr" width="100" height="100" loading="lazy">
+                        <a href="weixin://" target="_blank" rel="noopener noreferrer" aria-label="Contact Wang Jianfeng on WeChat">
+                            <img src="wechat.png" alt="Scan to add GeekHeron on WeChat for business inquiries" class="social-qr" width="100" height="100" loading="lazy">
+                        </a>
                         <p class="social-text">WeChat</p>
                     </div>
 
                     <div class="social-item">
                         <a href="https://wa.me/00000000000" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron on WhatsApp">
-                            <img src="WhatApp.png" alt="Scan or click to add GeekHeron on WhatsApp" class="social-qr" width="100" height="100" loading="lazy">
+                            <img src="WhatApp.png" alt="Scan to add GeekHeron on WhatsApp" class="social-qr" width="100" height="100" loading="lazy">
                         </a>
                         <p class="social-text">WhatsApp</p>
                     </div>
@@ -915,28 +932,7 @@
             <section class="section-block">
                 <h3 class="section-title">Featured Case Studies</h3>
                 <p class="testimonials-subtitle" style="margin-bottom: 24px;">Real project deliveries from cross-border e-commerce and brand sellers.</p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 30px;">
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 12px; text-align: center;">
-                        <span style="display: block; font-size: 24px; font-weight: 800; color: var(--gold);">8+</span>
-                        <span style="display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Production Automation Modules</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 12px; text-align: center;">
-                        <span style="display: block; font-size: 24px; font-weight: 800; color: var(--gold);">10+</span>
-                        <span style="display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Business Data Sources Connected</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 12px; text-align: center;">
-                        <span style="display: block; font-size: 24px; font-weight: 800; color: var(--gold);">2h→5min</span>
-                        <span style="display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Daily Manual Work Compressed</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 12px; text-align: center;">
-                        <span style="display: block; font-size: 24px; font-weight: 800; color: var(--gold);">0</span>
-                        <span style="display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Days of Business Downtime from API Failure</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 12px; text-align: center;">
-                        <span style="display: block; font-size: 24px; font-weight: 800; color: var(--gold);">100%</span>
-                        <span style="display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Private Deployment Supported</span>
-                    </div>
-                </div>
+
                 <div class="testimonial-grid">
 
                     <!-- Case 1: Ads + Inventory -->
@@ -1400,7 +1396,26 @@
             'use strict';
 
             /* ---------------------------------------------------------
-             * 0. Email address obfuscation: avoid exposing plaintext in HTML source
+             * 0. Live clock: display Beijing time in top-right header
+             * ------------------------------------------------------- */
+            var clockEl = document.getElementById('clock');
+            if (clockEl) {
+                function pad(n) {
+                    return n < 10 ? '0' + n : '' + n;
+                }
+                function updateClock() {
+                    var now = new Date();
+                    var h = pad(now.getHours());
+                    var m = pad(now.getMinutes());
+                    var s = pad(now.getSeconds());
+                    clockEl.textContent = h + ':' + m + ':' + s;
+                }
+                updateClock();
+                setInterval(updateClock, 1000);
+            }
+
+            /* ---------------------------------------------------------
+             * 1. Email address obfuscation: avoid exposing plaintext in HTML source
              * ------------------------------------------------------- */
             function buildMailto() {
                 var user = ['G', 'e', 'e', 'k', 'H', 'e', 'r', 'o', 'n'].join('');

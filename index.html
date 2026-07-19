@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>DevLog · 关于系统、AI 与判断的记录</title>
+    
+    <meta name="description" content="GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。">
+    
+    <meta name="keywords" content="GeekHeron, AI 自动化, Agent Workflow, 企业系统集成, 私有化部署, 跨境电商自动化, OpenClaw, 全栈开发">
+    <link rel="canonical" href="https://geekheron.space/">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DevLog · 关于系统、AI 与判断的记录">
+    <meta property="og:description" content="GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。">
+    <meta property="og:image" content="logo.png"> 
+    <meta property="og:url" content="https://geekheron.space/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "王鉴锋",
+  "additionalName": "GeekHeron",
+  "image": "https://geekheron.space/image_3.png",
+  "url": "https://geekheron.space/index.html",
+  "jobTitle": "独立开发者 / 数字化博主",
+  "description": "鹭栖数字潮汐，静观算力涌动。",
+  "sameAs": [
+    "https://github.com/GeekHeron",
+    "https://x.com/GeekHeron",
+    "https://linkedin.com/in/geekheron"
+  ]
+}
+</script>
+    
+    <style>
+        /* --- 全局设置 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden; 
+            height: 100vh;
+            width: 100vw;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            transition: opacity 0.3s;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        /* --- SEO 专用隐形样式 (SR-Only Pattern) --- */
+        .seo-visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* --- 背景层 --- */
+        #galaxy-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            filter: blur(0.4px); /* 极轻微的模糊，消除颗粒感，增加晕染效果 */
+            mix-blend-mode: screen; /* 让流星和粒子的亮部融合得更自然 */
+        }
+
+        .overlay-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #000 35%, rgba(0,0,0,0.6) 60%, transparent 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- 导航栏 --- */
+        header.site-header {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 100;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(0, 0, 0, 0.2); 
+            backdrop-filter: blur(2px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            font-size: 13px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .header-right {
+            font-family: monospace;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* --- 汉堡菜单按钮 --- */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 102; 
+            width: 30px;
+            height: 20px;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            position: absolute;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+
+        .hamburger.active span:nth-child(1) {
+            top: 9px;
+            transform: rotate(45deg);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            top: 9px;
+            transform: rotate(-45deg);
+        }
+
+        /* --- 主视觉区域 --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 12%;
+            z-index: 10;
+        }
+
+        .content {
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 60px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            color: #fff;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        p.subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #ddd;
+            margin-bottom: 40px;
+            font-weight: 300;
+            min-height: 60px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #fff;
+            margin-left: 5px;
+            transform: translateY(3px);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .btn {
+            display: inline-block;
+            border: 2px solid #fff;
+            padding: 14px 40px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0; 
+            animation: fadeIn 1s ease-out 3s forwards; 
+        }
+
+        /* --- 最新文章卡片 --- */
+        .latest-article {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 4s forwards;
+        }
+        .latest-article a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 13px;
+            color: #aaa;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .latest-article a:hover {
+            border-color: #6af;
+            color: #fff;
+            background: rgba(0,20,40,0.8);
+        }
+        .latest-article .la-label {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: monospace;
+        }
+        .latest-article .la-title {
+            font-weight: 600;
+            color: #ddd;
+        }
+        .latest-article .la-arrow {
+            font-size: 14px;
+            color: #666;
+        }
+        .latest-article a:hover .la-arrow {
+            color: #6af;
+        }
+
+        @media (max-width: 768px) {
+            .latest-article {
+                bottom: 80px;
+                left: 20px;
+                right: 20px;
+                transform: none;
+            }
+            .latest-article a {
+                width: 100%;
+                justify-content: center;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+            .latest-article .la-label { display: none; }
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HUD 装饰 --- */
+        .hud-decoration {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            text-align: right;
+            font-family: monospace;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 11px;
+            z-index: 20;
+            pointer-events: none;
+            animation: fadeIn 2s ease-out 1s backwards;
+        }
+
+        .hud-line {
+            width: 120px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            margin-left: auto;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .hud-line::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -2px;
+            width: 5px;
+            height: 5px;
+            background: #fff;
+        }
+
+        .hud-data span {
+            display: block;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        
+            .btn-accent {
+                border-color: #00aaff;
+                color: #00aaff;
+            }
+            .btn-accent:hover {
+                background-color: #00aaff;
+                color: #000;
+            }
+
+/* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .header-right { display: none; }
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px); 
+                z-index: 101; 
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(100%);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            nav.active { transform: translateX(0); }
+            nav ul { flex-direction: column; gap: 50px; text-align: center; }
+            nav ul li a { font-size: 24px; font-weight: 800; letter-spacing: 2px; }
+            .hero { padding-left: 20px; padding-right: 20px; justify-content: center; text-align: center; }
+            .overlay-gradient { background: linear-gradient(to top, #000 30%, rgba(0,0,0,0.5) 60%, transparent 100%); }
+            h1 { font-size: 40px; }
+            .hud-decoration { display: none; }
+        }
+    </style>
+    <link rel="stylesheet" href="site-nav.css">
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-gradient"></div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right" id="clock">T+00: 00: 00</div>
+    </header>
+
+    <main class="hero">
+        <div class="content">
+            <h1>洞察技术背后的<br>逻辑与力量</h1>
+            <p class="subtitle" id="typing-text"></p>
+            <div style="display: flex; gap: 20px; opacity: 0; animation: fadeIn 1s ease-out 3s forwards; flex-wrap: wrap;">
+                <a href="works.html" class="btn">查看商业案例</a>
+                <a href="article.html" class="btn">深度分析</a>
+            </div>
+        </div>
+        
+        <article class="seo-visually-hidden">
+            <h1>关于系统、AI 与判断的长期记录</h1>
+            <p>
+                这是一个个人技术与认知博客，持续记录我在复杂系统、AI 应用、
+                LLM 协作与工程判断中的思考与实践。
+            </p>
+            <p>
+                这里不讨论教程或趋势，而关注那些更难被量化的问题：
+                为什么系统会失败、哪些假设被高估、以及人在决策中真正承担的角色。
+            </p>
+            <p>
+                文章内容以判断为导向，强调可反驳性与长期有效性，
+                适合对技术、架构与决策质量有要求的读者。
+            </p>
+        </article>
+    </main>
+
+    <div class="latest-article">
+        <a href="article-manufacturing-ai-not-replacement.html">
+            <span class="la-label">Latest</span>
+            <span class="la-title">制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动</span>
+            <span class="la-arrow">→</span>
+        </a>
+    </div>
+
+    <div class="hud-decoration">
+        <div class="hud-line"></div>
+        <div class="hud-data">
+            <span>SYS.STATUS: ONLINE</span>
+            <span>MEM: 64TB / VISUAL: RETINA</span>
+            <span id="user-location">LOC: FETCHING... / GEO.SYNC</span>
+            <span id="fps-counter">FRAME: --FPS</span>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 打字机效果模块 ---
+        const textToType = "技术真正的价值，不在于展示智能，而在于稳定运行于真实业务。GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。";
+        const typeElement = document.getElementById('typing-text');
+        let typeIndex = 0;
+        function typeWriter() {
+            if (typeIndex < textToType.length) {
+                typeElement.innerHTML = textToType.substring(0, typeIndex + 1) + '<span class="cursor"></span>';
+                typeIndex++;
+                setTimeout(typeWriter, Math.floor(Math.random() * 30) + 30);
+            } else {
+                typeElement.innerHTML = textToType + '<span class="cursor"></span>';
+            }
+        }
+        setTimeout(typeWriter, 1200);
+
+        // --- 4. 粒子与流星动画模块 ---
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 12000; // 性能优化：从 4000 降至 1200，保障多端流畅度
+        const fieldOfView = 300; 
+        const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
+
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = (Math.random() - 0.5) * width * 2.5; 
+                this.y = (Math.random() - 0.5) * height * 2.5; 
+                this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
+                this.radius = Math.random() * 1.2 + 0.2; 
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                let cosZ = Math.cos(0.0005);
+                let sinZ = Math.sin(0.0005);
+                let tempX = this.x;
+                this.x = tempX * cosZ - this.y * sinZ;
+                this.y = tempX * sinZ + this.y * cosZ;
+                this.z -= 0.2; 
+                if (this.z < -fieldOfView) { this.z += fieldOfView * 2; }
+            }
+            draw() {
+                const perspective = fieldOfView / (fieldOfView + this.z);
+                const projectedX = (this.x * perspective) + width / 2;
+                const projectedY = (this.y * perspective) + height / 2;
+                const projectedRadius = this.radius * perspective;
+                const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
+                if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
+                    ctx.beginPath();
+                    ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${opacity})`;
+                    ctx.fill();
+                }
+            }
+        }
+
+        class ShootingStar {
+            constructor() { this.reset(); this.active = false; }
+            reset() {
+                this.x = Math.random() * width + 200; 
+                this.y = Math.random() * height * 0.3 - 200; 
+                this.speed = Math.random() * 10 + 15;
+                this.len = Math.random() * 80 + 150;
+                this.size = Math.random() * 1 + 0.5;
+                this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
+                this.active = true;
+            }
+            update() {
+                if (!this.active) return;
+                this.x -= this.speed * Math.cos(this.angle);
+                this.y += this.speed * Math.sin(this.angle);
+                if (this.x < -this.len || this.y > height + this.len) this.active = false;
+            }
+            draw() {
+                if (!this.active) return;
+                const tailX = this.x + this.len * Math.cos(this.angle);
+                const tailY = this.y - this.len * Math.sin(this.angle);
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+                gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+                ctx.beginPath();
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.size;
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+            }
+        }
+
+        const meteors = [new ShootingStar(), new ShootingStar(), new ShootingStar()];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+        }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (Math.random() < 0.008) {
+                const m = meteors.find(m => !m.active);
+                if (m) m.reset();
+            }
+            meteors.forEach(m => { m.update(); m.draw(); });
+            requestAnimationFrame(animate);
+        }
+        resize();
+        initParticles();
+        animate();
+
+        // --- 5. 地理位置模块（优化版：采用免授权 IP 定位，提升留存与风骨） ---
+        function initLocation() {
+            const locElement = document.getElementById('user-location');
+            if (!locElement) return;
+
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latitude && data.longitude) {
+                        const lat = data.latitude;
+                        const lon = data.longitude;
+                        const latDir = lat >= 0 ? 'N' : 'S';
+                        const lonDir = lon >= 0 ? 'E' : 'W';
+                        locElement.textContent = `LOC: ${Math.abs(lat).toFixed(2)}${latDir}, ${Math.abs(lon).toFixed(2)}${lonDir} / GEO.SYNC`;
+                    } else {
+                        locElement.textContent = `LOC: PROXY.DETECTED / MASKED`;
+                    }
+                })
+                .catch(() => {
+                    locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
+                });
+        }
+        initLocation();
+
+        // --- 6. 真实 FPS 监听模块（让 HUD 的 60FPS 真正动起来） ---
+        function initFPSCounter() {
+            const fpsElement = document.getElementById('fps-counter');
+            if (!fpsElement) return;
+
+            let lastCalledTime;
+            let counter = 0;
+
+            function fpsLoop() {
+                if (!lastCalledTime) {
+                    lastCalledTime = performance.now();
+                    counter = 0;
+                    requestAnimationFrame(fpsLoop);
+                    return;
+                }
+                
+                counter++;
+                const delta = (performance.now() - lastCalledTime) / 1000;
+
+                if (delta >= 1) { 
+                    const fps = Math.round(counter / delta);
+                    fpsElement.textContent = `FRAME: ${fps}FPS`;
+                    counter = 0;
+                    lastCalledTime = performance.now();
+                }
+                requestAnimationFrame(fpsLoop);
+            }
+            requestAnimationFrame(fpsLoop);
+        }
+        initFPSCounter();
+    </script>
+    <script src="site-nav.js"></script>
+</body>
+</html>

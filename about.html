@@ -752,9 +752,18 @@
             .arch-grid { grid-template-columns: 1fr; }
             .section-block .three-col-grid { grid-template-columns: 1fr !important; }
 
-            /* SVG 溢出滚动 */
+            /* SVG 溢出滚动 — 保留原始尺寸让文字清晰，可左右滑动 */
             .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
-            .flow-wrap svg { max-width: none; }
+            .flow-wrap svg { max-width: none; min-width: 0; }
+            .flow-wrap::after {
+                content: '← 左右滑动查看 →';
+                display: block;
+                text-align: center;
+                font-size: 11px;
+                color: #555;
+                padding: 6px 0 2px;
+                letter-spacing: 1px;
+            }
 
             /* 服务卡片紧凑 */
             .service-card { padding: 14px !important; }
@@ -767,36 +776,16 @@
             .section-block { margin-bottom: 50px; }
             .content-section { padding-top: 0; }
 
-            /* SVG 溢出滚动 */
-            .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
-            .flow-wrap svg { max-width: none; }
-
-            /* 服务卡片紧凑 */
-            .service-card { padding: 14px !important; }
-
-            /* 折叠面板适配 */
-            .section-block details { margin-top: 10px; }
-            .section-block details summary { font-size: 12px; padding: 10px 14px; }
-
-            /* 内容间距微调 */
-            .section-block { margin-bottom: 50px; }
-            .content-section { padding-top: 0; }
-        }
-            /* 移动端：flow-wrap SVG溢出隐藏 */
-            .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
-            
-            /* 移动端：合作流程标签间距 */
+            /* 合作流程标签间距 */
             .section-block .flex-wrap-tags { gap: 6px; }
-            
-            /* 移动端：section 09 服务卡片紧凑 */
-            .service-card { padding: 14px !important; }
-            
-            /* 移动端：section 08 案例折叠 */
+
+            /* case折叠卡片紧凑 */
             .section-block details { margin-top: 12px; }
             .section-block details summary { font-size: 12px; padding: 10px 16px; }
-            
-            /* 移动端：section 04 场景标签 */
+
+            /* 场景标签 */
             .trust-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+        }
         
 
         /* 尊重用户的“减少动画”系统设置 */
@@ -805,11 +794,6 @@
             .cursor { animation: none; }
             * { scroll-behavior: auto !important; }
         }
-            /* 移动端补充 */
-            .three-col-grid { grid-template-columns: 1fr !important; }
-            .flow-wrap { padding: 0; }
-
-    
 
 </style>
     <link rel="stylesheet" href="site-nav.css">
@@ -1035,7 +1019,7 @@
             <section class="section-block">
                 <h3 class="section-title">03 / 企业AI系统如何工作</h3>
                 <div class="flow-wrap">
-                    <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img">
+                    <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; min-width:500px; height:auto; display:block;" role="img">
                         <defs>
                             <marker id="arr-sm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
                                 <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
@@ -1077,7 +1061,7 @@
                     系统都遵循相同的四段式结构：
                 </p>
                 <div class="flow-wrap">
-                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img" aria-labelledby="flow-title flow-desc">
+                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; min-width:600px; height:auto; display:block;" role="img" aria-labelledby="flow-title flow-desc">
                         <title id="flow-title">FDE 全栈交付流程图</title>
                         <desc id="flow-desc">数据采集经 Agent 决策后进入业务执行，异常或高风险情况通过人工回环确认，形成闭环。</desc>
                         <defs>
@@ -1119,7 +1103,7 @@
                 
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">从数据接入到 Agent 编排，覆盖企业 AI 落地的完整分层架构。</p>
                 <div class="flow-wrap" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                    <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" style="min-width: 320px; width:100%; height:auto; display:block;" role="img" aria-labelledby="arch-title arch-desc">
+                    <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" style="min-width: 600px; width:100%; height:auto; display:block;" role="img" aria-labelledby="arch-title arch-desc">
                         <title id="arch-title">企业 AI 完整架构图</title>
                         <desc id="arch-desc">七层架构：数据源 → 数据治理层 → Tool/MCP层 → 知识层 → 治理层 → Agent编排层 → 用户界面</desc>
                         <defs>

@@ -235,6 +235,10 @@
             animation: pulse-glow 3s infinite;
         }
 
+        .pulse-avatar {
+            animation-duration: 6s;
+        }
+
         .avatar-image.img-error { display: none; }
         .avatar-image.img-error + .avatar-fallback { display: flex; }
         .avatar-fallback {
@@ -839,7 +843,7 @@
 
         <aside class="profile-section">
             <div class="avatar-container">
-                <img src="image_3.png" alt="Portrait photo of Wang Jianfeng (GeekHeron)" class="avatar-image" width="180" height="180" fetchpriority="high" onerror="this.classList.add('img-error')">
+                <img src="image_3.png" alt="Portrait photo of Wang Jianfeng (GeekHeron)" class="avatar-image pulse-avatar" width="180" height="180" fetchpriority="high" onerror="this.classList.add('img-error')">
                 <div class="avatar-fallback" aria-hidden="true">GH</div>
             </div>
             <h1 class="profile-name">Geek Heron</h1>
@@ -889,7 +893,7 @@
 
             <section class="section-block">
                 <h3 class="section-title">01 / The Philosophy</h3>
-                <h2 class="value-prop">Focused on <span style="color: var(--gold);">AI Automation System Delivery</span> —<br>building <span style="color: var(--gold);">enterprise digital solutions</span> that actually run in production, not half-finished demos.</h2>
+                <h2 class="value-prop">From <span style="color: var(--gold);">data integration</span> to <span style="color: var(--gold);">AI Agent execution</span> —<br>building your enterprise's own <span style="color: var(--gold);">digital workforce</span>.</h2>
 
                 <p class="bio-text">
                     I'm Heron, an <strong>FDE (Full-stack Development Engineer)</strong> focused on <strong>AI automation system delivery</strong> and <strong>enterprise digital solutions</strong>. There's no shortage of people who can talk about AI concepts — what's scarce is someone who can independently deliver top-level intelligent workflows as a complete, closed-loop system that actually runs inside your business, and who takes responsibility for the outcome. That's the core of what I do.

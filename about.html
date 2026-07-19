@@ -452,12 +452,12 @@
             font-size: 12px; color: var(--text-muted); margin-top: 16px; line-height: 1.7;
         }
 
-        /* FAQ 手风琴 */
-        .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        /* FAQ 手风琴（紧凑） */
+        .faq-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
         .faq-item {
             background: rgba(255,255,255,0.03);
             border: 1px solid #222;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
             transition: 0.3s;
         }
@@ -467,35 +467,35 @@
         .faq-question {
             cursor: pointer;
             list-style: none;
-            padding: 18px 24px;
-            font-size: 15px;
+            padding: 12px 18px;
+            font-size: 14px;
             font-weight: 700;
             color: #fff;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 12px;
         }
         .faq-question::-webkit-details-marker { display: none; }
         .faq-question::marker { content: ''; }
 
         .faq-question .faq-icon {
             flex-shrink: 0;
-            width: 20px; height: 20px;
+            width: 18px; height: 18px;
             border: 1px solid var(--gold);
             border-radius: 50%;
             color: var(--gold);
-            font-size: 14px; font-weight: 800;
+            font-size: 13px; font-weight: 800;
             display: flex; align-items: center; justify-content: center;
             transition: transform 0.3s;
         }
         .faq-item[open] .faq-icon { transform: rotate(45deg); }
 
         .faq-answer {
-            padding: 0 24px 20px;
-            font-size: 14px;
+            padding: 0 18px 14px;
+            font-size: 13px;
             color: #aaa;
-            line-height: 1.8;
+            line-height: 1.65;
         }
 
 

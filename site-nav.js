@@ -16,6 +16,12 @@
             nav.classList.toggle('active', isOpen);
             document.body.classList.toggle('site-nav-open', isOpen);
             button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            // 菜单打开时暂停粒子动画，关闭时恢复
+            if (isOpen) {
+                if (window.__pauseGalaxy) window.__pauseGalaxy();
+            } else {
+                if (window.__resumeGalaxy) window.__resumeGalaxy();
+            }
         }
 
         window.toggleMenu = function () {

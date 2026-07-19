@@ -163,6 +163,10 @@
             100% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0); }
         }
 
+        .pulse-avatar {
+            animation-duration: 6s;
+        }
+
         .profile-name { font-size: 36px; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; }
         .profile-id { font-family: monospace; color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
 
@@ -844,7 +848,7 @@
 
         <aside class="profile-section">
             <div class="avatar-container">
-                <img src="image_3.png" alt="王鉴锋（GeekHeron）头像照片" class="avatar-image" width="180" height="180" fetchpriority="high" onerror="this.classList.add('img-error')">
+                <img src="image_3.png" alt="王鉴锋（GeekHeron）头像照片" class="avatar-image pulse-avatar" width="180" height="180" fetchpriority="high" onerror="this.classList.add('img-error')">
                 <div class="avatar-fallback" aria-hidden="true">GH</div>
             </div>
             <h1 class="profile-name">Geek Heron</h1>
@@ -1008,12 +1012,8 @@
                         <span style="font-size: 12px; color: var(--gold); background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 4px 16px;">长期维护合作</span>
                     </div>
                 </div>
-            </section>
 
-            <!-- ==================== 03 / 我解决的不是AI问题，而是企业效率问题 ==================== -->
-            <section class="section-block">
-                <h3 class="section-title">03 / 我解决的不是AI问题，而是企业效率问题</h3>
-                <div class="three-col-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px;">
+                <div class="three-col-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px;">
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 14px 16px;">
                         <h4 style="font-size: 13px; color: #fff; font-weight: 700; margin-bottom: 6px;">业务流程自动化</h4>
                         <p style="font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 8px;">人工重复操作 · 数据搬运 · 多系统切换</p>
@@ -1032,9 +1032,9 @@
                 </div>
             </section>
 
-            <!-- ==================== 04 / 企业AI系统如何工作（简化版） ==================== -->
+            <!-- ==================== 03 / 企业AI系统如何工作（简化版） ==================== -->
             <section class="section-block">
-                <h3 class="section-title">04 / 企业AI系统如何工作</h3>
+                <h3 class="section-title">03 / 企业AI系统如何工作</h3>
                 <div class="flow-wrap">
                     <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img">
                         <defs>
@@ -1074,9 +1074,9 @@
                 </p>
             </section>
 
-            <!-- ==================== 05 / AI交付方法论 ==================== -->
+            <!-- ==================== 04 / AI交付方法论 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">05 / AI交付方法论</h3>
+                <h3 class="section-title">04 / AI交付方法论</h3>
                 <p class="bio-text" style="margin-bottom: 0;">
                     以上案例背后是同一套可复用的闭环方法论——不管业务场景是广告竞价还是库存清算，交付的系统都遵循相同的四段式结构：
                 </p>
@@ -1117,9 +1117,9 @@
                 </div>
             </section>
 
-            <!-- ==================== 06 / 企业AI完整架构图 ==================== -->
+            <!-- ==================== 05 / 企业AI完整架构图 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">06 / 企业 AI 完整架构图</h3>
+                <h3 class="section-title">05 / 企业 AI 完整架构图</h3>
                 
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">从数据接入到 Agent 编排，覆盖企业 AI 落地的完整分层架构。</p>
                 <div class="flow-wrap" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
@@ -1154,9 +1154,9 @@
                     </svg>
                 </div>
                 <p class="flow-caption">系统架构包含数据接入、治理、知识管理、工具集成、Agent 编排与用户界面七大层级，覆盖从数据到决策的完整链路。</p>
-            </section>                        <!-- ==================== 07 / 商业案例 ==================== -->
+            </section>                        <!-- ==================== 06 / 商业案例 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">07 / 商业案例</h3>
+                <h3 class="section-title">06 / 商业案例</h3>
                 <p class="testimonials-subtitle" style="margin-bottom: 20px;">来自跨境电商、品牌卖家的真实项目交付。</p>
 
                 <div class="testimonial-grid">
@@ -1364,25 +1364,9 @@
                 <div style="margin-top: 20px; text-align: center;">
                     <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 12px 28px; font-size: 12px;">查看完整商业案例 →</a>
                 </div>
-            </section><!-- ==================== 08 / 合作流程 ==================== -->
+            </section><!-- ==================== 07 / 企业AI落地服务 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">08 / 合作流程</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">从诊断到上线，每一步都有明确交付物。</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px;">
-                    <span style="background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.3); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #fff; font-weight: 700;">01 业务诊断</span>
-                    <span style="color: #555; font-size: 14px;">→</span>
-                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">02 AI机会分析</span>
-                    <span style="color: #555; font-size: 14px;">→</span>
-                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">03 方案设计</span>
-                    <span style="color: #555; font-size: 14px;">→</span>
-                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">04 开发交付</span>
-                    <span style="color: #555; font-size: 14px;">→</span>
-                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">05 持续优化</span>
-                </div>
-            </section>
-            <!-- ==================== 09 / 企业AI落地服务 ==================== -->
-            <section class="section-block">
-                <h3 class="section-title">09 / 企业AI落地服务</h3>
+                <h3 class="section-title">07 / 企业AI落地服务</h3>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">根据企业需求灵活选择，每项服务均包含部署支持与长期维护。</p>
                 <div class="three-col-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px;">
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 16px;">
@@ -1415,25 +1399,54 @@
                 </div>
             </section>
 
-            <!-- ==================== 10 / 核心技术能力 ==================== -->
+            <!-- 高频问题（快速打消顾虑） -->
+            <section class="section-block" style="margin-bottom: 40px;">
+                <h3 class="section-title">高频问题</h3>
+                <div class="faq-list" style="margin-top: 0;">
+                    <details class="faq-item"><summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。</p></details>
+                    <details class="faq-item"><summary class="faq-question">需要更换 ERP 吗？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。</p></details>
+                </div>
+                <div style="margin-top: 12px; text-align: right;">
+                    <a href="#faq-full" style="font-size: 12px; color: var(--text-muted);">查看全部 6 个常见问题 →</a>
+                </div>
+            </section>
+
+            <!-- ==================== 08 / 合作流程 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">10 / 核心技术能力</h3>
+                <h3 class="section-title">08 / 合作流程</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">从诊断到上线，每一步都有明确交付物。</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px;">
+                    <span style="background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.3); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #fff; font-weight: 700;">01 业务诊断</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">02 AI机会分析</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">03 方案设计</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">04 开发交付</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">05 持续优化</span>
+                </div>
+            </section>
+
+            <!-- ==================== 09 / 核心技术能力 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">09 / 核心技术能力</h3>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">体系化技术栈支撑工业级交付 —— 不只是会用，是已经落地验证过。</p>
                 <div class="tech-grid">
                     <div class="service-card" style="padding: 20px 24px;">
                         <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">大模型工程化接入</div>
                         <p class="service-desc">接入 OpenAI / Claude / DeepSeek 等 8+ 主流模型 API，具备基于 Ollama / vLLM 的本地私有化部署经验。</p>
                     </div>
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Agent 工作流设计</div>
+                    <div class="service-card" style="padding: 20px 24px; border-color: var(--gold);">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px; color: var(--gold);">Agent 工作流设计</div>
                         <p class="service-desc">基于企业私有AI智能中枢封装业务能力模块，已交付竞品监控、运营分析、库存健康等 8 个生产级 Agent。</p>
                     </div>
                     <div class="service-card" style="padding: 20px 24px;">
                         <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RPA + 企业系统集成</div>
                         <p class="service-desc">Playwright 浏览器自动化 + AdsPower / 紫鸟，穿透无 API 系统。打通飞书多维表、Interactive Card、金蝶 ERP、Shopify。</p>
                     </div>
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RAG 知识库全链路</div>
+                    <div class="service-card" style="padding: 20px 24px; border-color: var(--gold);">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px; color: var(--gold);">RAG 知识库全链路</div>
                         <p class="service-desc">文档解析 → 切片 → Embedding → 向量检索 → 混合检索 → Rerank 重排序 → 知识增强生成，完整落地经验。</p>
                     </div>
                     <div class="service-card" style="padding: 20px 24px;">
@@ -1447,9 +1460,9 @@
                 </div>
             </section>
 
-            <!-- ==================== 11 / 常见问题 ==================== -->
-            <section class="section-block">
-                <h3 class="section-title">11 / 常见问题</h3>
+            <!-- ==================== 10 / 常见问题 ==================== -->
+            <section class="section-block" id="faq-full">
+                <h3 class="section-title">10 / 常见问题</h3>
                 <div class="faq-list">
                     <details class="faq-item"><summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。</p></details>
                     <details class="faq-item"><summary class="faq-question">需要更换 ERP 吗？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。</p></details>
@@ -1460,9 +1473,9 @@
                 </div>
             </section>
 
-            <!-- ==================== 12 / 联系合作 ==================== -->
+            <!-- ==================== 11 / 联系合作 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">12 / 联系合作</h3>
+                <h3 class="section-title">11 / 联系合作</h3>
                 <div style="text-align: center; padding: 40px 20px;">
                     <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 16px; color: #fff;">
                         让 AI 从演示能力，<br>变成企业长期运行的数字资产

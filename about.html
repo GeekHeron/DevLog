@@ -109,24 +109,6 @@
             outline-offset: 3px;
         }
 
-        /* 时钟样式 */
-        #clock {
-            font-family: "SF Mono", "Cascadia Code", "JetBrains Mono", monospace;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            cursor: default;
-            user-select: none;
-            display: inline-block;
-            min-width: 82px;
-            text-align: center;
-            font-variant-numeric: tabular-nums;
-        }
-        #clock:hover {
-            color: #fff;
-        }
-
         /* 视觉隐藏但保留可访问性的文本 */
         .visually-hidden {
             position: absolute; width: 1px; height: 1px;
@@ -787,7 +769,6 @@
             </ul>
         </nav>
 
-        <div class="header-right" id="clock">--:--:--</div>
     </header>
 
     <main class="container">
@@ -1284,25 +1265,6 @@
     <script>
         (function () {
             'use strict';
-
-            /* ---------------------------------------------------------
-             * 0. 实时时钟：右上角显示北京时间
-             * ------------------------------------------------------- */
-            var clockEl = document.getElementById('clock');
-            if (clockEl) {
-                function pad(n) {
-                    return n < 10 ? '0' + n : '' + n;
-                }
-                function updateClock() {
-                    var now = new Date();
-                    var h = pad(now.getHours());
-                    var m = pad(now.getMinutes());
-                    var s = pad(now.getSeconds());
-                    clockEl.textContent = h + ':' + m + ':' + s;
-                }
-                updateClock();
-                setInterval(updateClock, 1000);
-            }
 
             /* ---------------------------------------------------------
              * 1. 邮箱地址混淆：避免明文出现在 HTML 源码中被爬虫抓取

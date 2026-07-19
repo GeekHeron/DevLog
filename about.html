@@ -1407,6 +1407,162 @@
             </section>
 
         </div>
-    </main><script src="site-nav.js"></script>
+    </main><script>const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 12000; // 性能优化：从 4000 降至 1200，保障多端流畅度
+        const fieldOfView = 300; 
+        const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
+
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = (Math.random() - 0.5) * width * 2.5; 
+                this.y = (Math.random() - 0.5) * height * 2.5; 
+                this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
+                this.radius = Math.random() * 1.2 + 0.2; 
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                let cosZ = Math.cos(0.0005);
+                let sinZ = Math.sin(0.0005);
+                let tempX = this.x;
+                this.x = tempX * cosZ - this.y * sinZ;
+                this.y = tempX * sinZ + this.y * cosZ;
+                this.z -= 0.2; 
+                if (this.z < -fieldOfView) { this.z += fieldOfView * 2; }
+            }
+            draw() {
+                const perspective = fieldOfView / (fieldOfView + this.z);
+                const projectedX = (this.x * perspective) + width / 2;
+                const projectedY = (this.y * perspective) + height / 2;
+                const projectedRadius = this.radius * perspective;
+                const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
+                if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
+                    ctx.beginPath();
+                    ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${opacity})`;
+                    ctx.fill();
+                }
+            }
+        }
+
+        class ShootingStar {
+            constructor() { this.reset(); this.active = false; }
+            reset() {
+                this.x = Math.random() * width + 200; 
+                this.y = Math.random() * height * 0.3 - 200; 
+                this.speed = Math.random() * 10 + 15;
+                this.len = Math.random() * 80 + 150;
+                this.size = Math.random() * 1 + 0.5;
+                this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
+                this.active = true;
+            }
+            update() {
+                if (!this.active) return;
+                this.x -= this.speed * Math.cos(this.angle);
+                this.y += this.speed * Math.sin(this.angle);
+                if (this.x < -this.len || this.y > height + this.len) this.active = false;
+            }
+            draw() {
+                if (!this.active) return;
+                const tailX = this.x + this.len * Math.cos(this.angle);
+                const tailY = this.y - this.len * Math.sin(this.angle);
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+                gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+                ctx.beginPath();
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.size;
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+            }
+        }
+
+        const meteors = [new ShootingStar(), new ShootingStar(), new ShootingStar()];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+        }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (Math.random() < 0.008) {
+                const m = meteors.find(m => !m.active);
+                if (m) m.reset();
+            }
+            meteors.forEach(m => { m.update(); m.draw(); });
+            requestAnimationFrame(animate);
+        }
+        resize();
+        initParticles();
+        animate();
+
+        // --- 5. 地理位置模块（优化版：采用免授权 IP 定位，提升留存与风骨） ---
+        function initLocation() {
+            const locElement = document.getElementById('user-location');
+            if (!locElement) return;
+
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latitude && data.longitude) {
+                        const lat = data.latitude;
+                        const lon = data.longitude;
+                        const latDir = lat >= 0 ? 'N' : 'S';
+                        const lonDir = lon >= 0 ? 'E' : 'W';
+                        locElement.textContent = `LOC: ${Math.abs(lat).toFixed(2)}${latDir}, ${Math.abs(lon).toFixed(2)}${lonDir} / GEO.SYNC`;
+                    } else {
+                        locElement.textContent = `LOC: PROXY.DETECTED / MASKED`;
+                    }
+                })
+                .catch(() => {
+                    locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
+                });
+        }
+        initLocation();
+
+        // --- 6. 真实 FPS 监听模块（让 HUD 的 60FPS 真正动起来） ---
+        function initFPSCounter() {
+            const fpsElement = document.getElementById('fps-counter');
+            if (!fpsElement) return;
+
+            let lastCalledTime;
+            let counter = 0;
+
+            function fpsLoop() {
+                if (!lastCalledTime) {
+                    lastCalledTime = performance.now();
+                    counter = 0;
+                    requestAnimationFrame(fpsLoop);
+                    return;
+                }
+                
+                counter++;
+                const delta = (performance.now() - lastCalledTime) / 1000;
+
+                if (delta >= 1) { 
+                    const fps = Math.round(counter / delta);
+                    fpsElement.textContent = `FRAME: ${fps}FPS`;
+                    counter = 0;
+                    lastCalledTime = performance.now();
+                }
+                requestAnimationFrame(fpsLoop);
+            }
+            requestAnimationFrame(fpsLoop);
+        }
+        initFPSCounter();
+    </script>
+    <script src="site-nav.js"></script>
 </body>
 </html>

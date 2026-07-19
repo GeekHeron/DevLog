@@ -733,134 +733,6 @@
 
     
 
-
-        /* --- 商业案例折叠样式 --- */
-        .case-collapse {
-            border: 1px solid #222;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.03);
-            overflow: hidden;
-            transition: 0.3s;
-        }
-        .case-collapse + .case-collapse {
-            margin-top: 10px;
-        }
-        .case-collapse[open] {
-            border-color: rgba(255,215,0,0.3);
-            background: rgba(255,255,255,0.05);
-        }
-        .case-collapse-summary {
-            list-style: none;
-            cursor: pointer;
-            padding: 14px 18px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #aaa;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.3s;
-            user-select: none;
-            flex-wrap: wrap;
-        }
-        .case-collapse-summary::-webkit-details-marker { display: none; }
-        .case-collapse-summary::marker { content: ''; }
-        .case-collapse-summary:hover { color: #fff; }
-        .case-collapse-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--gold);
-            box-shadow: 0 0 6px rgba(255,215,0,0.6);
-            flex-shrink: 0;
-        }
-        .case-collapse[open] .case-collapse-summary {
-            color: #fff;
-            border-bottom: 1px solid #222;
-        }
-        .case-collapse-label {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            flex: 1;
-            min-width: 0;
-        }
-        .case-industry {
-            font-size: 10px;
-            color: var(--gold);
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            text-transform: none;
-        }
-        .case-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #ccc;
-            text-transform: none;
-            letter-spacing: 0.3px;
-        }
-        .case-collapse[open] .case-name {
-            color: #fff;
-        }
-        .case-tags {
-            display: flex;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-        .case-tag {
-            display: inline-block;
-            font-size: 9px;
-            color: var(--gold);
-            border: 1px solid rgba(255,215,0,0.25);
-            border-radius: 3px;
-            padding: 1px 6px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-        }
-        .case-collapse > .testimonial-card {
-            border: none;
-            border-radius: 0;
-            background: transparent;
-            padding: 16px 20px 20px;
-        }
-        .case-collapse > .testimonial-card:hover {
-            border: none;
-            background: transparent;
-        }
-        .folded-cases {
-            margin-top: 20px;
-        }
-        .folded-cases-divider {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        .folded-cases-line {
-            flex: 1;
-            height: 1px;
-            background: #222;
-        }
-        .folded-cases-text {
-            font-size: 11px;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-        @media (max-width: 768px) {
-            .case-collapse-summary {
-                padding: 12px 14px;
-                gap: 8px;
-            }
-            .case-industry { font-size: 9px; }
-            .case-name { font-size: 12px; }
-            .case-tags { display: none; }
-            .folded-cases-divider { gap: 10px; }
-        }
 </style>
     <link rel="stylesheet" href="site-nav.css">
 </head>
@@ -1211,13 +1083,18 @@
                     </svg>
                 </div>
                 <p class="flow-caption">系统架构包含数据接入、治理、知识管理、工具集成、Agent 编排与用户界面七大层级，覆盖从数据到决策的完整链路。</p>
-            </section>                        <!-- ==================== 08 / 商业案例 ==================== -->
+            </section>            <!-- ==================== 08 / 商业案例 ==================== -->
             <section class="section-block">
                 <h3 class="section-title">08 / 商业案例</h3>
                 <p class="testimonials-subtitle" style="margin-bottom: 20px;">来自跨境电商、品牌卖家的真实项目交付。</p>
 
-                <div class="testimonial-grid">
-                    div class="testimonial-card">
+                <details style="border: 1px solid #222; border-radius: 8px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 14px 20px; font-size: 13px; color: var(--gold); font-weight: 700; letter-spacing: 1px; user-select: none; list-style: none; display: flex; align-items: center; justify-content: space-between; background: rgba(255,215,0,0.04);">
+                        <span>查看 5 个商业案例</span>
+                        <span style="transition: transform 0.3s;">&#9654;</span>
+                    </summary>
+                    <div class="testimonial-grid" style="padding: 20px;">
+<div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 消费电子 · GMV 约3000万</div>
                         <div class="project-name">广告与库存联动日报</div>
                         <div class="project-client-detail">运营团队 20+ 人 · 12 店铺</div>
@@ -1252,24 +1129,7 @@
                             <span class="project-quote-text">广告日报终于不用人工汇总了，FBA没货自动取万邑通库存，这种细节说明是真的懂我们业务。</span>
                         </div>
                     <
-                </div>
-
-                <div class="folded-cases">
-                    <div class="folded-cases-divider">
-                        <span class="folded-cases-line"></span>
-                        <span class="folded-cases-text">其他案例</span>
-                        <span class="folded-cases-line"></span>
-                    </div>
-                    <details class="case-collapse">
-                        <summary class="case-collapse-summary">
-                            <span class="case-collapse-dot" aria-hidden="true"></span>
-                            <span class="case-collapse-label">
-                                <span class="case-industry">跨境电商 · 户外用品 · GMV 约5000万</span>
-                                <span class="case-name">竞品价格实时监控</span>
-                            </span>
-                            <span class="case-tags"><span class="case-tag">AdsPower</span><span class="case-tag">Feishu</span><span class="case-tag">2 周</span></span>
-                        </summary>
-                        div class="testimonial-card">
+<div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 户外用品 · GMV 约5000万</div>
                         <div class="project-name">竞品价格实时监控</div>
                         <div class="project-client-detail">运营团队 30+ 人 · 50+ SKU</div>
@@ -1304,17 +1164,7 @@
                             <span class="project-quote-text">异常才提醒，不用每天一个个比价，这个设计减少了很多无效信息干扰。</span>
                         </div>
                     <
-                    </details>
-                    <details class="case-collapse">
-                        <summary class="case-collapse-summary">
-                            <span class="case-collapse-dot" aria-hidden="true"></span>
-                            <span class="case-collapse-label">
-                                <span class="case-industry">跨境电商 · 家居 · GMV 约8000万</span>
-                                <span class="case-name">库存与物流风控体系</span>
-                            </span>
-                            <span class="case-tags"><span class="case-tag">Feishu</span><span class="case-tag">4 周</span></span>
-                        </summary>
-                        div class="testimonial-card">
+<div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 家居 · GMV 约8000万</div>
                         <div class="project-name">库存与物流风控体系</div>
                         <div class="project-client-detail">供应链团队 50+ 人 · 全球多仓</div>
@@ -1349,17 +1199,7 @@
                             <span class="project-quote-text">库龄、货值这些周报级数据也覆盖到了，不只是关注短期销售，长期库存健康度也照顾得到。</span>
                         </div>
                     <
-                    </details>
-                    <details class="case-collapse">
-                        <summary class="case-collapse-summary">
-                            <span class="case-collapse-dot" aria-hidden="true"></span>
-                            <span class="case-collapse-label">
-                                <span class="case-industry">跨境电商 · 3C数码 · GMV 约2亿</span>
-                                <span class="case-name">ERP 自动化应急监控</span>
-                            </span>
-                            <span class="case-tags"><span class="case-tag">Playwright</span><span class="case-tag">Feishu</span><span class="case-tag">24h 应急</span></span>
-                        </summary>
-                        div class="testimonial-card">
+<div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 3C数码 · GMV 约2亿</div>
                         <div class="project-name">ERP 自动化应急监控</div>
                         <div class="project-client-detail">运营团队 100+ 人 · 多品牌</div>
@@ -1394,17 +1234,7 @@
                             <span class="project-quote-text">不等官方修复，直接抓取层换 RPA，上层逻辑零修改，业务几乎无感知。接口停但业务不能停。</span>
                         </div>
                     <
-                    </details>
-                    <details class="case-collapse">
-                        <summary class="case-collapse-summary">
-                            <span class="case-collapse-dot" aria-hidden="true"></span>
-                            <span class="case-collapse-label">
-                                <span class="case-industry">跨境集团 · 综合 · GMV 约5亿</span>
-                                <span class="case-name">OpenClaw 私有化自动化中枢</span>
-                            </span>
-                            <span class="case-tags"><span class="case-tag">OpenClaw</span><span class="case-tag">私有化部署</span><span class="case-tag">Feishu</span></span>
-                        </summary>
-                        div class="testimonial-card">
+<div class="testimonial-card">
                         <div class="project-industry">跨境集团 · 综合 · GMV 约5亿</div>
                         <div class="project-name">OpenClaw 私有化自动化中枢</div>
                         <div class="project-client-detail">全团队 200+ 人 · 多系统集成</div>
@@ -1440,12 +1270,7 @@
                         </div>
                     <
                     </div>
-                    </details>
-                </div>
-
-                <div style="margin-top: 20px; text-align: center;">
-                    <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 12px 28px; font-size: 12px;">查看完整商业案例 →</a>
-                </div>
+                </details>
             </section><!-- ==================== / 合作流程 ==================== -->
             <section class="section-block">
                 <h3 class="section-title">合作流程</h3>

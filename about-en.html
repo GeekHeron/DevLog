@@ -920,7 +920,11 @@
                     </div>
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
                         <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">Business Ontology Modeling</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">Design entity-attribute-relationship models around real business scenarios, providing structured knowledge foundations for RAG and Agent reasoning.</div>
+                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
+                            Design entity-attribute-relationship models around real business scenarios.<br>
+                            With ontology: Agent understands the full chain "Customer→Order→Product→Process→Equipment",
+                            making reasoning traceable and explainable — not a black box.
+                        </div>
                     </div>
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
                         <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">Full-Stack Delivery</div>
@@ -1179,6 +1183,33 @@
                     <p class="flow-caption">
                         The collection layer keeps data faithful, the decision layer handles explainable rule and model judgment, the execution layer writes directly back into existing enterprise systems instead of creating another silo, and the loop layer leaves final discretion with the business owner. That is the essential difference between full-stack delivery and simply connecting a single API.
                     </p>
+                </div>
+
+                <div style="margin-top: 24px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px; padding: 24px;">
+                    <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Full Layered Architecture</div>
+                    <p style="font-size: 13px; color: #aaa; line-height: 1.8; margin-bottom: 12px;">Every delivery sits on a complete layered architecture:</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
+                            <strong style="color: #fff;">① Data Ingestion</strong><br>
+                            <span style="color: #aaa;">Connect 8+ business systems (MES/ERP/CRM/PLM/WMS) via API, DB direct, or ETL</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
+                            <strong style="color: #fff;">② Knowledge Layer</strong><br>
+                            <span style="color: #aaa;">Structured data → SQL queries, documents → RAG retrieval, routed by business type</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid var(--gold); padding: 10px 14px;">
+                            <strong style="color: var(--gold);">③ Ontology Layer</strong><br>
+                            <span style="color: #aaa;">Entity-relationship modeling so AI understands your data world across inconsistent system naming</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
+                            <strong style="color: #fff;">④ Tool Layer</strong><br>
+                            <span style="color: #aaa;">Business capabilities packaged as auditable, permission-controlled Tools — zero-code Agent invocation</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px; grid-column: 1 / -1;">
+                            <strong style="color: #fff;">⑤ Agent Orchestration</strong><br>
+                            <span style="color: #aaa;">LangGraph-driven stateful workflows designed with nodes, branches, and human-in-the-loop — no black-box reasoning</span>
+                        </div>
+                    </div>
                 </div>
 
             </section>

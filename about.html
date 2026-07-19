@@ -948,8 +948,9 @@
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
                         <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">业务本体建模</div>
                         <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
-                            围绕业务场景设计实体、属性、关系及业务规则模型，
-                            为 RAG 知识库与 Agent 推理提供知识基础。
+                            围绕业务场景设计实体、属性、关系及业务规则模型。<br>
+                            有本体 vs 无本体：没有本体时 Agent 眼中的"物料编码"和"SKU"是两样东西；
+                            有本体后 Agent 理解"客户→订单→产品→工序→设备"全链路，推理可追溯可解释。
                         </div>
                     </div>
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
@@ -1212,6 +1213,33 @@
                     <p class="flow-caption">
                         采集层保证数据不失真，决策层承担可解释的规则/模型判断，执行层直接写回企业已有系统而非另建孤岛，回环层把最终裁量权留给业务负责人——这也是"全栈交付"和"单点接 API"的本质区别。
                     </p>
+                </div>
+
+                <div style="margin-top: 24px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px; padding: 24px;">
+                    <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">完整分层架构</div>
+                    <p style="font-size: 13px; color: #aaa; line-height: 1.8; margin-bottom: 12px;">每一层交付背后是一套完整的分层架构：</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
+                            <strong style="color: #fff;">① 数据接入层</strong><br>
+                            <span style="color: #aaa;">打通 MES/ERP/CRM/PLM/WMS 等 8+ 业务系统，API/数据库直连/ETL</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
+                            <strong style="color: #fff;">② 知识层</strong><br>
+                            <span style="color: #aaa;">结构化数据走 SQL，文档走 RAG 检索，按业务类型分流处理</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid var(--gold); padding: 10px 14px;">
+                            <strong style="color: var(--gold);">③ 本体层</strong><br>
+                            <span style="color: #aaa;">实体关系建模，让 AI 理解你的数据世界，消除多系统叫法不一致</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
+                            <strong style="color: #fff;">④ Tool 层</strong><br>
+                            <span style="color: #aaa;">业务能力封装为可审计、可权限控制的 Tool，Agent 零代码调用</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px; grid-column: 1 / -1;">
+                            <strong style="color: #fff;">⑤ Agent 编排层</strong><br>
+                            <span style="color: #aaa;">LangGraph 驱动有状态工作流，按业务节点 + 分支 + 人工介入点设计，不接受黑盒推理</span>
+                        </div>
+                    </div>
                 </div>
 
             </section>

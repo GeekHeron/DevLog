@@ -76,6 +76,7 @@
           "@type": "Question",
           "name": "如何收费？",
           "acceptedAnswer": { "@type": "Answer", "text": "根据需求复杂度、系统规模及交付内容报价，可先预约免费获取业务 AI 应用评估报告。" }
+        }
       ]
     }
     </script>
@@ -109,24 +110,6 @@
             outline-offset: 3px;
         }
 
-        /* 时钟样式 */
-        #clock {
-            font-family: "SF Mono", "Cascadia Code", "JetBrains Mono", monospace;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            cursor: default;
-            user-select: none;
-            display: inline-block;
-            min-width: 82px;
-            text-align: center;
-            font-variant-numeric: tabular-nums;
-        }
-        #clock:hover {
-            color: #fff;
-        }
-
         /* 视觉隐藏但保留可访问性的文本 */
         .visually-hidden {
             position: absolute; width: 1px; height: 1px;
@@ -144,78 +127,6 @@
             background: radial-gradient(circle at 20% 20%, rgba(30,30,40,0.4), #000 95%);
             z-index: 0; pointer-events: none;
         }
-
-        /* --- 3. 导航栏 --- */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 30px 50px; position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(100px); background: rgba(0,0,0,0.8);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 102;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .logo img {
-            height: 70px;
-            width: auto;
-            border-radius: 6px;
-            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
-        }
-
-        .logo span {
-            font-size: 24px;
-            letter-spacing: 4px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-        .nav-links a { margin-left: 30px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
-        .nav-links a:hover, .nav-links a.active { color: #fff; }
-
-        /* 语言切换按钮样式 */
-        .lang-btn {
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 6px 14px;
-            border-radius: 4px;
-            margin-left: 30px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #aaa;
-            transition: all 0.3s ease;
-        }
-        .lang-btn:hover {
-            background: #fff;
-            color: #000 !important;
-            border-color: #fff;
-            box-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
-
-        /* 汉堡按钮：改为真正的 <button>，保留原视觉 */
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            z-index: 102;
-            width: 30px;
-            height: 20px;
-            position: relative;
-            background: transparent;
-            border: none;
-            padding: 0;
-        }
-        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
-        .hamburger span:nth-child(1) { top: 0; }
-        .hamburger span:nth-child(2) { top: 9px; }
-        .hamburger span:nth-child(3) { top: 18px; }
-        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
         /* --- 4. 页面布局 --- */
         .container {
@@ -448,6 +359,48 @@
         .service-icon { font-size: 20px; margin-bottom: 15px; color: var(--gold); }
         .service-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #fff; }
         .service-desc { font-size: 13px; color: #888; line-height: 1.6; }
+
+        /* 三列网格（移动端自动降级为单列） */
+        .three-col-grid {
+            display: grid;
+        }
+
+        /* 核心技术能力网格 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        /* 分层架构网格 */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 13px;
+        }
+        .arch-grid .full-row {
+            grid-column: 1 / -1;
+        }
+
+        /* 架构层卡片通用 */
+        .arch-item {
+            background: rgba(255,255,255,0.03);
+            border-left: 2px solid #555;
+            padding: 10px 14px;
+        }
+        .arch-item.gold-border {
+            border-left-color: var(--gold);
+        }
+        .arch-item strong {
+            color: #fff;
+        }
+        .arch-item.gold-border strong {
+            color: var(--gold);
+        }
+        .arch-item span {
+            color: #aaa;
+        }
 
         /* 技术栈 -> 战略工具箱 */
         .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
@@ -690,42 +643,10 @@
         }
 
         /* 移动端适配 */
-        @media (max-width: 850px) {
+        @media (max-width: 768px) {
             header { padding: 20px; justify-content: space-between; }
             .logo img { height: 40px; }
             .logo span { font-size: 18px; letter-spacing: 2px; }
-            .hamburger { display: block; z-index: 102; }
-            .header-right { display: none; }
-            .nav-links {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.95);
-                backdrop-filter: blur(100px);
-                z-index: 101;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 40px;
-                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex;
-            }
-            .nav-links.active { transform: translateX(0); }
-            .nav-links a {
-                font-size: 24px;
-                font-weight: 800;
-                color: #fff;
-                margin-left: 0;
-            }
-
-            .lang-btn {
-                margin-left: 0;
-                margin-top: 20px;
-                padding: 10px 30px;
-                font-size: 14px;
-            }
 
             .container { grid-template-columns: 1fr; gap: 60px; padding-top: 100px; }
             .profile-section { position: relative; top: 0; }
@@ -746,7 +667,59 @@
             }
 
             .testimonial-grid { grid-template-columns: 1fr; }
+
+            .trust-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .trust-metrics { flex-wrap: wrap; gap: 16px !important; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .arch-grid { grid-template-columns: 1fr; }
+            .section-block .three-col-grid { grid-template-columns: 1fr !important; }
+
+            /* SVG 溢出滚动 */
+            .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
+            .flow-wrap svg { max-width: none; }
+
+            /* 服务卡片紧凑 */
+            .service-card { padding: 14px !important; }
+
+            /* 折叠面板适配 */
+            .section-block details { margin-top: 10px; }
+            .section-block details summary { font-size: 12px; padding: 10px 14px; }
+
+            /* 内容间距微调 */
+            .section-block { margin-bottom: 50px; }
+            .content-section { padding-top: 0; }
+
+            /* SVG 溢出滚动 */
+            .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
+            .flow-wrap svg { max-width: none; }
+
+            /* 服务卡片紧凑 */
+            .service-card { padding: 14px !important; }
+
+            /* 折叠面板适配 */
+            .section-block details { margin-top: 10px; }
+            .section-block details summary { font-size: 12px; padding: 10px 14px; }
+
+            /* 内容间距微调 */
+            .section-block { margin-bottom: 50px; }
+            .content-section { padding-top: 0; }
         }
+            /* 移动端：flow-wrap SVG溢出隐藏 */
+            .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
+            
+            /* 移动端：合作流程标签间距 */
+            .section-block .flex-wrap-tags { gap: 6px; }
+            
+            /* 移动端：section 09 服务卡片紧凑 */
+            .service-card { padding: 14px !important; }
+            
+            /* 移动端：section 08 案例折叠 */
+            .section-block details { margin-top: 12px; }
+            .section-block details summary { font-size: 12px; padding: 10px 16px; }
+            
+            /* 移动端：section 04 场景标签 */
+            .trust-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+        
 
         /* 尊重用户的“减少动画”系统设置 */
         @media (prefers-reduced-motion: reduce) {
@@ -754,8 +727,140 @@
             .cursor { animation: none; }
             * { scroll-behavior: auto !important; }
         }
+            /* 移动端补充 */
+            .three-col-grid { grid-template-columns: 1fr !important; }
+            .flow-wrap { padding: 0; }
+
     
 
+
+        /* --- 商业案例折叠样式 --- */
+        .case-collapse {
+            border: 1px solid #222;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .case-collapse + .case-collapse {
+            margin-top: 10px;
+        }
+        .case-collapse[open] {
+            border-color: rgba(255,215,0,0.3);
+            background: rgba(255,255,255,0.05);
+        }
+        .case-collapse-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 14px 18px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            user-select: none;
+            flex-wrap: wrap;
+        }
+        .case-collapse-summary::-webkit-details-marker { display: none; }
+        .case-collapse-summary::marker { content: ''; }
+        .case-collapse-summary:hover { color: #fff; }
+        .case-collapse-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 6px rgba(255,215,0,0.6);
+            flex-shrink: 0;
+        }
+        .case-collapse[open] .case-collapse-summary {
+            color: #fff;
+            border-bottom: 1px solid #222;
+        }
+        .case-collapse-label {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+            min-width: 0;
+        }
+        .case-industry {
+            font-size: 10px;
+            color: var(--gold);
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            text-transform: none;
+        }
+        .case-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ccc;
+            text-transform: none;
+            letter-spacing: 0.3px;
+        }
+        .case-collapse[open] .case-name {
+            color: #fff;
+        }
+        .case-tags {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .case-tag {
+            display: inline-block;
+            font-size: 9px;
+            color: var(--gold);
+            border: 1px solid rgba(255,215,0,0.25);
+            border-radius: 3px;
+            padding: 1px 6px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .case-collapse > .testimonial-card {
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            padding: 16px 20px 20px;
+        }
+        .case-collapse > .testimonial-card:hover {
+            border: none;
+            background: transparent;
+        }
+        .folded-cases {
+            margin-top: 20px;
+        }
+        .folded-cases-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .folded-cases-line {
+            flex: 1;
+            height: 1px;
+            background: #222;
+        }
+        .folded-cases-text {
+            font-size: 11px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        @media (max-width: 768px) {
+            .case-collapse-summary {
+                padding: 12px 14px;
+                gap: 8px;
+            }
+            .case-industry { font-size: 9px; }
+            .case-name { font-size: 12px; }
+            .case-tags { display: none; }
+            .folded-cases-divider { gap: 10px; }
+        }
 </style>
     <link rel="stylesheet" href="site-nav.css">
 </head>
@@ -787,7 +892,6 @@
             </ul>
         </nav>
 
-        <div class="header-right" id="clock">--:--:--</div>
     </header>
 
     <main class="container">
@@ -799,16 +903,34 @@
             </div>
             <h1 class="profile-name">Geek Heron</h1>
             <p class="profile-id">@王鉴锋</p>
+                <p class="profile-id" style="border-top: 1px solid #222; padding-top: 12px; margin-top: 4px; font-size: 12px; color: #666;">FDE（Full-stack Development Engineer）</p>
             <p class="profile-title">
-                AI Agent架构师 / 企业AI落地解决方案<br>
-                Agent / RAG / OpenClaw · Playwright RPA · Python/Flask
+                企业 AI 自动化系统架构师<br>
+                Agent · RAG · RPA · MCP · 私有化AI部署 · 企业系统集成
             </p>
 
+            <!-- 数据视觉 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 30px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--gold); letter-spacing: 1px;">8+</div>
+                    <div style="font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">生产级 Agent</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--gold); letter-spacing: 1px;">5亿+</div>
+                    <div style="font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">覆盖业务规模</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--gold); letter-spacing: 1px;">2-8周</div>
+                    <div style="font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">交付周期</div>
+                </div>
+            </div>
+
             <div class="cta-group">
-                <a href="works.html" class="secondary-btn">查看落地案例</a>
-                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="tertiary-btn" id="booking-cta">
-                    <span class="dot" aria-hidden="true"></span> 免费获取业务 AI 应用评估
+                <a href="works.html" class="secondary-btn">查看商业案例</a>
+                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" id="booking-cta">
+                    免费获取企业AI自动化机会分析
                 </a>
+                <p style="font-size: 11px; color: #666; margin-top: -5px; text-align: center;">15分钟发现3个可落地AI场景</p>
             </div>
 
             <details class="social-collapse">
@@ -836,26 +958,71 @@
                         </a>
                         <p class="social-text">WhatsApp</p>
                     </div>
-
-
                 </div>
             </details>
         </aside>
 
         <div class="content-section">
 
-<section class="section-block">
-                <h3 class="section-title">01 / 核心理念</h3>
+            <!-- ==================== 01 / 首屏定位 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">01 / 首屏定位</h3>
                 <h2 class="value-prop">
-                    专注 <span style="color: var(--gold);">AI 自动化系统交付</span>，<br>
-                    为企业提供跑得起来的<span style="color: var(--gold);">企业数字化解决方案</span>，而不是停在 Demo 阶段的半成品。
+                    不是做 AI Demo，<br>
+                    而是交付真正运行在<span style="color: var(--gold);">企业业务里的 AI 系统</span>。
                 </h2>
 
+                <p style="font-size: 14px; color: var(--gold); font-weight: 600; margin-top: 0; letter-spacing: 1px;">不做 AI Demo，只交付真正运行在企业业务中的 AI 系统。</p>
+
                 <p class="bio-text">
-                    我是 Heron，一名专注 <strong>AI 自动化系统交付</strong>与<strong>企业数字化解决方案</strong>落地的 FDE（企业AI布道师）。市面上不缺"能讲 AI 概念"的人，缺的是能把顶层智能工作流，独立、完整交付为一套真正跑在企业业务里的闭环系统，并对最终结果负责的人——这正是我的核心工作。
+                    帮助企业：
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; margin: 20px 0 30px;">
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px;">
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,215,0,0.15); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 14px; font-weight: 700; flex-shrink: 0;">✓</span>
+                        <span style="font-size: 14px; color: #ccc;">自动化重复流程，释放人工运营成本</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px;">
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,215,0,0.15); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 14px; font-weight: 700; flex-shrink: 0;">✓</span>
+                        <span style="font-size: 14px; color: #ccc;">打通业务数据孤岛，让 AI 理解你的业务全貌</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px;">
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,215,0,0.15); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 14px; font-weight: 700; flex-shrink: 0;">✓</span>
+                        <span style="font-size: 14px; color: #ccc;">构建私有 AI Agent 系统，从助手升级为数字员工</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;">
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">Agent</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">RAG</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">RPA</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">MCP</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">私有化AI部署</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">企业系统集成</span>
+                </div>
+
+                <div class="proof-box">
+                    <div class="proof-title">交付标准：顺畅的人机交互体验 + 工业级业务流闭环</div>
+                    <div class="proof-text">
+                        从顶层用户体验、中间层业务逻辑，到底层自动化中枢与企业日常办公软件的无缝对接。拒绝拼凑，不让企业为"无法连通的碎片系统"重复买单。
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 02 / 为什么选择做企业AI落地 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">02 / 为什么选择做企业AI落地</h3>
+                <p class="bio-text">
+                    AI 技术的发展速度远超企业落地速度。
                 </p>
                 <p class="bio-text">
-                    传统的 AI 改造项目往往卡在"技术方案讲得通，但业务流程接不上"的尴尬境地：模型能跑起来，却没人负责把它嵌进企业真实的工作流里。我的核心价值在于<strong>打破系统孤岛</strong>——把 AI 自动化能力无缝接入您现有的防关联指纹浏览器、企业 ERP 系统以及飞书办公流中，让自动化真正运转起来，沉淀为企业可复制、可交接的数字资产，而不是一次性的技术验证。
+                    很多企业已经拥有 ERP、CRM、飞书等系统，但数据孤岛、流程割裂、人工重复操作仍然存在。
+                    真正困难的不是调用一个模型，而是把 AI 嵌入企业每天运行的业务流程。
+                </p>
+                <p class="bio-text">
+                    因此我选择成为 FDE（Full-stack Development Engineer），负责从业务分析、架构设计，到系统开发、部署上线的完整闭环。
+                    让 AI 从演示能力，变成企业长期运行的数字资产。
                 </p>
 
                 <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,215,0,0.15); border-radius: 12px; padding: 32px 36px; margin-bottom: 24px;">
@@ -876,105 +1043,181 @@
                         <span style="font-size: 12px; color: var(--gold); background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 4px 16px;">长期维护合作</span>
                     </div>
                 </div>
+            </section>
 
-                <div class="proof-box">
-                    <div class="proof-title">交付标准：顺畅的人机交互体验 + 工业级业务流闭环</div>
-                    <div class="proof-text">
-                        从顶层用户体验、中间层业务逻辑，到底层自动化中枢与企业日常办公软件的无缝对接。拒绝拼凑，不让老板为“无法连通的碎片系统”重复买单。
+            <!-- ==================== 03 / 我解决的不是AI问题，而是企业效率问题 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">03 / 我解决的不是AI问题，而是企业效率问题</h3>
+                <div class="three-col-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 14px 16px;">
+                        <h4 style="font-size: 13px; color: #fff; font-weight: 700; margin-bottom: 6px;">业务流程自动化</h4>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 8px;">人工重复操作 · 数据搬运 · 多系统切换</p>
+                        <div style="font-size: 12px; color: var(--gold); font-weight: 700;">→ 降低运营成本</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 14px 16px;">
+                        <h4 style="font-size: 13px; color: #fff; font-weight: 700; margin-bottom: 6px;">企业数据智能化</h4>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 8px;">数据分散 · 信息无法利用 · 管理层看不到实时情况</p>
+                        <div style="font-size: 12px; color: var(--gold); font-weight: 700;">→ 提升决策效率</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 14px 16px;">
+                        <h4 style="font-size: 13px; color: #fff; font-weight: 700; margin-bottom: 6px;">AI Agent 业务执行</h4>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 8px;">AI 只能回答无法执行 · 缺乏自动化工具</p>
+                        <div style="font-size: 12px; color: var(--gold); font-weight: 700;">→ 从助手升级为数字员工</div>
                     </div>
                 </div>
             </section>
 
+            <!-- ==================== 04 / 已覆盖企业场景 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">02 / 全栈与 AI 服务能力</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">从需求分析到交付上线，覆盖企业 AI 落地的全链路服务。</p>
-                <div class="services-grid">
-                    <div class="service-card">
-                                                <h4 class="service-name">电商系统定制化改造</h4>
-                        <p class="service-desc">基于各大主流电商后台生态，深度整合积加 ERP 等内部数据接口，为企业量身定制包含自动化风控过滤与透视分析的闭环中控后台。</p>
-                    </div>
-                    <div class="service-card">
-                                                <h4 class="service-name">OpenClaw 架构私有化部署</h4>
-                        <p class="service-desc">深入您的物理服务器或云环境，完整部署 OpenClaw 架构。支持基于本地化知识库或专线接入进行精细化的 Agent 提示词工程，确保业务核心数据 100% 隔离。</p>
-                    </div>
-                    <div class="service-card">
-                                                <h4 class="service-name">企业协同生态深度融合</h4>
-                        <p class="service-desc">打破 ERP 数据壁垒。通过构建高性能 Python / Flask 接口服务，将各类业务大盘无缝嵌入飞书、微信等办公流，支持动态互动卡片（Interactive Cards）推送与审批交互。</p>
-                    </div>
-                    <a href="GEO-RUN.html" class="service-card" style="text-decoration:none; display:block;">
-                        <h4 class="service-name">GEO 流量截流代运营</h4>
-                        <p class="service-desc">面向出海/品牌卖家的生成式引擎优化服务，通过多智能体技术干预大模型召回机制，让产品成为 ChatGPT、Perplexity 等 AI 的推荐答案。</p>
-                    </a>
+                <h3 class="section-title">04 / 已覆盖企业场景</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">覆盖企业核心运营、供应链、管理决策等 AI 改造场景。</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px;">
+                    <span style="background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.2); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #fff; font-weight: 600;">跨境电商</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">供应链管理</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">ERP系统集成</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">企业知识库</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">运营数据分析</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">库存风控管理</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">智能客服系统</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">GEO流量优化</span>
+                </div>
+                <div style="display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap;">
+                    <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">3000万+</span> <span style="font-size: 11px; color: #777;">单项目GMV</span></div>
+                    <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">5亿+</span> <span style="font-size: 11px; color: #777;">覆盖业务规模</span></div>
+                    <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">8个</span> <span style="font-size: 11px; color: #777;">生产级Agent</span></div>
+                    <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">6周</span> <span style="font-size: 11px; color: #777;">典型交付周期</span></div>
+                </div>
+            </section>
 
-                    <div class="service-card">
-                                                <h4 class="service-name">企业 RAG 知识库搭建</h4>
-                        <p class="service-desc">从文档解析、切片、Embedding 到混合检索与 Rerank 重排序的全链路落地。支持私有化部署，业务数据 100% 不出网。</p>
-                    </div>
-                    <div class="service-card">
-                                                <h4 class="service-name">AI 落地评估与咨询</h4>
-                        <p class="service-desc">免费 15 分钟场景可行性评估，判断系统集成复杂度与 Agent 落地路线，不卖焦虑只出方案。</p>
+            <!-- ==================== 05 / 企业AI系统如何工作（简化版） ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">05 / 企业AI系统如何工作</h3>
+                <div class="flow-wrap">
+                    <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img">
+                        <defs>
+                            <marker id="arr-sm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+                            </marker>
+                        </defs>
+                        <text x="50" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">企业数据</text>
+                        <rect x="10" y="38" width="80" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="50" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">ERP/MES/CRM</text>
+                        <line x1="90" y1="56" x2="130" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="155" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">AI理解</text>
+                        <rect x="110" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="155" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">数据治理+本体</text>
+                        <line x1="200" y1="56" x2="240" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="265" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">智能判断</text>
+                        <rect x="220" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="265" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">Agent编排</text>
+                        <line x1="310" y1="56" x2="350" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="375" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">自动执行</text>
+                        <rect x="330" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="375" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">RPA+Tool</text>
+                        <line x1="420" y1="56" x2="460" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="485" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">人工确认</text>
+                        <rect x="440" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="485" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">飞书卡片</text>
+                        <line x1="530" y1="56" x2="570" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="595" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">持续优化</text>
+                        <rect x="560" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="605" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">反馈闭环</text>
+                        <path d="M 650 97 C 650 120, 50 120, 50 97" stroke="#444" stroke-width="1" fill="none" stroke-dasharray="4 3" marker-end="url(#arr-sm)"/>
+                        <text x="350" y="126" text-anchor="middle" fill="#444" font-size="9" font-family="Helvetica, Arial, sans-serif">持续迭代 · 每次优化反哺评测集</text>
+                    </svg>
+                </div>
+                <p class="bio-text" style="font-size: 14px;">
+                    <strong style="color: #fff;">老板版：</strong>企业数据 → AI 理解 → 智能判断 → 自动执行 → 人工确认 → 持续优化
+                </p>
+            </section>
+
+            <!-- ==================== 06 / AI交付方法论 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">06 / AI交付方法论</h3>
+                <p class="bio-text" style="margin-bottom: 0;">
+                    以上案例背后是同一套可复用的闭环方法论——不管业务场景是广告竞价还是库存清算，交付的系统都遵循相同的四段式结构：
+                </p>
+                <div class="flow-wrap">
+                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img" aria-labelledby="flow-title flow-desc">
+                        <title id="flow-title">FDE 全栈交付流程图</title>
+                        <desc id="flow-desc">数据采集经 Agent 决策后进入业务执行，异常或高风险情况通过人工回环确认，形成闭环。</desc>
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#ffd700"></path>
+                            </marker>
+                        </defs>
+                        <line x1="195" y1="70" x2="255" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
+                        <line x1="435" y1="70" x2="495" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
+                        <line x1="675" y1="70" x2="735" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
+                        <path d="M 810 110 C 810 190, 90 190, 90 110" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow)"></path>
+                        <g><rect x="15" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect><text x="105" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">01 · 数据采集</text><text x="105" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Playwright +</text><text x="105" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">指纹浏览器 / ERP API</text></g>
+                        <g><rect x="255" y="20" width="180" height="100" rx="8" fill="rgba(255,215,0,0.05)" stroke="#ffd700"></rect><text x="345" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">02 · Agent 决策</text><text x="345" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">企业私有AI中枢</text><text x="345" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">按 SOP 规则判定</text></g>
+                        <g><rect x="495" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect><text x="585" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">03 · 业务执行</text><text x="585" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">调价 / 启停 / 清算</text><text x="585" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">写回业务系统</text></g>
+                        <g><rect x="735" y="20" width="150" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect><text x="810" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">04 · 人工回环</text><text x="810" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">飞书互动卡片</text><text x="810" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">负责人一键确认</text></g>
+                        <text x="450" y="205" text-anchor="middle" fill="#555" font-size="11" font-family="Helvetica, Arial, sans-serif">虚线：异常/高风险决策不自动执行，回到人工确认，形成闭环</text>
+                    </svg>
+                    <p class="flow-caption">
+                        采集层保证数据不失真，决策层承担可解释的规则/模型判断，执行层直接写回企业已有系统而非另建孤岛，回环层把最终裁量权留给业务负责人——这也是"全栈交付"和"单点接 API"的本质区别。
+                    </p>
+                </div>
+
+                <div style="margin-top: 24px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px; padding: 24px;">
+                    <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">完整分层架构（技术版）</div>
+                    <p style="font-size: 13px; color: #aaa; line-height: 1.8; margin-bottom: 12px;">每一层交付背后是一套完整的分层架构：</p>
+                    <div class="arch-grid">
+                        <div class="arch-item"><strong>① 数据治理层</strong><br><span>打通 MES/ERP/CRM/PLM/WMS 等 8+ 业务系统，API/数据库直连/ETL</span></div>
+                        <div class="arch-item"><strong>② 知识层（RAG）</strong><br><span>结构化数据走 SQL，文档走 RAG 检索，按业务类型分流处理</span></div>
+                        <div class="arch-item gold-border"><strong>③ 本体层</strong><br><span>实体关系建模，让 AI 理解你的数据世界，消除多系统叫法不一致</span></div>
+                        <div class="arch-item"><strong>④ Tool/MCP 层</strong><br><span>业务能力封装为可审计、可权限控制的 Tool，MCP 协议标准化对接</span></div>
+                        <div class="arch-item full-row"><strong>⑤ Agent 编排层</strong><br><span>LangGraph 驱动有状态工作流，按业务节点 + 分支 + 人工介入点设计，不接受黑盒推理</span></div>
                     </div>
                 </div>
             </section>
 
+            <!-- ==================== 07 / 企业AI完整架构图 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">03 / 核心技术能力</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">体系化技术栈支撑工业级交付 —— 不只是会用，是已经落地验证过。</p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">大模型工程化接入</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
-                            接入 OpenAI / Claude / DeepSeek 等 8+ 主流模型 API，
-                            具备基于 Ollama / vLLM 的本地私有化部署经验。
-                        </div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">Agent 工作流设计</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
-                            基于 OpenClaw Skill 封装业务能力模块，
-                            已交付竞品监控、运营分析、库存健康等 8 个生产级 Agent。
-                        </div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">RPA + 企业系统集成</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
-                            Playwright 浏览器自动化 + AdsPower / 紫鸟，
-                            穿透无 API 系统。打通飞书多维表、Interactive Card、金蝶 ERP、Shopify。
-                        </div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">RAG 知识库全链路</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
-                            文档解析 → 切片 → Embedding → 向量检索 →
-                            混合检索 → Rerank 重排序 → 知识增强生成，完整落地经验。
-                        </div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">业务本体建模</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
-                            围绕业务场景设计实体、属性、关系及业务规则模型。<br>
-                            有本体 vs 无本体：没有本体时 Agent 眼中的"物料编码"和"SKU"是两样东西；
-                            有本体后 Agent 理解"客户→订单→产品→工序→设备"全链路，推理可追溯可解释。
-                        </div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">全栈工程交付</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
-                            Next.js / Python Flask 前后端，
-                            从需求调研到文档交付，一人担纲全链路，免跨团队沟通内耗。
-                        </div>
-                    </div>
+                <h3 class="section-title">07 / 企业 AI 完整架构图</h3>
+                
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">从数据接入到 Agent 编排，覆盖企业 AI 落地的完整分层架构。</p>
+                <div class="flow-wrap" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                    <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" style="min-width: 320px; width:100%; height:auto; display:block;" role="img" aria-labelledby="arch-title arch-desc">
+                        <title id="arch-title">企业 AI 完整架构图</title>
+                        <desc id="arch-desc">七层架构：数据源 → 数据治理层 → Tool/MCP层 → 知识层 → 治理层 → Agent编排层 → 用户界面</desc>
+                        <defs>
+                            <marker id="arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffd700"/></marker>
+                            <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker>
+                            <linearGradient id="arch-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(255,255,255,0.03)"/><stop offset="100%" stop-color="rgba(255,255,255,0.06)"/></linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="760" height="640" rx="12" fill="rgba(255,255,255,0.015)" stroke="#222" stroke-width="1"/>
+                        <g><rect x="230" y="18" width="300" height="44" rx="8" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.3)" stroke-width="1.2"/><text x="380" y="38" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">企业 AI 完整分层架构</text></g>
+                        <line x1="380" y1="62" x2="380" y2="88" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="88" width="400" height="52" rx="8" fill="url(#arch-bg)" stroke="#ffd700" stroke-width="1.2"/><text x="380" y="110" text-anchor="middle" fill="#ffd700" font-size="12" font-weight="800">Agent 编排层</text><text x="380" y="128" text-anchor="middle" fill="#aaa" font-size="10">多 Agent 编排 · 任务路由 · 状态管理</text></g>
+                        <line x1="380" y1="140" x2="380" y2="166" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="166" width="400" height="52" rx="8" fill="url(#arch-bg)" stroke="#555" stroke-width="1"/><text x="380" y="188" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Tool / MCP 层</text><text x="380" y="206" text-anchor="middle" fill="#aaa" font-size="10">工具注册 · MCP 协议 · API 网关</text></g>
+                        <line x1="380" y1="218" x2="380" y2="244" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="200" y="244" width="360" height="40" rx="6" fill="rgba(255,215,0,0.04)" stroke="rgba(255,215,0,0.2)" stroke-dasharray="4 3" stroke-width="1.2"/><text x="380" y="262" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="600">知识层（RAG · 向量库 · 知识图谱）</text></g>
+                        <line x1="180" y1="284" x2="180" y2="320" stroke="#555" stroke-width="1"/><line x1="380" y1="284" x2="380" y2="320" stroke="#555" stroke-width="1"/><line x1="580" y1="284" x2="580" y2="320" stroke="#555" stroke-width="1"/>
+                        <line x1="180" y1="320" x2="580" y2="320" stroke="#555" stroke-width="1"/>
+                        <line x1="180" y1="320" x2="180" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="380" y1="320" x2="380" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="580" y1="320" x2="580" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="80" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/><text x="180" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Tool / API</text><text x="180" y="376" text-anchor="middle" fill="#888" font-size="9">ERP · CRM · 飞书 · 电商平台</text></g>
+                        <g><rect x="280" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/><text x="380" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">知识库</text><text x="380" y="376" text-anchor="middle" fill="#888" font-size="9">RAG · 向量库 · 业务文档</text></g>
+                        <g><rect x="480" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/><text x="580" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">外部数据</text><text x="580" y="376" text-anchor="middle" fill="#888" font-size="9">爬虫 · 三方 API · 竞品监控</text></g>
+                        <line x1="180" y1="398" x2="180" y2="422" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="380" y1="398" x2="380" y2="422" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="580" y1="398" x2="580" y2="422" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="422" width="400" height="40" rx="6" fill="url(#arch-bg)" stroke="#555" stroke-width="1"/><text x="380" y="440" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">数据治理层（清洗 · 标准化 · 更新策略）</text></g>
+                        <line x1="380" y1="462" x2="380" y2="490" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="80" y="490" width="600" height="50" rx="8" fill="rgba(255,215,0,0.04)" stroke="rgba(255,215,0,0.25)" stroke-dasharray="4 3" stroke-width="1.2"/><text x="380" y="512" text-anchor="middle" fill="#ffd700" font-size="12" font-weight="700">数据源层</text><text x="380" y="528" text-anchor="middle" fill="#aaa" font-size="10">ERP · CRM · 电商后台 · 日志 · 文件 · 数据库</text></g>
+                        <line x1="380" y1="540" x2="380" y2="570" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="570" width="400" height="46" rx="8" fill="rgba(255,215,0,0.06)" stroke="#ffd700" stroke-width="1.5"/><text x="380" y="592" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">用户界面</text><text x="380" y="607" text-anchor="middle" fill="#aaa" font-size="10">Web 仪表盘 · 飞书交互卡片 · Telegram Bot</text></g>
+                    </svg>
                 </div>
-            </section>
-
+                <p class="flow-caption">系统架构包含数据接入、治理、知识管理、工具集成、Agent 编排与用户界面七大层级，覆盖从数据到决策的完整链路。</p>
+            </section>                        <!-- ==================== 08 / 商业案例 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">04 / 代表案例</h3>
-                <p class="testimonials-subtitle" style="margin-bottom: 24px;">来自跨境电商、品牌卖家的真实项目交付。</p>
+                <h3 class="section-title">08 / 商业案例</h3>
+                <p class="testimonials-subtitle" style="margin-bottom: 20px;">来自跨境电商、品牌卖家的真实项目交付。</p>
 
                 <div class="testimonial-grid">
-
-                    <!-- Case 1: 广告日报 -->
-                    <div class="testimonial-card">
+                    div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 消费电子 · GMV 约3000万</div>
                         <div class="project-name">广告与库存联动日报</div>
                         <div class="project-client-detail">运营团队 20+ 人 · 12 店铺</div>
@@ -986,13 +1229,14 @@
                         </div>
                         <hr class="project-divider">
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">企业痛点</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">运营每天在广告后台、库存表、竞品页面手动核对数据，广告花费与库存脱节导致超卖或断货。</p>
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI解决方案</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">脚本拉取飞书多维表，按 SKU 自动匹配在库，FBA→万邑通自动降级，竞品 ±5% 波动实时预警。</p>
                         </div>
+                        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">技术亮点：Playwright RPA + 飞书卡片 + ERP集成</p>
                         <div class="project-metrics two-col" style="margin-bottom: 8px;">
                             <div class="metric-item">
                                 <span class="metric-value">45min→3min</span>
@@ -1007,10 +1251,25 @@
                             <span class="project-quote-mark" aria-hidden="true">"</span>
                             <span class="project-quote-text">广告日报终于不用人工汇总了，FBA没货自动取万邑通库存，这种细节说明是真的懂我们业务。</span>
                         </div>
-                    </div>
+                    <
+                </div>
 
-                    <!-- Case 2: 竞品监控 -->
-                    <div class="testimonial-card">
+                <div class="folded-cases">
+                    <div class="folded-cases-divider">
+                        <span class="folded-cases-line"></span>
+                        <span class="folded-cases-text">其他案例</span>
+                        <span class="folded-cases-line"></span>
+                    </div>
+                    <details class="case-collapse">
+                        <summary class="case-collapse-summary">
+                            <span class="case-collapse-dot" aria-hidden="true"></span>
+                            <span class="case-collapse-label">
+                                <span class="case-industry">跨境电商 · 户外用品 · GMV 约5000万</span>
+                                <span class="case-name">竞品价格实时监控</span>
+                            </span>
+                            <span class="case-tags"><span class="case-tag">AdsPower</span><span class="case-tag">Feishu</span><span class="case-tag">2 周</span></span>
+                        </summary>
+                        div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 户外用品 · GMV 约5000万</div>
                         <div class="project-name">竞品价格实时监控</div>
                         <div class="project-client-detail">运营团队 30+ 人 · 50+ SKU</div>
@@ -1022,13 +1281,14 @@
                         </div>
                         <hr class="project-divider">
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">企业痛点</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">深夜竞品恶意调价无法及时发现，运营每天人工比价，错过价格响应窗口就是实打实的利润损失。</p>
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI解决方案</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">指纹浏览器 + Playwright 接管真实环境抓取前台价格，±5% 过滤信息噪声，飞书卡片实时推送。</p>
                         </div>
+                        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">技术亮点：Playwright RPA + AdsPower指纹浏览器 + 飞书卡片推送</p>
                         <div class="project-metrics two-col" style="margin-bottom: 8px;">
                             <div class="metric-item">
                                 <span class="metric-value">&lt;5min</span>
@@ -1043,10 +1303,18 @@
                             <span class="project-quote-mark" aria-hidden="true">"</span>
                             <span class="project-quote-text">异常才提醒，不用每天一个个比价，这个设计减少了很多无效信息干扰。</span>
                         </div>
-                    </div>
-
-                    <!-- Case 3: 库存物流 -->
-                    <div class="testimonial-card">
+                    <
+                    </details>
+                    <details class="case-collapse">
+                        <summary class="case-collapse-summary">
+                            <span class="case-collapse-dot" aria-hidden="true"></span>
+                            <span class="case-collapse-label">
+                                <span class="case-industry">跨境电商 · 家居 · GMV 约8000万</span>
+                                <span class="case-name">库存与物流风控体系</span>
+                            </span>
+                            <span class="case-tags"><span class="case-tag">Feishu</span><span class="case-tag">4 周</span></span>
+                        </summary>
+                        div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 家居 · GMV 约8000万</div>
                         <div class="project-name">库存与物流风控体系</div>
                         <div class="project-client-detail">供应链团队 50+ 人 · 全球多仓</div>
@@ -1058,13 +1326,14 @@
                         </div>
                         <hr class="project-divider">
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">企业痛点</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">长周期压货和物流延期月结才能发现，仓储、物流、运营三方数据分散，异常被淹没在大量数据中。</p>
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI解决方案</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">自动计算延期天数，TOP 5 高危单推送 @ 责任人，库龄 3/6 个月双阈值分层预警 + 货值周报。</p>
                         </div>
+                        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">技术亮点：OpenClaw Agent + 飞书@推送 + 多源数据融合</p>
                         <div class="project-metrics two-col" style="margin-bottom: 8px;">
                             <div class="metric-item">
                                 <span class="metric-value">TOP 5</span>
@@ -1079,10 +1348,18 @@
                             <span class="project-quote-mark" aria-hidden="true">"</span>
                             <span class="project-quote-text">库龄、货值这些周报级数据也覆盖到了，不只是关注短期销售，长期库存健康度也照顾得到。</span>
                         </div>
-                    </div>
-
-                    <!-- Case 4: RPA -->
-                    <div class="testimonial-card">
+                    <
+                    </details>
+                    <details class="case-collapse">
+                        <summary class="case-collapse-summary">
+                            <span class="case-collapse-dot" aria-hidden="true"></span>
+                            <span class="case-collapse-label">
+                                <span class="case-industry">跨境电商 · 3C数码 · GMV 约2亿</span>
+                                <span class="case-name">ERP 自动化应急监控</span>
+                            </span>
+                            <span class="case-tags"><span class="case-tag">Playwright</span><span class="case-tag">Feishu</span><span class="case-tag">24h 应急</span></span>
+                        </summary>
+                        div class="testimonial-card">
                         <div class="project-industry">跨境电商 · 3C数码 · GMV 约2亿</div>
                         <div class="project-name">ERP 自动化应急监控</div>
                         <div class="project-client-detail">运营团队 100+ 人 · 多品牌</div>
@@ -1094,13 +1371,14 @@
                         </div>
                         <hr class="project-divider">
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">企业痛点</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">积加 ERP 官方 API 认证网关失效，依赖接口的整个差评监控停摆——第三方断供在自动化项目中是常态。</p>
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI解决方案</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">不等官方修复，24 小时内将抓取层切换为 Playwright RPA，模拟登录态从前台抓取，上层推送零修改。</p>
                         </div>
+                        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">技术亮点：Playwright RPA + 应急切换机制 + 飞书通知闭环</p>
                         <div class="project-metrics two-col" style="margin-bottom: 8px;">
                             <div class="metric-item">
                                 <span class="metric-value">&lt;24h</span>
@@ -1115,10 +1393,18 @@
                             <span class="project-quote-mark" aria-hidden="true">"</span>
                             <span class="project-quote-text">不等官方修复，直接抓取层换 RPA，上层逻辑零修改，业务几乎无感知。接口停但业务不能停。</span>
                         </div>
-                    </div>
-
-                    <!-- Case 5: 私有化 -->
-                    <div class="testimonial-card">
+                    <
+                    </details>
+                    <details class="case-collapse">
+                        <summary class="case-collapse-summary">
+                            <span class="case-collapse-dot" aria-hidden="true"></span>
+                            <span class="case-collapse-label">
+                                <span class="case-industry">跨境集团 · 综合 · GMV 约5亿</span>
+                                <span class="case-name">OpenClaw 私有化自动化中枢</span>
+                            </span>
+                            <span class="case-tags"><span class="case-tag">OpenClaw</span><span class="case-tag">私有化部署</span><span class="case-tag">Feishu</span></span>
+                        </summary>
+                        div class="testimonial-card">
                         <div class="project-industry">跨境集团 · 综合 · GMV 约5亿</div>
                         <div class="project-name">OpenClaw 私有化自动化中枢</div>
                         <div class="project-client-detail">全团队 200+ 人 · 多系统集成</div>
@@ -1130,13 +1416,14 @@
                         </div>
                         <hr class="project-divider">
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">核心问题</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">企业痛点</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">核心运营数据接入公共云存在商业机密泄露风险，多个系统相互孤立，管理层缺乏统一数据视图。</p>
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">解决方案</div>
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI解决方案</div>
                             <p style="font-size: 13px; color: #eee; line-height: 1.6;">全栈 OpenClaw 私有化部署，7 类日报/周报统一推送至飞书，核心数据 100% 物理隔离。</p>
                         </div>
+                        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">技术亮点：OpenClaw私有化 + 飞书接入 + 多Agent协同</p>
                         <div class="project-metrics two-col" style="margin-bottom: 8px;">
                             <div class="metric-item">
                                 <span class="metric-value">100%</span>
@@ -1151,434 +1438,288 @@
                             <span class="project-quote-mark" aria-hidden="true">"</span>
                             <span class="project-quote-text">每天打开飞书就能看到所有运营情况，不用再登录四五个平台，零学习成本，团队接受度很高。</span>
                         </div>
+                    <
                     </div>
-
+                    </details>
                 </div>
+
                 <div style="margin-top: 20px; text-align: center;">
                     <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 12px 28px; font-size: 12px;">查看完整商业案例 →</a>
                 </div>
-            </section>
-
+            </section><!-- ==================== / 合作流程 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">05 / 交付方法论</h3>
-                <p class="bio-text" style="margin-bottom: 0;">
-                    以上案例背后是同一套可复用的闭环方法论——不管业务场景是广告竞价还是库存清算，交付的系统都遵循相同的四段式结构：
-                </p>
-                <div class="flow-wrap">
-                    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img" aria-labelledby="flow-title flow-desc">
-                        <title id="flow-title">FDE 全栈交付流程图</title>
-                        <desc id="flow-desc">数据采集经 Agent 决策后进入业务执行，异常或高风险情况通过人工回环确认，形成闭环。</desc>
-                        <defs>
-                            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                                <path d="M0,0 L10,5 L0,10 z" fill="#ffd700"></path>
-                            </marker>
-                        </defs>
-
-                        <!-- 连接线 -->
-                        <line x1="195" y1="70" x2="255" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
-                        <line x1="435" y1="70" x2="495" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
-                        <line x1="675" y1="70" x2="735" y2="70" stroke="#ffd700" stroke-width="1.5" marker-end="url(#arrow)"></line>
-                        <path d="M 810 110 C 810 190, 90 190, 90 110" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow)"></path>
-
-                        <!-- 节点 1：数据采集 -->
-                        <g>
-                            <rect x="15" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="105" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">01 · 数据采集</text>
-                            <text x="105" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Playwright +</text>
-                            <text x="105" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">指纹浏览器 / ERP API</text>
-                        </g>
-
-                        <!-- 节点 2：Agent 决策 -->
-                        <g>
-                            <rect x="255" y="20" width="180" height="100" rx="8" fill="rgba(255,215,0,0.05)" stroke="#ffd700"></rect>
-                            <text x="345" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">02 · Agent 决策</text>
-                            <text x="345" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">OpenClaw 多智能体</text>
-                            <text x="345" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">按 SOP 规则判定</text>
-                        </g>
-
-                        <!-- 节点 3：业务执行 -->
-                        <g>
-                            <rect x="495" y="20" width="180" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="585" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">03 · 业务执行</text>
-                            <text x="585" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">调价 / 启停 / 清算</text>
-                            <text x="585" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">写回业务系统</text>
-                        </g>
-
-                        <!-- 节点 4：人工回环 -->
-                        <g>
-                            <rect x="735" y="20" width="150" height="100" rx="8" fill="rgba(255,255,255,0.03)" stroke="#333"></rect>
-                            <text x="810" y="55" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="700" letter-spacing="1" font-family="Helvetica, Arial, sans-serif">04 · 人工回环</text>
-                            <text x="810" y="80" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">飞书互动卡片</text>
-                            <text x="810" y="98" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">负责人一键确认</text>
-                        </g>
-
-                        <text x="450" y="205" text-anchor="middle" fill="#555" font-size="11" font-family="Helvetica, Arial, sans-serif">虚线：异常/高风险决策不自动执行，回到人工确认，形成闭环</text>
-                    </svg>
-                    <p class="flow-caption">
-                        采集层保证数据不失真，决策层承担可解释的规则/模型判断，执行层直接写回企业已有系统而非另建孤岛，回环层把最终裁量权留给业务负责人——这也是"全栈交付"和"单点接 API"的本质区别。
-                    </p>
+                <h3 class="section-title">合作流程</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">从诊断到上线，每一步都有明确交付物。</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px;">
+                    <span style="background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.3); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #fff; font-weight: 700;">01 业务诊断</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">02 AI机会分析</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">03 方案设计</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">04 开发交付</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">05 持续优化</span>
                 </div>
-
-                <div style="margin-top: 24px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px; padding: 24px;">
-                    <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">完整分层架构</div>
-                    <p style="font-size: 13px; color: #aaa; line-height: 1.8; margin-bottom: 12px;">每一层交付背后是一套完整的分层架构：</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; font-size: 13px;">
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
-                            <strong style="color: #fff;">① 数据接入层</strong><br>
-                            <span style="color: #aaa;">打通 MES/ERP/CRM/PLM/WMS 等 8+ 业务系统，API/数据库直连/ETL</span>
+            </section>
+            <!-- ==================== 09 / 企业AI落地服务 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">09 / 企业AI落地服务</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">根据企业需求灵活选择，每项服务均包含部署支持与长期维护。</p>
+                <div class="three-col-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 16px;">
+                        <h4 style="font-size: 14px; color: #fff; font-weight: 700; margin-bottom: 4px;">AI自动化流程改造</h4>
+                        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">单个业务流程优化</div>
+                        <div style="display: flex; gap: 4px 16px; flex-wrap: wrap; font-size: 12px; margin-bottom: 10px;">
+                            <span><span style="color: var(--gold); font-weight: 700;">周期</span> <span style="color: #fff;">2 - 4 周</span></span>
+                            <span><span style="color: var(--gold); font-weight: 700;">投资</span> <span style="color: #fff;">2 - 5 万元</span></span>
                         </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
-                            <strong style="color: #fff;">② 知识层</strong><br>
-                            <span style="color: #aaa;">结构化数据走 SQL，文档走 RAG 检索，按业务类型分流处理</span>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5;">适合需要快速解决单一业务痛点的企业，如日报自动化、竞品监控、库存预警。</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,215,0,0.25); border-radius: 6px; padding: 16px;">
+                        <h4 style="font-size: 14px; color: #fff; font-weight: 700; margin-bottom: 4px;">企业Agent系统建设</h4>
+                        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">多系统集成 + 多Agent协作</div>
+                        <div style="display: flex; gap: 4px 16px; flex-wrap: wrap; font-size: 12px; margin-bottom: 10px;">
+                            <span><span style="color: var(--gold); font-weight: 700;">周期</span> <span style="color: #fff;">4 - 8 周</span></span>
+                            <span><span style="color: var(--gold); font-weight: 700;">投资</span> <span style="color: #fff;">10 - 30 万元</span></span>
                         </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid var(--gold); padding: 10px 14px;">
-                            <strong style="color: var(--gold);">③ 本体层</strong><br>
-                            <span style="color: #aaa;">实体关系建模，让 AI 理解你的数据世界，消除多系统叫法不一致</span>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5;">适合需要打通多个业务系统、构建企业级 AI Agent 体系的客户。</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 16px;">
+                        <h4 style="font-size: 14px; color: #fff; font-weight: 700; margin-bottom: 4px;">私有化AI部署</h4>
+                        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">开源模型本地部署 + 定制</div>
+                        <div style="display: flex; gap: 4px 16px; flex-wrap: wrap; font-size: 12px; margin-bottom: 10px;">
+                            <span><span style="color: var(--gold); font-weight: 700;">周期</span> <span style="color: #fff;">2 - 6 周</span></span>
+                            <span><span style="color: var(--gold); font-weight: 700;">投资</span> <span style="color: #fff;">5 - 20 万元</span></span>
                         </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
-                            <strong style="color: #fff;">④ Tool 层</strong><br>
-                            <span style="color: #aaa;">业务能力封装为可审计、可权限控制的 Tool，Agent 零代码调用</span>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px; ">
-                            <strong style="color: #fff;">⑤ Agent 编排层</strong><br>
-                            <span style="color: #aaa;">LangGraph 驱动有状态工作流，按业务节点 + 分支 + 人工介入点设计，不接受黑盒推理</span>
-                        </div>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5;">适合数据安全要求高、需要本地部署大模型及知识库的企业。</p>
                     </div>
                 </div>
-
             </section>
 
+            <!-- ==================== 10 / 核心技术能力 ==================== -->
             <section class="section-block">
-                <h3 class="section-title">06 / 常见问题</h3>
+                <h3 class="section-title">10 / 核心技术能力</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">体系化技术栈支撑工业级交付 —— 不只是会用，是已经落地验证过。</p>
+                <div class="tech-grid">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">大模型工程化接入</div>
+                        <p class="service-desc">接入 OpenAI / Claude / DeepSeek 等 8+ 主流模型 API，具备基于 Ollama / vLLM 的本地私有化部署经验。</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Agent 工作流设计</div>
+                        <p class="service-desc">基于企业私有AI智能中枢封装业务能力模块，已交付竞品监控、运营分析、库存健康等 8 个生产级 Agent。</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RPA + 企业系统集成</div>
+                        <p class="service-desc">Playwright 浏览器自动化 + AdsPower / 紫鸟，穿透无 API 系统。打通飞书多维表、Interactive Card、金蝶 ERP、Shopify。</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RAG 知识库全链路</div>
+                        <p class="service-desc">文档解析 → 切片 → Embedding → 向量检索 → 混合检索 → Rerank 重排序 → 知识增强生成，完整落地经验。</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">业务本体建模</div>
+                        <p class="service-desc">围绕业务场景设计实体、属性、关系及业务规则模型。有本体后 Agent 理解"客户→订单→产品→工序→设备"全链路，推理可追溯可解释。</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">全栈工程交付</div>
+                        <p class="service-desc">Next.js / Python Flask 前后端，从需求调研到文档交付，一人担纲全链路，免跨团队沟通内耗。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 11 / 常见问题 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">11 / 常见问题</h3>
                 <div class="faq-list">
-                    <details class="faq-item">
-                        <summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">需要更换 ERP 吗？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">交付周期多久？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">根据项目复杂度，一般 2～8 周。需求确认后会提供阶段性交付计划。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">是否签 NDA？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">支持。涉及商业数据或业务流程的项目，可签署保密协议。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">是否提供售后？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">提供部署支持、Bug 修复及按约定的维护服务，可根据项目提供长期技术支持。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-question">如何收费？<span class="faq-icon" aria-hidden="true">+</span></summary>
-                        <p class="faq-answer">根据需求复杂度、系统规模及交付内容报价，可先预约免费获取业务 AI 应用评估报告。</p>
-                    </details>
+                    <details class="faq-item"><summary class="faq-question">支持私有化部署吗？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。</p></details>
+                    <details class="faq-item"><summary class="faq-question">需要更换 ERP 吗？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。</p></details>
+                    <details class="faq-item"><summary class="faq-question">交付周期多久？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">根据项目复杂度，一般 2～8 周。需求确认后会提供阶段性交付计划。</p></details>
+                    <details class="faq-item"><summary class="faq-question">是否签 NDA？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">支持。涉及商业数据或业务流程的项目，可签署保密协议。</p></details>
+                    <details class="faq-item"><summary class="faq-question">是否提供售后？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">提供部署支持、Bug 修复及按约定的维护服务，可根据项目提供长期技术支持。</p></details>
+                    <details class="faq-item"><summary class="faq-question">如何收费？<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">根据需求复杂度、系统规模及交付内容报价，可先预约免费获取业务 AI 应用评估报告。</p></details>
+                </div>
+            </section>
+
+            <!-- ==================== 12 / 联系合作 ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">12 / 联系合作</h3>
+                <div style="text-align: center; padding: 40px 20px;">
+                    <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 16px; color: #fff;">
+                        让 AI 从演示能力，<br>变成企业长期运行的数字资产
+                    </h2>
+                    <p style="font-size: 14px; color: #999; margin-bottom: 30px; line-height: 1.8;">
+                        免费 15 分钟场景可行性评估 · 判断系统集成复杂度与 Agent 落地路线<br>
+                        不卖焦虑只出方案
+                首次沟通只评估是否适合 AI 改造，不强推项目。
+                    </p>
+                    <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" style="display: inline-block; padding: 16px 40px; font-size: 14px; max-width: 400px; margin: 0 auto;">
+                        免费获取企业AI自动化机会分析
+                    </a>
+                    <p style="font-size: 12px; color: #666; margin-top: 16px;">
+                        或直接联系 Telegram: @GeekHeron
+                    </p>
                 </div>
             </section>
 
         </div>
-    </main>
+    </main><script>const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 12000; // 性能优化：从 4000 降至 1200，保障多端流畅度
+        const fieldOfView = 300; 
+        const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
 
-    <script>
-        (function () {
-            'use strict';
-
-            /* ---------------------------------------------------------
-             * 0. 实时时钟：右上角显示北京时间
-             * ------------------------------------------------------- */
-            var clockEl = document.getElementById('clock');
-            if (clockEl) {
-                function pad(n) {
-                    return n < 10 ? '0' + n : '' + n;
-                }
-                function updateClock() {
-                    var now = new Date();
-                    var h = pad(now.getHours());
-                    var m = pad(now.getMinutes());
-                    var s = pad(now.getSeconds());
-                    clockEl.textContent = h + ':' + m + ':' + s;
-                }
-                updateClock();
-                setInterval(updateClock, 1000);
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = (Math.random() - 0.5) * width * 2.5; 
+                this.y = (Math.random() - 0.5) * height * 2.5; 
+                this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
+                this.radius = Math.random() * 1.2 + 0.2; 
+                this.color = colors[Math.floor(Math.random() * colors.length)];
             }
-
-            /* ---------------------------------------------------------
-             * 1. 邮箱地址混淆：避免明文出现在 HTML 源码中被爬虫抓取
-             * ------------------------------------------------------- */
-            function buildMailto() {
-                var user = ['G', 'e', 'e', 'k', 'H', 'e', 'r', 'o', 'n'].join('');
-                var domain = ['outlook', 'com'].join('.');
-                var address = user + '@' + domain;
-                var subject = encodeURIComponent('预约 15 分钟咨询');
-                var body = encodeURIComponent('简要需求：\n期望时间：');
-                return 'mailto:' + address + '?subject=' + subject + '&body=' + body;
+            update() {
+                let cosZ = Math.cos(0.0005);
+                let sinZ = Math.sin(0.0005);
+                let tempX = this.x;
+                this.x = tempX * cosZ - this.y * sinZ;
+                this.y = tempX * sinZ + this.y * cosZ;
+                this.z -= 0.2; 
+                if (this.z < -fieldOfView) { this.z += fieldOfView * 2; }
             }
-
-            function bindMailtoLinks() {
-                var mailtoHref = buildMailto();
-                ['email-cta', 'email-cta-bottom'].forEach(function (id) {
-                    var el = document.getElementById(id);
-                    if (el) {
-                        el.setAttribute('href', mailtoHref);
-                    }
-                });
-            }
-            bindMailtoLinks();
-
-            /* ---------------------------------------------------------
-             * 1. 背景粒子与流星特效（带性能与无障碍优化）
-             * ------------------------------------------------------- */
-            var canvas = document.getElementById('galaxy-field');
-            var ctx = canvas.getContext('2d');
-            var width, height;
-            var particles = [];
-            var meteors = [];
-            var rafId = null;
-            var isPaused = false;
-
-            var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            function getParticleCount() {
-                if (prefersReducedMotion) return 0;
-                if (width < 600) return 150;
-                if (width < 1024) return 350;
-                return 800;
-            }
-
-            function resize() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-            }
-
-            function Particle() {
-                this.reset();
-            }
-            Particle.prototype.reset = function () {
-                this.x = (Math.random() - 0.5) * width * 2;
-                this.y = (Math.random() - 0.5) * height * 2;
-                this.z = (Math.random() * 300 * 2) - 300;
-                this.alpha = Math.random() * 0.5 + 0.2;
-            };
-            Particle.prototype.update = function () {
-                this.z -= 0.3;
-                if (this.z < -300) {
-                    this.z += 600;
-                    this.x = (Math.random() - 0.5) * width * 2;
-                    this.y = (Math.random() - 0.5) * height * 2;
-                }
-            };
-            Particle.prototype.draw = function () {
-                var perspective = 300 / (300 + this.z);
-                var x = (this.x * perspective) + width / 2;
-                var y = (this.y * perspective) + height / 2;
-                var scale = perspective;
-                if (x > 0 && x < width && y > 0 && y < height) {
-                    ctx.fillStyle = 'rgba(255,255,255,' + (this.alpha * scale) + ')';
+            draw() {
+                const perspective = fieldOfView / (fieldOfView + this.z);
+                const projectedX = (this.x * perspective) + width / 2;
+                const projectedY = (this.y * perspective) + height / 2;
+                const projectedRadius = this.radius * perspective;
+                const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
+                if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
                     ctx.beginPath();
-                    ctx.arc(x, y, 1.2 * scale, 0, Math.PI * 2);
+                    ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${opacity})`;
                     ctx.fill();
                 }
-            };
-
-            function Meteor() {
-                this.reset();
             }
-            Meteor.prototype.reset = function () {
-                if (Math.random() > 0.5) {
-                    this.x = Math.random() * width;
-                    this.y = -100;
-                } else {
-                    this.x = -100;
-                    this.y = Math.random() * height * 0.5;
-                }
-                var speed = Math.random() * 15 + 10;
-                var angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2;
-                this.speedX = Math.cos(angle) * speed;
-                this.speedY = Math.sin(angle) * speed;
-                this.length = Math.random() * 80 + 50;
-                this.alpha = 1;
+        }
+
+        class ShootingStar {
+            constructor() { this.reset(); this.active = false; }
+            reset() {
+                this.x = Math.random() * width + 200; 
+                this.y = Math.random() * height * 0.3 - 200; 
+                this.speed = Math.random() * 10 + 15;
+                this.len = Math.random() * 80 + 150;
+                this.size = Math.random() * 1 + 0.5;
+                this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
                 this.active = true;
-            };
-            Meteor.prototype.update = function () {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > width + 200 || this.y > height + 200) {
-                    this.alpha -= 0.05;
-                }
-                if (this.alpha <= 0) {
-                    this.active = false;
-                }
-            };
-            Meteor.prototype.draw = function () {
+            }
+            update() {
                 if (!this.active) return;
-                var speedMagnitude = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
-                var tailX = this.x - (this.speedX / speedMagnitude) * this.length;
-                var tailY = this.y - (this.speedY / speedMagnitude) * this.length;
-                var gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-                gradient.addColorStop(0, 'rgba(255, 255, 255, ' + this.alpha + ')');
-                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                this.x -= this.speed * Math.cos(this.angle);
+                this.y += this.speed * Math.sin(this.angle);
+                if (this.x < -this.len || this.y > height + this.len) this.active = false;
+            }
+            draw() {
+                if (!this.active) return;
+                const tailX = this.x + this.len * Math.cos(this.angle);
+                const tailY = this.y - this.len * Math.sin(this.angle);
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+                gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
                 ctx.beginPath();
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.size;
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(tailX, tailY);
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 2;
-                ctx.lineCap = 'round';
                 ctx.stroke();
-            };
-
-            function initParticles() {
-                particles = [];
-                var count = getParticleCount();
-                for (var i = 0; i < count; i++) particles.push(new Particle());
             }
+        }
 
-            function trySpawnMeteor() {
-                if (prefersReducedMotion) return;
-                if (Math.random() < 0.01 && meteors.length < 3) {
-                    meteors.push(new Meteor());
-                }
+        const meteors = [new ShootingStar(), new ShootingStar(), new ShootingStar()];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+        }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (Math.random() < 0.008) {
+                const m = meteors.find(m => !m.active);
+                if (m) m.reset();
             }
+            meteors.forEach(m => { m.update(); m.draw(); });
+            requestAnimationFrame(animate);
+        }
+        resize();
+        initParticles();
+        animate();
 
-            function animate() {
-                if (isPaused) return;
-                ctx.clearRect(0, 0, width, height);
-                particles.forEach(function (p) { p.update(); p.draw(); });
-                trySpawnMeteor();
-                for (var i = meteors.length - 1; i >= 0; i--) {
-                    meteors[i].update();
-                    meteors[i].draw();
-                    if (!meteors[i].active) meteors.splice(i, 1);
-                }
-                rafId = requestAnimationFrame(animate);
-            }
+        // --- 5. 地理位置模块（优化版：采用免授权 IP 定位，提升留存与风骨） ---
+        function initLocation() {
+            const locElement = document.getElementById('user-location');
+            if (!locElement) return;
 
-            function startAnimation() {
-                if (rafId !== null) return;
-                isPaused = false;
-                animate();
-            }
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latitude && data.longitude) {
+                        const lat = data.latitude;
+                        const lon = data.longitude;
+                        const latDir = lat >= 0 ? 'N' : 'S';
+                        const lonDir = lon >= 0 ? 'E' : 'W';
+                        locElement.textContent = `LOC: ${Math.abs(lat).toFixed(2)}${latDir}, ${Math.abs(lon).toFixed(2)}${lonDir} / GEO.SYNC`;
+                    } else {
+                        locElement.textContent = `LOC: PROXY.DETECTED / MASKED`;
+                    }
+                })
+                .catch(() => {
+                    locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
+                });
+        }
+        initLocation();
 
-            function stopAnimation() {
-                isPaused = true;
-                if (rafId !== null) {
-                    cancelAnimationFrame(rafId);
-                    rafId = null;
-                }
-            }
+        // --- 6. 真实 FPS 监听模块（让 HUD 的 60FPS 真正动起来） ---
+        function initFPSCounter() {
+            const fpsElement = document.getElementById('fps-counter');
+            if (!fpsElement) return;
 
-            // 标签页切到后台时暂停动画，节省电量与 CPU
-            document.addEventListener('visibilitychange', function () {
-                if (document.hidden) {
-                    stopAnimation();
-                } else if (!prefersReducedMotion) {
-                    startAnimation();
-                }
-            });
+            let lastCalledTime;
+            let counter = 0;
 
-            var resizeTimer;
-            window.addEventListener('resize', function () {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function () {
-                    resize();
-                    initParticles();
-                }, 150);
-            });
-
-            resize();
-            initParticles();
-            if (!prefersReducedMotion) {
-                startAnimation();
-            } else {
-                // 即使不做动画，也画一帧静态星空，保留视觉效果
-                ctx.clearRect(0, 0, width, height);
-                particles.forEach(function (p) { p.draw(); });
-            }
-
-            /* ---------------------------------------------------------
-             * 2. 打字机特效（一次性拼接，减少重排）
-             * ------------------------------------------------------- */
-            var textToType = 'Initializing FDE Stack... OpenClaw Agent Active... Playwright Spider Injected... Feishu Interactive Cards Syncing.';
-            var typeElement = document.getElementById('typewriter');
-            var charIndex = 0;
-
-            function typeWriter() {
-                if (charIndex <= textToType.length) {
-                    typeElement.textContent = textToType.slice(0, charIndex);
-                    charIndex++;
-                    setTimeout(typeWriter, 50);
-                }
-            }
-            if (!prefersReducedMotion) {
-                setTimeout(typeWriter, 500);
-            } else {
-                typeElement.textContent = textToType;
-            }
-
-            /* ---------------------------------------------------------
-             * 3. 菜单逻辑：语义化按钮 + 键盘可达 + Esc 关闭 + 简单焦点管理
-             * ------------------------------------------------------- */
-            var hamburger = document.querySelector('.hamburger');
-            var navLinks = document.querySelector('.nav-links');
-            var focusableNavItems = navLinks.querySelectorAll('a');
-            var lastFocusedElement = null;
-
-            function openMenu() {
-                hamburger.classList.add('active');
-                navLinks.classList.add('active');
-                hamburger.setAttribute('aria-expanded', 'true');
-                lastFocusedElement = document.activeElement;
-                if (focusableNavItems.length) focusableNavItems[0].focus();
-                document.addEventListener('keydown', handleMenuKeydown);
-            }
-
-            function closeMenu() {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-                document.removeEventListener('keydown', handleMenuKeydown);
-                if (lastFocusedElement) lastFocusedElement.focus();
-            }
-
-            function toggleMenu() {
-                var isOpen = hamburger.classList.contains('active');
-                if (isOpen) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-            }
-
-            function handleMenuKeydown(e) {
-                if (e.key === 'Escape') {
-                    closeMenu();
+            function fpsLoop() {
+                if (!lastCalledTime) {
+                    lastCalledTime = performance.now();
+                    counter = 0;
+                    requestAnimationFrame(fpsLoop);
                     return;
                 }
-                // 简单的 focus trap：Tab 循环在菜单内部
-                if (e.key === 'Tab' && focusableNavItems.length) {
-                    var first = focusableNavItems[0];
-                    var last = focusableNavItems[focusableNavItems.length - 1];
-                    if (e.shiftKey && document.activeElement === first) {
-                        e.preventDefault();
-                        last.focus();
-                    } else if (!e.shiftKey && document.activeElement === last) {
-                        e.preventDefault();
-                        first.focus();
-                    }
-                }
-            }
+                
+                counter++;
+                const delta = (performance.now() - lastCalledTime) / 1000;
 
-            hamburger.addEventListener('click', toggleMenu);
-            focusableNavItems.forEach(function (link) {
-                link.addEventListener('click', function () {
-                    if (navLinks.classList.contains('active')) closeMenu();
-                });
-            });
-        })();
-</script>
+                if (delta >= 1) { 
+                    const fps = Math.round(counter / delta);
+                    fpsElement.textContent = `FRAME: ${fps}FPS`;
+                    counter = 0;
+                    lastCalledTime = performance.now();
+                }
+                requestAnimationFrame(fpsLoop);
+            }
+            requestAnimationFrame(fpsLoop);
+        }
+        initFPSCounter();
+    </script>
     <script src="site-nav.js"></script>
 </body>
 </html>

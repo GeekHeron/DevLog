@@ -76,6 +76,7 @@
           "@type": "Question",
           "name": "如何收费？",
           "acceptedAnswer": { "@type": "Answer", "text": "根据需求复杂度、系统规模及交付内容报价，可先预约免费获取业务 AI 应用评估报告。" }
+        }
       ]
     }
     </script>
@@ -1269,25 +1270,19 @@
             /* ---------------------------------------------------------
              * 1. 邮箱地址混淆：避免明文出现在 HTML 源码中被爬虫抓取
              * ------------------------------------------------------- */
-            function buildMailto() {
+            /* 邮箱混淆：当页面有 email-cta / email-cta-bottom 元素时注入 mailto 链接 */
+            (function () {
                 var user = ['G', 'e', 'e', 'k', 'H', 'e', 'r', 'o', 'n'].join('');
                 var domain = ['outlook', 'com'].join('.');
                 var address = user + '@' + domain;
                 var subject = encodeURIComponent('预约 15 分钟咨询');
                 var body = encodeURIComponent('简要需求：\n期望时间：');
-                return 'mailto:' + address + '?subject=' + subject + '&body=' + body;
-            }
-
-            function bindMailtoLinks() {
-                var mailtoHref = buildMailto();
+                var mailtoHref = 'mailto:' + address + '?subject=' + subject + '&body=' + body;
                 ['email-cta', 'email-cta-bottom'].forEach(function (id) {
                     var el = document.getElementById(id);
-                    if (el) {
-                        el.setAttribute('href', mailtoHref);
-                    }
+                    if (el) el.setAttribute('href', mailtoHref);
                 });
-            }
-            bindMailtoLinks();
+            })();
 
             /* ---------------------------------------------------------
              * 1. 背景粒子与流星特效（带性能与无障碍优化）
@@ -1461,84 +1456,30 @@
             }
 
             /* ---------------------------------------------------------
-             * 2. 打字机特效（一次性拼接，减少重排）
+             * 2. 打字机特效（页面需存在 id="typewriter" 的元素）
              * ------------------------------------------------------- */
-            var textToType = 'Initializing FDE Stack... OpenClaw Agent Active... Playwright Spider Injected... Feishu Interactive Cards Syncing.';
             var typeElement = document.getElementById('typewriter');
-            var charIndex = 0;
-
-            function typeWriter() {
-                if (charIndex <= textToType.length) {
-                    typeElement.textContent = textToType.slice(0, charIndex);
-                    charIndex++;
-                    setTimeout(typeWriter, 50);
+            if (typeElement) {
+                var textToType = 'Initializing FDE Stack... OpenClaw Agent Active... Playwright Spider Injected... Feishu Interactive Cards Syncing.';
+                var charIndex = 0;
+                function typeWriter() {
+                    if (charIndex <= textToType.length) {
+                        typeElement.textContent = textToType.slice(0, charIndex);
+                        charIndex++;
+                        setTimeout(typeWriter, 50);
+                    }
                 }
-            }
-            if (!prefersReducedMotion) {
-                setTimeout(typeWriter, 500);
-            } else {
-                typeElement.textContent = textToType;
+                if (!prefersReducedMotion) {
+                    setTimeout(typeWriter, 500);
+                } else {
+                    typeElement.textContent = textToType;
+                }
             }
 
             /* ---------------------------------------------------------
-             * 3. 菜单逻辑：语义化按钮 + 键盘可达 + Esc 关闭 + 简单焦点管理
+             * 3. 菜单逻辑 — 由 site-nav.js 统一管理（汉堡菜单、键盘关闭）
              * ------------------------------------------------------- */
-            var hamburger = document.querySelector('.hamburger');
-            var navLinks = document.querySelector('.nav-links');
-            var focusableNavItems = navLinks.querySelectorAll('a');
-            var lastFocusedElement = null;
-
-            function openMenu() {
-                hamburger.classList.add('active');
-                navLinks.classList.add('active');
-                hamburger.setAttribute('aria-expanded', 'true');
-                lastFocusedElement = document.activeElement;
-                if (focusableNavItems.length) focusableNavItems[0].focus();
-                document.addEventListener('keydown', handleMenuKeydown);
-            }
-
-            function closeMenu() {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-                document.removeEventListener('keydown', handleMenuKeydown);
-                if (lastFocusedElement) lastFocusedElement.focus();
-            }
-
-            function toggleMenu() {
-                var isOpen = hamburger.classList.contains('active');
-                if (isOpen) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-            }
-
-            function handleMenuKeydown(e) {
-                if (e.key === 'Escape') {
-                    closeMenu();
-                    return;
-                }
-                // 简单的 focus trap：Tab 循环在菜单内部
-                if (e.key === 'Tab' && focusableNavItems.length) {
-                    var first = focusableNavItems[0];
-                    var last = focusableNavItems[focusableNavItems.length - 1];
-                    if (e.shiftKey && document.activeElement === first) {
-                        e.preventDefault();
-                        last.focus();
-                    } else if (!e.shiftKey && document.activeElement === last) {
-                        e.preventDefault();
-                        first.focus();
-                    }
-                }
-            }
-
-            hamburger.addEventListener('click', toggleMenu);
-            focusableNavItems.forEach(function (link) {
-                link.addEventListener('click', function () {
-                    if (navLinks.classList.contains('active')) closeMenu();
-                });
-            });
+            /* 菜单功能已委托给页面底部的 site-nav.js */
         })();
 </script>
     <script src="site-nav.js"></script>

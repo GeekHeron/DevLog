@@ -432,6 +432,43 @@
         .service-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #fff; }
         .service-desc { font-size: 13px; color: #888; line-height: 1.6; }
 
+        /* 核心技术能力网格 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        /* 分层架构网格 */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 13px;
+        }
+        .arch-grid .full-row {
+            grid-column: 1 / -1;
+        }
+
+        /* 架构层卡片通用 */
+        .arch-item {
+            background: rgba(255,255,255,0.03);
+            border-left: 2px solid #555;
+            padding: 10px 14px;
+        }
+        .arch-item.gold-border {
+            border-left-color: var(--gold);
+        }
+        .arch-item strong {
+            color: #fff;
+        }
+        .arch-item.gold-border strong {
+            color: var(--gold);
+        }
+        .arch-item span {
+            color: #aaa;
+        }
+
         /* 技术栈 -> 战略工具箱 */
         .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
         .tech-tag {
@@ -729,6 +766,12 @@
             }
 
             .testimonial-grid { grid-template-columns: 1fr; }
+
+            /* 移动端：核心技术能力 → 单列 */
+            .tech-grid { grid-template-columns: 1fr; }
+
+            /* 移动端：分层架构 → 单列 */
+            .arch-grid { grid-template-columns: 1fr; }
         }
 
         /* 尊重用户的“减少动画”系统设置 */
@@ -902,49 +945,49 @@
             <section class="section-block">
                 <h3 class="section-title">03 / 核心技术能力</h3>
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">体系化技术栈支撑工业级交付 —— 不只是会用，是已经落地验证过。</p>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">大模型工程化接入</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
+                <div class="tech-grid">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">大模型工程化接入</div>
+                        <p class="service-desc">
                             接入 OpenAI / Claude / DeepSeek 等 8+ 主流模型 API，
                             具备基于 Ollama / vLLM 的本地私有化部署经验。
-                        </div>
+                        </p>
                     </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">Agent 工作流设计</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Agent 工作流设计</div>
+                        <p class="service-desc">
                             基于 OpenClaw Skill 封装业务能力模块，
                             已交付竞品监控、运营分析、库存健康等 8 个生产级 Agent。
-                        </div>
+                        </p>
                     </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">RPA + 企业系统集成</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RPA + 企业系统集成</div>
+                        <p class="service-desc">
                             Playwright 浏览器自动化 + AdsPower / 紫鸟，
                             穿透无 API 系统。打通飞书多维表、Interactive Card、金蝶 ERP、Shopify。
-                        </div>
+                        </p>
                     </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">RAG 知识库全链路</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RAG 知识库全链路</div>
+                        <p class="service-desc">
                             文档解析 → 切片 → Embedding → 向量检索 →
                             混合检索 → Rerank 重排序 → 知识增强生成，完整落地经验。
-                        </div>
+                        </p>
                     </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">业务本体建模</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">业务本体建模</div>
+                        <p class="service-desc">
                             围绕业务场景设计实体、属性、关系及业务规则模型。<br>
                             有本体 vs 无本体：没有本体时 Agent 眼中的"物料编码"和"SKU"是两样东西；
                             有本体后 Agent 理解"客户→订单→产品→工序→设备"全链路，推理可追溯可解释。
-                        </div>
+                        </p>
                     </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px; padding: 20px 24px;">
-                        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">全栈工程交付</div>
-                        <div style="font-size: 12px; color: #aaa; line-height: 1.7;">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">全栈工程交付</div>
+                        <p class="service-desc">
                             Next.js / Python Flask 前后端，
                             从需求调研到文档交付，一人担纲全链路，免跨团队沟通内耗。
-                        </div>
+                        </p>
                     </div>
                 </div>
             </section>
@@ -1204,26 +1247,26 @@
                 <div style="margin-top: 24px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px; padding: 24px;">
                     <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">完整分层架构</div>
                     <p style="font-size: 13px; color: #aaa; line-height: 1.8; margin-bottom: 12px;">每一层交付背后是一套完整的分层架构：</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
-                            <strong style="color: #fff;">① 数据接入层</strong><br>
-                            <span style="color: #aaa;">打通 MES/ERP/CRM/PLM/WMS 等 8+ 业务系统，API/数据库直连/ETL</span>
+                    <div class="arch-grid">
+                        <div class="arch-item">
+                            <strong>① 数据接入层</strong><br>
+                            <span>打通 MES/ERP/CRM/PLM/WMS 等 8+ 业务系统，API/数据库直连/ETL</span>
                         </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
-                            <strong style="color: #fff;">② 知识层</strong><br>
-                            <span style="color: #aaa;">结构化数据走 SQL，文档走 RAG 检索，按业务类型分流处理</span>
+                        <div class="arch-item">
+                            <strong>② 知识层</strong><br>
+                            <span>结构化数据走 SQL，文档走 RAG 检索，按业务类型分流处理</span>
                         </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid var(--gold); padding: 10px 14px;">
-                            <strong style="color: var(--gold);">③ 本体层</strong><br>
-                            <span style="color: #aaa;">实体关系建模，让 AI 理解你的数据世界，消除多系统叫法不一致</span>
+                        <div class="arch-item gold-border">
+                            <strong>③ 本体层</strong><br>
+                            <span>实体关系建模，让 AI 理解你的数据世界，消除多系统叫法不一致</span>
                         </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px;">
-                            <strong style="color: #fff;">④ Tool 层</strong><br>
-                            <span style="color: #aaa;">业务能力封装为可审计、可权限控制的 Tool，Agent 零代码调用</span>
+                        <div class="arch-item">
+                            <strong>④ Tool 层</strong><br>
+                            <span>业务能力封装为可审计、可权限控制的 Tool，Agent 零代码调用</span>
                         </div>
-                        <div style="background: rgba(255,255,255,0.03); border-left: 2px solid #555; padding: 10px 14px; grid-column: 1 / -1;">
-                            <strong style="color: #fff;">⑤ Agent 编排层</strong><br>
-                            <span style="color: #aaa;">LangGraph 驱动有状态工作流，按业务节点 + 分支 + 人工介入点设计，不接受黑盒推理</span>
+                        <div class="arch-item full-row">
+                            <strong>⑤ Agent 编排层</strong><br>
+                            <span>LangGraph 驱动有状态工作流，按业务节点 + 分支 + 人工介入点设计，不接受黑盒推理</span>
                         </div>
                     </div>
                 </div>

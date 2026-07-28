@@ -161,6 +161,20 @@
             color: #aaa;
         }
 
+        .tool-icon {
+            cursor: pointer;
+            opacity: 0.25;
+            transition: opacity 0.3s;
+            margin-left: 10px;
+            font-size: 11px;
+            text-decoration: none;
+            color: #aaa;
+        }
+        .tool-icon:hover {
+            opacity: 0.7;
+            color: #fff;
+        }
+
         /* --- 汉堡菜单按钮 --- */
         .hamburger {
             display: none;
@@ -445,7 +459,10 @@
             </ul>
         </nav>
 
-        <div class="header-right" id="clock">T+00: 00: 00</div>
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
     </header>
 
     <main class="hero">

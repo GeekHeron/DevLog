@@ -6,241 +6,274 @@
 <title>图片压缩工具</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
- :root{
- --bg:#0f1115;
- --panel:#171a21;
- --panel2:#1e2229;
- --border:#2a2f3a;
- --text:#e6e8ec;
- --sub:#9aa1ad;
- --accent:#4f8cff;
- --accent2:#22c55e;
- --danger:#ef4444;
- --warn:#f59e0b;
- }
- *{box-sizing:border-box;}
- body{
- margin:0;
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
- background:var(--bg);
- color:var(--text);
- padding:24px;
- min-height:100vh;
- }
- .wrap{max-width:980px;margin:0 auto;}
- h1{font-size:22px;margin:0 0 4px;}
- .sub{color:var(--sub);font-size:13px;margin-bottom:24px;}
+  :root{
+    --bg:#0f1115;
+    --panel:#171a21;
+    --panel2:#1e2229;
+    --border:#2a2f3a;
+    --text:#e6e8ec;
+    --sub:#9aa1ad;
+    --accent:#4f8cff;
+    --accent2:#22c55e;
+    --danger:#ef4444;
+    --warn:#f59e0b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding:24px;
+    min-height:100vh;
+  }
+  .wrap{max-width:980px;margin:0 auto;}
+  h1{font-size:22px;margin:0 0 4px;}
+  .sub{color:var(--sub);font-size:13px;margin-bottom:24px;}
 
- .drop{
- border:2px dashed var(--border);
- border-radius:14px;
- padding:36px 20px;
- text-align:center;
- cursor:pointer;
- background:var(--panel);
- transition:.2s;
- }
- .drop:hover, .drop.dragover{border-color:var(--accent);background:var(--panel2);}
- .drop p{margin:6px 0;color:var(--sub);font-size:13px;}
- .drop .icon{font-size:32px;margin-bottom:6px;}
- input[type=file]{display:none;}
+  .drop{
+    border:2px dashed var(--border);
+    border-radius:14px;
+    padding:36px 20px;
+    text-align:center;
+    cursor:pointer;
+    background:var(--panel);
+    transition:.2s;
+  }
+  .drop:hover, .drop.dragover{border-color:var(--accent);background:var(--panel2);}
+  .drop p{margin:6px 0;color:var(--sub);font-size:13px;}
+  .drop .icon{font-size:32px;margin-bottom:6px;}
+  input[type=file]{display:none;}
 
- .levels{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
- gap:12px;
- margin:20px 0;
- }
- .level-btn{
- background:var(--panel);
- border:1px solid var(--border);
- border-radius:12px;
- padding:14px;
- cursor:pointer;
- text-align:left;
- color:var(--text);
- transition:.15s;
- }
- .level-btn:hover{border-color:var(--accent);transform:translateY(-1px);}
- .level-btn.active{border-color:var(--accent);background:#182338;box-shadow:0 0 0 1px var(--accent) inset;}
- .level-btn .name{font-weight:600;font-size:14px;margin-bottom:4px;}
- .level-btn .range{font-size:12px;color:var(--sub);}
+  .levels{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin:20px 0;
+  }
+  .level-btn{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    text-align:left;
+    color:var(--text);
+    transition:.15s;
+  }
+  .level-btn:hover{border-color:var(--accent);transform:translateY(-1px);}
+  .level-btn.active{border-color:var(--accent);background:#182338;box-shadow:0 0 0 1px var(--accent) inset;}
+  .level-btn .name{font-weight:600;font-size:14px;margin-bottom:4px;}
+  .level-btn .range{font-size:12px;color:var(--sub);}
 
- .section-label{font-size:13px;color:var(--sub);margin:18px 0 8px;font-weight:600;}
- .formats{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
- gap:10px;
- }
- .format-btn{
- background:var(--panel);
- border:1px solid var(--border);
- border-radius:12px;
- padding:12px;
- cursor:pointer;
- text-align:center;
- color:var(--text);
- transition:.15s;
- font-size:13px;
- font-weight:600;
- }
- .format-btn:hover{border-color:var(--accent);}
- .format-btn.active{border-color:var(--accent);background:#182338;box-shadow:0 0 0 1px var(--accent) inset;}
- .format-btn .ext{font-size:11px;color:var(--sub);font-weight:400;display:block;margin-top:2px;}
+  /* 自定义像素输入区域样式 */
+  .custom-size-box {
+    display: none;
+    margin-top: 8px;
+    background: var(--panel2);
+    border: 1px dashed var(--border);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text);
+    align-items: center;
+    gap: 12px;
+  }
+  .custom-size-box.show { display: flex; }
+  .custom-size-box input {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 6px;
+    width: 90px;
+    outline: none;
+  }
+  .custom-size-box input:focus { border-color: var(--accent); }
 
- .toolbar{
- display:flex;
- gap:10px;
- margin-top:16px;
- flex-wrap:wrap;
- }
- .btn{
- padding:13px 18px;
- border:none;
- border-radius:12px;
- font-size:14px;
- font-weight:600;
- cursor:pointer;
- transition:.15s;
- }
- .btn:disabled{background:#374151 !important;color:#8b93a1 !important;cursor:not-allowed;}
- .btn-primary{background:var(--accent);color:#fff;flex:1;min-width:160px;}
- .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
- .btn-success{background:var(--accent2);color:#04140b;flex:1;min-width:160px;}
- .btn-success:hover:not(:disabled){filter:brightness(1.08);}
- .btn-ghost{background:var(--panel2);color:var(--text);border:1px solid var(--border);}
- .btn-ghost:hover:not(:disabled){border-color:var(--danger);color:var(--danger);}
+  .section-label{font-size:13px;color:var(--sub);margin:18px 0 8px;font-weight:600;}
+  .formats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:10px;
+  }
+  .format-btn{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    cursor:pointer;
+    text-align:center;
+    color:var(--text);
+    transition:.15s;
+    font-size:13px;
+    font-weight:600;
+  }
+  .format-btn:hover{border-color:var(--accent);}
+  .format-btn.active{border-color:var(--accent);background:#182338;box-shadow:0 0 0 1px var(--accent) inset;}
+  .format-btn .ext{font-size:11px;color:var(--sub);font-weight:400;display:block;margin-top:2px;}
 
- .status{font-size:13px;color:var(--sub);margin-top:10px;min-height:18px;}
+  .toolbar{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    padding:13px 18px;
+    border:none;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .btn:disabled{background:#374151 !important;color:#8b93a1 !important;cursor:not-allowed;}
+  .btn-primary{background:var(--accent);color:#fff;flex:1;min-width:160px;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-success{background:var(--accent2);color:#04140b;flex:1;min-width:160px;}
+  .btn-success:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-ghost{background:var(--panel2);color:var(--text);border:1px solid var(--border);}
+  .btn-ghost:hover:not(:disabled){border-color:var(--danger);color:var(--danger);}
 
- .summary{
- display:none;
- margin-top:16px;
- background:var(--panel);
- border:1px solid var(--border);
- border-radius:12px;
- padding:14px 16px;
- font-size:13px;
- color:var(--sub);
- gap:24px;
- flex-wrap:wrap;
- }
- .summary.show{display:flex;}
- .summary b{color:var(--text);font-size:15px;display:block;margin-top:2px;}
- .summary .ok{color:var(--accent2);}
+  .status{font-size:13px;color:var(--sub);margin-top:10px;min-height:18px;}
 
- .file-list{margin-top:20px;display:flex;flex-direction:column;gap:10px;}
- .file-card{
- background:var(--panel);
- border:1px solid var(--border);
- border-radius:12px;
- padding:12px;
- display:flex;
- align-items:center;
- gap:12px;
- }
- .file-card .thumb{
- width:64px;height:64px;border-radius:8px;object-fit:cover;
- background:#000;flex-shrink:0;
- }
- .file-card .info{flex:1;min-width:0;}
- .file-card .fname{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
- .file-card .sizes{font-size:12px;color:var(--sub);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
- .file-card .arrow{color:var(--sub);}
- .file-card .comp-size{font-weight:700;}
- .file-card .comp-size.ok{color:var(--accent2);}
- .file-card .comp-size.warn{color:var(--warn);}
- .file-card .badge{
- font-size:11px;padding:2px 8px;border-radius:999px;
- background:var(--panel2);color:var(--sub);border:1px solid var(--border);
- }
- .file-card .badge.pending{color:var(--sub);}
- .file-card .badge.working{color:var(--accent);border-color:var(--accent);}
- .file-card .badge.done{color:var(--accent2);border-color:var(--accent2);}
- .file-card .badge.error{color:var(--danger);border-color:var(--danger);}
- .file-card .actions{display:flex;gap:8px;flex-shrink:0;}
- .icon-btn{
- width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
- background:var(--panel2);color:var(--text);cursor:pointer;font-size:14px;
- display:flex;align-items:center;justify-content:center;text-decoration:none;
- }
- .icon-btn:hover{border-color:var(--accent);}
- .icon-btn.del:hover{border-color:var(--danger);color:var(--danger);}
- .icon-btn.disabled{opacity:.3;pointer-events:none;}
+  .summary{
+    display:none;
+    margin-top:16px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:13px;
+    color:var(--sub);
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .summary.show{display:flex;}
+  .summary b{color:var(--text);font-size:15px;display:block;margin-top:2px;}
+  .summary .ok{color:var(--accent2);}
+
+  .file-list{margin-top:20px;display:flex;flex-direction:column;gap:10px;}
+  .file-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .file-card .thumb{
+    width:64px;height:64px;border-radius:8px;object-fit:cover;
+    background:#000;flex-shrink:0;
+  }
+  .file-card .info{flex:1;min-width:0;}
+  .file-card .fname{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-card .sizes{font-size:12px;color:var(--sub);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .file-card .arrow{color:var(--sub);}
+  .file-card .comp-size{font-weight:700;}
+  .file-card .comp-size.ok{color:var(--accent2);}
+  .file-card .comp-size.warn{color:var(--warn);}
+  .file-card .badge{
+    font-size:11px;padding:2px 8px;border-radius:999px;
+    background:var(--panel2);color:var(--sub);border:1px solid var(--border);
+  }
+  .file-card .badge.pending{color:var(--sub);}
+  .file-card .badge.working{color:var(--accent);border-color:var(--accent);}
+  .file-card .badge.done{color:var(--accent2);border-color:var(--accent2);}
+  .file-card .badge.error{color:var(--danger);border-color:var(--danger);}
+  .file-card .actions{display:flex;gap:8px;flex-shrink:0;}
+  .icon-btn{
+    width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel2);color:var(--text);cursor:pointer;font-size:14px;
+    display:flex;align-items:center;justify-content:center;text-decoration:none;
+  }
+  .icon-btn:hover{border-color:var(--accent);}
+  .icon-btn.del:hover{border-color:var(--danger);color:var(--danger);}
+  .icon-btn.disabled{opacity:.3;pointer-events:none;}
 </style>
 </head>
 <body>
 <div class="wrap">
- <h1>图片压缩工具（批量版）</h1>
- <p class="sub">选择压缩档位和输出格式，一次导入多张图片，批量压缩转换，再打包下载</p>
+  <h1>图片压缩工具</h1>
+  <p class="sub">选择压缩档位和输出格式，一次导入多张图片，批量压缩转换，再打包下载</p>
 
- <div class="drop" id="drop">
- <div class="icon">📁</div>
- <p><strong>点击选择图片</strong> 或拖拽到此处（可多选/多张拖拽）</p>
- <p>支持 JPG / PNG / WebP</p>
- <input type="file" id="fileInput" accept="image/*" multiple>
- </div>
+  <div class="drop" id="drop">
+    <div class="icon">📁</div>
+    <p><strong>点击选择图片</strong> 或拖拽到此处（可多选/多张拖拽）</p>
+    <p>支持 JPG / PNG / WebP</p>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+  </div>
 
- <div class="levels" id="levels">
- <button class="level-btn" data-level="ultra">
- <div class="name">🔥 极重度压缩</div>
- <div class="range">目标 10 KB – 100 KB</div>
- </button>
- <button class="level-btn" data-level="heavy">
- <div class="name">⚡ 重度压缩</div>
- <div class="range">目标 100 KB – 1 MB</div>
- </button>
- <button class="level-btn" data-level="light">
- <div class="name">🍃 轻度压缩</div>
- <div class="range">目标 1 MB – 5 MB</div>
- </button>
- <button class="level-btn" data-level="random">
- <div class="name">🎲 随机压缩</div>
- <div class="range">每张图片独立随机选择档位</div>
- </button>
- </div>
+  <div class="levels" id="levels">
+    <button class="level-btn" data-level="ultra">
+      <div class="name">重度压缩</div>
+      <div class="range">目标 10 KB – 100 KB</div>
+    </button>
+    <button class="level-btn" data-level="heavy">
+      <div class="name">中度压缩</div>
+      <div class="range">目标 100 KB – 1 MB</div>
+    </button>
+    <button class="level-btn" data-level="light">
+      <div class="name">轻度压缩</div>
+      <div class="range">目标 1 MB – 5 MB</div>
+    </button>
+    <!-- 随机压缩已变更为自定义压缩 -->
+    <button class="level-btn" data-level="custom">
+      <div class="name">自定义压缩</div>
+      <div class="range">按指定最大宽高进行缩放</div>
+    </button>
+  </div>
 
- <div class="section-label">输出格式</div>
- <div class="formats" id="formats">
- <button class="format-btn active" data-format="keep">保持原格式<span class="ext">跟随原图类型</span></button>
- <button class="format-btn" data-format="image/jpeg">JPEG<span class="ext">.jpg 体积小</span></button>
- <button class="format-btn" data-format="image/png">PNG<span class="ext">.png 无损</span></button>
- <button class="format-btn" data-format="image/webp">WebP<span class="ext">.webp 高压缩</span></button>
- </div>
+  <!-- 自定义像素尺寸输入面板 -->
+  <div class="custom-size-box" id="customSizeBox">
+    <label>最大宽度(px): <input type="number" id="customWidth" value="1280" min="1"></label>
+    <label>最大高度(px): <input type="number" id="customHeight" value="1280" min="1"></label>
+  </div>
 
- <div class="toolbar">
- <button class="btn btn-primary" id="compressAllBtn" disabled>请先选择图片和档位</button>
- <button class="btn btn-success" id="exportZipBtn" disabled>📦 打包下载 ZIP</button>
- <button class="btn btn-ghost" id="clearAllBtn" disabled>清空列表</button>
- </div>
- <div class="status" id="status"></div>
+  <div class="section-label">输出格式</div>
+  <div class="formats" id="formats">
+    <button class="format-btn active" data-format="keep">保持原格式<span class="ext">跟随原图类型</span></button>
+    <button class="format-btn" data-format="image/jpeg">JPEG<span class="ext">.jpg 体积小</span></button>
+    <button class="format-btn" data-format="image/png">PNG<span class="ext">.png 无损</span></button>
+    <button class="format-btn" data-format="image/webp">WebP<span class="ext">.webp 高压缩</span></button>
+  </div>
 
- <div class="summary" id="summary">
- <div>文件数 <b id="sumCount">0</b></div>
- <div>原始总大小 <b id="sumOrig">-</b></div>
- <div>压缩后总大小 <b id="sumComp">-</b></div>
- <div>总压缩率 <b class="ok" id="sumRatio">-</b></div>
- </div>
+  <div class="toolbar">
+    <button class="btn btn-primary" id="compressAllBtn" disabled>请先选择图片和档位</button>
+    <button class="btn btn-success" id="exportZipBtn" disabled>📦 打包下载 ZIP</button>
+    <button class="btn btn-ghost" id="clearAllBtn" disabled>清空列表</button>
+  </div>
+  <div class="status" id="status"></div>
 
- <div class="file-list" id="fileList"></div>
+  <div class="summary" id="summary">
+    <div>文件数 <b id="sumCount">0</b></div>
+    <div>原始总大小 <b id="sumOrig">-</b></div>
+    <div>压缩后总大小 <b id="sumComp">-</b></div>
+    <div>总压缩率 <b class="ok" id="sumRatio">-</b></div>
+  </div>
+
+  <div class="file-list" id="fileList"></div>
 </div>
 
 <script>
 const LEVELS = {
- ultra: { name:'重度压缩', min:10*1024, max:100*1024 },
- heavy: { name:'中度压缩', min:100*1024, max:1024*1024 },
- light: { name:'轻度压缩', min:1024*1024, max:5*1024*1024 }
+  ultra:  { name:'重度压缩', min:10*1024,   max:100*1024 },
+  heavy:  { name:'中度压缩',   min:100*1024,  max:1024*1024 },
+  light:  { name:'轻度压缩',   min:1024*1024, max:5*1024*1024 },
+  custom: { name:'自定义大小' } // 自定义像素类型
 };
 
 const FORMAT_EXT = {
- 'image/jpeg': 'jpg',
- 'image/png': 'png',
- 'image/webp': 'webp'
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp'
 };
 
 let selectedLevel = null;
-let selectedFormat = 'keep'; // 'keep' | 'image/jpeg' | 'image/png' | 'image/webp'
-let items = []; // {id, file, img, origUrl, status, resultBlob, resultUrl, levelKey, mime, quality, w, h, inRange}
+let selectedFormat = 'keep';
+let items = []; 
 let idSeq = 0;
 
 const drop = document.getElementById('drop');
@@ -257,314 +290,358 @@ const sumCount = document.getElementById('sumCount');
 const sumOrig = document.getElementById('sumOrig');
 const sumComp = document.getElementById('sumComp');
 const sumRatio = document.getElementById('sumRatio');
+const customSizeBox = document.getElementById('customSizeBox');
+const customWidthInput = document.getElementById('customWidth');
+const customHeightInput = document.getElementById('customHeight');
 
 drop.addEventListener('click', () => fileInput.click());
 drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('dragover'); });
 drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
 drop.addEventListener('drop', e => {
- e.preventDefault();
- drop.classList.remove('dragover');
- if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+  e.preventDefault();
+  drop.classList.remove('dragover');
+  if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
 });
 fileInput.addEventListener('change', e => {
- if (e.target.files.length) addFiles(e.target.files);
- fileInput.value = '';
+  if (e.target.files.length) addFiles(e.target.files);
+  fileInput.value = '';
 });
 
 function addFiles(fileListObj) {
- const files = [...fileListObj].filter(f => f.type.startsWith('image/'));
- if (!files.length) {
- statusEl.textContent = '请选择图片文件';
- return;
- }
- files.forEach(file => {
- const id = ++idSeq;
- const origUrl = URL.createObjectURL(file);
- const img = new Image();
- const item = {
- id, file, img, origUrl,
- status: 'pending', // pending | working | done | error
- resultBlob: null, resultUrl: null,
- levelKey: null, quality: null, w: null, h: null, inRange: null
- };
- items.push(item);
- img.onload = () => renderList();
- img.src = origUrl;
- });
- renderList();
- updateButtons();
- statusEl.textContent = `已导入 ${files.length} 张图片，当前共 ${items.length} 张`;
+  const files = [...fileListObj].filter(f => f.type.startsWith('image/'));
+  if (!files.length) {
+    statusEl.textContent = '请选择图片文件';
+    return;
+  }
+  files.forEach(file => {
+    const id = ++idSeq;
+    const origUrl = URL.createObjectURL(file);
+    const img = new Image();
+    const item = {
+      id, file, img, origUrl,
+      status: 'pending', 
+      resultBlob: null, resultUrl: null,
+      levelKey: null, quality: null, w: null, h: null, inRange: null
+    };
+    items.push(item);
+    img.onload = () => renderList();
+    img.src = origUrl;
+  });
+  renderList();
+  updateButtons();
+  statusEl.textContent = `已导入 ${files.length} 张图片，当前共 ${items.length} 张`;
 }
 
 levelsWrap.addEventListener('click', e => {
- const btn = e.target.closest('.level-btn');
- if (!btn) return;
- [...levelsWrap.children].forEach(b => b.classList.remove('active'));
- btn.classList.add('active');
- selectedLevel = btn.dataset.level;
- updateButtons();
+  const btn = e.target.closest('.level-btn');
+  if (!btn) return;
+  [...levelsWrap.children].forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedLevel = btn.dataset.level;
+  
+  // 控制像素输入框的显隐
+  if (selectedLevel === 'custom') {
+    customSizeBox.classList.add('show');
+  } else {
+    customSizeBox.classList.remove('show');
+  }
+  
+  updateButtons();
 });
 
 formatsWrap.addEventListener('click', e => {
- const btn = e.target.closest('.format-btn');
- if (!btn) return;
- [...formatsWrap.children].forEach(b => b.classList.remove('active'));
- btn.classList.add('active');
- selectedFormat = btn.dataset.format;
+  const btn = e.target.closest('.format-btn');
+  if (!btn) return;
+  [...formatsWrap.children].forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedFormat = btn.dataset.format;
 });
 
 clearAllBtn.addEventListener('click', () => {
- items.forEach(it => {
- URL.revokeObjectURL(it.origUrl);
- if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
- });
- items = [];
- renderList();
- updateButtons();
- statusEl.textContent = '已清空';
- summaryEl.classList.remove('show');
+  items.forEach(it => {
+    URL.revokeObjectURL(it.origUrl);
+    if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
+  });
+  items = [];
+  renderList();
+  updateButtons();
+  statusEl.textContent = '已清空';
+  summaryEl.classList.remove('show');
 });
 
 function updateButtons() {
- const hasFiles = items.length > 0;
- const hasLevel = !!selectedLevel;
- compressAllBtn.disabled = !(hasFiles && hasLevel);
- compressAllBtn.textContent = !hasFiles ? '请先选择图片'
- : !hasLevel ? '请选择压缩档位'
- : `批量压缩全部（${items.length} 张）`;
+  const hasFiles = items.length > 0;
+  const hasLevel = !!selectedLevel;
+  compressAllBtn.disabled = !(hasFiles && hasLevel);
+  compressAllBtn.textContent = !hasFiles ? '请先选择图片'
+    : !hasLevel ? '请选择压缩档位'
+    : `批量压缩全部（${items.length} 张）`;
 
- const hasDone = items.some(it => it.status === 'done');
- exportZipBtn.disabled = !hasDone;
- clearAllBtn.disabled = !hasFiles;
+  const hasDone = items.some(it => it.status === 'done');
+  exportZipBtn.disabled = !hasDone;
+  clearAllBtn.disabled = !hasFiles;
 }
 
 function formatSize(bytes) {
- if (bytes >= 1024*1024) return (bytes/1024/1024).toFixed(2) + ' MB';
- return (bytes/1024).toFixed(1) + ' KB';
-}
-
-function pickRandomLevelKey() {
- const keys = Object.keys(LEVELS);
- return keys[Math.floor(Math.random()*keys.length)];
+  if (bytes >= 1024*1024) return (bytes/1024/1024).toFixed(2) + ' MB';
+  return (bytes/1024).toFixed(1) + ' KB';
 }
 
 function badgeText(status) {
- return { pending:'等待中', working:'压缩中...', done:'已完成', error:'失败' }[status] || status;
+  return { pending:'等待中', working:'压缩中...', done:'已完成', error:'失败' }[status] || status;
 }
 
 function renderList() {
- fileListEl.innerHTML = '';
- items.forEach(it => {
- const card = document.createElement('div');
- card.className = 'file-card';
+  fileListEl.innerHTML = '';
+  items.forEach(it => {
+    const card = document.createElement('div');
+    card.className = 'file-card';
 
- const thumbSrc = it.resultUrl || it.origUrl;
- const compSizeHtml = it.status === 'done'
- ? `<span class="arrow">→</span><span class="comp-size ${it.inRange ? 'ok':'warn'}">${formatSize(it.resultBlob.size)}</span><span class="badge done">${(FORMAT_EXT[it.mime]||'jpg').toUpperCase()}</span>`
- : '';
+    const thumbSrc = it.resultUrl || it.origUrl;
+    
+    // 显示处理后的分辨率尺寸信息
+    const sizeInfo = it.status === 'done' ? ` (${it.w}×${it.h})` : '';
+    const compSizeHtml = it.status === 'done'
+      ? `<span class="arrow">→</span><span class="comp-size ${it.inRange ? 'ok':'warn'}">${formatSize(it.resultBlob.size)}${sizeInfo}</span><span class="badge done">${(FORMAT_EXT[it.mime]||'jpg').toUpperCase()}</span>`
+      : '';
 
- card.innerHTML = `
- <img class="thumb" src="${thumbSrc}">
- <div class="info">
- <div class="fname">${it.file.name}</div>
- <div class="sizes">
- <span>${formatSize(it.file.size)}</span>
- ${compSizeHtml}
- <span class="badge ${it.status}">${badgeText(it.status)}</span>
- </div>
- </div>
- <div class="actions">
- <a class="icon-btn dl ${it.status==='done' ? '' : 'disabled'}" href="${it.resultUrl||'#'}" download="${downloadName(it)}" title="下载">⬇</a>
- <button class="icon-btn del" title="移除" data-id="${it.id}">✕</button>
- </div>
- `;
- fileListEl.appendChild(card);
- });
+    card.innerHTML = `
+      <img class="thumb" src="${thumbSrc}">
+      <div class="info">
+        <div class="fname">${it.file.name}</div>
+        <div class="sizes">
+          <span>${formatSize(it.file.size)}</span>
+          ${compSizeHtml}
+          <span class="badge ${it.status}">${badgeText(it.status)}</span>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="icon-btn dl ${it.status==='done' ? '' : 'disabled'}" href="${it.resultUrl||'#'}" download="${downloadName(it)}" title="下载">⬇</a>
+        <button class="icon-btn del" title="移除" data-id="${it.id}">✕</button>
+      </div>
+    `;
+    fileListEl.appendChild(card);
+  });
 
- fileListEl.querySelectorAll('.icon-btn.del').forEach(btn => {
- btn.addEventListener('click', () => {
- const id = Number(btn.dataset.id);
- const idx = items.findIndex(x => x.id === id);
- if (idx >= 0) {
- URL.revokeObjectURL(items[idx].origUrl);
- if (items[idx].resultUrl) URL.revokeObjectURL(items[idx].resultUrl);
- items.splice(idx, 1);
- }
- renderList();
- updateButtons();
- updateSummary();
- });
- });
+  fileListEl.querySelectorAll('.icon-btn.del').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = Number(btn.dataset.id);
+      const idx = items.findIndex(x => x.id === id);
+      if (idx >= 0) {
+        URL.revokeObjectURL(items[idx].origUrl);
+        if (items[idx].resultUrl) URL.revokeObjectURL(items[idx].resultUrl);
+        items.splice(idx, 1);
+      }
+      renderList();
+      updateButtons();
+      updateSummary();
+    });
+  });
 }
 
 function resolveMime(file, formatChoice) {
- if (formatChoice === 'keep') {
- const t = file.type;
- if (t === 'image/png' || t === 'image/webp' || t === 'image/jpeg') return t;
- return 'image/jpeg'; // 未知/不支持的原格式(如gif)统一转jpeg
- }
- return formatChoice;
+  if (formatChoice === 'keep') {
+    const t = file.type;
+    if (t === 'image/png' || t === 'image/webp' || t === 'image/jpeg') return t;
+    return 'image/jpeg';
+  }
+  return formatChoice;
 }
 
 function downloadName(it) {
- if (it.status !== 'done') return 'image.jpg';
- const base = it.file.name.replace(/\.[^.]+$/, '');
- const ext = FORMAT_EXT[it.mime] || 'jpg';
- return `${base}_${it.levelKey}.${ext}`;
+  if (it.status !== 'done') return 'image.jpg';
+  const base = it.file.name.replace(/\.[^.]+$/, '');
+  const ext = FORMAT_EXT[it.mime] || 'jpg';
+  return `${base}_${it.levelKey}.${ext}`;
 }
 
 function canvasToBlob(canvas, mimeType, quality) {
- return new Promise(resolve => {
- canvas.toBlob(blob => resolve(blob), mimeType, quality);
- });
+  return new Promise(resolve => {
+    canvas.toBlob(blob => resolve(blob), mimeType, quality);
+  });
 }
 
-// PNG是无损格式，quality参数会被浏览器忽略，只能靠缩小尺寸来控制体积
+// 核心修改：新增基于目标宽高缩放的自定义压缩逻辑[cite: 1]
+async function compressByCustomSize(img, maxW, maxH, mimeType) {
+  let targetW = img.width;
+  let targetH = img.height;
+
+  // 等比例缩放计算
+  if (targetW > maxW || targetH > maxH) {
+    const ratioW = maxW / targetW;
+    const ratioH = maxH / targetH;
+    const ratio = Math.min(ratioW, ratioH);
+    targetW = Math.max(1, Math.round(targetW * ratio));
+    targetH = Math.max(1, Math.round(targetH * ratio));
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = targetW;
+  canvas.height = targetH;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, targetW, targetH);
+
+  // 默认使用高画质保存，PNG无画质系数
+  const q = mimeType === 'image/png' ? null : 0.88; 
+  const blob = await canvasToBlob(canvas, mimeType, q);
+
+  return { blob, quality: q, canvas, inRange: true };
+}
+
 async function compressAtScale(img, scale, min, max, mimeType) {
- const canvas = document.createElement('canvas');
- canvas.width = Math.max(1, Math.round(img.width * scale));
- canvas.height = Math.max(1, Math.round(img.height * scale));
- const ctx = canvas.getContext('2d');
- ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(img.width * scale));
+  canvas.height = Math.max(1, Math.round(img.height * scale));
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
- if (mimeType === 'image/png') {
- const blob = await canvasToBlob(canvas, mimeType, 1);
- return { blob, quality: null, canvas, inRange: blob.size >= min && blob.size <= max };
- }
+  if (mimeType === 'image/png') {
+    const blob = await canvasToBlob(canvas, mimeType, 1);
+    return { blob, quality: null, canvas, inRange: blob.size >= min && blob.size <= max };
+  }
 
- let lo = 0.02, hi = 0.98;
- let best = null;
- for (let i = 0; i < 8; i++) {
- const mid = (lo + hi) / 2;
- const blob = await canvasToBlob(canvas, mimeType, mid);
- if (!best || Math.abs(blob.size - (min+max)/2) < Math.abs(best.blob.size - (min+max)/2)) {
- best = { blob, quality: mid, canvas };
- }
- if (blob.size > max) {
- hi = mid;
- } else if (blob.size < min) {
- lo = mid;
- } else {
- return { blob, quality: mid, canvas, inRange: true };
- }
- }
- return { ...best, inRange: best.blob.size >= min && best.blob.size <= max };
+  let lo = 0.02, hi = 0.98;
+  let best = null;
+  for (let i = 0; i < 8; i++) {
+    const mid = (lo + hi) / 2;
+    const blob = await canvasToBlob(canvas, mimeType, mid);
+    if (!best || Math.abs(blob.size - (min+max)/2) < Math.abs(best.blob.size - (min+max)/2)) {
+      best = { blob, quality: mid, canvas };
+    }
+    if (blob.size > max) {
+      hi = mid;
+    } else if (blob.size < min) {
+      lo = mid;
+    } else {
+      return { blob, quality: mid, canvas, inRange: true };
+    }
+  }
+  return { ...best, inRange: best.blob.size >= min && best.blob.size <= max };
 }
 
 async function compressToRange(img, min, max, mimeType) {
- const scales = [1, 0.85, 0.7, 0.55, 0.4, 0.28, 0.2, 0.14, 0.1];
- let lastResult = null;
- for (const scale of scales) {
- const result = await compressAtScale(img, scale, min, max, mimeType);
- lastResult = result;
- if (result.inRange) return result;
- if (result.blob.size > max) continue;
- return result;
- }
- return lastResult;
+  const scales = [1, 0.85, 0.7, 0.55, 0.4, 0.28, 0.2, 0.14, 0.1];
+  let lastResult = null;
+  for (const scale of scales) {
+    const result = await compressAtScale(img, scale, min, max, mimeType);
+    lastResult = result;
+    if (result.inRange) return result;
+    if (result.blob.size > max) continue;
+    return result;
+  }
+  return lastResult;
 }
 
 async function compressOne(it) {
- it.status = 'working';
- renderList();
+  it.status = 'working';
+  renderList();
 
- let levelKey = selectedLevel;
- if (levelKey === 'random') levelKey = pickRandomLevelKey();
- const level = LEVELS[levelKey];
- const mime = resolveMime(it.file, selectedFormat);
+  const levelKey = selectedLevel;
+  const mime = resolveMime(it.file, selectedFormat);
 
- try {
- const result = await compressToRange(it.img, level.min, level.max, mime);
- if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
- it.resultBlob = result.blob;
- it.resultUrl = URL.createObjectURL(result.blob);
- it.levelKey = levelKey;
- it.mime = mime;
- it.quality = result.quality;
- it.w = result.canvas.width;
- it.h = result.canvas.height;
- it.inRange = result.inRange;
- it.status = 'done';
- } catch (err) {
- it.status = 'error';
- }
- renderList();
- updateButtons();
- updateSummary();
+  try {
+    let result;
+    if (levelKey === 'custom') {
+      // 执行自定义尺寸逻辑[cite: 1]
+      const maxW = parseInt(customWidthInput.value) || 1280;
+      const maxH = parseInt(customHeightInput.value) || 1280;
+      result = await compressByCustomSize(it.img, maxW, maxH, mime);
+    } else {
+      // 执行原本的区间体积压缩逻辑
+      const level = LEVELS[levelKey];
+      result = await compressToRange(it.img, level.min, level.max, mime);
+    }
+
+    if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
+    it.resultBlob = result.blob;
+    it.resultUrl = URL.createObjectURL(result.blob);
+    it.levelKey = levelKey;
+    it.mime = mime;
+    it.quality = result.quality;
+    it.w = result.canvas.width;
+    it.h = result.canvas.height;
+    it.inRange = result.inRange;
+    it.status = 'done';
+  } catch (err) {
+    it.status = 'error';
+  }
+  renderList();
+  updateButtons();
+  updateSummary();
 }
 
 compressAllBtn.addEventListener('click', async () => {
- compressAllBtn.disabled = true;
- clearAllBtn.disabled = true;
- const total = items.length;
- let doneCount = 0;
+  compressAllBtn.disabled = true;
+  clearAllBtn.disabled = true;
+  const total = items.length;
+  let doneCount = 0;
 
- const CONCURRENCY = 3;
- let cursor = 0;
- async function worker() {
- while (cursor < items.length) {
- const it = items[cursor++];
- statusEl.textContent = `正在压缩 ${doneCount + 1}/${total}：${it.file.name}`;
- await compressOne(it);
- doneCount++;
- statusEl.textContent = `已完成 ${doneCount}/${total}`;
- }
- }
- const workers = Array.from({length: Math.min(CONCURRENCY, items.length)}, worker);
- await Promise.all(workers);
+  const CONCURRENCY = 3;
+  let cursor = 0;
+  async function worker() {
+    while (cursor < items.length) {
+      const it = items[cursor++];
+      statusEl.textContent = `正在压缩 ${doneCount + 1}/${total}：${it.file.name}`;
+      await compressOne(it);
+      doneCount++;
+      statusEl.textContent = `已完成 ${doneCount}/${total}`;
+    }
+  }
+  const workers = Array.from({length: Math.min(CONCURRENCY, items.length)}, worker);
+  await Promise.all(workers);
 
- statusEl.textContent = `批量压缩完成 ✅ 共 ${total} 张`;
- updateButtons();
+  statusEl.textContent = `批量压缩完成 ✅ 共 ${total} 张`;
+  updateButtons();
 });
 
 function updateSummary() {
- const doneItems = items.filter(it => it.status === 'done');
- if (!doneItems.length) { summaryEl.classList.remove('show'); return; }
- const origTotal = doneItems.reduce((s,it) => s + it.file.size, 0);
- const compTotal = doneItems.reduce((s,it) => s + it.resultBlob.size, 0);
- const ratio = ((1 - compTotal/origTotal) * 100).toFixed(1);
- sumCount.textContent = `${doneItems.length} / ${items.length}`;
- sumOrig.textContent = formatSize(origTotal);
- sumComp.textContent = formatSize(compTotal);
- sumRatio.textContent = ratio + '%';
- summaryEl.classList.add('show');
+  const doneItems = items.filter(it => it.status === 'done');
+  if (!doneItems.length) { summaryEl.classList.remove('show'); return; }
+  const origTotal = doneItems.reduce((s,it) => s + it.file.size, 0);
+  const compTotal = doneItems.reduce((s,it) => s + it.resultBlob.size, 0);
+  const ratio = ((1 - compTotal/origTotal) * 100).toFixed(1);
+  sumCount.textContent = `${doneItems.length} / ${items.length}`;
+  sumOrig.textContent = formatSize(origTotal);
+  sumComp.textContent = formatSize(compTotal);
+  sumRatio.textContent = ratio + '%';
+  summaryEl.classList.add('show');
 }
 
 exportZipBtn.addEventListener('click', async () => {
- const doneItems = items.filter(it => it.status === 'done');
- if (!doneItems.length) return;
+  const doneItems = items.filter(it => it.status === 'done');
+  if (!doneItems.length) return;
 
- exportZipBtn.disabled = true;
- exportZipBtn.textContent = '打包中...';
- try {
- const zip = new JSZip();
- const usedNames = new Set();
- doneItems.forEach(it => {
- let name = downloadName(it);
- let i = 1;
- while (usedNames.has(name)) {
- name = downloadName(it).replace(/(\.[^.]+)$/, `_${i}$1`);
- i++;
- }
- usedNames.add(name);
- zip.file(name, it.resultBlob);
- });
- const content = await zip.generateAsync({ type: 'blob' });
- const url = URL.createObjectURL(content);
- const a = document.createElement('a');
- a.href = url;
- a.download = `compressed_images_${Date.now()}.zip`;
- document.body.appendChild(a);
- a.click();
- a.remove();
- setTimeout(() => URL.revokeObjectURL(url), 5000);
- statusEl.textContent = `已打包下载 ${doneItems.length} 张压缩图片 ✅`;
- } catch (err) {
- statusEl.textContent = '打包失败：' + err.message;
- } finally {
- exportZipBtn.disabled = false;
- exportZipBtn.textContent = '📦 打包下载 ZIP';
- }
+  exportZipBtn.disabled = true;
+  exportZipBtn.textContent = '打包中...';
+  try {
+    const zip = new JSZip();
+    const usedNames = new Set();
+    doneItems.forEach(it => {
+      let name = downloadName(it);
+      let i = 1;
+      while (usedNames.has(name)) {
+        name = downloadName(it).replace(/(\.[^.]+)$/, `_${i}$1`);
+        i++;
+      }
+      usedNames.add(name);
+      zip.file(name, it.resultBlob);
+    });
+    const content = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(content);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `compressed_images_${Date.now()}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    statusEl.textContent = `已打包下载 ${doneItems.length} 张压缩图片 ✅`;
+  } catch (err) {
+    statusEl.textContent = '打包失败：' + err.message;
+  } finally {
+    exportZipBtn.disabled = false;
+    exportZipBtn.textContent = '📦 打包下载 ZIP';
+  }
 });
 </script>
 </body>

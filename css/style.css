@@ -68,8 +68,8 @@ body { position: fixed; inset: 0; }
   border: 1px solid var(--cyan-dim);
   animation: flick 6s step-end infinite;
 }
-.corner.tl { top: 22px; left: 22px; border-right: none; border-bottom: none; }
-.corner.tr { top: 22px; right: 22px; border-left: none; border-bottom: none; }
+.corner.tl { top: 22px; left: 22px; border-right: none; border-bottom: none; display: none; }
+.corner.tr { top: 22px; right: 22px; border-left: none; border-bottom: none; display: none; }
 .corner.bl { bottom: 22px; left: 22px; border-right: none; border-top: none; }
 .corner.br { bottom: 22px; right: 22px; border-left: none; border-top: none; }
 
@@ -221,7 +221,7 @@ body { position: fixed; inset: 0; }
 /* ------------------------------------------------------ params panel */
 #params {
   position: fixed;
-  top: 88px; right: 40px;
+  top: 158px; right: 40px;
   width: 284px;
   background: linear-gradient(165deg, rgba(8, 18, 32, .82), rgba(4, 8, 16, .72));
   backdrop-filter: blur(8px);
@@ -417,7 +417,7 @@ body.reduced .corner { animation: none; }
   .corner.bl { bottom: 14px; left: 14px; }
   .corner.br { bottom: 14px; right: 14px; }
   #params {
-    top: 76px; right: 16px;
+    top: 142px; right: 16px;
     width: min(284px, calc(100vw - 32px));
   }
 }

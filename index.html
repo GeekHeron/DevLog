@@ -62,7 +62,7 @@
   </div>
 
   <div id="deck" class="ctl">
-    <div class="deck-title"><span id="deck-mode">CINEMATIC SEQUENCE</span><span class="deck-dot"></span></div>
+    <div class="deck-title"><span id="deck-mode">CINEMATIC SEQUENCE</span><button id="btn-deck-toggle" class="deck-toggle" type="button" aria-label="Toggle deck panel" aria-controls="deck" aria-pressed="true">−</button></div>
     <button id="btn-cine" class="btn wide active" aria-label="Toggle cinematic sequence" aria-pressed="true">▶ CINEMATIC SEQUENCE</button>
     <div class="grid2">
       <button id="btn-poster" class="btn" aria-label="Fly to poster view">POSTER 38°</button>
@@ -107,6 +107,18 @@
 <noscript><div style="position:fixed;inset:0;background:#000;color:#7fdcff;display:flex;align-items:center;justify-content:center;font-family:monospace;letter-spacing:.2em;">JAVASCRIPT REQUIRED</div></noscript>
 
 <script src="site-nav.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById('btn-deck-toggle');
+  var deck = document.getElementById('deck');
+  if (!btn || !deck) return;
+  btn.addEventListener('click', function () {
+    var collapsed = deck.classList.toggle('collapsed');
+    btn.textContent = collapsed ? '+' : '\u2212';
+    btn.setAttribute('aria-pressed', collapsed ? 'false' : 'true');
+  });
+})();
+</script>
 <script type="module" src="js/main.js"></script>
 </body>
 </html>

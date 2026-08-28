@@ -80,7 +80,7 @@ body { position: fixed; inset: 0; }
 }
 
 /* ------------------------------------------------------------ title */
-#title-block { position: absolute; top: 30px; left: 42px; }
+#title-block { position: absolute; top: 150px; left: 42px; }
 #title-block h1 {
   font-size: 34px;
   font-weight: 700;
@@ -102,7 +102,7 @@ body { position: fixed; inset: 0; }
 }
 
 /* ------------------------------------------------------------ clock */
-#clock-block { position: absolute; top: 32px; right: 44px; text-align: right; }
+#clock-block { position: absolute; top: 152px; right: 44px; text-align: right; }
 #clock-block .label { font-size: 9px; letter-spacing: .3em; color: var(--cyan-dim); }
 #clock-val {
   margin-top: 5px;
@@ -402,11 +402,11 @@ body.reduced .corner { animation: none; }
 
 /* -------------------------------------------------------- responsive */
 @media (max-width: 720px) {
-  #title-block { top: 20px; left: 26px; }
+  #title-block { top: 130px; left: 26px; }
   #title-block h1 { font-size: 22px; }
   #title-block .sub { font-size: 9px; letter-spacing: .22em; }
   #title-block .sub2 { font-size: 8px; letter-spacing: .18em; }
-  #clock-block { top: 22px; right: 26px; }
+  #clock-block { top: 132px; right: 26px; }
   #clock-val { font-size: 14px; }
   #telemetry { font-size: 9px; bottom: 26px; left: 26px; }
   #telemetry .k { min-width: 140px; }
@@ -423,8 +423,8 @@ body.reduced .corner { animation: none; }
 }
 
 @media (max-width: 520px) {
-  #title-block { top: 16px; left: 18px; }
-  #clock-block { top: 18px; right: 18px; }
+  #title-block { top: 115px; left: 18px; }
+  #clock-block { top: 117px; right: 18px; }
   #telemetry { font-size: 8px; left: 12px; bottom: 40px; line-height: 1.8; }
   #telemetry .k { min-width: 106px; }
   #deck { width: 176px; right: 12px; bottom: 12px; padding: 10px 10px 8px; }

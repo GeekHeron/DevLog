@@ -1,0 +1,260 @@
+
+    <meta property="og:title" content="GlobalYield AI - RWA Arbitrage & Intelligence">
+    <meta property="og:description" content="下一代去中心化现实资产(RWA)智能套利终端">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalYield AI | 商业计划书 - RWA 智能套利终端</title>
+    <link rel="canonical" href="https://geekheron.space/global-yield.html">
+    <meta name="description" content="GlobalYield AI 商业计划书：RWA 智能套利终端的产品设计、市场机会与商业模式。">
+    <meta name="keywords" content="GeekHeron, Global Yield, AI, LLM, 大模型, 技术分析, 系统架构">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <style>
+        /* --- 1. 全局样式 (复用 InfoFlow 风格) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #050505;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); 
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 35px; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #888; letter-spacing: 0.5px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 4. 核心内容容器 --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 80px;
+            border-left: 5px solid #00d2ff;
+            padding-left: 30px;
+        }
+
+        .page-title { font-size: 42px; font-weight: 700; letter-spacing: -1.5px; margin-bottom: 15px; color: #fff; }
+        .page-subtitle { color: #00d2ff; font-family: "JetBrains Mono", monospace; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* 文章内容排版 */
+        .article-content {
+            font-size: 17px;
+            color: #ccc;
+        }
+
+        .article-content h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-top: 80px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .article-content h2::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; width: 60px; height: 3px; background-color: #00d2ff;
+        }
+
+        .article-content h3 {
+            font-size: 20px;
+            color: #fff; 
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+        }
+        
+        .article-content h3::before {
+            content: '>'; color: #00d2ff; font-weight: 800;
+        }
+
+        .article-content p { margin-bottom: 25px; text-align: justify; }
+
+        .article-content ul, .article-content ol { 
+            margin-left: 20px; margin-bottom: 30px; color: #b0b0b0; 
+            background: rgba(255,255,255,0.02); padding: 25px 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .article-content li { margin-bottom: 12px; padding-left: 5px; }
+        
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        /* 表格样式适配 */
+        .pricing-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 40px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .pricing-table th, .pricing-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(10, 10, 10, 0.6);
+        }
+        .pricing-table th {
+            background: rgba(0, 210, 255, 0.1);
+            color: #00d2ff;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        .pricing-table tr:last-child td { border-bottom: none; }
+
+        /* 引用块/高亮块 */
+        .executive-summary {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border-left: 4px solid #00d2ff;
+            padding: 40px;
+            margin-bottom: 60px;
+            font-size: 18px;
+            color: #e0e0e0;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tech-box {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 14px;
+            background: #111;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            color: #8fbc8f;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .back-btn {
+            display: inline-flex; align-items: center; margin-top: 80px;
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .back-btn:hover { background: #00d2ff; color: #000; border-color: #00d2ff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .container { padding: 40px 20px; }
+            .page-title { font-size: 32px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: #000;
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.active { transform: translateX(0); }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "GlobalYield AI | 商业计划书 - RWA 智能套利终端",
+  "description": "GlobalYield AI 商业计划书：RWA 智能套利终端的产品设计、市场机会与商业模式。",
+  "url": "https://geekheron.space/global-yield.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GeekHeron",
+    "url": "https://geekheron.space/"
+  },
+  "inLanguage": "zh-CN"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">

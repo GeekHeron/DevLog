@@ -1,0 +1,151 @@
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="https://geekheron.space/logo.png"> 
+    <meta property="og:url" content="https://geekheron.space/tiangangame-bp.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <title> 天干界：逆命 BP</title>
+    <link rel="canonical" href="https://geekheron.space/tiangangame-bp.html">
+    <meta name="description" content="《天干界：逆命》游戏商业计划书：产品定位、玩法设计与市场策略。">
+    <meta name="keywords" content="GeekHeron, Tiangangame Bp, AI, LLM, 大模型, 技术分析, 系统架构">
+    <style>
+        /* --- 基础设定 --- */
+        :root {
+            --bg-color: #050505;
+            --text-main: #e0e0e0;
+            --accent-gold: #ffd700;
+            --accent-cyan: #8be9fd;
+            --accent-red: #ff5555;
+            --glass-bg: rgba(20, 20, 20, 0.85);
+            --border-light: rgba(255, 255, 255, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* --- 动态背景 --- */
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, #000 100%);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* --- 布局容器 --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 120px 24px; }
+
+        /* --- 头部 Hero Section --- */
+        header {
+            text-align: center; padding: 100px 0 60px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 60px;
+        }
+        .project-tag {
+            display: inline-block; padding: 4px 12px;
+            border: 1px solid var(--accent-cyan); color: var(--accent-cyan);
+            font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 20px; border-radius: 20px;
+        }
+        h1 {
+            font-size: 48px; font-weight: 800; letter-spacing: 4px;
+            color: #fff; margin-bottom: 16px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        .subtitle { font-size: 18px; color: #888; font-weight: 300; max-width: 600px; margin: 0 auto; }
+
+        /* --- 核心 CTA 按钮 --- */
+        .cta-group { margin-top: 40px; display: flex; gap: 20px; justify-content: center; }
+        .btn {
+            padding: 14px 32px; font-size: 16px; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; text-decoration: none; border-radius: 4px;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary {
+            background: var(--accent-gold); color: #000; border: none;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5); }
+        .btn-outline {
+            background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan);
+        }
+        .btn-outline:hover { background: rgba(139, 233, 253, 0.1); }
+
+        /* --- 板块样式 --- */
+        section { margin-bottom: 80px; }
+        .section-title {
+            font-size: 24px; border-left: 4px solid var(--accent-gold);
+            padding-left: 16px; margin-bottom: 30px; color: #fff;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .section-title span { font-size: 12px; color: #666; font-family: monospace; }
+
+        /* 卡片网格 */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .card {
+            background: var(--glass-bg); padding: 30px; border-radius: 8px;
+            border: 1px solid var(--border-light);
+            display: flex; flex-direction: column;
+        }
+        .card h3 { color: var(--accent-cyan); margin-bottom: 12px; font-size: 18px; }
+        .card p { font-size: 14px; color: #ccc; margin-bottom: 15px; flex-grow: 1; }
+        .card ul { list-style: none; padding-left: 10px; margin-top: auto; }
+        .card ul li { position: relative; padding-left: 15px; font-size: 13px; color: #999; margin-bottom: 6px; }
+        .card ul li::before { content: "•"; color: var(--accent-gold); position: absolute; left: 0; }
+
+        /* 价格标签 */
+        .price-tag {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-top: 15px;
+        }
+        .price-label { font-size: 12px; color: #888; text-transform: uppercase; }
+        .price-val { color: var(--accent-gold); font-weight: bold; font-family: monospace; font-size: 16px; }
+
+        /* 亮点数据条 */
+        .stats-bar {
+            display: flex; justify-content: space-around; background: #111;
+            padding: 30px; border-radius: 8px; border: 1px solid #333; margin: 40px 0;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .stat-item { text-align: center; }
+        .stat-num { display: block; font-size: 32px; font-weight: bold; color: #fff; }
+        .stat-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* 路线图 */
+        .roadmap-item { display: flex; gap: 20px; border-bottom: 1px solid var(--border-light); padding: 20px 0; }
+        .roadmap-phase { font-family: monospace; color: var(--accent-gold); font-weight: bold; min-width: 80px; }
+        .roadmap-content h4 { color: #fff; margin-bottom: 5px; }
+        .roadmap-content p { font-size: 14px; color: #888; }
+
+        footer { text-align: center; padding: 40px; color: #555; font-size: 12px; border-top: 1px solid var(--border-light); }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .cta-group { flex-direction: column; }
+            .stats-bar { flex-direction: column; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": " 天干界：逆命 BP",
+  "description": "《天干界：逆命》游戏商业计划书：产品定位、玩法设计与市场策略。",
+  "url": "https://geekheron.space/tiangangame-bp.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GeekHeron",
+    "url": "https://geekheron.space/"
+  },
+  "inLanguage": "zh-CN"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">

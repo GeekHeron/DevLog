@@ -1,0 +1,139 @@
+
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="/index.html" class="logo">
+            <img src="/logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/article.html">Deep Analysis</a></li>
+                <li><a href="/works.html">Case Studies</a></li>
+                <li><a href="/fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="/about.html">About &amp; Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2025.07.05</span>
+                <span class="tag">AGENT</span>
+                <span class="tag">AGI</span>
+            </div>
+            <h1 class="article-title">AI Agent:<br>From "Tool" to "Digital Species"</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                When an LLM is equipped with "limbs" and "memory," it ceases to be just a chatbot and becomes an agent capable of independently surviving in the digital world.
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. The Brain in a Vat and the Giant with Limbs</h2>
+            <p>ChatGPT is fundamentally "passive." It's like a brain trapped inside a glass jar, possessing vast knowledge but unable to effect any substantial change on the physical or digital world. It can only talk.</p>
+            <p>The emergence of <strong>AI Agent</strong> changes this paradigm. Agent = LLM (Brain) + Planning + Memory + Tools. It can not only think but also search the web, send emails, write code, and even control machines through API calls. It has evolved from a passive "consultant" into an active "executor."</p>
+
+            <h2>2. The ReAct Pattern: Inner Monologue</h2>
+            <p>How does an Agent think? The core paradigm is <strong>ReAct (Reasoning + Acting)</strong>. It requires the model to conduct an "inner monologue" before executing an action.</p>
+            <p>This is akin to how humans, when solving complex problems, mutter to themselves: "I need to check the weather first, then decide what to wear."</p>
+            <div class="math-block">
+                $$ Action_t = \pi(Observation_t, Thought_t) $$
+            </div>
+            <p>In this loop, the model observes the environment (<em>Observation</em>), generates a thought (<em>Thought</em>), decides on the next action (<em>Action</em>), and then observes the outcome — repeating this cycle until the goal is achieved.</p>
+
+            <h2>3. Long-Term Memory: The Hippocampus of Vector Databases</h2>
+            <p>Ordinary LLMs are constrained by their context window, like patients suffering from short-term memory loss. Once a conversation grows too long, they forget the beginning.</p>
+            <p>Agents build long-term memory by introducing <strong>Vector Databases</strong>. They transform interaction history into high-dimensional vectors for storage. When recall is needed, they perform semantic retrieval via cosine similarity:</p>
+            <div class="math-block">
+                $$ Similarity(A, B) = \frac{A \cdot B}{\|A\| \|B\|} $$
+            </div>
+            <p>This enables Agents to remember your preferences from three months ago or precisely locate relevant information across millions of documents — much like how the human hippocampus works.</p>
+
+            <h2>4. Multi-Agent Collaboration: Digital Ant Colonies</h2>
+            <p>Even more exciting are <strong>Multi-Agent Systems</strong>. Through role-playing frameworks, one Agent can act as a product manager, another as a programmer, and another as a tester.</p>
+            <p>They communicate and collaborate through standardized interfaces. This "virtualization of a software company" exhibits emergent phenomena — collective intelligence often surpasses the capability ceiling of any single model. We are witnessing the birth of an entirely new form of organization.</p>
+
+            <h2>5. Conclusion: The Double-Edged Sword of Autonomy</h2>
+            <p>When software begins to have "goals" and knows how to "plan" a path to achieve them, it already possesses the rudiments of life.</p>
+            <p>AI Agents will enormously liberate productivity, freeing us from tedious click operations. Yet at the same time, an agent with autonomous execution rights that can control internet interfaces brings unprecedented security challenges. Are we ready to coexist with these "digital species"?</p>
+
+        </article>
+
+        <a href="/article.html" class="back-btn">← Back to Articles</a>
+    </main>
+
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        /* Particle animation logic, optimized for mobile */
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        
+        // Reduce particle count on mobile
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    
+        const hamburger2 = document.querySelector('.hamburger');
+        const navLinks2 = document.querySelector('.nav-links');
+        function toggleMenu2() {
+            hamburger2.classList.toggle('active');
+            navLinks2.classList.toggle('active');
+        }
+        if(hamburger2) hamburger2.addEventListener('click', toggleMenu2);
+</script>
+    <script src="/site-nav.js"></script>

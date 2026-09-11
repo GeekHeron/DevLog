@@ -1,0 +1,15 @@
+---
+// BaseLayout — renders the document by injecting the original page's
+// <head> and <body> inner HTML verbatim. Nothing is processed or scoped,
+// so the visual output is identical to the hand-authored source.
+const { htmlProps = {}, head, body } = Astro.props;
+---
+<!doctype html>
+<html {...htmlProps}>
+  <head>
+    <Fragment set:html={head} />
+  </head>
+  <body>
+    <Fragment set:html={body} />
+  </body>
+</html>

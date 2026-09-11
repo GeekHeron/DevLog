@@ -1,0 +1,135 @@
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About Me &amp; Collaboration</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ERP / CRM</span>
+                <h1 class="article-title">Integrating AI into Enterprise Systems (ERP / CRM / WeChat): A Real-World Case Study</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: ERP AI integration, CRM AI automation, WeChat customer operations, enterprise system integration, LLM API retrofit</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.03.15</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: CASE STUDY</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>1. Why Traditional Enterprise Systems Need AI</h2>
+                <p>ERP, CRM, and WeChat ecosystems hold an enterprise's most critical data: orders, inventory, customer records, contracts, communication logs, and post-sales issues. But these systems are typically form-and-process-centric — employees must repeatedly query, copy, assess, and fill in fields. The value of AI integration isn't replacing these systems; it's adding comprehension, summarization, prediction, and automated execution on top of them.</p>
+
+                <h2>2. Case Background</h2>
+                <p>A B2B service company simultaneously uses ERP for order and delivery management, CRM for sales pipeline and customer stage tracking, and WeChat for daily customer communication. The problems: salespeople don't know a customer's delivery history, customer service can't quickly determine a customer's tier, and management manually compiles operational reports every week. The data exists in the systems, but it hasn't been turned into timely, actionable insights.</p>
+
+                <h2>3. Project Objectives</h2>
+                <ul>
+                    <li>Sales can generate customer follow-up suggestions with one click in the CRM.</li>
+                    <li>Customer service can quickly look up orders, contracts, and after-sales records from WeChat side.</li>
+                    <li>Management automatically receives weekly operational reports and at-risk customer lists.</li>
+                    <li>Critical actions require human confirmation — AI does not directly modify core business data.</li>
+                </ul>
+
+                <h2>4. System Integration Architecture</h2>
+                <h3>4.1 Data Unification</h3>
+                <p>First, synchronize data via API or intermediate database: ERP, CRM, WeChat customer tags, and communication summaries — building a unified customer ID. Without a unified ID, the AI can easily confuse similarly named customers, branch offices, and historical contacts.</p>
+                <h3>4.2 Business Tool Encapsulation</h3>
+                <p>Encapsulate capabilities like order lookup, contract lookup, customer stage retrieval, and task creation into controlled tools. The AI doesn't access the database directly — it calls these controlled tools, which handle permissions, auditing, and field masking.</p>
+                <h3>4.3 Role-Specific Agents</h3>
+                <p>Design separate agents for sales, customer service, and management. The sales agent focuses on opportunity progression, the customer service agent on issue resolution, and the management agent on trends and risk detection. Each role uses different prompts, permissions, and output formats.</p>
+
+                <h2>5. Real Business Workflow</h2>
+                <p>When a salesperson opens a customer page, the system automatically summarizes the last 12 months of orders, contract status, service tickets, and WeChat conversation highlights, generating a "recommended next steps" briefing. If a customer's complaints have increased while repeat purchases declined, the AI prompts the salesperson to address delivery satisfaction before pursuing renewal. After the salesperson confirms, the system automatically creates a CRM task and drafts a WeChat message.</p>
+
+                <h2>6. Risk Controls</h2>
+                <p>ERP and CRM are core business systems. AI integration must adhere to the principle of "query first, recommend second, confirm before execute." For actions like price modifications, refunds, contract changes, or customer deletions, the AI can only generate suggestions and approval requests — it cannot execute directly. Every tool call must log the user, timestamp, input, output, and business object.</p>
+
+                <h2>7. Results and Insights</h2>
+                <p>After the retrofit, the time salespeople spent preparing customer materials dropped significantly, customer service responses became more consistent, and management could identify delivery and renewal risks earlier. This case demonstrates that the breakthrough for enterprise AI isn't replacing ERP or CRM — it's making existing systems better at understanding, reminding, and coordinating.</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>Learn more about AI integration with ERP, CRM, and WeChat ecosystems:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Helping enterprises build industrial-grade AI productivity</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>

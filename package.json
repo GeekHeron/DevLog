@@ -1,0 +1,20 @@
+{
+  "name": "geekheron-site",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/copy-extra.mjs",
+    "preview": "astro preview",
+    "migrate": "node scripts/migrate.mjs",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "geekheron-site": "file:../DevLog-main"
+  },
+  "overrides": {
+    "sharp": "file:./.stubs/sharp"
+  }
+}

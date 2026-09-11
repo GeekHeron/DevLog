@@ -1,0 +1,193 @@
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图片压缩工具</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1115;
+    --panel:#171a21;
+    --panel2:#1e2229;
+    --border:#2a2f3a;
+    --text:#e6e8ec;
+    --sub:#9aa1ad;
+    --accent:#4f8cff;
+    --accent2:#22c55e;
+    --danger:#ef4444;
+    --warn:#f59e0b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding:24px;
+    min-height:100vh;
+  }
+  .wrap{max-width:980px;margin:0 auto;}
+  h1{font-size:22px;margin:0 0 4px;}
+  .sub{color:var(--sub);font-size:13px;margin-bottom:24px;}
+
+  .drop{
+    border:2px dashed var(--border);
+    border-radius:14px;
+    padding:36px 20px;
+    text-align:center;
+    cursor:pointer;
+    background:var(--panel);
+    transition:.2s;
+  }
+  .drop:hover, .drop.dragover{border-color:var(--accent);background:var(--panel2);}
+  .drop p{margin:6px 0;color:var(--sub);font-size:13px;}
+  .drop .icon{font-size:32px;margin-bottom:6px;}
+  input[type=file]{display:none;}
+
+  .levels{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin:20px 0;
+  }
+  .level-btn{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    text-align:left;
+    color:var(--text);
+    transition:.15s;
+  }
+  .level-btn:hover{border-color:var(--accent);transform:translateY(-1px);}
+  .level-btn.active{border-color:var(--accent);background:#182338;box-shadow:0 0 0 1px var(--accent) inset;}
+  .level-btn .name{font-weight:600;font-size:14px;margin-bottom:4px;}
+  .level-btn .range{font-size:12px;color:var(--sub);}
+
+  /* 自定义像素输入区域样式 */
+  .custom-size-box {
+    display: none;
+    margin-top: 8px;
+    background: var(--panel2);
+    border: 1px dashed var(--border);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text);
+    align-items: center;
+    gap: 12px;
+  }
+  .custom-size-box.show { display: flex; }
+  .custom-size-box input {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 6px;
+    width: 90px;
+    outline: none;
+  }
+  .custom-size-box input:focus { border-color: var(--accent); }
+
+  .section-label{font-size:13px;color:var(--sub);margin:18px 0 8px;font-weight:600;}
+  .formats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:10px;
+  }
+  .format-btn{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    cursor:pointer;
+    text-align:center;
+    color:var(--text);
+    transition:.15s;
+    font-size:13px;
+    font-weight:600;
+  }
+  .format-btn:hover{border-color:var(--accent);}
+  .format-btn.active{border-color:var(--accent);background:#182338;box-shadow:0 0 0 1px var(--accent) inset;}
+  .format-btn .ext{font-size:11px;color:var(--sub);font-weight:400;display:block;margin-top:2px;}
+
+  .toolbar{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    padding:13px 18px;
+    border:none;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .btn:disabled{background:#374151 !important;color:#8b93a1 !important;cursor:not-allowed;}
+  .btn-primary{background:var(--accent);color:#fff;flex:1;min-width:160px;}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-success{background:var(--accent2);color:#04140b;flex:1;min-width:160px;}
+  .btn-success:hover:not(:disabled){filter:brightness(1.08);}
+  .btn-ghost{background:var(--panel2);color:var(--text);border:1px solid var(--border);}
+  .btn-ghost:hover:not(:disabled){border-color:var(--danger);color:var(--danger);}
+
+  .status{font-size:13px;color:var(--sub);margin-top:10px;min-height:18px;}
+
+  .summary{
+    display:none;
+    margin-top:16px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:13px;
+    color:var(--sub);
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .summary.show{display:flex;}
+  .summary b{color:var(--text);font-size:15px;display:block;margin-top:2px;}
+  .summary .ok{color:var(--accent2);}
+
+  .file-list{margin-top:20px;display:flex;flex-direction:column;gap:10px;}
+  .file-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .file-card .thumb{
+    width:64px;height:64px;border-radius:8px;object-fit:cover;
+    background:#000;flex-shrink:0;
+  }
+  .file-card .info{flex:1;min-width:0;}
+  .file-card .fname{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-card .sizes{font-size:12px;color:var(--sub);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .file-card .arrow{color:var(--sub);}
+  .file-card .comp-size{font-weight:700;}
+  .file-card .comp-size.ok{color:var(--accent2);}
+  .file-card .comp-size.warn{color:var(--warn);}
+  .file-card .badge{
+    font-size:11px;padding:2px 8px;border-radius:999px;
+    background:var(--panel2);color:var(--sub);border:1px solid var(--border);
+  }
+  .file-card .badge.pending{color:var(--sub);}
+  .file-card .badge.working{color:var(--accent);border-color:var(--accent);}
+  .file-card .badge.done{color:var(--accent2);border-color:var(--accent2);}
+  .file-card .badge.error{color:var(--danger);border-color:var(--danger);}
+  .file-card .actions{display:flex;gap:8px;flex-shrink:0;}
+  .icon-btn{
+    width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel2);color:var(--text);cursor:pointer;font-size:14px;
+    display:flex;align-items:center;justify-content:center;text-decoration:none;
+  }
+  .icon-btn:hover{border-color:var(--accent);}
+  .icon-btn.del:hover{border-color:var(--danger);color:var(--danger);}
+  .icon-btn.disabled{opacity:.3;pointer-events:none;}
+</style>

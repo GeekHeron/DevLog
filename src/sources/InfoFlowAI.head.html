@@ -1,0 +1,225 @@
+
+    <meta property="og:title" content="InfoFlow AI BP">
+    <meta property="og:description" content="全球化、自动化的下一代 AI 媒体矩阵">
+    <meta property="og:image" content="https://geekheron.space/logo.png"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoFlow AI 商业计划书 - 自动化 AI 媒体矩阵</title>
+    <link rel="canonical" href="https://geekheron.space/InfoFlowAI.html">
+    <meta name="description" content="InfoFlow AI 商业计划书：解析自动化 AI 媒体矩阵的商业模式、技术路径与规模化增长策略。">
+    <meta name="keywords" content="GeekHeron, Infoflowai, AI, LLM, 大模型, 技术分析, 系统架构">
+    <style>
+        /* --- 1. 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); 
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 4. 文章专用样式 --- */
+        .container {
+            max-width: 800px; 
+            margin: 0 auto;
+            padding: 120px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 20px;
+        }
+
+        .page-title { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
+        .page-subtitle { color: #666; font-family: monospace; font-size: 14px; text-transform: uppercase; }
+
+        /* 文章内容排版 */
+        .article-content {
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .article-content h2 {
+            font-size: 24px;
+            color: #fff;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .article-content h3 {
+            font-size: 18px;
+            color: #ffd700; /* 金色高亮 */
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .article-content p { margin-bottom: 20px; text-align: justify; }
+
+        .article-content ul { margin-left: 20px; margin-bottom: 25px; color: #bbb; }
+        .article-content li { margin-bottom: 10px; }
+        
+        .article-content strong { color: #fff; font-weight: 600; }
+
+        /* 表格样式适配 */
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .pricing-table th, .pricing-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .pricing-table th {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            font-weight: 600;
+        }
+        .pricing-table tr:last-child td { border-bottom: none; }
+
+        /* 引用块 */
+        .article-content blockquote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ffd700;
+            padding: 20px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .back-btn {
+            display: inline-block; margin-top: 50px;
+            border-bottom: 1px solid #666; padding-bottom: 5px; color: #888;
+        }
+        .back-btn:hover { color: #fff; border-color: #fff; }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; justify-content: space-between; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 24px; font-weight: 800; color: #fff; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "InfoFlow AI 商业计划书 - 自动化 AI 媒体矩阵",
+  "description": "InfoFlow AI 商业计划书：解析自动化 AI 媒体矩阵的商业模式、技术路径与规模化增长策略。",
+  "url": "https://geekheron.space/InfoFlowAI.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GeekHeron",
+    "url": "https://geekheron.space/"
+  },
+  "inLanguage": "zh-CN"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">

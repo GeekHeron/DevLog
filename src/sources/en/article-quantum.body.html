@@ -1,0 +1,145 @@
+
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About &amp; Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2025.05.15</span>
+                <span class="tag">QUANTUM</span>
+                <span class="tag">PHYSICS</span>
+            </div>
+            <h1 class="article-title">Quantum Entanglement &amp; the<br>Physical Limits of Data Transmission</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                Where is the next key to breaking Moore's Law? It's not just about more compute — it's a fundamental rethinking of what "information" really is.
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. The Dusk of Silicon: When Transistors Meet Heisenberg</h2>
+            <p>Moore's Law promised half a century of progress, but we've hit an invisible wall. When transistor fabrication approaches 1nm (roughly 5 silicon atoms wide), classical physics begins to break down.</p>
+            <p>Electrons no longer obediently stay on one side of the gate — they exhibit <strong>quantum tunneling</strong>, passing through barriers like ghosts, causing leakage and computation errors. To keep scaling compute at the atomic level, we either change the material (carbon nanotubes, for example) or fundamentally change the underlying logic of computation.</p>
+
+            <h2>2. Superposition: The Curse and Gift of Dimensionality</h2>
+            <p>Classical computers are switches: state is either 0 or 1. Quantum computers exploit <strong>superposition</strong>. A single qubit can be simultaneously 0 and 1.</p>
+            <p>In Dirac notation, a quantum state $|\psi\rangle$ can be written as:</p>
+            <div class="math-block">
+                $$|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$$
+            </div>
+            <p>Here $\alpha$ and $\beta$ are complex probability amplitudes satisfying $|\alpha|^2 + |\beta|^2 = 1$. With $N$ classical bits you represent $N$ bits of information; with $N$ qubits you simultaneously represent $2^N$ states.</p>
+            <div class="quote-block">
+                "Just 300 perfect qubits contain more information in their superposition than there are atoms in the observable universe."
+            </div>
+
+            <h2>3. Entanglement: Redefining "Transmission"</h2>
+            <p>Quantum entanglement was dismissed by Einstein as "spooky action at a distance." When two particles form an entangled state (like a Bell state), they're no longer independent — they're one system.</p>
+            <div class="math-block">
+                $$|\Phi^+\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)$$
+            </div>
+            <p>In this state, no matter how far apart the two particles are (even across the galaxy), measuring one as 0 instantly collapses the other to 0. <strong>But this does NOT mean we can communicate faster than light.</strong></p>
+            <p>This is the biggest public misconception. Since measurement results are random, you can't use entanglement to transmit meaningful information (you can't force the other side to see "1"). However, entanglement pushes the limits of data density — through <strong>superdense coding</strong>, we can transmit two classical bits using one qubit, directly challenging the physical limit of channel capacity.</p>
+
+            <h2>4. Superconducting Qubits: "Artificial Atoms" in a Fridge</h2>
+            <p>The theory is elegant; the engineering is brutal. One of the most promising approaches is <strong>superconducting qubits</strong>, led by IBM, Google, and Rigetti.</p>
+            <p>These aren't real subatomic particles — they're macroscopic circuits made of superconducting metal (like aluminum), with the core component being a <strong>Josephson junction</strong>. This nonlinear inductor creates an anharmonic oscillator that lets us distinguish the $|0\rangle \to |1\rangle$ energy transition.</p>
+            <ul>
+                <li><strong>Advantages:</strong> Easy to fabricate and control, leveraging existing micro-nano fabrication processes.</li>
+                <li><strong>Disadvantages:</strong> Extremely fragile. Even a single photon's thermal radiation can destroy the quantum state (decoherence).</li>
+            </ul>
+            <p>That's why these chips must operate inside dilution refrigerators at temperatures near absolute zero (about 15 mK) — colder than outer space.</p>
+
+            <h2>5. Conclusion: Dawn of the NISQ Era</h2>
+            <p>We're currently in the NISQ (Noisy Intermediate-Scale Quantum) era. While we don't yet have a universal quantum computer capable of breaking RSA encryption, quantum advantage is emerging in areas like materials simulation and drug discovery.</p>
+            <p>The physical carrier of information is shifting from "current on/off" to "wavefunction phase." This isn't just a speed increase — it's a root-shell access to the universe's underlying operating system.</p>
+
+        </article>
+
+        <a href="../article.html" class="back-btn">← Back to Articles</a>
+    </main>
+
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500; 
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>

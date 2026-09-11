@@ -1,0 +1,444 @@
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>获取伏羲引擎源码 - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/fuxi-engine.html">
+    <meta name="description" content="获取伏羲引擎（Fuxi Engine）源码：授权方案、价格与合作方式说明。">
+    <meta name="keywords" content="伏羲引擎, Fuxi Engine, 源码授权, AI 命理 SaaS, 排盘算法, 商业源码, 八字命理, AI 变现">
+    
+    <meta property="og:title" content="不仅是代码，更是一套跑通的变现闭环系统。">
+    <meta property="og:description" content=" 伏羲引擎(Fuxi Engine) 商业版交付">
+    <meta property="og:image" content="https://geekheron.space/logo.png"> 
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <style>
+        /* --- 1. Global Variables & Reset --- */
+        :root {
+            --primary-gold: #ffd700;
+            --primary-gold-hover: #e5c100;
+            --bg-dark: #000;
+            --card-bg: rgba(20, 20, 20, 0.75);
+            --card-border: rgba(255, 255, 255, 0.15);
+            --text-main: #fff;
+            --text-muted: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+
+        /* --- 2. Navigation (Standardized) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(100px);
+            -webkit-backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* Hamburger Menu */
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 3. Layout --- */
+        .container {
+            max-width: 1100px; margin: 0 auto; padding: 120px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .header-section { text-align: center; margin-bottom: 60px; }
+        .header-section h1 { 
+            font-size: 48px; font-weight: 800; margin-bottom: 24px; 
+            letter-spacing: -1px; line-height: 1.2;
+        }
+        .header-section p { color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; }
+        .highlight { 
+            color: var(--primary-gold); 
+            display: inline-block;
+            background: linear-gradient(120deg, #ffd700, #ffec8b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- NEW: Demo Button Styles --- */
+        .header-cta-box {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .demo-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 40px;
+            border: 1px solid var(--primary-gold);
+            border-radius: 50px;
+            color: var(--primary-gold);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(255, 215, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .demo-btn:hover {
+            background: var(--primary-gold);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            text-decoration: none;
+        }
+
+        .live-dot {
+            width: 8px; height: 8px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff00;
+            animation: pulse-green 2s infinite;
+        }
+        
+        /* 鼠标悬停时圆点变黑 */
+        .demo-btn:hover .live-dot { background-color: #000; box-shadow: none; animation: none; }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+
+        /* --- 4. Boss Poster Styles --- */
+        .boss-poster {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid var(--primary-gold);
+            border-radius: 16px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        }
+
+        .poster-badge {
+            position: absolute; top: 20px; left: -30px;
+            background: var(--primary-gold); color: #000;
+            font-weight: 800; font-size: 12px; padding: 5px 40px;
+            transform: rotate(-45deg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 5; text-transform: uppercase;
+        }
+
+        .poster-content {
+            display: flex; flex-wrap: wrap; align-items: center;
+            padding: 40px; position: relative; z-index: 2;
+        }
+
+        .poster-left { flex: 1.5; padding-right: 30px; min-width: 300px; }
+        .poster-left h2 { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 5px; letter-spacing: -0.5px; line-height: 1.2; }
+        .poster-left h3 { font-size: 20px; color: #888; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        .gold-text { color: var(--primary-gold); font-style: italic; }
+        
+        .poster-desc {
+            color: #ccc; font-size: 16px; line-height: 1.6; margin-bottom: 25px;
+            border-left: 3px solid var(--primary-gold); padding-left: 15px;
+        }
+
+        .poster-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .poster-features li {
+            font-size: 14px; color: #eee; background: rgba(255, 255, 255, 0.05);
+            padding: 8px 12px; border-radius: 4px; display: inline-block; width: fit-content;
+        }
+
+        .poster-right { flex: 1; display: flex; justify-content: center; min-width: 280px; margin-top: 20px; }
+
+        .roi-card {
+            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 25px; border-radius: 12px; width: 100%; backdrop-filter: blur(100px);
+        }
+        .roi-title {
+            text-align: center; color: var(--primary-gold); font-weight: 700; margin-bottom: 15px;
+            font-size: 14px; letter-spacing: 1px; text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;
+        }
+        .roi-data { margin-bottom: 20px; }
+        .data-row {
+            display: flex; justify-content: space-between; margin-bottom: 10px;
+            font-size: 14px; color: #ccc; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 5px;
+        }
+        .data-row .highlight { color: #fff; font-weight: 700; }
+
+        .poster-btn {
+            background: linear-gradient(90deg, #ffd700, #e5c100) !important; 
+            color: #000 !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            text-align: center; display: block; width: 100%; padding: 12px 0; border-radius: 6px; font-weight: bold;
+        }
+        
+        .poster-btn:hover {
+            background: linear-gradient(90deg, #ffe033, #ffd700) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5) !important;
+        }
+        .poster-glow {
+            position: absolute; top: -50%; right: -20%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
+            pointer-events: none; z-index: 1;
+        }
+
+        /* --- 5. Pricing Grid --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            align-items: center; 
+            margin-bottom: 40px;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 40px 30px;
+            border-radius: 12px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+            backdrop-filter: blur(100px);
+            display: flex; flex-direction: column;
+            height: 100%;
+        }
+        
+        .pricing-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .pricing-card.featured {
+            background: rgba(30, 30, 30, 0.85);
+            border: 1px solid var(--primary-gold);
+            transform: scale(1.08);
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+            z-index: 2;
+        }
+        
+        .pricing-card.featured:hover { transform: scale(1.08) translateY(-5px); }
+
+        .tag-banner {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--primary-gold); color: #000;
+            padding: 6px 16px; font-size: 12px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; border-radius: 20px;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .price-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 25px; margin-bottom: 25px; text-align: center; }
+        .plan-name { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 10px; font-weight: 700; }
+        .price-amount { font-size: 42px; font-weight: 700; color: #fff; line-height: 1; }
+        .price-currency { font-size: 20px; vertical-align: top; margin-right: 4px; color: #888; }
+        .price-period { font-size: 13px; color: #666; display: block; margin-top: 8px; line-height: 1.5; }
+        .price-period.highlight-text { color: var(--primary-gold); font-weight: 600; }
+
+        .feature-list { list-style: none; margin-bottom: 35px; flex-grow: 1; }
+        .feature-list li { margin-bottom: 12px; color: #ccc; font-size: 14px; display: flex; align-items: start; gap: 12px; line-height: 1.4; }
+        .feature-list li strong { color: #fff; font-weight: 600; }
+        .feature-list li.disabled { color: #555; }
+        .icon-check { color: var(--primary-gold); font-weight: bold; min-width: 16px; }
+        .icon-x { color: #444; min-width: 16px; text-align: center;}
+
+        .cta-btn {
+            display: block; width: 100%; padding: 16px 0;
+            text-align: center; font-weight: 700; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.3); color: #fff; 
+            border-radius: 6px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            background: transparent;
+        }
+        .cta-btn:hover { 
+            background: #fff; color: #000; border-color: #fff; 
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+        
+        .pricing-card.featured .cta-btn { 
+            background: var(--primary-gold); 
+            border-color: var(--primary-gold); 
+            color: #000; 
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+        .pricing-card.featured .cta-btn:hover { 
+            background: var(--primary-gold-hover); 
+            border-color: var(--primary-gold-hover);
+            box-shadow: 0 4px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        /* --- New: Sub Link Styles --- */
+        .sub-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #666;
+            text-decoration: underline;
+            opacity: 0.8;
+            transition: all 0.3s ease-in-out;
+        }
+        .sub-link:hover { color: var(--primary-gold); opacity: 1; }
+
+        /* --- 6. FAQ & WeChat --- */
+        .faq-section { margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px; }
+        .faq-title { text-align: center; font-size: 24px; margin-bottom: 40px; font-weight: 700; letter-spacing: 1px;}
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .faq-item h4 { color: #eee; margin-bottom: 12px; font-size: 16px; line-height: 1.4;}
+        .faq-item p { color: var(--text-muted); font-size: 14px; line-height: 1.7; text-align: justify;}
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px);
+            z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: #1a1a1a; border: 1px solid var(--primary-gold);
+            padding: 40px; border-radius: 16px; text-align: center;
+            max-width: 90%; width: 400px; position: relative;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.15);
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-close {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 28px; color: #888; cursor: pointer; transition: color 0.3s; line-height: 1;
+        }
+        .modal-close:hover { color: #fff; }
+        .modal-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+        .modal-desc { font-size: 14px; color: #888; margin-bottom: 25px; }
+        .wx-qrcode { width: 220px; height: 220px; border-radius: 8px; border: 2px solid #333; margin-bottom: 15px; background: #fff; padding: 5px; }
+        .wx-tip { font-size: 12px; color: var(--primary-gold); letter-spacing: 1px; }
+
+        #galaxy-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .overlay-dark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%); z-index: 0; pointer-events: none; }
+
+        /* --- Media Queries --- */
+        @media (max-width: 900px) {
+            .pricing-card.featured { transform: scale(1.02); }
+            .pricing-card.featured:hover { transform: scale(1.02) translateY(-5px); }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 20px; justify-content: space-between; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .hamburger { display: block; }
+            
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex; border-top: none; padding-top: 0;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 24px; font-weight: 800; color: #fff; padding: 0; }
+
+            .container { padding: 40px 20px; }
+            .header-section h1 { font-size: 32px; }
+            .pricing-card.featured { transform: none !important; }
+            .faq-grid { grid-template-columns: 1fr; }
+            
+            /* Poster Mobile Styles */
+            .boss-poster { margin-bottom: 40px; }
+            .poster-content { flex-direction: column; align-items: stretch; padding: 25px; }
+            .poster-left { margin-bottom: 30px; padding-right: 0; }
+            .poster-left h2 { font-size: 26px; }
+            .poster-right { margin-top: 0; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "获取伏羲引擎源码",
+  "description": "获取伏羲引擎（Fuxi Engine）源码：授权方案、价格与合作方式说明。",
+  "url": "https://geekheron.space/fuxi-engine.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GeekHeron",
+    "url": "https://geekheron.space/"
+  },
+  "inLanguage": "zh-CN"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">

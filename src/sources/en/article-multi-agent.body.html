@@ -1,0 +1,132 @@
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">In-Depth</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About &amp; Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">MULTI-AGENT</span>
+                <h1 class="article-title">Multi-Agent System Design: A Complete Guide from 0 to 1</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: Multi-Agent System Design, Multi-Agent Collaboration, AI Team Architecture, Agent Communication Protocol, Enterprise-Grade Agent</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.08</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: ARCHITECTURE</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>I. Why Do We Need Multi-Agent?</h2>
+                <p>A single Agent works well for well-bounded tasks, but enterprise scenarios often simultaneously involve requirement clarification, information retrieval, data validation, tool invocation, compliance review, and result delivery. Stuffing all capabilities into a single prompt makes the system hard to maintain and debug. The core value of Multi-Agent is decomposing complex tasks into multiple agents with clear responsibilities, collaborating like a small team.</p>
+                <p>In enterprise deployment, multi-agent is not about creating "lively conversations"—it's about building an engineering structure that is extensible, observable, and replaceable. Every Agent should have a well-defined role, input, output, permission boundaries, and failure-handling strategy.</p>
+
+                <h2>II. System Layering from 0 to 1</h2>
+                <h3>1. Orchestration Layer: Decides Who Does What</h3>
+                <p>The orchestration layer understands the task objective and delegates work to the appropriate Agent. It should not do all the work directly; like a project manager, it maintains task status, dependencies, and delivery criteria. Common implementations include rule-based routing, LLM routing, state-machine routing, and hybrid routing.</p>
+                <h3>2. Expert Layer: Owns Specific Outputs</h3>
+                <p>Expert Agents can be divided by business capability—e.g., retrieval Agent, data analysis Agent, copywriting Agent, code Agent, audit Agent. Each expert only exposes the tools it needs, avoiding overly broad permissions that could cause errors.</p>
+                <h3>3. Review Layer: Ensures Quality Closure</h3>
+                <p>Complex tasks cannot rely on a single shot. A review Agent should check factual consistency, format compliance, business constraints, and risk points. For high-risk scenarios, a manual approval node should be introduced.</p>
+
+                <h2>III. Communication Protocol Matters More Than "Role Prompting"</h2>
+                <p>Many failed Multi-Agent projects stop at role-play—"You're expert A, you're expert B"—without defining a message format. A truly usable collaboration system needs a unified protocol: task objectives, context, evidence sources, tool call results, confidence levels, blockers, and next-step suggestions should all be passed as structured fields.</p>
+                <ul>
+                    <li><strong>Task:</strong> Describes the goal, completion criteria, and acceptance criteria.</li>
+                    <li><strong>Context:</strong> Provides business background, history, and known constraints.</li>
+                    <li><strong>Evidence:</strong> Stores retrievable evidence like search results, database responses, and file references.</li>
+                    <li><strong>Decision:</strong> Records why an Agent chose a particular action, useful for auditing and retrospectives.</li>
+                </ul>
+
+                <h2>IV. Typical Enterprise Workflow</h2>
+                <p>Take "automated customer business analysis report generation" as an example: The orchestration Agent receives the request, passes it to the data Agent to pull CRM and order data; the analysis Agent identifies revenue changes, repurchase trends, and anomalous customers; the copywriting Agent generates the first draft; the review Agent checks numerical consistency; finally, a human approves the distribution scope. This decomposition lets every step be tested individually and retried locally on failure.</p>
+
+                <h2>V. Implementation Advice</h2>
+                <p>When building a Multi-Agent system from scratch, don't aim for full autonomy right away. A safer path is to first decompose existing SOPs into nodes, fix the main flow with a state machine, and then gradually replace nodes that require understanding, judgment, and generation with Agents. This approach preserves the flexibility of AI while retaining the controllability enterprises need.</p>
+                <p>Ultimately, the goal of Multi-Agent is not to make machines "hold meetings"—it's to break complex business processes into governable intelligent pipelines, where every generation, every judgment, and every tool call can be traced, reused, and optimized.</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>Learn more about multi-agent systems and enterprise Agent architecture:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Building Industrial-Grade AI Productivity for Enterprises</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>

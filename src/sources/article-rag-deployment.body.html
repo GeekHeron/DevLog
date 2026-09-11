@@ -1,0 +1,129 @@
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">RAG / KNOWLEDGE</span>
+                <h1 class="article-title">企业知识库 AI（RAG）怎么搭？从0到上线完整指南</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：企业知识库 AI, RAG 部署, 向量数据库, 混合检索, Embedding, 私有知识库</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.01</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: RAG</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>一、RAG 解决的是什么问题</h2>
+                <p>大模型本身并不了解企业内部制度、产品手册、项目文档和历史案例。RAG（Retrieval-Augmented Generation，检索增强生成）的核心思路，是先从企业知识库中找出相关资料，再让模型基于资料回答问题。它不是让模型“记住一切”，而是让模型在回答前先查证。</p>
+                <p>一个可上线的企业知识库 AI，必须同时关注文档处理、检索质量、权限控制、答案生成和运维评估。任何一个环节粗糙，最终都会表现为“答非所问”或“看起来很像但不可信”。</p>
+
+                <h2>二、从0到上线的五个步骤</h2>
+                <h3>1. 文档接入与清洗</h3>
+                <p>先盘点知识来源，包括 Word、PDF、网页、飞书文档、客服记录、产品手册和数据库表。文档解析时要保留标题层级、表格结构、更新时间和来源链接。企业 RAG 最忌讳把所有内容打平成一堆纯文本，因为上下文结构丢失后，检索准确率会明显下降。</p>
+                <h3>2. Chunk 切分</h3>
+                <p>切分粒度直接影响召回质量。太短会丢上下文，太长会引入噪音。建议按标题、段落和语义边界切分，并为每个片段保存父级标题、文档类型、部门、权限标签和版本号。</p>
+                <h3>3. 向量化与索引</h3>
+                <p>使用 Embedding 模型把文本转为向量，再写入向量数据库。对于中文企业知识库，建议同时保留关键词索引，形成向量检索加 BM25 的混合检索方案，避免专有名词、型号、合同编号等内容被向量检索漏掉。</p>
+                <h3>4. 检索与重排</h3>
+                <p>初始召回通常不够精确，需要通过 Rerank 模型或规则对候选片段排序。排序时不仅看语义相似度，还要考虑文档新旧、权限、业务优先级和答案覆盖度。</p>
+                <h3>5. 生成与引用</h3>
+                <p>最终回答必须带来源引用，让用户知道答案依据来自哪份文档。对于资料不足的问题，系统应该明确说“不确定”或“知识库未覆盖”，而不是编造答案。</p>
+
+                <h2>三、权限与安全</h2>
+                <p>企业 RAG 的权限控制不能只放在页面层。检索阶段就必须过滤用户无权访问的文档，否则模型可能从无权限片段中总结出敏感信息。建议将用户身份、部门、角色、项目权限作为检索条件的一部分。</p>
+
+                <h2>四、评估指标</h2>
+                <p>上线前需要建立测试集，覆盖高频问题、边界问题、过期文档、同名产品和权限隔离场景。核心指标包括召回率、答案准确率、引用命中率、拒答正确率和平均响应时间。只有能持续评估，RAG 才能持续优化。</p>
+
+                <h2>五、落地结论</h2>
+                <p>RAG 不是一个简单插件，而是一套企业知识工程。先把文档结构化，再把检索链路做扎实，最后再追求回答体验。这样搭建出来的知识库 AI，才能从“能演示”走向“能被业务每天使用”。</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>了解更多关于企业知识库 AI 与 RAG 私有化部署：</p>
+                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="site-nav.js"></script>

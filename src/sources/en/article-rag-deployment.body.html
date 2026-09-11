@@ -1,0 +1,129 @@
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About Me &amp; Collaboration</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">RAG / KNOWLEDGE</span>
+                <h1 class="article-title">How to Build an Enterprise Knowledge Base AI (RAG): A Complete Guide from Zero to Launch</h1>
+                <div class="article-meta">
+                    <span>SEO Keywords: enterprise knowledge base AI, RAG deployment, vector database, hybrid search, Embedding, private knowledge base</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.04.01</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: RAG</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>1. What Problem Does RAG Solve?</h2>
+                <p>Large language models don't inherently know your company's internal policies, product manuals, project documentation, or historical cases. The core idea of RAG (Retrieval-Augmented Generation) is to first retrieve relevant material from your enterprise knowledge base, then let the model answer based on that material. It's not about making the model "remember everything" — it's about letting the model consult the source before responding.</p>
+                <p>A production-ready enterprise knowledge base AI must address document processing, retrieval quality, access control, answer generation, and operational evaluation simultaneously. Slip on any one link, and you'll end up with answers that are either irrelevant or confidently wrong.</p>
+
+                <h2>2. Five Steps from Zero to Launch</h2>
+                <h3>2.1 Document Ingestion and Cleaning</h3>
+                <p>Start by inventorying your knowledge sources: Word documents, PDFs, web pages, Feishu docs, customer service records, product manuals, and database tables. When parsing documents, preserve heading hierarchies, table structures, update timestamps, and source links. The biggest mistake in enterprise RAG is flattening everything into plain text — losing contextual structure significantly drags down retrieval accuracy.</p>
+                <h3>2.2 Chunking Strategy</h3>
+                <p>Chunk granularity directly affects recall quality. Too short, and you lose context; too long, and you introduce noise. The recommended approach is to split along heading, paragraph, and semantic boundaries, and preserve the parent heading, document type, department, permission labels, and version number for every chunk.</p>
+                <h3>2.3 Vectorization and Indexing</h3>
+                <p>Use an Embedding model to convert text into vectors and write them into a vector database. For Chinese enterprise knowledge bases, it's advisable to keep a keyword index alongside, forming a hybrid search strategy (vector + BM25). This prevents proper nouns, model numbers, contract IDs, and abbreviations from slipping through pure vector retrieval.</p>
+                <h3>2.4 Retrieval and Reranking</h3>
+                <p>Initial recall is rarely precise enough. You need a Rerank model or rules to sort candidate chunks. The ordering should consider not just semantic similarity, but also document freshness, permissions, business priority, and answer coverage.</p>
+                <h3>2.5 Generation with Citations</h3>
+                <p>The final answer must include source citations so users can see which document the response is based on. When retrieved material is insufficient, the system should explicitly say "uncertain" or "not covered by the knowledge base" rather than fabricating an answer.</p>
+
+                <h2>3. Access Control and Security</h2>
+                <p>Access control in enterprise RAG can't be limited to the UI layer. Documents the user doesn't have permission to read must be filtered out at retrieval time; otherwise the model might summarize sensitive information from unauthorized chunks. We recommend incorporating user identity, department, role, and project permissions as part of the retrieval query.</p>
+
+                <h2>4. Evaluation Metrics</h2>
+                <p>Before going live, build a test set covering frequently asked questions, edge cases, outdated documents, products with identical names, and permission isolation scenarios. Core metrics include recall rate, answer accuracy, citation hit rate, correct rejection rate, and average response time. Continuous evaluation is the only way to keep improving your RAG system.</p>
+
+                <h2>5. Takeaways</h2>
+                <p>RAG is not a plug-in feature — it's a comprehensive enterprise knowledge engineering practice. First, structure your documents. Next, solidify the retrieval pipeline. Only then invest in polishing the answer experience. A knowledge base AI built this way can evolve from a "demo" into a tool people actually use every day.</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>Learn more about enterprise knowledge base AI and private RAG deployment:</p>
+                <a href="../about.html" class="seo-link">About GeekHeron — Helping enterprises build industrial-grade AI productivity</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>

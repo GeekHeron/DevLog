@@ -1,0 +1,212 @@
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Private LLM Deployment: The Complete Guide - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/en/article-private-llm.html">
+    <meta name="description" content="A full walkthrough of enterprise-grade large language model private deployment, combining OpenClaw hands-on practice with core architecture diagrams to solve data privacy and compliance challenges.">
+    <meta name="keywords" content="GeekHeron, Private Llm, AI, LLM, Large Language Model, Technical Analysis, System Architecture">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-private-llm.html">
+    <link rel="alternate" hreflang="en" href="https://geekheron.space/en/article-private-llm.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-private-llm.html">
+    <link rel="icon" type="image/png" href="../logo.png">
+    
+    <style>
+        /* --- 1. Global Styles --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. Background Effect --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. Navigation (with mobile hamburger menu) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* Hamburger button */
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: #fff; transition: 0.3s;
+        }
+
+        /* --- 4. Article Typography --- */
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 80px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 30px;
+        }
+
+        .article-title { font-size: 42px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 14px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 28px; margin: 50px 0 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px 0; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul { margin-bottom: 25px; padding-left: 20px; }
+        .article-body li { margin-bottom: 15px; }
+
+        pre {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            padding: 20px;
+            overflow-x: auto;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #00ffc3; 
+        }
+
+        blockquote {
+            border-left: 3px solid #00ffc3;
+            padding: 20px 30px;
+            background: rgba(0, 255, 195, 0.05);
+            margin: 30px 0;
+            font-style: italic;
+        }
+
+        .seo-footer {
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
+        }
+        .seo-link {
+            display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
+        }
+        .seo-link:hover { color: #00ffc3; }
+
+        /* --- 5. Mobile Responsive (key changes) --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 30px; }
+            .container { padding-top: 40px; }
+
+            .hamburger { display: flex; }
+
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+
+            /* Hamburger becomes X */
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Enterprise Private LLM Deployment: The Complete Guide",
+  "description": "A full walkthrough of enterprise-grade large language model private deployment, combining OpenClaw hands-on practice with core architecture diagrams to solve data privacy and compliance challenges.",
+  "author": {
+    "@type": "Person",
+    "name": "GeekHeron (Jianfeng Wang)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/en/article-private-llm.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "en"
+}
+    </script>
+    <link rel="stylesheet" href="../site-nav.css">

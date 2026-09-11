@@ -1,0 +1,136 @@
+
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About &amp; Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2025.09.20</span>
+                <span class="tag">CHIPS</span>
+                <span class="tag">PHOTONICS</span>
+            </div>
+            <h1 class="article-title">Silicon Photonics:<br>Breaking the Memory Wall at Light Speed</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                As Moore's Law stalls at the microscopic level, we're taking a different route — overtaking on the macroscopic transmission curve. Replacing electrons with photons is the only path forward for AI compute clusters.
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. The Physical Limit of Copper: Electron Gridlock</h2>
+            <p>For the past fifty years, we've been doing one thing: making transistors smaller. But now we've hit a new enemy: <strong>interconnects</strong>.</p>
+            <p>No matter how fast a GPU's compute cores are, data has to enter and leave the chip through copper wires. At GHz frequencies, the "skin effect" in copper wires causes resistance to spike dramatically. Electrons generate massive amounts of heat during transmission. Today, over 30% of data center electricity isn't spent on "computing" — it's wasted on <strong>moving data around</strong>.</p>
+            <div class="math-block">
+                $$ P_{loss} = I^2 R \quad \text{(Ohmic Heating)} $$
+            </div>
+            <p>This is the famous <strong>memory wall</strong>: compute power grows far faster than data transfer bandwidth. Without solving this, a superchip like the H100 spends 90% of its time waiting for data to arrive.</p>
+
+            <h2>2. Why Photons?</h2>
+            <p>Unlike electrons, photons are bosons. They have no mass, no charge, don't interfere with each other, and generate almost no heat during transmission. Most importantly, using <strong>wavelength-division multiplexing (WDM)</strong>, we can transmit hundreds of independent signals through a single fiber using different colors of light.</p>
+            
+            <p>This gives a single fiber optic strand bandwidth potential orders of magnitude above copper. But for a long time, optical components (lasers, modulators) were bulky and expensive — impossible to fit on a chip.</p>
+
+            <h2>3. Silicon Photonics: Etching Lasers Onto Chips</h2>
+            <p><strong>Silicon photonics</strong> is revolutionary because it leverages mature CMOS semiconductor processes to etch nanoscale optical waveguides, modulators, and detectors directly onto silicon wafers.</p>
+            <p>This means we can "print" optical circuits at massive scale and low cost, just like manufacturing CPUs. No more expensive discrete optical components — the entire optical transceiver system is compressed onto a chip the size of a coin.</p>
+
+            <h2>4. CPO: The Ultimate Package-Level Fusion</h2>
+            <p>The current trend is <strong>CPO (Co-Packaged Optics)</strong>. In the old days, optical modules were plugged into the front panel of a rack, far from the GPU (several inches away), connected by copper traces.</p>
+            
+            <p>In a CPO architecture, the optical engine is directly packaged onto the GPU's substrate, mere millimeters from the compute cores. This dramatically reduces electrical signal transmission distance, cutting power consumption by over 50% while delivering Tbps-level bandwidth.</p>
+            <p>For models like GPT-5 requiring ten-thousand-GPU clusters, CPO is the neural network connecting thousands of GPUs into a single "super compute brain."</p>
+
+            <h2>5. Conclusion: Electrons for Logic, Photons for Transport</h2>
+            <p>We're entering an era of <strong>hybrid computing</strong>. Electrons are inefficient for transport but excel at logic (transistor switching). Photons can't easily perform logic operations, but they're the perfect couriers.</p>
+            <p>The chip of the future will be a perfect union of silicon logic and optical transport. When light speed becomes the baseline for data movement, we'll finally touch the edge of physical limits.</p>
+
+        </article>
+
+        <a href="../article.html" class="back-btn">← Back to Articles</a>
+    </main>
+
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        /* 粒子背景动画 (保持统一) */
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>

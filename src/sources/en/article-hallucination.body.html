@@ -1,0 +1,168 @@
+
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="../about.html">About Me &amp; Collaboration</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2025.06.20</span>
+                <span class="tag">AI / LLM</span>
+                <span class="tag">DEEP DIVE</span>
+            </div>
+            <h1 class="article-title">The Nature of LLM Hallucination:<br>Bug or Creativity?</h1>
+            <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                When we talk about AI hallucination, we often treat it as a bug. But from the underlying logic of neural networks, hallucination may well be the embryo of machine creativity.
+            </p>
+        </div>
+
+        <article class="article-content">
+            
+            <h2>1. Not "Talking Nonsense," but "Taking a Probabilistic Gamble"</h2>
+            <p>Under the Transformer architecture, the model doesn't "store" facts like a database — it stores <strong>probability distributions</strong>.</p>
+            <p>When we input "Qin Shi Huang not only unified the six kingdoms, but also..." the model engages in Next Token Prediction. It searches the immense high-dimensional space for the most plausible next word.</p>
+            <ul>
+                <li><strong>Fact:</strong> This typically corresponds to the highest peak in the probability distribution — for example, "built the Great Wall."</li>
+                <li><strong>Hallucination:</strong> This occurs when the model selects a slightly less probable but still logically coherent path — for instance, "invented the light bulb."</li>
+            </ul>
+            
+            <p>Mathematically, the probability of generating a sequence $Y = (y_1, y_2, ..., y_n)$ is:</p>
+            <div class="math-block">
+                $$P(Y|X) = \prod_{t=1}^{n} P(y_t | y_{<t}, X)$$
+            </div>
+            <p>The so-called "hallucination" is essentially the model deviating from maximum likelihood estimation during the sampling process in pursuit of diversity. <strong>If the model always chose the single most probable token, its responses would be painfully dull, repetitive, and rigid.</strong></p>
+
+            <h2>2. Temperature: The Dial Between "Precision" and "Madness"</h2>
+            <p>This brings us to a critical parameter: <strong>Temperature</strong>.</p>
+            <ul>
+                <li><strong>Low temperature ($T \to 0$):</strong> The model becomes conservative, sticking to combinations it saw most often in training data. It's a <strong>meticulous scribe</strong> — few hallucinations, but zero creativity.</li>
+                <li><strong>High temperature ($T > 1$):</strong> The model is allowed to explore the "long tail" of the probability distribution. It starts connecting unrelated concepts. It becomes a <strong>mad poet</strong>.</li>
+            </ul>
+            <p><strong>Core insight:</strong> Creativity, at its essence, is "unexpected yet plausible." Human inspiration often arises from a "misconnection" or "associative leap" between neurons. Therefore, <strong>hallucination is not a system failure — it's a byproduct of the system attempting to be creative.</strong></p>
+
+            <h2>3. Compression and Lossy Reconstruction: The Fuzzy Zone of Memory</h2>
+            <p>Ted Chiang once compared ChatGPT to a "blurry JPEG of all text on the web." Transformer models compress vast amounts of human knowledge into weight matrices. This compression is <strong>lossy</strong>.</p>
+            <p>When the model tries to reconstruct a specific fact (say, the third author of an obscure paper), it has lost the exact "pixels" due to compression and retained only the outline. So it uses its powerful generalization ability to "fill in" the missing pixels.</p>
+            <p>This "filling in" ability is called "imagination" when writing science fiction, and "fatal hallucination" when writing medical reports.</p>
+
+            <h2>4. If We Can't Eliminate It, Let's Harness It</h2>
+            <p>If we accept that hallucination is the twin sibling of creativity, then the engineering goal shouldn't be to "eliminate hallucination entirely" (which would mean killing the model's generalization ability), but rather to <strong>"control the context in which hallucination occurs."</strong></p>
+            <ul>
+                <li><strong>RAG (Retrieval-Augmented Generation):</strong> Give the model a "reference book," forcing it to consult external material before answering factual questions. This uses an external knowledge base to constrain internal probability divergence.</li>
+                <li><strong>Chain of Thought:</strong> Have the model show its reasoning steps, forcing the probability distribution to converge toward logically self-consistent paths.</li>
+            </ul>
+
+            <h2>5. Conclusion: The Machine's "Dream"</h2>
+            <p>When humans dream, the brain cuts off sensory input, and internal neurons fire freely, producing surreal hallucinations. Yet many great scientific discoveries and artistic inspirations have come from dreams or daydreams.</p>
+            <p>AI hallucination is the machine's "dream." When we accuse AI of "hallucinating," we're really accusing it of <strong>exhibiting idealist (creative) tendencies in a context that demands materialism (factual accuracy).</strong></p>
+            <p>Understanding this is key to truly understanding Transformer: it's not a search engine that merely looks things up — it's a probability-based generation engine. <strong>Its nature is to generate; accuracy is merely a constraint that humans impose on it.</strong></p>
+
+        </article>
+
+        <a href="../article.html" class="back-btn">← Back to Articles</a>
+    </main>
+
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        
+        // Performance optimization
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 2000; 
+        
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2;
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0) this.x = width;
+                if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height;
+                if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            resize();
+            for(let i=0; i<numParticles; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init();
+        animate();
+    
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="../site-nav.js"></script>

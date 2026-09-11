@@ -1,0 +1,250 @@
+
+    <meta property="og:title" content="构建“无限内容引擎” - InfoFlow AI 深度复盘">
+    <meta property="og:description" content="当 AI Agent 接管媒体工作室：技术架构、商业逻辑与未来预判">
+    <meta property="og:image" content="https://geekheron.space/logo.png"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>构建“无限内容引擎” - InfoFlow AI 深度行业分析</title>
+    <link rel="canonical" href="https://geekheron.space/whitepaper.html">
+    <meta name="description" content="InfoFlow AI 深度行业分析白皮书：解读构建“无限内容引擎”的技术路径与行业机会。">
+    <meta name="keywords" content="GeekHeron, Whitepaper, AI, LLM, 大模型, 技术分析, 系统架构">
+    <style>
+        /* --- 1. 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif;
+            background-color: #050505;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8; /* 增加行高，适合长文阅读 */
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效层 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); 
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        .hamburger { display: none; cursor: pointer; z-index: 102; width: 30px; height: 20px; position: relative; }
+        .hamburger span { display: block; width: 100%; height: 2px; background-color: #fff; position: absolute; transition: all 0.3s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        /* --- 4. 深度文章专用样式 (Cyber-Purple Theme) --- */
+        :root {
+            --accent-color: #bc13fe; /* 霓虹紫 */
+        }
+
+        .container {
+            max-width: 800px; 
+            margin: 0 auto;
+            padding: 120px 24px;
+            position: relative; z-index: 10;
+        }
+
+        .page-header {
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .page-title { 
+            font-size: 42px; 
+            font-weight: 800; 
+            letter-spacing: -1.5px; 
+            margin-bottom: 20px; 
+            background: linear-gradient(to right, #fff, #bbb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-subtitle { 
+            color: var(--accent-color); 
+            font-family: 'Consolas', monospace; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        /* 文章内容排版 */
+        .article-content {
+            font-size: 17px;
+            color: #d0d0d0;
+        }
+
+        /* 摘要块 */
+        .abstract-box {
+            background: rgba(188, 19, 254, 0.05); /* 紫色背景 */
+            border: 1px solid rgba(188, 19, 254, 0.2);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 60px;
+            font-style: italic;
+            color: #e0e0e0;
+            position: relative;
+        }
+        .abstract-box::before {
+            content: 'ABSTRACT';
+            position: absolute; top: -10px; left: 20px;
+            background: #000; color: var(--accent-color);
+            padding: 0 10px; font-size: 12px; font-weight: bold;
+        }
+
+        /* 标题层级 */
+        .article-content h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-top: 70px;
+            margin-bottom: 30px;
+            display: flex; align-items: baseline;
+        }
+        /* 装饰 H2 */
+        .article-content h2::before {
+            content: '#';
+            color: var(--accent-color);
+            margin-right: 10px;
+            font-size: 20px;
+            font-family: monospace;
+        }
+
+        .article-content h3 {
+            font-size: 20px;
+            color: #fff;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .article-content p { margin-bottom: 24px; text-align: justify; }
+
+        .article-content ul { margin-left: 20px; margin-bottom: 30px; color: #ccc; }
+        .article-content li { margin-bottom: 12px; padding-left: 5px; }
+        
+        .article-content strong { color: #fff; font-weight: 700; border-bottom: 1px solid rgba(188, 19, 254, 0.3); }
+
+        /* 引用块 */
+        .callout {
+            border-left: 3px solid var(--accent-color);
+            padding-left: 20px;
+            margin: 30px 0;
+            color: #bbb;
+        }
+
+        /* 底部 CTA */
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #666; font-size: 14px; text-align: center;
+        }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 768px) {
+            .page-title { font-size: 30px; }
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column; justify-content: center; align-items: center; 
+                gap: 60px; /* 增大间距 */
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links.active { transform: translateX(0); }
+            /* 字体加大到 32px */
+            .nav-links a { font-size: 32px; font-weight: 800; color: #fff; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "构建“无限内容引擎” - InfoFlow AI 深度行业分析",
+  "description": "InfoFlow AI 深度行业分析白皮书：解读构建“无限内容引擎”的技术路径与行业机会。",
+  "url": "https://geekheron.space/whitepaper.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GeekHeron",
+    "url": "https://geekheron.space/"
+  },
+  "inLanguage": "zh-CN"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">

@@ -1,0 +1,135 @@
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ERP / CRM</span>
+                <h1 class="article-title">企业系统接入 AI（ERP / CRM / 微信）：真实案例拆解</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：ERP 接入 AI, CRM AI 自动化, 微信客户运营, 企业系统集成, 大模型 API 改造</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.03.15</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: CASE STUDY</span>
+                </div>
+            </div>
+            <div class="article-body">
+
+                <h2>一、传统企业系统为什么需要 AI</h2>
+                <p>ERP、CRM 和微信生态沉淀了企业最重要的数据：订单、库存、客户、合同、沟通记录和售后问题。但这些系统通常以表单和流程为中心，员工需要反复查询、复制、判断和填写。AI 接入的价值，不是替代原有系统，而是在系统之上增加理解、总结、预测和自动执行能力。</p>
+
+                <h2>二、案例背景</h2>
+                <p>一家 B2B 服务企业同时使用 ERP 管理订单与交付，CRM 管理销售线索和客户阶段，微信承载客户日常沟通。问题在于：销售不知道客户历史交付情况，客服无法快速判断客户等级，管理层每周都要人工汇总经营数据。数据在系统里，但没有变成及时可用的判断。</p>
+
+                <h2>三、改造目标</h2>
+                <ul>
+                    <li>销售在 CRM 中一键生成客户跟进建议。</li>
+                    <li>客服在微信侧快速查询订单、合同和售后记录。</li>
+                    <li>管理层自动收到经营周报和风险客户列表。</li>
+                    <li>关键动作保留人工确认，避免 AI 直接修改核心业务数据。</li>
+                </ul>
+
+                <h2>四、系统集成方案</h2>
+                <h3>1. 数据打通</h3>
+                <p>先通过 API 或中间库同步 ERP、CRM、微信客户标签和沟通摘要，建立统一客户 ID。没有统一 ID，AI 很容易把同名客户、分公司和历史联系人混淆。</p>
+                <h3>2. 业务工具封装</h3>
+                <p>把查询订单、查询合同、查询客户阶段、创建跟进任务等能力封装成工具。AI 不直接访问数据库，而是调用受控工具，工具层负责权限、审计和字段脱敏。</p>
+                <h3>3. 场景化 Agent</h3>
+                <p>针对销售、客服和管理层分别设计 Agent。销售 Agent 关注机会推进，客服 Agent 关注问题定位，管理 Agent 关注趋势和风险。不同角色使用不同提示词、权限和输出格式。</p>
+
+                <h2>五、真实业务流程</h2>
+                <p>当销售打开某个客户页面时，系统自动汇总该客户近 12 个月订单、合同状态、服务工单和微信沟通要点，生成“本次跟进建议”。如果客户近期投诉增加但复购下降，AI 会提示先处理交付满意度，再推进续约。销售确认后，系统自动创建 CRM 任务并生成微信沟通草稿。</p>
+
+                <h2>六、风险控制</h2>
+                <p>ERP 和 CRM 属于核心业务系统，AI 改造必须坚持“查询优先、建议优先、确认后执行”。对于改价、退款、合同变更、客户删除等动作，系统只能生成建议和审批单，不能直接执行。每次工具调用都需要记录用户、时间、输入、输出和业务对象。</p>
+
+                <h2>七、结果与启示</h2>
+                <p>改造后，销售准备客户资料的时间显著缩短，客服响应更稳定，管理层可以更早发现交付和续约风险。这个案例说明，企业 AI 的突破口不是推翻 ERP 或 CRM，而是让已有系统变得更会理解、更会提醒、更会协同。</p>
+        
+            </div>
+            <footer class="seo-footer">
+                <p>了解更多关于 ERP、CRM 与微信生态的 AI 集成方案：</p>
+                <a href="about.html" class="seo-link">关于 GeekHeron - 助力企业构建工业级 AI 生产力</a>
+            </footer>
+        </article>
+    </main>
+    <script>const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function init() { resize(); particles.length = 0; for (let i = 0; i < numParticles; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, width, height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        if(hamburger) hamburger.addEventListener('click', toggleMenu);
+</script>
+    <script src="site-nav.js"></script>

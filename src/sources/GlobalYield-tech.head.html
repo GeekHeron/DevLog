@@ -1,0 +1,136 @@
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核心架构 Deep Dive | GlobalYield AI</title>
+    <link rel="canonical" href="https://geekheron.space/GlobalYield-tech.html">
+    <meta name="description" content="GlobalYield AI 核心技术架构深度拆解：RWA 智能套利终端的系统设计与工程实现细节。">
+    <meta name="keywords" content="GeekHeron, Globalyield Tech, AI, LLM, 大模型, 技术分析, 系统架构">
+    <style>
+        :root { 
+            --accent: #00d2ff; 
+            --accent-dim: rgba(0, 210, 255, 0.1);
+            --bg: #050505; 
+            --card-bg: #0a0a0a; 
+            --border: #222;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: "JetBrains Mono", Consolas, "Courier New", monospace; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            padding-bottom: 80px;
+        }
+        
+        /* 布局容器 */
+        .container { max-width: 900px; margin: 0 auto; padding: 140px 20px 60px; }
+        
+        /* 头部 */
+        .header-section { border-left: 4px solid var(--accent); padding-left: 25px; margin-bottom: 50px; }
+        h1 { font-size: 28px; letter-spacing: -0.5px; color: #fff; margin-bottom: 8px; }
+        .tagline { color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* 通用卡片样式 */
+        .tech-card {
+            background: var(--card-bg); 
+            border: 1px solid var(--border);
+            padding: 30px; 
+            margin-bottom: 30px; 
+            border-radius: 6px;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .tech-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        
+        /* 标题样式 */
+        h2 { font-size: 18px; margin-bottom: 20px; color: #fff; display: flex; align-items: center; }
+        h2::before { content: "::"; color: var(--accent); margin-right: 10px; opacity: 0.8; }
+        
+        h3 { font-size: 15px; color: var(--accent); margin-bottom: 10px; margin-top: 20px; }
+        h3:first-of-type { margin-top: 0; }
+
+        p { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; text-align: justify; }
+
+        /* 列表样式 */
+        ul { list-style: none; margin-bottom: 15px; }
+        ul li { 
+            font-size: 13px; 
+            color: var(--text-main); 
+            margin-bottom: 8px; 
+            padding-left: 15px; 
+            position: relative; 
+        }
+        ul li::before { 
+            content: ">"; 
+            position: absolute; 
+            left: 0; 
+            color: var(--accent); 
+            font-size: 12px; 
+        }
+        strong { color: #fff; font-weight: 600; }
+
+        /* 1. 数据管道样式 */
+        .pipeline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .pipeline-item { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 4px; border: 1px dashed #333; }
+        .pipeline-badge { display: inline-block; font-size: 10px; padding: 2px 6px; background: var(--accent-dim); color: var(--accent); border-radius: 3px; margin-bottom: 8px; }
+
+        /* 2. Agent 对比样式 */
+        .agent-flex { display: flex; gap: 20px; flex-wrap: wrap; }
+        .agent-box { flex: 1; min-width: 280px; background: rgba(0,0,0,0.3); padding: 20px; border-left: 2px solid #333; }
+        .agent-box.monitor { border-color: #ff0055; } /* 红色代表警报/监控 */
+        .agent-box.analyst { border-color: var(--accent); } /* 蓝色代表分析/智力 */
+        .agent-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #fff; }
+        .tech-stack-mini { font-size: 11px; color: #666; font-family: monospace; border-top: 1px solid #222; padding-top: 8px; margin-top: 10px; }
+
+        /* 3. 公式样式 */
+        .math-box { 
+            background: #000; 
+            padding: 20px; 
+            text-align: center; 
+            border-radius: 4px; 
+            margin: 20px 0; 
+            font-family: "Times New Roman", serif; 
+            font-style: italic; 
+            font-size: 18px; 
+            color: #fff;
+            border: 1px solid #333;
+        }
+        .metrics-bar { display: flex; height: 6px; width: 100%; background: #222; margin-top: 25px; border-radius: 3px; overflow: hidden; }
+        .metric-seg { height: 100%; transition: width 0.5s; }
+        .legend { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; font-size: 11px; justify-content: center; }
+        .legend-item span { display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; }
+
+        /* 4. 表格样式 */
+        .specs-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+        .specs-table th { text-align: left; color: #666; font-weight: normal; padding: 12px 10px; border-bottom: 1px solid #333; width: 30%; }
+        .specs-table td { color: #fff; padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .specs-table tr:last-child td, .specs-table tr:last-child th { border-bottom: none; }
+        
+        .code { color: var(--accent); font-family: monospace; background: var(--accent-dim); padding: 2px 5px; border-radius: 3px; font-size: 12px; }
+
+        /* 底部 */
+        .footer-link { display: inline-block; margin-top: 20px; color: #555; text-decoration: none; font-size: 12px; border-bottom: 1px dotted #555; }
+        .footer-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "核心架构 Deep Dive | GlobalYield AI",
+  "description": "GlobalYield AI 核心技术架构深度拆解：RWA 智能套利终端的系统设计与工程实现细节。",
+  "url": "https://geekheron.space/GlobalYield-tech.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GeekHeron",
+    "url": "https://geekheron.space/"
+  },
+  "inLanguage": "zh-CN"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">

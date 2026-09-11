@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import head from '../sources/tech.head.html?raw';
 import body from '../sources/tech.body.html?raw';
 
+const headerProps = {  };
 const htmlProps = { lang: "zh-CN" };
 ---
-<BaseLayout htmlProps={htmlProps} head={head} body={body} />
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

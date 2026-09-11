@@ -1,0 +1,788 @@
+
+
+    <canvas id="galaxy-field" aria-hidden="true"></canvas>
+    <div class="overlay-gradient" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="article.html">Deep Analysis</a></li>
+                <li><a href="works.html">Case Studies</a></li>
+                <li><a href="fuxi-engine.html">Fuxi Engine</a></li>
+                <li><a href="about.html">About Me &amp; Business</a></li>
+                <li><a href="about.html" class="lang-btn" hreflang="en" lang="en">中文</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main class="container">
+
+        <aside class="profile-section">
+            <div class="avatar-container">
+                <img src="image_3.png" alt="GeekHeron profile photo" class="avatar-image pulse-avatar" width="180" height="180" fetchpriority="high" onerror="this.classList.add('img-error')">
+                <div class="avatar-fallback" aria-hidden="true">GH</div>
+            </div>
+            <h1 class="profile-name">Geek Heron</h1>
+            <p class="profile-id">@GeekHeron</p>
+                <p class="profile-id" style="border-top: 1px solid #222; padding-top: 12px; margin-top: 4px; font-size: 12px; color: #666;">FDE (AI Forward Deployed Engineer)</p>
+            <p class="profile-title">
+                Enterprise AI Automation System Architect<br>
+                Agent · RAG · RPA · MCP · Private AI Deployment · Enterprise System Integration
+            </p>
+
+            <!-- Stats -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 30px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--gold); letter-spacing: 1px;">8+</div>
+                    <div style="font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">Production Agents</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--gold); letter-spacing: 1px;">5亿+</div>
+                    <div style="font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">Business Volume Covered</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--gold); letter-spacing: 1px;">2-8周</div>
+                    <div style="font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">Delivery Cycle</div>
+                </div>
+            </div>
+
+            <div class="cta-group">
+                <a href="works.html" class="secondary-btn">View Case Studies</a>
+                <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" id="booking-cta">
+                    Free Enterprise AI Automation Opportunity Analysis
+                </a>
+                <p style="font-size: 11px; color: #666; margin-top: -5px; text-align: center;">Discover 3 actionable AI scenarios in 15 minutes</p>
+            </div>
+
+            <details class="social-collapse">
+                <summary class="social-collapse-summary">
+                    <span class="social-collapse-dot" aria-hidden="true"></span> Contact Me
+                </summary>
+                <div class="social-grid">
+                    <div class="social-item">
+                        <a href="https://t.me/GeekHeron" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron via Telegram">
+                            <img src="telegram.png" alt="Scan or click to add GeekHeron on Telegram" class="social-qr" width="100" height="100" loading="lazy">
+                        </a>
+                        <p class="social-text">Telegram</p>
+                    </div>
+
+                    <div class="social-item">
+                        <a href="weixin://" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron via WeChat">
+                            <img src="wechat.png" alt="Scan to add GeekHeron on WeChat for business inquiries" class="social-qr" width="100" height="100" loading="lazy">
+                        </a>
+                        <p class="social-text">WeChat</p>
+                    </div>
+
+                    <div class="social-item">
+                        <a href="https://wa.me/447599790527" target="_blank" rel="noopener noreferrer" aria-label="Contact GeekHeron via WhatsApp">
+                            <img src="WhatApp.png" alt="Scan to add GeekHeron on WhatsApp" class="social-qr" width="100" height="100" loading="lazy">
+                        </a>
+                        <p class="social-text">WhatsApp</p>
+                    </div>
+                </div>
+            </details>
+        </aside>
+
+        <div class="content-section">
+
+            <!-- ==================== 01 / Hero ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">01 / Hero</h3>
+                <h2 class="value-prop">
+                    From data integration to AI Agent execution —<br>
+                    building your enterprise's own <span style="color: var(--gold);">digital workforce</span>.
+                </h2>
+
+                <p class="bio-text" style="margin-top: 0;">
+                    Helping enterprises:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; margin: 20px 0 30px;">
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px;">
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,215,0,0.15); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 14px; font-weight: 700; flex-shrink: 0;">✓</span>
+                        <span style="font-size: 14px; color: #ccc;">Automate repetitive workflows to reduce operational costs</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px;">
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,215,0,0.15); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 14px; font-weight: 700; flex-shrink: 0;">✓</span>
+                        <span style="font-size: 14px; color: #ccc;">Break down data silos so AI understands your full business landscape</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px;">
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,215,0,0.15); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 14px; font-weight: 700; flex-shrink: 0;">✓</span>
+                        <span style="font-size: 14px; color: #ccc;">Build private AI Agent systems — evolve from assistant to digital employee</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;">
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">Agent</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">RAG</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">RPA</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">MCP</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">Private AI Deployment</span>
+                    <span style="font-size: 11px; color: #999; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 50px; padding: 4px 14px;">Enterprise System Integration</span>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Covering core operations, supply chain, management decisions, and more with AI transformation.</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.2); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #fff; font-weight: 600;">Cross-border E-commerce</span>
+                        <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">Supply Chain Management</span>
+                        <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">ERP System Integration</span>
+                        <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">Enterprise Knowledge Base</span>
+                        <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">Operational Data Analytics</span>
+                        <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">Inventory Risk Control</span>
+                        <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">AI Customer Service</span>
+                        <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">GEO Traffic Optimization</span>
+                    </div>
+                    <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+                        <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">3000万+</span> <span style="font-size: 11px; color: #777;">Single Project GMV</span></div>
+                        <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">5亿+</span> <span style="font-size: 11px; color: #777;">Business Volume Covered</span></div>
+                        <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">8</span> <span style="font-size: 11px; color: #777;">Production Agents</span></div>
+                        <div><span style="font-size: 14px; font-weight: 700; color: var(--gold);">6周</span> <span style="font-size: 11px; color: #777;">Typical Delivery Timeline</span></div>
+                    </div>
+                </div>
+
+                <div class="proof-box">
+                    <div class="proof-title">Delivery Standard: Seamless HCI + Industrial-grade Business Flow Closure</div>
+                    <div class="proof-text">
+                        From top-level user experience and middle-layer business logic to the underlying automation hub seamlessly integrated with daily office tools. No patchwork, no paying twice for fragmented systems that can't talk to each other.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 02 / Why Enterprise AI ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">02 / Why Enterprise AI</h3>
+                <p class="bio-text">
+                    AI technology is advancing far faster than enterprises can adopt it.
+                </p>
+                <p class="bio-text">
+                    Many companies already run ERP, CRM, Feishu, and other systems — yet data silos, process fragmentation, and manual repetitive tasks persist. The real challenge isn't calling an AI model; it's embedding AI into the daily business workflows that run your enterprise.
+                </p>
+                <p class="bio-text">
+                    That's why I chose to become an FDE (AI Forward Deployed Engineer) — responsible for the full closed loop from business analysis and architecture design to system development, deployment, and go-live. Making AI a long-term digital asset for your business, not just a demo.
+                </p>
+
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,215,0,0.15); border-radius: 12px; padding: 32px 36px; margin-bottom: 24px;">
+                    <p style="font-size: 14px; line-height: 1.9; color: #ddd;">
+                        I bring <strong style="color: #fff;">system-level architectural thinking</strong>, breaking down complex business problems into clean, structured solutions. In practice, I follow <strong style="color: var(--gold);">technical pragmatism and results-driven delivery</strong> — handling requirements analysis, architecture design, full-stack development, deployment, and go-live as a single point of accountability.
+                    </p>
+                    <p style="font-size: 14px; line-height: 1.9; color: #ddd; margin-top: 16px;">
+                        I specialize in <strong style="color: #fff;">cross-system resource integration</strong> — building end-to-end business closures from automated data collection and intelligent analysis to proactive alerts. Replacing uncertain business problems with deterministic automation for long-term cost reduction and efficiency gains.
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06);">
+                        <span style="font-size: 12px; color: var(--gold); background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 4px 16px;">Solo Full-Chain</span>
+                        <span style="font-size: 12px; color: var(--gold); background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 4px 16px;">Result-Driven Delivery</span>
+                        <span style="font-size: 12px; color: var(--gold); background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 4px 16px;">RPA Fault Tolerance</span>
+                        <span style="font-size: 12px; color: var(--gold); background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 4px 16px;">100% Private Deployment</span>
+                        <span style="font-size: 12px; color: var(--gold); background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); border-radius: 20px; padding: 4px 16px;">Long-term Maintenance</span>
+                    </div>
+                </div>
+
+                <div class="three-col-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 14px 16px;">
+                        <h4 style="font-size: 13px; color: #fff; font-weight: 700; margin-bottom: 6px;">Workflow Automation</h4>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 8px;">Repetitive manual ops · Data transfer · Multi-system switching</p>
+                        <div style="font-size: 12px; color: var(--gold); font-weight: 700;">→ Lower Operating Costs</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 14px 16px;">
+                        <h4 style="font-size: 13px; color: #fff; font-weight: 700; margin-bottom: 6px;">Data Intelligence</h4>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 8px;">Scattered data · Untapped information · No real-time visibility</p>
+                        <div style="font-size: 12px; color: var(--gold); font-weight: 700;">→ Better Decision-Making</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 14px 16px;">
+                        <h4 style="font-size: 13px; color: #fff; font-weight: 700; margin-bottom: 6px;">AI Agent Execution</h4>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 8px;">AI can answer but not act · Lacks automation tools</p>
+                        <div style="font-size: 12px; color: var(--gold); font-weight: 700;">→ From Assistant to Digital Employee</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 03 / How Enterprise AI Works ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">03 / How Enterprise AI Works</h3>
+                <div class="flow-wrap">
+                    <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" role="img">
+                        <defs>
+                            <marker id="arr-sm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+                            </marker>
+                        </defs>
+                        <text x="50" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Enterprise Data</text>
+                        <rect x="10" y="38" width="80" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="50" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">ERP/MES/CRM</text>
+                        <line x1="90" y1="56" x2="130" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="155" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">AI Understanding</text>
+                        <rect x="110" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="155" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">Data Governance + Ontology</text>
+                        <line x1="200" y1="56" x2="240" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="265" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Intelligent Judgment</text>
+                        <rect x="220" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="265" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">Agent Orchestration</text>
+                        <line x1="310" y1="56" x2="350" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="375" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Automation Execution</text>
+                        <rect x="330" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="375" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">RPA + Tool</text>
+                        <line x1="420" y1="56" x2="460" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="485" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Human Review</text>
+                        <rect x="440" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="485" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">Feishu Card</text>
+                        <line x1="530" y1="56" x2="570" y2="56" stroke="#555" stroke-width="1" marker-end="url(#arr-sm)"/>
+                        <text x="595" y="30" text-anchor="middle" fill="#ccc" font-size="12" font-family="Helvetica, Arial, sans-serif">Continuous Improvement</text>
+                        <rect x="560" y="38" width="90" height="36" rx="6" fill="none" stroke="#555" stroke-width="1"/>
+                        <text x="605" y="62" text-anchor="middle" fill="#999" font-size="10" font-family="Helvetica, Arial, sans-serif">Feedback Loop</text>
+
+                        <path d="M 650 97 C 650 120, 50 120, 50 97" stroke="#444" stroke-width="1" fill="none" stroke-dasharray="4 3" marker-end="url(#arr-sm)"/>
+                        <text x="350" y="126" text-anchor="middle" fill="#444" font-size="9" font-family="Helvetica, Arial, sans-serif">Continuous iteration · Each improvement feeds back into the evaluation set</text>
+                    </svg>
+                </div>
+                <div style="margin-top: 24px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px; padding: 24px;">
+                    <div style="font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Complete Layered Architecture (Technical)</div>
+                    <p style="font-size: 13px; color: #aaa; line-height: 1.8; margin-bottom: 12px;">Behind every delivery is a complete layered architecture:</p>
+                    <div class="arch-grid">
+                        <div class="arch-item"><strong>① Data Governance Layer</strong><br><span>Integrates 8+ business systems (MES/ERP/CRM/PLM/WMS), API/database direct connect/ETL</span></div>
+                        <div class="arch-item"><strong>② Knowledge Layer (RAG)</strong><br><span>Structured data via SQL, documents via RAG retrieval, routed by business type</span></div>
+                        <div class="arch-item gold-border"><strong>③ Ontology Layer</strong><br><span>Entity-relationship modeling giving AI true understanding of your data world, eliminating inconsistent naming across systems</span></div>
+                        <div class="arch-item"><strong>④ Tool / MCP Layer</strong><br><span>Business capabilities wrapped as auditable, permission-controlled tools with MCP protocol standardization</span></div>
+                        <div class="arch-item full-row"><strong>⑤ Agent Orchestration Layer</strong><br><span>LangGraph-driven stateful workflows designed by business nodes + branches + human intervention points — no black-box reasoning</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 04 / Enterprise AI Architecture ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">04 / Enterprise AI Architecture</h3>
+                
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">From data ingestion to Agent orchestration — a complete layered architecture for enterprise AI deployment.</p>
+                <div class="flow-wrap" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                    <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" style="min-width: 320px; width:100%; height:auto; display:block;" role="img" aria-labelledby="arch-title arch-desc">
+                        <title id="arch-title">Enterprise AI Complete Architecture</title>
+                        <desc id="arch-desc">Seven-layer architecture: Data Sources → Data Governance → Tool/MCP Layer → Knowledge Layer → Governance Layer → Agent Orchestration → User Interfaces</desc>
+                        <defs>
+                            <marker id="arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffd700"/></marker>
+                            <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker>
+                            <linearGradient id="arch-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(255,255,255,0.03)"/><stop offset="100%" stop-color="rgba(255,255,255,0.06)"/></linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="760" height="640" rx="12" fill="rgba(255,255,255,0.015)" stroke="#222" stroke-width="1"/>
+                        <g><rect x="230" y="18" width="300" height="44" rx="8" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.3)" stroke-width="1.2"/><text x="380" y="38" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Enterprise AI Complete Architecture</text></g>
+                        <line x1="380" y1="62" x2="380" y2="88" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="88" width="400" height="52" rx="8" fill="url(#arch-bg)" stroke="#ffd700" stroke-width="1.2"/><text x="380" y="110" text-anchor="middle" fill="#ffd700" font-size="12" font-weight="800">Agent Orchestration Layer</text><text x="380" y="128" text-anchor="middle" fill="#aaa" font-size="10">Multi-Agent Orchestration · Task Routing · State Management</text></g>
+                        <line x1="380" y1="140" x2="380" y2="166" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="166" width="400" height="52" rx="8" fill="url(#arch-bg)" stroke="#555" stroke-width="1"/><text x="380" y="188" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Tool / MCP Layer</text><text x="380" y="206" text-anchor="middle" fill="#aaa" font-size="10">Tool Registration · MCP Protocol · API Gateway</text></g>
+                        <line x1="380" y1="218" x2="380" y2="244" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="200" y="244" width="360" height="40" rx="6" fill="rgba(255,215,0,0.04)" stroke="rgba(255,215,0,0.2)" stroke-dasharray="4 3" stroke-width="1.2"/><text x="380" y="262" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="600">Knowledge Layer (RAG · Vector DB · Knowledge Graph)</text></g>
+                        <line x1="180" y1="284" x2="180" y2="320" stroke="#555" stroke-width="1"/><line x1="380" y1="284" x2="380" y2="320" stroke="#555" stroke-width="1"/><line x1="580" y1="284" x2="580" y2="320" stroke="#555" stroke-width="1"/>
+                        <line x1="180" y1="320" x2="580" y2="320" stroke="#555" stroke-width="1"/>
+                        <line x1="180" y1="320" x2="180" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="380" y1="320" x2="380" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="580" y1="320" x2="580" y2="336" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="80" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/><text x="180" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Tool / API</text><text x="180" y="376" text-anchor="middle" fill="#888" font-size="9">ERP · CRM · Feishu · E-commerce Platforms</text></g>
+                        <g><rect x="280" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/><text x="380" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Knowledge Base</text><text x="380" y="376" text-anchor="middle" fill="#888" font-size="9">RAG · Vector DB · Business Documents</text></g>
+                        <g><rect x="480" y="336" width="200" height="62" rx="6" fill="url(#arch-bg)" stroke="#444" stroke-width="1"/><text x="580" y="358" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">External Data</text><text x="580" y="376" text-anchor="middle" fill="#888" font-size="9">Scraping · Third-party APIs · Competitor Monitoring</text></g>
+                        <line x1="180" y1="398" x2="180" y2="422" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="380" y1="398" x2="380" y2="422" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/><line x1="580" y1="398" x2="580" y2="422" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="422" width="400" height="40" rx="6" fill="url(#arch-bg)" stroke="#555" stroke-width="1"/><text x="380" y="440" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Data Governance Layer (Cleansing · Standardization · Update Strategy)</text></g>
+                        <line x1="380" y1="462" x2="380" y2="490" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="80" y="490" width="600" height="50" rx="8" fill="rgba(255,215,0,0.04)" stroke="rgba(255,215,0,0.25)" stroke-dasharray="4 3" stroke-width="1.2"/><text x="380" y="512" text-anchor="middle" fill="#ffd700" font-size="12" font-weight="700">Data Source Layer</text><text x="380" y="528" text-anchor="middle" fill="#aaa" font-size="10">ERP · CRM · E-commerce Backend · Logs · Files · Databases</text></g>
+                        <line x1="380" y1="540" x2="380" y2="570" stroke="#555" stroke-width="1" marker-end="url(#arrow-gray)"/>
+                        <g><rect x="180" y="570" width="400" height="46" rx="8" fill="rgba(255,215,0,0.06)" stroke="#ffd700" stroke-width="1.5"/><text x="380" y="592" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">User Interface</text><text x="380" y="607" text-anchor="middle" fill="#aaa" font-size="10">Web Dashboard · Feishu Interactive Cards · Telegram Bot</text></g>
+                    </svg>
+                </div>
+                <p class="flow-caption">The architecture spans seven layers from data ingestion to user interface — covering the full pipeline from data to decision.</p>
+            </section>
+
+            <!-- ==================== 05 / Case Studies ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">05 / Case Studies</h3>
+                <p class="testimonials-subtitle" style="margin-bottom: 20px;">Real project deliveries from cross-border e-commerce and brand sellers.</p>
+
+                <div class="testimonial-grid">
+<div class="testimonial-card featured-card">
+                        <span class="featured-badge">Featured Case</span>
+                        <div class="project-industry">Cross-border E-Commerce · Consumer Electronics · GMV ~30M</div>
+                        <div class="project-name">Ad & Inventory Linked Daily Report</div>
+                        <div class="project-client-detail">Operations team 20+ people · 12 stores</div>
+                        <div class="project-tags">
+                            <span class="project-tag">Amazon</span>
+                            <span class="project-tag gold">Feishu</span>
+                            <span class="project-tag">ERP</span>
+                            <span class="project-tag gold">3 周</span>
+                        </div>
+                        <hr class="project-divider">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">Business Pain Point</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">Operations staff manually cross-checked ad dashboards, inventory tables, and competitor pages daily. Ad spend was disconnected from inventory, leading to overselling or stockouts.</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI Solution</div>
+                            <p style="font-size: 13px; color: #eee; line-height: 1.6;">Script pulled Feishu multi-dimensional tables, auto-matched SKU inventory levels, FBA→Winit automatic fallback, and real-time competitor ±5% price fluctuation alerts.</p>
+                        </div>
+                        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Tech Highlights: Playwright RPA + Feishu Cards + ERP Integration</p>
+                        <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                            <div class="metric-item">
+                                <span class="metric-value">45min→3min</span>
+                                <span class="metric-label">Report Generation Time</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">~2h/day</span>
+                                <span class="metric-label">Labor Saved</span>
+                            </div>
+                        </div>
+                        <div class="project-quote">
+                            <span class="project-quote-mark" aria-hidden="true">"</span>
+                            <span class="project-quote-text">No more manual ad reporting. When FBA is out of stock, it automatically pulls Winit inventory — these details show they really understand our business.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-accordion-list">
+                    <details class="case-accordion">
+                        <summary class="case-accordion-summary">
+                            <div class="case-summary-left">
+                                <span class="case-summary-icon" aria-hidden="true">+</span>
+                                <span>Real-time Competitor Price Monitoring</span>
+                            </div>
+                            <span class="case-summary-gmv">Outdoor Gear · GMV ~50M</span>
+                        </summary>
+                        <div class="case-accordion-body">
+                            <div class="project-tags" style="margin-bottom: 12px;">
+                                <span class="project-tag">Amazon</span>
+                                <span class="project-tag gold">AdsPower</span>
+                                <span class="project-tag gold">Feishu</span>
+                                <span class="project-tag gold">2 周</span>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">Business Pain Point</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">Competitors would adjust prices aggressively at midnight without detection. Operations spent hours on manual price checks, and missing a pricing window meant real profit loss.</p>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI Solution</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">Fingerprint browser + Playwright captured real front-end prices, ±5% filter eliminated noise, Feishu cards pushed in real-time.</p>
+                            </div>
+                            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Tech Highlights: Playwright RPA + AdsPower Fingerprint Browser + Feishu Card Push</p>
+                            <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                                <div class="metric-item">
+                                    <span class="metric-value">&lt;5min</span>
+                                    <span class="metric-label">Anomaly Response Latency</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value">↓95%</span>
+                                    <span class="metric-label">Manual Monitoring Reduced</span>
+                                </div>
+                            </div>
+                            <div class="project-quote">
+                                <span class="project-quote-mark" aria-hidden="true">"</span>
+                                <span class="project-quote-text">Alerts only on anomalies instead of checking every price daily — this design eliminated so much noise.</span>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="case-accordion">
+                        <summary class="case-accordion-summary">
+                            <div class="case-summary-left">
+                                <span class="case-summary-icon" aria-hidden="true">+</span>
+                                <span>Inventory & Logistics Risk Control</span>
+                            </div>
+                            <span class="case-summary-gmv">Home Furnishings · GMV ~80M</span>
+                        </summary>
+                        <div class="case-accordion-body">
+                            <div class="project-tags" style="margin-bottom: 12px;">
+                                <span class="project-tag gold">Feishu</span>
+                                <span class="project-tag">OpenClaw</span>
+                                <span class="project-tag">Winit</span>
+                                <span class="project-tag gold">4 周</span>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">Business Pain Point</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">Long-cycle inventory holding and logistics delays were only discovered at month-end settlement. Warehousing, logistics, and operations data was scattered — anomalies drowned in a sea of data.</p>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI Solution</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">Auto-calculated delay days, TOP 5 high-risk orders pushed @ relevant person, 3/6-month dual-threshold inventory age alerts + weekly inventory value report.</p>
+                            </div>
+                            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Tech Highlights: OpenClaw Agent + Feishu @mention Push + Multi-source Data Fusion</p>
+                            <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                                <div class="metric-item">
+                                    <span class="metric-value">TOP 5</span>
+                                    <span class="metric-label">Auto-Identified High Risk Orders</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value">3/6mo</span>
+                                    <span class="metric-label">Dual-Threshold Inventory Age Alerts</span>
+                                </div>
+                            </div>
+                            <div class="project-quote">
+                                <span class="project-quote-mark" aria-hidden="true">"</span>
+                                <span class="project-quote-text">It covers weekly-level data like inventory age and value, not just short-term sales — long-term inventory health is well taken care of.</span>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="case-accordion">
+                        <summary class="case-accordion-summary">
+                            <div class="case-summary-left">
+                                <span class="case-summary-icon" aria-hidden="true">+</span>
+                                <span>ERP Automation Emergency Monitoring</span>
+                            </div>
+                            <span class="case-summary-gmv">3C Digital · GMV ~200M</span>
+                        </summary>
+                        <div class="case-accordion-body">
+                            <div class="project-tags" style="margin-bottom: 12px;">
+                                <span class="project-tag gold">Playwright</span>
+                                <span class="project-tag">ERP</span>
+                                <span class="project-tag gold">Feishu</span>
+                                <span class="project-tag gold">24h Emergency</span>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">Business Pain Point</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">The Jijia ERP official API authentication gateway failed, taking down the entire negative review monitoring system — third-party outages are a common reality in automation projects.</p>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI Solution</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">Instead of waiting for the official fix, switched the scraping layer to Playwright RPA within 24 hours — simulated login to scrape from the front end with zero changes to upstream logic.</p>
+                            </div>
+                            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Tech Highlights: Playwright RPA + Emergency Switch Mechanism + Feishu Notification Loop</p>
+                            <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                                <div class="metric-item">
+                                    <span class="metric-value">&lt;24h</span>
+                                    <span class="metric-label">API Outage → RPA Switch</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value">0 天</span>
+                                    <span class="metric-label">Business Monitoring Downtime</span>
+                                </div>
+                            </div>
+                            <div class="project-quote">
+                                <span class="project-quote-mark" aria-hidden="true">"</span>
+                                <span class="project-quote-text">No waiting for the vendor fix — switched the scraping layer to RPA with zero changes to upstream logic. Business barely noticed. APIs go down, but business doesn't stop.</span>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="case-accordion">
+                        <summary class="case-accordion-summary">
+                            <div class="case-summary-left">
+                                <span class="case-summary-icon" aria-hidden="true">+</span>
+                                <span>OpenClaw Private Automation Hub</span>
+                            </div>
+                            <span class="case-summary-gmv">Multi-category · GMV ~500M</span>
+                        </summary>
+                        <div class="case-accordion-body">
+                            <div class="project-tags" style="margin-bottom: 12px;">
+                                <span class="project-tag gold">OpenClaw</span>
+                                <span class="project-tag gold">Private Deployment</span>
+                                <span class="project-tag gold">Feishu</span>
+                                <span class="project-tag gold">6 周</span>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">Business Pain Point</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">Core operational data flowing through public cloud posed trade secret leakage risks. Multiple isolated systems with no unified data view for management.</p>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">AI Solution</div>
+                                <p style="font-size: 13px; color: #eee; line-height: 1.6;">Full-stack OpenClaw private deployment, 7 types of daily/weekly reports pushed to Feishu, 100% physical isolation of core data.</p>
+                            </div>
+                            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Tech Highlights: OpenClaw Private Deployment + Feishu Integration + Multi-Agent Collaboration</p>
+                            <div class="project-metrics two-col" style="margin-bottom: 8px;">
+                                <div class="metric-item">
+                                    <span class="metric-value">100%</span>
+                                    <span class="metric-label">Core Data Physically Isolated</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value">↓80%</span>
+                                    <span class="metric-label">Manual Repetitive Work Reduced</span>
+                                </div>
+                            </div>
+                            <div class="project-quote">
+                                <span class="project-quote-mark" aria-hidden="true">"</span>
+                                <span class="project-quote-text">Opening Feishu every morning shows all operations — no more logging into 4-5 platforms. Zero learning curve, high team adoption.</span>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="works.html" class="secondary-btn" style="display: inline-block; padding: 12px 28px; font-size: 12px;">View All Case Studies →</a>
+                </div>
+            </section>
+
+            <!-- ==================== 06 / Services ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">06 / Services</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Flexible options based on enterprise needs. Each service includes deployment support and long-term maintenance.</p>
+                <div class="three-col-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 16px;">
+                        <h4 style="font-size: 14px; color: #fff; font-weight: 700; margin-bottom: 4px;">AI Workflow Automation</h4>
+                        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">Single Process Optimization</div>
+                        <div style="display: flex; gap: 4px 16px; flex-wrap: wrap; font-size: 12px; margin-bottom: 10px;">
+                            <span><span style="color: var(--gold); font-weight: 700;">Timeline</span> <span style="color: #fff;">2 - 4 周</span></span>
+                            <span><span style="color: var(--gold); font-weight: 700;">Investment</span> <span style="color: #fff;">$3K - $7K</span></span>
+                        </div>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5;">Ideal for enterprises needing fast resolution of specific pain points like daily report automation, competitor monitoring, or inventory alerts.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,215,0,0.25); border-radius: 6px; padding: 16px;">
+                        <h4 style="font-size: 14px; color: #fff; font-weight: 700; margin-bottom: 4px;">Enterprise Agent System</h4>
+                        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">Multi-system Integration + Multi-Agent Collaboration</div>
+                        <div style="display: flex; gap: 4px 16px; flex-wrap: wrap; font-size: 12px; margin-bottom: 10px;">
+                            <span><span style="color: var(--gold); font-weight: 700;">Timeline</span> <span style="color: #fff;">4 - 8 周</span></span>
+                            <span><span style="color: var(--gold); font-weight: 700;">Investment</span> <span style="color: #fff;">$15K - $45K</span></span>
+                        </div>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5;">For enterprises needing to connect multiple business systems and build an enterprise-grade AI Agent ecosystem.</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px; padding: 16px;">
+                        <h4 style="font-size: 14px; color: #fff; font-weight: 700; margin-bottom: 4px;">Private AI Deployment</h4>
+                        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">Open-source Model On-premise + Customization</div>
+                        <div style="display: flex; gap: 4px 16px; flex-wrap: wrap; font-size: 12px; margin-bottom: 10px;">
+                            <span><span style="color: var(--gold); font-weight: 700;">Timeline</span> <span style="color: #fff;">2 - 6 周</span></span>
+                            <span><span style="color: var(--gold); font-weight: 700;">Investment</span> <span style="color: #fff;">$7K - $30K</span></span>
+                        </div>
+                        <p style="font-size: 12px; color: #888; line-height: 1.5;">For organizations with high data security requirements needing on-premise LLM and knowledge base deployment.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 07 / Workflow ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">07 / Workflow</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">From diagnosis to go-live, every step has clear deliverables.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px;">
+                    <span style="background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.3); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #fff; font-weight: 700;">01 Business Diagnosis</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">02 AI Opportunity Analysis</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">03 Solution Design</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">04 Development & Delivery</span>
+                    <span style="color: #555; font-size: 14px;">→</span>
+                    <span style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #ccc; font-weight: 500;">05 Continuous Optimization</span>
+                </div>
+            </section>
+
+            <!-- ==================== 08 / Core Tech ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">08 / Core Technology</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">A systematic tech stack supporting industrial-grade delivery — not just theory, but proven in production.</p>
+                <div class="tech-grid">
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">LLM Engineering Integration</div>
+                        <p class="service-desc">Integrated OpenAI / Claude / DeepSeek and 8+ mainstream model APIs. On-premise deployment experience with Ollama / vLLM.</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px; border-color: var(--gold);">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px; color: var(--gold);">Agent Workflow Design</div>
+                        <p class="service-desc">Business capability modules wrapped around a private enterprise AI hub. Delivered 8 production-grade Agents for competitor monitoring, operations analysis, inventory health, and more.</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RPA + Enterprise System Integration</div>
+                        <p class="service-desc">Playwright browser automation + AdsPower / Purple Bird to penetrate API-less systems. Connected Feishu multi-dimensional tables, Interactive Cards, Kingdee ERP, and Shopify.</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px; border-color: var(--gold);">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px; color: var(--gold);">RAG Full-stack Knowledge Base</div>
+                        <p class="service-desc">Document parsing → Chunking → Embedding → Vector search → Hybrid retrieval → Reranking → Knowledge-augmented generation — complete end-to-end production experience.</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Business Ontology Modeling</div>
+                        <p class="service-desc">Entity, attribute, relationship, and business rule models designed around real scenarios. With ontology, Agents understand the full chain of "customer→order→product→process→equipment" — traceable and explainable reasoning.</p>
+                    </div>
+                    <div class="service-card" style="padding: 20px 24px;">
+                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Full-stack Engineering Delivery</div>
+                        <p class="service-desc">Next.js / Python Flask frontend and backend. From requirements research to documentation, single point of accountability — no cross-team communication overhead.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 09 / FAQ ==================== -->
+            <section class="section-block" id="faq-full">
+                <h3 class="section-title">09 / FAQ</h3>
+                <div class="faq-list">
+                    <details class="faq-item"><summary class="faq-question">Do you support private deployment?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Yes. Can be deployed on enterprise servers, cloud servers, or local network environments. Business data never passes through third-party platforms.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Do I need to replace our ERP?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">No. Priority is given to integrating with existing ERP, Feishu, WeCom, and other systems to minimize business transformation costs.</p></details>
+                    <details class="faq-item"><summary class="faq-question">How long is the delivery cycle?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Typically 2 to 8 weeks depending on project complexity. A phased delivery plan is provided after requirements are confirmed.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Do you sign an NDA?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Yes. NDA can be signed for projects involving business data or processes.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Do you provide post-delivery support?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Yes. Deployment support, bug fixes, and agreed maintenance services are provided. Long-term technical support is available based on project needs.</p></details>
+                    <details class="faq-item"><summary class="faq-question">How is pricing structured?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Pricing is based on requirement complexity, system scale, and delivery scope. You can schedule a free consultation to get a business AI application assessment report.</p></details>
+                </div>
+            </section>
+
+            <!-- ==================== 10 / Contact ==================== -->
+            <section class="section-block">
+                <h3 class="section-title">10 / Contact</h3>
+                <div style="text-align: center; padding: 40px 20px;">
+                    <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 16px; color: #fff;">
+                        Turn AI from a demo<br>into a long-term digital asset for your enterprise
+                    </h2>
+                    <p style="font-size: 14px; color: #999; margin-bottom: 30px; line-height: 1.8;">
+                        Free 15-minute scenario feasibility assessment · Evaluate integration complexity and Agent roadmap<br>
+                        No hype, just solutions. First call evaluates whether AI transformation is right for you — no hard sell.
+                    </p>
+                    <a href="https://ocnwsv7u5di3.feishu.cn/scheduler/5f0d5a1bfe647bc1" target="_blank" rel="noopener noreferrer" class="contact-btn" style="display: inline-block; padding: 16px 40px; font-size: 14px; max-width: 400px; margin: 0 auto;">
+                        Free Enterprise AI Automation Opportunity Analysis
+                    </a>
+                    <p style="font-size: 12px; color: #666; margin-top: 16px;">
+                        Or reach out directly: Telegram @GeekHeron
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </main><script>const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const numParticles = 12000;
+        const fieldOfView = 300; 
+        const colors = ['255, 255, 255', '200, 200, 200', '160, 180, 255'];
+
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = (Math.random() - 0.5) * width * 2.5; 
+                this.y = (Math.random() - 0.5) * height * 2.5; 
+                this.z = (Math.random() * fieldOfView * 2) - fieldOfView; 
+                this.radius = Math.random() * 1.2 + 0.2; 
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                let cosZ = Math.cos(0.0005);
+                let sinZ = Math.sin(0.0005);
+                let tempX = this.x;
+                this.x = tempX * cosZ - this.y * sinZ;
+                this.y = tempX * sinZ + this.y * cosZ;
+                this.z -= 0.2; 
+                if (this.z < -fieldOfView) { this.z += fieldOfView * 2; }
+            }
+            draw() {
+                const perspective = fieldOfView / (fieldOfView + this.z);
+                const projectedX = (this.x * perspective) + width / 2;
+                const projectedY = (this.y * perspective) + height / 2;
+                const projectedRadius = this.radius * perspective;
+                const opacity = Math.min(1, Math.max(0, 1 - Math.abs(this.z) / fieldOfView));
+                if (projectedX > 0 && projectedX < width && projectedY > 0 && projectedY < height) {
+                    ctx.beginPath();
+                    ctx.arc(projectedX, projectedY, projectedRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${opacity})`;
+                    ctx.fill();
+                }
+            }
+        }
+
+        class ShootingStar {
+            constructor() { this.reset(); this.active = false; }
+            reset() {
+                this.x = Math.random() * width + 200; 
+                this.y = Math.random() * height * 0.3 - 200; 
+                this.speed = Math.random() * 10 + 15;
+                this.len = Math.random() * 80 + 150;
+                this.size = Math.random() * 1 + 0.5;
+                this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
+                this.active = true;
+            }
+            update() {
+                if (!this.active) return;
+                this.x -= this.speed * Math.cos(this.angle);
+                this.y += this.speed * Math.sin(this.angle);
+                if (this.x < -this.len || this.y > height + this.len) this.active = false;
+            }
+            draw() {
+                if (!this.active) return;
+                const tailX = this.x + this.len * Math.cos(this.angle);
+                const tailY = this.y - this.len * Math.sin(this.angle);
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+                gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+                ctx.beginPath();
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.size;
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+            }
+        }
+
+        const meteors = [new ShootingStar(), new ShootingStar(), new ShootingStar()];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+        }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (Math.random() < 0.008) {
+                const m = meteors.find(m => !m.active);
+                if (m) m.reset();
+            }
+            meteors.forEach(m => { m.update(); m.draw(); });
+            requestAnimationFrame(animate);
+        }
+        resize();
+        initParticles();
+        animate();
+
+        function initLocation() {
+            const locElement = document.getElementById('user-location');
+            if (!locElement) return;
+
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latitude && data.longitude) {
+                        const lat = data.latitude;
+                        const lon = data.longitude;
+                        const latDir = lat >= 0 ? 'N' : 'S';
+                        const lonDir = lon >= 0 ? 'E' : 'W';
+                        locElement.textContent = `LOC: ${Math.abs(lat).toFixed(2)}${latDir}, ${Math.abs(lon).toFixed(2)}${lonDir} / GEO.SYNC`;
+                    } else {
+                        locElement.textContent = `LOC: PROXY.DETECTED / MASKED`;
+                    }
+                })
+                .catch(() => {
+                    locElement.textContent = "LOC: UNKNOWN / OFF.GRID";
+                });
+        }
+        initLocation();
+
+        function initFPSCounter() {
+            const fpsElement = document.getElementById('fps-counter');
+            if (!fpsElement) return;
+
+            let lastCalledTime;
+            let counter = 0;
+
+            function fpsLoop() {
+                if (!lastCalledTime) {
+                    lastCalledTime = performance.now();
+                    counter = 0;
+
+                    requestAnimationFrame(fpsLoop);
+                    return;
+                }
+                
+                counter++;
+                const delta = (performance.now() - lastCalledTime) / 1000;
+
+                if (delta >= 1) { 
+                    const fps = Math.round(counter / delta);
+                    fpsElement.textContent = `FRAME: ${fps}FPS`;
+                    counter = 0;
+                    lastCalledTime = performance.now();
+                }
+                requestAnimationFrame(fpsLoop);
+            }
+            requestAnimationFrame(fpsLoop);
+        }
+        initFPSCounter();
+    </script>
+    <script src="site-nav.js"></script>

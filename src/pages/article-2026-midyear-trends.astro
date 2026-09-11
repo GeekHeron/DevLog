@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import head from '../sources/article-2026-midyear-trends.head.html?raw';
 import body from '../sources/article-2026-midyear-trends.body.html?raw';
 
+const headerProps = { leadBlank: 1, chromeBlank: 0, innerBlank: false };
 const htmlProps = { lang: "zh-CN" };
 ---
-<BaseLayout htmlProps={htmlProps} head={head} body={body} />
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

@@ -1,0 +1,123 @@
+---
+/**
+ * SiteHeader —— 全站公共顶部导航组件
+ *
+ * 这是全站 57 个页面顶部导航的唯一来源。改导航链接、品牌字、时钟、齿轮图标，
+ * 只需改这一个文件，重新构建后全站生效。
+ *
+ * 本组件的输出经过 scripts/extract-header.mjs 的「回放校验」逐字节比对，
+ * 与重构前各页面硬编码的区块完全一致 —— 抽取前后 dist 产物零差异。
+ *
+ * ── 常用参数 ─────────────────────────────────────────────
+ *  variant     'zh'（默认）| 'en'   —— 中/英导航文字
+ *  brand       品牌字，默认 'GeekHeron'（首页为 'GEEKHERON'）
+ *  clock       时钟初始文本，默认 'T+00: 00: 00'
+ *  tool        是否渲染齿轮图标，默认 true
+ *  showClock   无齿轮但保留时钟（首页）
+ *  navItems    自定义导航项，默认中文五项
+ *  langHref/langLabel/langStyle  语言切换按钮
+ *  chrome      'dark'（默认）| 'darkAria' | 'none'  —— 背景层
+ *  leadBlank   header 前的空行数（默认 2）
+ *  chromeBlank 背景层与 header 之间空行数（默认 1）
+ *  innerBlank  内部区块之间是否留空行（默认 true）
+ *  tailBlank   无 header-right 时 </nav> 后是否留空行
+ *  indent      header 自身缩进（默认 4 空格；首页为 0）
+ *  indentUnit  每级子缩进量（默认 4 空格；首页为 2）
+ */
+
+const {
+  variant = 'zh',
+  brand = 'GeekHeron',
+  clock = 'T+00: 00: 00',
+  tool = true,
+  showClock = false,
+  langHref = '',
+  langLabel = '',
+  langStyle = '',
+  navItems = null,
+  chrome = 'dark',
+  leadBlank = 2,
+  chromeBlank = 1,
+  innerBlank = true,
+  tailBlank = false,
+  indent = '    ',
+  indentUnit = '    ',
+} = Astro.props;
+
+const ZH_NAV = [
+  ['index.html', '首页'],
+  ['article.html', '深度分析'],
+  ['works.html', '商业案例'],
+  ['fuxi-engine.html', '伏羲引擎'],
+  ['about.html', '关于我 &amp; 商业合作'],
+];
+const EN_NAV = [
+  ['index.html', 'Home'],
+  ['article.html', 'Deep Analysis'],
+  ['works.html', 'Case Studies'],
+  ['fuxi-engine.html', 'Fuxi Engine'],
+  ['about.html', 'About Me &amp; Business'],
+];
+
+const items = navItems || (variant === 'en' ? EN_NAV : ZH_NAV);
+
+const at = (n) => indent + indentUnit.repeat(n);
+const L = [];
+// 前导空行
+for (let i = 0; i < leadBlank; i++) L.push('');
+
+// 背景层
+if (chrome === 'dark') {
+  L.push(`${indent}<canvas id="galaxy-field"></canvas>`);
+  L.push(`${indent}<div class="overlay-dark"></div>`);
+} else if (chrome === 'darkAria') {
+  L.push(`${indent}<canvas id="galaxy-field" aria-hidden="true"></canvas>`);
+  L.push(`${indent}<div class="overlay-gradient" aria-hidden="true"></div>`);
+}
+for (let i = 0; i < chromeBlank; i++) L.push('');
+
+// 顶栏
+L.push(`${indent}<header class="site-header">`);
+L.push(`${at(1)}<a href="index.html" class="logo">`);
+L.push(`${at(2)}<img src="logo.png" alt="GeekHeron Logo" width="481" height="433">`);
+L.push(`${at(2)}<span>${brand}</span>`);
+L.push(`${at(1)}</a>`);
+if (innerBlank) L.push('');
+L.push(`${at(1)}<button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">`);
+L.push(`${at(2)}<span></span>`);
+L.push(`${at(2)}<span></span>`);
+L.push(`${at(2)}<span></span>`);
+L.push(`${at(1)}</button>`);
+if (innerBlank) L.push('');
+L.push(`${at(1)}<nav class="nav-links" id="primary-nav">`);
+L.push(`${at(2)}<ul>`);
+for (const [href, label] of items) {
+  L.push(`${at(3)}<li><a href="${href}">${label}</a></li>`);
+}
+if (langHref) {
+  const styleAttr = langStyle ? ` style="${langStyle}"` : '';
+  L.push(`${at(3)}<li><a href="${langHref}" class="lang-btn" hreflang="en" lang="en"${styleAttr}>${langLabel}</a></li>`);
+}
+L.push(`${at(2)}</ul>`);
+L.push(`${at(1)}</nav>`);
+
+// 右侧时钟 / 工具图标
+if (tool) {
+  if (innerBlank) L.push('');
+  L.push(`${at(1)}<div class="header-right">`);
+  L.push(`${at(2)}<span id="clock">${clock}</span>`);
+  L.push(`${at(2)}<a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>`);
+  L.push(`${at(1)}</div>`);
+} else if (showClock) {
+  if (innerBlank) L.push('');
+  L.push(`${at(1)}<div class="header-right">`);
+  L.push(`${at(2)}<span id="clock">${clock}</span>`);
+  L.push(`${at(1)}</div>`);
+} else if (tailBlank) {
+  L.push('');
+}
+L.push(`${indent}</header>`);
+
+const html = L.join('\n');
+---
+<Fragment set:html={html} />

@@ -3,3 +3,6 @@ dist/
 .astro/
 archive/
 *.log
+
+# 抽取 header 组件时的原始正文快照，仅用于本地回滚，不属于源码
+.header-backup/

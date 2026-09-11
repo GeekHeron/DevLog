@@ -1,15 +1,27 @@
 ---
-// BaseLayout — renders the document by injecting the original page's
-// <head> and <body> inner HTML verbatim. Nothing is processed or scoped,
-// so the visual output is identical to the hand-authored source.
-const { htmlProps = {}, head, body } = Astro.props;
+// BaseLayout — renders the document with the original page's <head> and <body>
+// inner HTML injected verbatim.
+//
+// 顶部导航已抽出为 SiteHeader 组件：页面 shell 解析出 headerProps，本布局以内联
+// 组件形式渲染，并通过「把组件标签紧贴 <body> 标签放置」避免任何额外空白。
+//
+// props:
+//   htmlProps  —— <html> 的属性
+//   head       —— 原始 <head> 内容（逐字节注入）
+//   body       —— 原始 <body> 内容（逐字节注入）
+//   headerProps—— 传给 SiteHeader 的参数对象（null 则不渲染导航）
+import SiteHeader from '../components/SiteHeader.astro';
+
+const { htmlProps = {}, head, body, headerProps = null } = Astro.props;
+
+// 组件会把自身的前导空行/背景层一并输出；body 片段已剥离该部分，
+// 因此这里直接拼接即可，无需额外空白。
+const headerHtml = headerProps ? null : null;
 ---
 <!doctype html>
 <html {...htmlProps}>
   <head>
     <Fragment set:html={head} />
   </head>
-  <body>
-    <Fragment set:html={body} />
-  </body>
+  <body>{headerProps && <SiteHeader {...headerProps} />}<Fragment set:html={body} /></body>
 </html>

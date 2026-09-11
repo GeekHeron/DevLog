@@ -1,0 +1,221 @@
+
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">T+00: 00: 00</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="article-header">
+            <div class="article-meta">
+                <span>2026.06.25</span>
+                <span class="tag tag-gold">FDE_DELIVERY</span>
+                <span class="tag">RPA</span>
+                <span class="tag">PLAYWRIGHT</span>
+                <span class="tag">FEISHU_BI</span>
+            </div>
+            <h1 class="article-title">RPA 差评监控与飞书连接器自动化：<br>不怕 API 断供，只怕没有备用方案</h1>
+            <p style="color: #888; max-width: 650px; margin: 0 auto; font-size: 16px;">
+                官方 API 说断就断，但业务监控不能停。不等官方修复，直接把数据抓取层换成 Playwright RPA，上层推送逻辑完全复用。同样的思路也解决了飞书连接器没开放 API 的难题。
+            </p>
+        </div>
+
+        <article class="article-content">
+
+            <h2>1. 项目背景：API 停服，业务不能停</h2>
+            <p>跨境电商的差评监控是一件"刚需中的刚需"——一条差评如果在 24 小时内没有被回复处理，不仅会影响 listing 评分，更可能触发亚马逊的负面反馈机制，直接导致产品权重下滑。因此，<strong>差评监控任何一刻的中断，都是在直接损失真金白银</strong>。</p>
+            <p>公司使用积加 ERP 管理差评数据。最初通过积加官方 API 接口每天定时拉取差评列表，然后清洗、去重、翻译、推送飞书卡片给客服团队。这套架构稳定运行了数月。然后，<strong>积加 API 突然停服了</strong>——没有提前通知，没有任何替代方案的说明。</p>
+            <p>对于大多数运营团队来说，这意味着：要么等官方修复（天知道要等多久），要么手动每天登录 ERP 截图核对。但全栈工程师的日常工作教会我一个原则：<strong>永远不要把自己的核心业务流程建立在你无法控制的 API 之上</strong>。</p>
+
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>应对方案</th>
+                        <th>传统依赖官方修复</th>
+                        <th>本案方案：RPA 即时切换</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>修复周期</strong></td>
+                        <td class="text-alert">等待官方，3–15 天（无承诺）</td>
+                        <td class="text-success">3 小时内完成切换</td>
+                    </tr>
+                    <tr>
+                        <td><strong>数据获取层</strong></td>
+                        <td class="text-alert">耦合在官方 API 中，一坏全坏</td>
+                        <td class="text-success">Playwright RPA 独立抓取，与推送解耦</td>
+                    </tr>
+                    <tr>
+                        <td><strong>改动范围</strong></td>
+                        <td class="text-alert">等待官方修复，全部链条卡住</td>
+                        <td class="text-success">仅替换数据获取函数，推送层零修改</td>
+                    </tr>
+                    <tr>
+                        <td><strong>后续稳定性</strong></td>
+                        <td class="text-alert">再次停服风险依然存在</td>
+                        <td class="text-success">抓取层可随时在 API 和 RPA 间切换</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>2. 方案一：积加 ERP 差评 RPA 监控（jijia_review_skills.py）</h2>
+            <p>核心思路很简单：<strong>只替换数据获取层，上面所有的业务逻辑——去重、翻译、推送、飞书卡片渲染——全部不动</strong>。</p>
+
+            <h3>2.1 RPA 抓取流程</h3>
+            <p>使用 Playwright 替代积加 API：</p>
+            <ul>
+                <li><strong>无头浏览器启动：</strong> 运行在服务器上的 headless Chromium 实例，通过 Playwright 启动并控制。</li>
+                <li><strong>凭证注入：</strong> 使用预先存储的积加 ERP 登录 Cookie（定期刷新），跳转到差评管理页面。</li>
+                <li><strong>DOM 解析：</strong> 在页面完全渲染后，抓取差评列表中的关键字段——订单号、评分、评论内容、评论时间、ASIN。</li>
+                <li><strong>结构化输出：</strong> 将抓取到的数据清洗为标准 JSON，输出格式与原来 API 接口的返回值结构完全一致。</li>
+            </ul>
+
+            <h3>2.2 上层逻辑零修改</h3>
+            <p>这是最核心的设计原则。原来的处理流程是：</p>
+            <p><code>API 接口 → 数据清洗 → 翻译 → 去重 → 飞书卡片推送</code></p>
+            <p>切换到 RPA 后：</p>
+            <p><code>Playwright 抓取 → 数据清洗 → 翻译 → 去重 → 飞书卡片推送</code></p>
+            <p>从第二个步骤开始，代码一行都没改。数据清洗函数接收的输入格式完全相同——都是 <code>[{order_id, rating, content, asin, time}, ...]</code> 的结构化数组。飞书卡片推送模块甚至根本不知道数据是从 API 抓来的还是从 RPA 抓来的。</p>
+
+            <div class="img-block">
+                <img src="jijia_review_card.png" alt="积加ERP差评监控RPA飞书推送卡片示例" width="900" height="880" loading="lazy">
+                <div class="img-caption">图：RPA 抓取差评数据后自动推送飞书卡片，客服直接回复处理</div>
+            </div>
+
+            <h2>3. 方案二：飞书多维表连接器 RPA 自动化（update_sales_analysis.py）</h2>
+            <p>在同一个项目中，还遇到了另一个"API 不给力"的经典场景。</p>
+            <p><strong>飞书多维表的连接器功能</strong>允许用户配置定期数据同步（比如每天从 MySQL 拉取销售数据到多维表）。但飞书官方<strong>没有开放连接器的 API</strong>——你要修改连接器的数据源日期或查询参数，只能手动登录飞书 Web 界面去点。</p>
+            <p>业务需要每周更新销售分析数据源的查询日期范围。手动操作只需要 2 分钟，但<span class="text-alert">如果 15 张多维表都要手动更新，每周就是 30 分钟纯机械劳动</span>，而且极容易忘。</p>
+
+            <h3>3.1 Playwright 操作 Web 界面改日期</h3>
+            <p>解决方案同样是用 Playwright：</p>
+            <ul>
+                <li><strong>登录飞书 Web 版：</strong> 使用预先配置的 Cookies 或用户名密码登录飞书管理后台。</li>
+                <li><strong>导航到连接器配置页：</strong> 根据多维表 ID 自动跳转到对应的连接器配置页面。</li>
+                <li><strong>自动填入新日期：</strong> 脚本解析页面上的日期选择器 DOM 元素，自动填入新的开始日期和结束日期。</li>
+                <li><strong>保存并验证：</strong> 点击保存按钮后，检查页面是否有保存成功的提示元素，确保配置生效。</li>
+            </ul>
+
+            <h3>3.2 复用架构</h3>
+            <p>这个脚本和差评监控脚本共享了相同的底层架构——Playwright 浏览器上下文管理 + 凭证自动刷新 + 超时重试 + 日志记录。实际上，它们在代码层面共享了同一个 <code>browser_manager.py</code> 基础模块，只是 page 导航和 DOM 操作不同。</p>
+
+            <div class="roi-block">
+                <div class="roi-title">📈 数字化交付量化收益看板 (ROI KPI)</div>
+                <p>两套 RPA 方案上线后的关键效益指标：</p>
+                <div class="roi-grid">
+                    <div class="roi-item">
+                        <div class="num">3<span>h</span></div>
+                        <div class="label">API 停服后切换完成时间</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="num">-100<span>%</span></div>
+                        <div class="label">连接器手动配置时长归零</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="num">99.6<span>%</span></div>
+                        <div class="label">差评监控月度可用率</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>4. 工程实现的技术细节</h2>
+            <p>这套 RPA 方案在工程上有几个值得关注的设计点：</p>
+
+            <ul>
+                <li><strong>数据获取层与业务逻辑的彻底解耦：</strong> 两个脚本都严格遵循"抓取 → 结构化 → 推送"三段式解耦。数据抓取函数返回统一的 JSON 格式，业务逻辑函数不关心数据来源。这意味着未来积加 ERP 如果重新开放 API，只需写一个新的 <code>jijia_api_fetcher.py</code> 替代 <code>jijia_rpa_fetcher.py</code>，其余代码一行不改即可切回去。</li>
+                <li><strong>共享浏览器上下文管理：</strong> Playwright 的浏览器实例是昂贵的资源。基础模块 <code>browser_manager.py</code> 统一管理浏览器启动、页面创建、Cookie 注入和进程清理。当一个脚本运行完毕，浏览器实例不会立刻销毁，而是在 60 秒内保持闲置复用状态，减少了频繁启动浏览器的开销。</li>
+                <li><strong>Cookie 刷新兜底：</strong> 积加 ERP 和飞书的登录凭证都有有效期。如果 RPA 运行时发现 Cookie 已过期（通过请求响应状态码判断），脚本会自动跳转登录页，重新填写账号密码并保存新 Cookie，保证下次运行仍然有效。</li>
+                <li><strong>稳定的 CSS Selector 选择：</strong> Web 界面最容易出问题的就是 DOM 结构变更。脚本优先使用 data-testid 或 data-row-id 等稳定属性定位元素，只有在没有稳定属性时才使用 xpath 路径，并在代码中刻意注释了每个 CSS Selector 的用途和预期 DOM 结构，方便后续维护调整。</li>
+            </ul>
+
+            <h2>5. 一个更大的启示</h2>
+            <p>这两个项目单独看都很"小"——一个是替换掉一个失败 API 的抓取层，一个是自动化一个本来只需要 2 分钟的 Web 操作。但它们的共同价值在于展示了<strong>面对外部依赖失效时的工程应变能力</strong>。</p>
+            <p>在跨境电商这个领域，第三方平台 API 停服、接口版本变更、数据格式调整几乎是常态。如果业务流程的每个环节都深度绑定在一个不可控的 API 之上，那这个业务流程本身就是脆弱的。RPA 不是一个"最后的备选方案"，而应该是一个<strong>随时可以激活的 B 方案</strong>——它的存在不是为了替代 API，而是为了让你在面对外部依赖崩塌时，核心业务仍然可以正常运行。</p>
+
+            <h2>6. 数字化转型背书</h2>
+            <div class="quote-block">
+                "积加的 API 突然停掉的时候，说实话运营团队是慌的。差评监控我们一分钟都不想断。结果技术团队说别急，3 小时内给你个新方案。然后用了一个叫 RPA 的东西，不但把差评监控接回来了，连飞书连接器那些需要每周手动改日期的破事儿也一并解决了。这让我们意识到：与其等第三方修复，不如自己掌握主动权。"
+                <br><br>
+                <span style="color: #fff; font-weight: 600; font-size: 14px; font-style: normal; letter-spacing: 1px;">—— 某跨境品牌 运营副总</span>
+            </div>
+
+            <a href="works.html" class="back-btn">&larr; 返回案例列表</a>
+
+        </article>
+    </main>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        const canvas = document.getElementById('galaxy-field');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = [];
+        const isMobile = window.innerWidth < 768;
+        const numParticles = isMobile ? 400 : 1500;
+        
+        function resize() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+                if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 255, 204, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { resize(); for(let i=0; i<numParticles; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); particles.length = 0; init(); });
+        init(); animate();
+    </script>
+    <script src="site-nav.js"></script>

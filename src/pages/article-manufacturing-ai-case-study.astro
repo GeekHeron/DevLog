@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import head from '../sources/article-manufacturing-ai-case-study.head.html?raw';
 import body from '../sources/article-manufacturing-ai-case-study.body.html?raw';
 
+const headerProps = { langHref: 'en/article-manufacturing-ai-ontology.html', langLabel: 'English', langStyle: 'border:1px solid rgba(255,255,255,0.3);padding:4px 10px;border-radius:4px;font-size:12px;' };
 const htmlProps = { lang: "zh-CN" };
 ---
-<BaseLayout htmlProps={htmlProps} head={head} body={body} />
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

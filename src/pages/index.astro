@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import head from '../sources/index.head.html?raw';
 import body from '../sources/index.body.html?raw';
 
+const headerProps = { brand: 'GEEKHERON', tool: false, showClock: true, chrome: 'none', chromeBlank: 0, innerBlank: false, indent: '', indentUnit: '  ' };
 const htmlProps = { lang: "en" };
 ---
-<BaseLayout htmlProps={htmlProps} head={head} body={body} />
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import head from '../sources/pricing.head.html?raw';
 import body from '../sources/pricing.body.html?raw';
 
+const headerProps = { navItems: [['index.html', '首页'], ['article.html', '深度分析'], ['works.html', '商业案例'], ['pricing.html', '源码交付'], ['about.html', '关于我 &amp; 商业合作']] };
 const htmlProps = { lang: "zh-CN" };
 ---
-<BaseLayout htmlProps={htmlProps} head={head} body={body} />
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

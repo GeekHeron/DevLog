@@ -8,7 +8,9 @@
     "build": "astro build && node scripts/copy-extra.mjs",
     "preview": "astro preview",
     "migrate": "node scripts/migrate.mjs",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "new-post": "node scripts/new-post.mjs",
+    "extract-header": "node scripts/apply-header-extraction.mjs"
   },
   "dependencies": {
     "astro": "^4.16.0",

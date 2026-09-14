@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERPNext + AI：AI ERP 到底应该怎么做？ - GeekHeron</title>
+    <link rel="canonical" href="https://geekheron.space/article-erpnext-ai-erp.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://geekheron.space/article-erpnext-ai-erp.html">
+    <link rel="alternate" hreflang="x-default" href="https://geekheron.space/article-erpnext-ai-erp.html">
+    <meta name="description" content="真正的 AI ERP 不是给 ERP 加一个 ChatGPT 聊天窗口，而是 ERP 负责记忆、AI 负责理解、Agent 负责行动。本文以开源 ERPNext（Frappe Framework）为底座，拆解 AI ERP 的分层架构、Agent 工具层、智能排产（APS）、权限分级与 AI Native ERP 的落地路线。">
+    <meta name="keywords" content="GeekHeron, ERPNext, AI ERP, Frappe, AI Agent, 智能排产, APS, 制造业AI, 开源ERP, 企业AI, 飞书, Agent 工具">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERPNext + AI：AI ERP 到底应该怎么做？">
+    <meta property="og:description" content="真正的 AI ERP 不是给 ERP 加一个聊天窗口，而是 ERP 负责记忆、AI 负责理解、Agent 负责行动。以开源 ERPNext 为底座，拆解 Agent 工具层、智能排产（APS）、权限分级与 AI Native ERP 架构。">
+    <meta property="og:url" content="https://geekheron.space/article-erpnext-ai-erp.html">
+    <meta property="og:image" content="https://geekheron.space/logo.png">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="GeekHeron">
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <style>
+        /* --- 1. 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- 2. 背景特效 --- */
+        #galaxy-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        
+        .overlay-dark {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 0; pointer-events: none;
+        }
+
+        /* --- 3. 导航栏 (含手机端汉堡菜单) --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid #333;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(100px);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 102;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+
+        .logo span {
+            font-size: 24px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }.nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #888; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+        /* 汉堡按钮 */
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1002;
+        }
+        .hamburger span {
+            width: 25px; height: 2px; background: #fff; transition: 0.3s;
+        }
+
+        /* --- 4. 文章排版 --- */
+        .container {
+            max-width: 850px; margin: 0 auto; padding: 120px 20px;
+            position: relative; z-index: 10;
+        }
+
+        .article-header {
+            margin-bottom: 60px;
+            border-left: 4px solid #fff; padding-left: 30px;
+        }
+
+        .article-title { font-size: 38px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; margin-bottom: 20px; }
+        .article-meta { color: #666; font-family: monospace; font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { color: #fff; border: 1px solid #444; padding: 2px 8px; font-size: 11px; }
+
+        .article-body { font-size: 17px; color: #ccc; }
+        .article-body h2 { color: #fff; font-size: 26px; margin: 50px 0 20px 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .article-body h3 { color: #eee; font-size: 20px; margin: 30px 0 15px 0; }
+        .article-body h4 { color: #ddd; font-size: 17px; margin: 20px 0 10px 0; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body strong { color: #fff; }
+        .article-body ul { margin-bottom: 25px; padding-left: 20px; }
+        .article-body li { margin-bottom: 15px; }
+        .article-body ol { margin-bottom: 25px; padding-left: 20px; }
+        .article-body ol li { margin-bottom: 15px; }
+        .article-body .code-block {
+            background: #111; border: 1px solid #333; padding: 20px;
+            font-family: monospace; font-size: 14px; color: #0f0; margin-bottom: 25px;
+            white-space: pre-wrap; overflow-x: auto; line-height: 1.6;
+        }
+        .article-body .arch-diagram {
+            background: #0a0a0a; border: 1px solid #333; padding: 24px;
+            font-family: monospace; font-size: 13px; color: #aaa; margin-bottom: 25px;
+            white-space: pre-wrap; overflow-x: auto; line-height: 1.5;
+        }
+        .article-body .arch-diagram strong { color: #fff; }
+        .arch-diagram strong { color: #fff; }
+
+        /* --- 优化架构图样式 --- */
+        .article-body .arch-box {
+            background: #0a0a0a; border: 1px solid #333; border-radius: 8px;
+            padding: 28px 24px; margin-bottom: 30px;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+        }
+        .arch-layer {
+            display: flex; flex-direction: column; align-items: center; width: 100%;
+        }
+        .arch-row {
+            display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; width: 100%;
+        }
+        .arch-node {
+            background: #161616; border: 1px solid #444; border-radius: 6px;
+            padding: 10px 18px; text-align: center;
+            color: #ddd; font-size: 14px; font-weight: 500;
+            min-width: 80px; transition: all 0.2s;
+        }
+        .arch-node.highlight {
+            border-color: #6af; background: #0a1a2a;
+        }
+        .arch-node.accent {
+            border-color: #8f8; background: #0a1a0a;
+        }
+        .arch-node.warn {
+            border-color: #fa8; background: #1a100a;
+        }
+        .arch-node.small { font-size: 12px; padding: 6px 12px; min-width: 60px; }
+        .arch-node.label { border: none; background: none; font-size: 11px; color: #666; padding: 2px 8px; min-width: auto; }
+        .arch-arrow {
+            color: #555; font-size: 12px; line-height: 1;
+            padding: 2px 0; letter-spacing: 1px;
+        }
+        .arch-bracket {
+            color: #444; font-size: 11px; font-family: monospace; line-height: 1;
+            padding: 1px 0;
+        }
+        .arch-title {
+            color: #888; font-size: 11px; font-family: monospace; margin-bottom: 12px;
+        }
+
+        .article-body blockquote {
+            border-left: 3px solid #555; padding-left: 20px; margin: 30px 0;
+            color: #999; font-style: italic;
+        }
+        .article-body blockquote strong { color: #ccc; }
+
+        .seo-footer {
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; text-align: center;
+        }
+        .seo-link {
+            display: inline-block; color: #888; font-size: 14px; text-decoration: underline; transition: color 0.3s;
+        }
+        .seo-link:hover { color: #00ffc3; }
+
+        /* --- CTA 底部 --- */
+        .cta-footer {
+            margin-top: 80px; padding: 40px 0; border-top: 1px solid #222;
+        }
+        .cta-footer h3 {
+            font-size: 22px; font-weight: 700; color: #fff;
+            margin-bottom: 8px; text-align: center;
+        }
+        .cta-footer .cta-sub {
+            font-size: 14px; color: #888;
+            text-align: center; margin-bottom: 24px;
+        }
+        .cta-col ul {
+            list-style: none; padding: 0; margin: 0 auto;
+        }
+        .cta-col ul li {
+            font-size: 14px; color: #ccc;
+            padding: 8px 0; margin: 0;
+        }
+        .cta-qr-wrap {
+            text-align: center;
+        }
+        .cta-qr-wrap img {
+            width: 120px; height: 120px;
+            border: 1px solid #333; border-radius: 8px;
+            padding: 6px; background: #fff;
+        }
+        .cta-qr-wrap p {
+            font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .cta-footer h3 { font-size: 18px; }
+            .cta-footer .cta-sub { font-size: 13px; }
+            .cta-col ul li { font-size: 13px; }
+            .cta-qr-wrap img { width: 100px; height: 100px; }
+        }
+
+        /* --- 5. 移动端适配 --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .logo img { height: 40px; }
+            .logo span { font-size: 18px; letter-spacing: 2px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(100px);
+                z-index: 101;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a {
+                font-size: 24px;
+                font-weight: 800;
+                color: #fff;
+                margin-left: 0;
+            }
+
+            .article-title { font-size: 28px; }
+            .container { padding-top: 40px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(0,0,0,0.95);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s ease; gap: 40px; z-index: 1001;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 20px; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+            /* --- 移动端架构图优化 --- */
+            .article-body .arch-box { padding: 12px 10px; gap: 2px; }
+            .arch-node { font-size: 11px; padding: 6px 8px; min-width: 44px; word-break: break-word; overflow-wrap: break-word; }
+            .arch-node.small { font-size: 10px; padding: 4px 6px; min-width: 36px; }
+            .arch-node[style*="width"] { width: 100% !important; }
+            .arch-row { gap: 4px; }
+            .arch-arrow { font-size: 9px; letter-spacing: 0; white-space: nowrap; overflow: hidden; }
+            .code-block { font-size: 11px; padding: 12px; overflow-x: auto; }
+            .article-body h2 { font-size: 20px; }
+            .article-body h3 { font-size: 16px; }
+            .article-body h4 { font-size: 15px; }
+            .article-body p, .article-body li { font-size: 15px; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "ERPNext + AI：AI ERP 到底应该怎么做？",
+  "description": "真正的 AI ERP 不是给 ERP 加一个 ChatGPT 聊天窗口，而是 ERP 负责记忆、AI 负责理解、Agent 负责行动。以开源 ERPNext（Frappe Framework）为底座，拆解 AI ERP 的分层架构、Agent 工具层、智能排产（APS）、权限分级与 AI Native ERP 的落地路线。",
+  "author": {
+    "@type": "Person",
+    "name": "王鉴锋 (GeekHeron)",
+    "url": "https://geekheron.space/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GeekHeron",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geekheron.space/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://geekheron.space/article-erpnext-ai-erp.html"
+  },
+  "image": "https://geekheron.space/logo.png",
+  "inLanguage": "zh-CN",
+  "datePublished": "2026-08-20"
+}
+    </script>
+    <link rel="stylesheet" href="site-nav.css">
+</head>
+<body>
+
+    <canvas id="galaxy-field"></canvas>
+    <div class="overlay-dark"></div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="article.html">深度分析</a></li>
+                <li><a href="works.html">商业案例</a></li>
+                <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+                <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <span id="clock">--:--:--</span>
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <span class="tag">ERP &amp; AI</span>
+                <h1 class="article-title">ERPNext + AI：AI ERP 到底应该怎么做？</h1>
+                <div class="article-meta">
+                    <span>SEO 关键词：ERPNext, AI ERP, Frappe, AI Agent, 智能排产, APS, 开源 ERP, 制造业 AI</span>
+                </div>
+                <div class="article-meta">
+                    <span>DATE: 2026.08.20</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: ERP &amp; AI</span>
+                </div>
+                <div style="margin-top:16px;padding:12px 20px;background:rgba(255,255,255,0.03);border:1px solid #222;border-radius:6px;font-size:14px;color:#aaa;line-height:1.6;">
+                    <strong style="color:#fff;">作者：王鉴锋</strong><br>
+                    AI Agent 架构师，专注企业 Agent、RAG 和业务智能化落地。
+                </div>
+            </div>
+
+            <div class="article-body">
+
+                <p>过去十几年，ERP 一直是企业数字化的核心系统。</p>
+
+                <p>企业把客户、订单、采购、库存、生产、财务、供应商等数据全部放进 ERP，希望通过一套系统把企业经营流程标准化。</p>
+
+                <p>但今天，一个越来越明显的问题出现了：</p>
+
+                <p><strong>ERP 很擅长记录企业发生了什么，却不擅长告诉企业下一步应该做什么。</strong></p>
+
+                <p>这正是 AI ERP 真正有价值的地方。</p>
+
+                <p>很多人理解的 AI ERP 是：</p>
+
+                <blockquote>在 ERP 里面加一个 ChatGPT 聊天窗口。</blockquote>
+
+                <p>我认为这远远不够。</p>
+
+                <p>真正的 AI ERP，应该是：</p>
+
+                <blockquote><strong>ERP 负责记忆，AI 负责理解，Agent 负责行动。</strong></blockquote>
+
+                <p>而 ERPNext，恰好是一个非常适合用来构建这种 AI ERP 的开源底座。</p>
+
+                <p style="padding:16px 20px;background:rgba(0,255,255,0.03);border:1px solid #3af;border-radius:8px;font-size:15px;color:#aaa;">
+                    📎 <strong style="color:#6af;">相关阅读：</strong>
+                    <a href="article-manufacturing-ai-ontology.html" style="color:#6af;text-decoration:underline;"><strong>《制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"》</strong></a>
+                    — 本文讲 AI ERP 的宏观形态；那篇讲企业 AI 底座的分层架构（数据接入、本体建模、Tool 封装、MCP、治理层）。两篇建议配合阅读。
+                </p>
+
+                <!-- ============ 一、什么是 AI ERP？ ============ -->
+
+                <h2 id="what-is-ai-erp">一、什么是 AI ERP？</h2>
+
+                <p>传统 ERP 的工作方式可以概括为：</p>
+
+                <div class="arch-diagram">
+业务发生
+   ↓
+员工录入 ERP
+   ↓
+ERP 保存数据
+   ↓
+生成报表
+   ↓
+管理人员分析
+   ↓
+管理人员决策
+   ↓
+员工执行
+                </div>
+
+                <p>这里面最重要的两个环节：<strong>分析和决策。</strong></p>
+
+                <p>依然主要依赖人。</p>
+
+                <p>AI ERP 则希望改变这个流程：</p>
+
+                <div class="arch-diagram">
+业务数据
+   ↓
+ERP
+   ↓
+AI 分析
+   ↓
+AI 预测
+   ↓
+AI 生成方案
+   ↓
+人审批 / AI 自动执行
+   ↓
+ERP 更新
+                </div>
+
+                <p>也就是说：</p>
+
+                <p><strong>ERP 不再只是一个数据库，而成为 AI 的企业记忆系统。</strong></p>
+
+                <!-- ============ 二、为什么 ERPNext 特别适合做 AI ERP？ ============ -->
+
+                <h2 id="why-erpnext">二、为什么 ERPNext 特别适合做 AI ERP？</h2>
+
+                <p>ERPNext 最大的优势，并不是它"免费"。</p>
+
+                <p>真正重要的是：</p>
+
+                <blockquote><strong>它是一个开放的 ERP。</strong></blockquote>
+
+                <p>ERPNext 建立在 <strong>Frappe Framework</strong> 之上，业务对象大量通过 <strong>DocType</strong> 建模，同时提供 REST API、权限、工作流、后台任务等能力。</p>
+
+                <p>这意味着 AI 不需要直接碰数据库。</p>
+
+                <p>AI 可以通过标准 API 调用 ERPNext。</p>
+
+                <p>例如：</p>
+
+                <div class="arch-box">
+                    <div class="arch-node highlight" style="width:60%;">AI Agent</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:60%;">ERPNext API（REST · 授权访问）</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-row">
+                        <div class="arch-node small">Sales Order</div>
+                        <div class="arch-node small">Production Plan</div>
+                        <div class="arch-node small">BOM</div>
+                        <div class="arch-node small">Stock</div>
+                        <div class="arch-node small">Purchase Order</div>
+                        <div class="arch-node small">Work Order</div>
+                        <div class="arch-node small">Job Card</div>
+                        <div class="arch-node small">Quality Inspection</div>
+                    </div>
+                </div>
+
+                <p>AI 可以读取这些数据，也可以在经过授权后创建或者修改业务数据。</p>
+
+                <p>这就给 AI Agent 提供了一个非常重要的能力：</p>
+
+                <blockquote><strong>不是只会回答问题，而是能够调用企业系统。</strong></blockquote>
+
+                <!-- ============ 三、AI ERP 和 AI 聊天机器人有什么区别？ ============ -->
+
+                <h2 id="ai-erp-vs-chatbot">三、AI ERP 和 AI 聊天机器人有什么区别？</h2>
+
+                <p>这是最容易被误解的地方。</p>
+
+                <p>假设老板问：</p>
+
+                <blockquote>下个月有哪些订单可能延期？</blockquote>
+
+                <p>普通 AI：</p>
+
+                <blockquote>根据你提供的信息，我建议检查库存和生产能力。</blockquote>
+
+                <p>这没有太大价值。</p>
+
+                <p>AI ERP 应该直接查询：</p>
+
+                <ul>
+                    <li>销售订单</li>
+                    <li>客户交期</li>
+                    <li>BOM</li>
+                    <li>当前库存</li>
+                    <li>采购在途</li>
+                    <li>生产工单</li>
+                    <li>设备产能</li>
+                    <li>历史生产效率</li>
+                    <li>当前在制品</li>
+                    <li>外协产能</li>
+                </ul>
+
+                <p>然后给出结果：</p>
+
+                <blockquote>下个月共有 17 个订单存在延期风险。</blockquote>
+
+                <p>进一步分析：</p>
+
+                <blockquote>
+                    其中 5 个订单属于高风险。<br>
+                    主要原因：<br>
+                    · 预浸料库存不足<br>
+                    · 3 号设备成为瓶颈<br>
+                    · 某道工序平均周期增加 18%<br>
+                    · 两个外协供应商当前产能不足
+                </blockquote>
+
+                <p>然后 AI 继续给出方案：</p>
+
+                <blockquote>
+                    方案 A：调整生产顺序 —— 预计减少延期订单 6 个。<br>
+                    方案 B：增加夜班 —— 成本增加约 18,000 元。<br>
+                    方案 C：部分工序外协 —— 成本增加约 12,000 元，但交期最稳定。
+                </blockquote>
+
+                <p>最后问：</p>
+
+                <blockquote><strong>是否执行方案 C？</strong></blockquote>
+
+                <p>老板点击：</p>
+
+                <p><strong>执行。</strong></p>
+
+                <p>AI 才真正完成了从<strong>"回答问题"</strong>到<strong>"参与经营决策"</strong>的跨越。</p>
+
+                <!-- ============ 四、真正的核心不是 AI，而是 Agent ============ -->
+
+                <h2 id="core-is-agent">四、真正的核心不是 AI，而是 Agent</h2>
+
+                <p>如果只是：</p>
+
+                <div class="arch-diagram">ERPNext + LLM</div>
+
+                <p>其实还不够。</p>
+
+                <p>真正重要的是：</p>
+
+                <div class="arch-diagram">
+ERPNext
++
+AI Model
++
+Agent
++
+Tools
++
+Workflow
+                </div>
+
+                <p>Agent 是 AI ERP 的执行层。</p>
+
+                <p>例如建立一个"生产 Agent"。它拥有这些工具：</p>
+
+                <div class="code-block">
+get_sales_orders()
+get_bom()
+get_inventory()
+get_purchase_orders()
+get_work_orders()
+get_machine_capacity()
+get_job_cards()
+
+create_production_plan()
+update_work_order()
+create_material_request()
+                </div>
+
+                <p>AI 不需要知道数据库里面有多少张表。</p>
+
+                <p>它只需要知道：</p>
+
+                <blockquote>我可以调用哪些工具完成任务。</blockquote>
+
+                <p>于是整个系统变成：</p>
+
+                <div class="arch-box">
+                    <div class="arch-node highlight" style="width:60%;">AI Agent</div>
+                    <div class="arch-row">
+                        <div class="arch-node small">查询订单</div>
+                        <div class="arch-node small">查询库存</div>
+                        <div class="arch-node small">查询产能</div>
+                    </div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node" style="width:70%;">AI 分析 · 生成方案</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node warn" style="width:70%;">人工审批 / 自动执行</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:50%;">ERPNext</div>
+                </div>
+
+                <p>这才是真正意义上的 AI ERP。</p>
+
+                <!-- ============ 五、以制造业为例 ============ -->
+
+                <h2 id="manufacturing-value">五、以制造业为例：ERPNext + AI 的价值会更加明显</h2>
+
+                <p>制造业是最适合 AI ERP 的场景之一。</p>
+
+                <p>尤其是：</p>
+
+                <ul>
+                    <li>OEM</li>
+                    <li>ODM</li>
+                    <li>多品种小批量</li>
+                    <li>客制化生产</li>
+                    <li>多工序制造</li>
+                    <li>外协制造</li>
+                    <li>离散制造</li>
+                </ul>
+
+                <p>因为这些企业每天都在处理大量复杂决策。</p>
+
+                <p>例如一家碳纤维 OEM 工厂。</p>
+
+                <p>产品包括：</p>
+
+                <ul>
+                    <li>网球拍</li>
+                    <li>自行车</li>
+                    <li>头盔</li>
+                </ul>
+
+                <p>一个订单进来以后，不是简单地：</p>
+
+                <blockquote>生产 100 个。</blockquote>
+
+                <p>而是：</p>
+
+                <div class="arch-diagram">
+订单
+ ↓
+SKU
+ ↓
+BOM
+ ↓
+原材料
+ ↓
+裁切
+ ↓
+铺层
+ ↓
+成型
+ ↓
+热压
+ ↓
+CNC
+ ↓
+打磨
+ ↓
+喷涂
+ ↓
+组装
+ ↓
+质检
+ ↓
+包装
+ ↓
+出货
+                </div>
+
+                <p>任何一个环节出现问题，都可能影响最终交期。</p>
+
+                <p>这时候传统 ERP 通常只能告诉你：</p>
+
+                <blockquote>当前库存是多少。</blockquote>
+
+                <p>而 AI ERP 可以进一步回答：</p>
+
+                <blockquote><strong>按照当前订单、库存、设备和人员情况，什么时候会出现瓶颈？</strong></blockquote>
+
+                <p>这才是真正有价值的信息。</p>
+
+                <!-- ============ 六、AI 排产 ============ -->
+
+                <h2 id="ai-aps">六、AI 排产可能是 AI ERP 最有价值的场景之一</h2>
+
+                <p>传统排产往往依赖生产经理经验。</p>
+
+                <p>例如：</p>
+
+                <blockquote>"这个订单先做。"<br>"那个订单客户比较急。"<br>"3 号机器今天不要排太满。"</blockquote>
+
+                <p>经验非常重要。</p>
+
+                <p>但是随着订单数量增加，人脑越来越难处理所有变量。</p>
+
+                <p>AI 可以同时考虑：</p>
+
+                <div class="code-block">
+订单交期
++ 订单优先级
++ 设备产能
++ 人员
++ 模具
++ 原材料
++ 工序约束
++ 换线时间
++ 外协能力
++ 在制品
++ 历史效率
+                </div>
+
+                <p>然后进行优化。</p>
+
+                <p>最终生成：</p>
+
+                <div class="code-block">
+设备 A   08:00 - 10:30   订单 1001
+设备 B   08:00 - 09:40   订单 1008
+设备 C   09:00 - 12:00   订单 1012
+                </div>
+
+                <p>而且这不是一次性的排产。</p>
+
+                <p>真正的 AI APS 应该每天甚至每小时重新计算。</p>
+
+                <p>例如：</p>
+
+                <blockquote>供应商今天晚到 6 小时。</blockquote>
+
+                <p>AI 自动重新计算：</p>
+
+                <div class="arch-diagram">
+原排程
+   ↓
+检测异常
+   ↓
+重新计算
+   ↓
+寻找替代方案
+   ↓
+更新生产计划
+                </div>
+
+                <p>这才是真正的智能排产。</p>
+
+                <!-- ============ 七、AI ERP 不应该替代 MES ============ -->
+
+                <h2 id="not-replace-mes">七、AI ERP 不应该替代 MES</h2>
+
+                <p>这是制造企业非常容易踩的坑。</p>
+
+                <p>ERP 和 MES 不是一个东西。</p>
+
+                <p>ERP 更适合管理：</p>
+
+                <ul>
+                    <li>订单</li>
+                    <li>采购</li>
+                    <li>库存</li>
+                    <li>BOM</li>
+                    <li>财务</li>
+                    <li>供应商</li>
+                    <li>客户</li>
+                </ul>
+
+                <p>MES 更关注：</p>
+
+                <ul>
+                    <li>当前生产到哪一步</li>
+                    <li>哪台设备正在生产</li>
+                    <li>谁正在操作</li>
+                    <li>实际生产数量</li>
+                    <li>不良数量</li>
+                    <li>工序耗时</li>
+                    <li>设备状态</li>
+                    <li>在制品</li>
+                </ul>
+
+                <p>APS 则负责：</p>
+
+                <blockquote><strong>下一步应该怎么排。</strong></blockquote>
+
+                <p>因此，一个成熟的 AI 制造系统应该是：</p>
+
+                <div class="arch-box">
+                    <div class="arch-node highlight" style="width:60%;">AI Agent</div>
+                    <div class="arch-row">
+                        <div class="arch-node" style="border-color:#6af;">ERP<br><span style="font-size:11px;color:#888;">经营数据</span></div>
+                        <div class="arch-node" style="border-color:#8f8;">MES<br><span style="font-size:11px;color:#888;">现场数据</span></div>
+                        <div class="arch-node" style="border-color:#fa8;">APS<br><span style="font-size:11px;color:#888;">排产数据</span></div>
+                    </div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node" style="width:70%;">AI 决策</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:50%;">自动执行</div>
+                </div>
+
+                <p>而不是试图让 ERPNext 一个系统包办一切。</p>
+
+                <!-- ============ 八、ERPNext + AI + 飞书 ============ -->
+
+                <h2 id="feishu">八、ERPNext + AI + 飞书</h2>
+
+                <p>如果企业已经大量使用飞书，那么还可以进一步组合。</p>
+
+                <p>例如：</p>
+
+                <div class="arch-box">
+                    <div class="arch-node" style="width:50%;">ERPNext</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node highlight" style="width:50%;">AI Agent</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:50%;">飞书</div>
+                </div>
+
+                <p>老板每天早上打开飞书，AI 自动推送：</p>
+
+                <blockquote><strong>今日经营摘要</strong></blockquote>
+
+                <div class="code-block">
+销售：本周订单金额 +13%
+生产：今日计划完成率 86%
+库存：3 种核心材料低于安全库存
+采购：2 个供应商存在交付风险
+质量：昨日良率下降 2.4%
+交期：7 个订单存在延期风险
+                </div>
+
+                <p>老板不需要进入 ERP 查看几十张报表。</p>
+
+                <p>AI 已经把信息压缩成：</p>
+
+                <blockquote>今天最值得你关注的 5 件事情。</blockquote>
+
+                <p>这就是 AI ERP 的另外一个重要变化：</p>
+
+                <p><strong>从"人找数据"变成"数据主动找人"。</strong></p>
+
+                <!-- ============ 九、AI ERP 最终应该具备什么能力？ ============ -->
+
+                <h2 id="five-levels">九、AI ERP 最终应该具备什么能力？</h2>
+
+                <p>我认为可以分成五个阶段。</p>
+
+                <h3>Level 1：AI 查询</h3>
+                <blockquote>本月销售额多少？</blockquote>
+                <p>AI 自动查询 ERP。</p>
+
+                <h3>Level 2：AI 分析</h3>
+                <blockquote>为什么这个月毛利下降？</blockquote>
+                <p>AI 自动关联：销售、采购、库存、成本。</p>
+
+                <h3>Level 3：AI 预测</h3>
+                <blockquote>下个月哪些订单可能延期？</blockquote>
+                <p>AI 根据历史数据和当前状态预测风险。</p>
+
+                <h3>Level 4：AI 决策</h3>
+                <blockquote>怎么解决这些延期？</blockquote>
+                <p>AI 自动生成多个方案并比较成本。</p>
+
+                <h3>Level 5：AI 执行</h3>
+                <blockquote>执行最优方案。</blockquote>
+                <p>AI 自动调用 ERPNext：</p>
+
+                <div class="arch-diagram">
+修改生产计划
+   ↓
+生成采购需求
+   ↓
+调整工单
+   ↓
+通知负责人
+   ↓
+更新交期
+                </div>
+
+                <p>这时候 ERP 才真正从：</p>
+
+                <p><strong>Enterprise Resource Planning</strong></p>
+
+                <p>逐渐变成：</p>
+
+                <p><strong>Enterprise Intelligence Platform</strong></p>
+
+                <!-- ============ 十、权限 ============ -->
+
+                <h2 id="permission">十、权限是 AI ERP 最重要的问题之一</h2>
+
+                <p>AI 能力越强，风险也越大。</p>
+
+                <p>绝对不能一开始就让 AI：</p>
+
+                <blockquote>拥有整个 ERP 的管理员权限。</blockquote>
+
+                <p>正确的方式应该是权限分层。</p>
+
+                <h3>第一阶段：AI 只读</h3>
+                <div class="arch-diagram">
+查询
+分析
+预测
+（不能修改数据）
+                </div>
+
+                <h3>第二阶段：AI 建议</h3>
+                <div class="arch-diagram">
+AI 生成方案
+   ↓
+人工审批
+   ↓
+执行
+                </div>
+
+                <h3>第三阶段：低风险自动执行</h3>
+                <p>例如：</p>
+                <blockquote>库存低于安全库存 → 自动生成物料需求。</blockquote>
+
+                <h3>第四阶段：高权限 Agent</h3>
+                <p>例如：</p>
+                <blockquote>自动调整排产、采购和外协。</blockquote>
+
+                <p>但必须加入：</p>
+
+                <ul>
+                    <li>权限</li>
+                    <li>审批</li>
+                    <li>金额限制</li>
+                    <li>操作日志</li>
+                    <li>回滚</li>
+                    <li>异常检测</li>
+                </ul>
+
+                <p>AI ERP 的核心原则应该是：</p>
+
+                <blockquote><strong>让 AI 拥有足够的能力，但不要拥有无限的权限。</strong></blockquote>
+
+                <!-- ============ 十一、未来的 ERP 会发生根本变化 ============ -->
+
+                <h2 id="future-erp">十一、我认为未来的 ERP 会发生一个根本变化</h2>
+
+                <p>过去：</p>
+
+                <div class="arch-diagram">员工 → ERP</div>
+
+                <p>未来：</p>
+
+                <div class="arch-diagram">
+员工
+ ↓
+AI Agent
+ ↓
+ERP
+                </div>
+
+                <p>过去企业需要大量员工：</p>
+
+                <blockquote>查数据、做报表、对账、排产、催采购、跟订单、发通知。</blockquote>
+
+                <p>未来这些工作会越来越多地交给 Agent。</p>
+
+                <p>所以未来企业可能不是：</p>
+
+                <blockquote>我们需要一个更好用的 ERP。</blockquote>
+
+                <p>而是：</p>
+
+                <blockquote><strong>我们需要一群能够使用 ERP 的 AI 员工。</strong></blockquote>
+
+                <p>ERP 变成 AI 员工的基础设施。</p>
+
+                <!-- ============ 十二、为什么我认为 ERPNext 值得关注？ ============ -->
+
+                <h2 id="why-erpnext-open">十二、为什么我认为 ERPNext 值得关注？</h2>
+
+                <p>传统 ERP 最大的问题之一是：</p>
+
+                <p><strong>封闭。</strong></p>
+
+                <p>数据、业务逻辑、接口、定制能力往往受到厂商限制。</p>
+
+                <p>而 ERPNext / Frappe 的开放架构意味着：</p>
+
+                <div class="arch-diagram">
+ERPNext
+   ↓
+API
+   ↓
+AI
+   ↓
+Agent
+   ↓
+自定义业务逻辑
+                </div>
+
+                <p>企业可以自己控制数据和业务逻辑。</p>
+
+                <p>这对于 AI 时代非常重要。</p>
+
+                <p>因为 AI Agent 最终需要：</p>
+
+                <blockquote>读取数据、理解数据、调用业务能力、执行动作。</blockquote>
+
+                <p>一个开放的 ERP，比一个封闭的 ERP 更容易成为 AI 的执行底座。</p>
+
+                <!-- ============ 十三、真正值得做的不是"ERPNext AI 插件" ============ -->
+
+                <h2 id="ai-native-erp">十三、真正值得做的不是"ERPNext AI 插件"</h2>
+
+                <p>如果只是做：</p>
+
+                <blockquote>ERPNext + ChatGPT</blockquote>
+
+                <p>我认为价值有限。</p>
+
+                <p>真正值得做的是：</p>
+
+                <h3>AI Native ERP</h3>
+
+                <p>它应该从架构层面重新设计：</p>
+
+                <div class="arch-box">
+                    <div class="arch-node highlight" style="width:60%;">AI OS</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node" style="width:70%;">AI Agent Layer</div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node" style="width:70%;">Tool / API 层</div>
+                    <div class="arch-row">
+                        <div class="arch-node" style="border-color:#6af;">ERPNext<br><span style="font-size:11px;color:#888;">财务 / 订单</span></div>
+                        <div class="arch-node" style="border-color:#8f8;">MES<br><span style="font-size:11px;color:#888;">生产现场</span></div>
+                        <div class="arch-node" style="border-color:#fa8;">WMS<br><span style="font-size:11px;color:#888;">仓库</span></div>
+                    </div>
+                    <div class="arch-arrow">▼</div>
+                    <div class="arch-node accent" style="width:50%;">数据 → AI 决策</div>
+                </div>
+
+                <p>最终形成：</p>
+
+                <blockquote><strong>数据层 → 业务层 → Agent 层 → 决策层 → 执行层</strong></blockquote>
+
+                <p>这才是下一代企业软件真正值得研究的方向。</p>
+
+                <!-- ============ 结语 ============ -->
+
+                <h2 id="conclusion">结语</h2>
+
+                <p>ERP 的第一阶段解决的是：</p>
+
+                <blockquote>企业信息化。</blockquote>
+
+                <p>第二阶段解决的是：</p>
+
+                <blockquote>企业流程数字化。</blockquote>
+
+                <p>而 AI ERP 要解决的，是：</p>
+
+                <blockquote>企业决策智能化。</blockquote>
+
+                <p>ERPNext 的价值也许并不在于它能不能击败 SAP、Oracle、金蝶或者用友。</p>
+
+                <p>真正值得关注的是：</p>
+
+                <blockquote><strong>一个开源 ERP 能不能成为 AI Agent 时代的企业操作系统？</strong></blockquote>
+
+                <p>如果答案是可以，那么未来的 ERP 可能不再是一个让员工每天登录、填写表单、看报表的软件。</p>
+
+                <p>而会变成一个：</p>
+
+                <blockquote>AI 可以理解、调用、分析并执行企业业务的基础设施。</blockquote>
+
+                <p>那时候，ERP 真正的竞争对手可能已经不再是另一个 ERP。</p>
+
+                <p>而是：</p>
+
+                <p><strong>谁能够拥有更强的企业 AI Agent。</strong></p>
+
+            </div>
+
+            <footer class="cta-footer">
+                <div style="margin-bottom:40px;padding:20px;background:rgba(255,255,255,0.02);border:1px solid #333;border-radius:8px;text-align:center;font-size:14px;color:#888;">
+                    📚 <strong style="color:#6af;">相关文章推荐</strong><br>
+                    <a href="article-manufacturing-ai-ontology.html" style="color:#6af;text-decoration:underline;">《制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"》</a>
+                    — 分层企业 AI 架构：数据接入、本体建模、Tool 封装、MCP、LangGraph 治理<br>
+                    <a href="article-manufacturing-ai-not-replacement.html" style="color:#6af;text-decoration:underline;">《制造业 AI 不是替代岗位，是吃掉岗位里的低价值脑力劳动》</a>
+                    — 逐个岗位拆解 AI 替代了什么、留下了什么
+                </div>
+
+                <div class="cta-assessment" style="background:linear-gradient(135deg, #0a1a2a, #0a0a0a);border:1px solid #3af;border-radius:12px;padding:32px 28px;margin-bottom:24px;">
+                    <h3 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;text-align:center;">你的企业适合部署 AI Agent 吗？</h3>
+                    <p style="font-size:14px;color:#6af;text-align:center;margin-bottom:20px;">免费评估 · 30 分钟线上诊断</p>
+                    <ul style="list-style:none;padding:0;margin:0 auto 20px;max-width:400px;">
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">哪些岗位</strong>可以优先 AI 化</li>
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">哪些流程</strong>适合 Agent 自动化</li>
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">数据基础</strong>是否满足落地条件</li>
+                        <li style="font-size:14px;color:#ccc;padding:7px 0;margin:0;display:flex;align-items:center;gap:8px;"><span style="color:#6af;">▸</span> <strong style="color:#fff;">预计节省</strong>多少人工时间，ROI 估算</li>
+                    </ul>
+                </div>
+
+                <div class="cta-qr-wrap">
+                    <img src="wechat.png" alt="扫码添加微信 AI 咨询" width="120" height="120" loading="lazy">
+                    <p>扫码联系 · 备注「AI评估」</p>
+                </div>
+
+                <div style="margin-top:32px;padding-top:24px;border-top:1px solid #222;text-align:center;">
+                    <a href="about.html" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #333;border-radius:8px;padding:10px 20px;font-size:13px;color:#888;background:rgba(0,0,0,0.4);transition:0.3s;">
+                        <span>了解更多 →</span>
+                        <span style="color:#666;font-size:11px;">关于 GeekHeron</span>
+                    </a>
+                </div>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        (function(){
+            var hamburger = document.querySelector('.hamburger');
+            var navLinks = document.querySelector('.nav-links');
+            if(hamburger) hamburger.addEventListener('click', function(){ hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        })();
+
+        // 时钟（修复占位符）
+        (function(){
+            var clock = document.getElementById('clock');
+            if (!clock) return;
+            function pad(n){ return (n < 10 ? '0' : '') + n; }
+            function tick(){
+                var d = new Date();
+                clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+            }
+            tick();
+            setInterval(tick, 1000);
+        })();
+
+        var canvas = document.getElementById('galaxy-field');
+        var ctx = canvas.getContext('2d');
+        var width, height;
+        var particles = [];
+        var numParticles = 2000;
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        function Particle() {
+            this.x = Math.random() * width; this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.2; this.vy = (Math.random() - 0.5) * 0.2;
+            this.size = Math.random() * 1.5; this.alpha = Math.random() * 0.5 + 0.1;
+        }
+        Particle.prototype.update = function() {
+            this.x += this.vx; this.y += this.vy;
+            if(this.x < 0) this.x = width; if(this.x > width) this.x = 0;
+            if(this.y < 0) this.y = height; if(this.y > height) this.y = 0;
+        };
+        Particle.prototype.draw = function() {
+            ctx.fillStyle = 'rgba(255,255,255,' + this.alpha + ')';
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        };
+        function init() { resize(); for(var i=0;i<numParticles;i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0,0,width,height); particles.forEach(function(p){p.update();p.draw();}); requestAnimationFrame(animate); }
+        window.addEventListener('resize', function(){ resize(); particles.length=0; init(); });
+        init(); animate();
+    </script>
+    <script src="site-nav.js"></script>
+</body>
+</html>

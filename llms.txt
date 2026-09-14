@@ -1,0 +1,26 @@
+# GeekHeron
+
+> GeekHeron（王鉴锋）是一名全栈开发者与 AI Agent 架构师，独立运营 GeekHeron 技术咨询品牌，
+> 面向企业提供 AI Agent 私有化部署、跨境电商自动化、企业协同集成（飞书/Lark）、
+> 反检测浏览器与数据采集等定制化自动化解决方案。
+
+## 核心页面
+
+- [关于我 & 业务合作](https://geekheron.space/about.html): GeekHeron 的技术背景、服务内容与真实项目案例
+- [About (English)](https://geekheron.space/about-en.html): English version of the about page
+- [商业案例](https://geekheron.space/works.html): AI Agent、跨境电商自动化、企业系统集成等真实落地项目
+- [获取伏羲引擎源码](https://geekheron.space/pricing.html): 伏羲引擎（Fuxi Engine）授权方案与合作方式
+
+## 技术文章
+
+- [AI Agent：从工具到数字物种](https://geekheron.space/article-agent.html)
+- [企业私有化部署大模型全流程](https://geekheron.space/article-private-llm.html)
+- [企业知识库 AI（RAG）怎么搭？从0到上线完整指南](https://geekheron.space/article-rag-deployment.html)
+- [飞书 + AI 自动化：打造企业"数字员工"的完整方案](https://geekheron.space/article-feishu-bot.html)
+- [多智能体（Multi-Agent）系统设计：从0到1完整方案](https://geekheron.space/article-multi-agent.html)
+
+完整文章列表见 [sitemap.xml](https://geekheron.space/sitemap.xml)。
+
+## 联系方式
+
+商务合作请通过 about 页面的联系方式或微信/Telegram/WhatsApp 二维码联系 GeekHeron。

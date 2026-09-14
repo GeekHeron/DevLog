@@ -70,6 +70,55 @@ const REMOVED_CLOCK_PATTERNS = [
   /^[ \t]*<span id="clock">[^<]*<\/span>\r?\n/m,
 ];
 
+// ── 有意移除的首页浮层 ──────────────────────────────────────────
+// 需求：移除黑洞首页的四个英文浮层（底部提示条 #hint / 顶部通知 #toast /
+// 故障模态 #fatal / 开场卡 #intro）。#intro 在归档原文里本就不存在（只剩 CSS
+// 死代码），故这里只需处理前三者的 DOM。
+//
+// 为避免「删掉元素后残留空行」这类纯空白差异，这里不用整行正则，而是按
+// DOM 块精确切除：定位每个元素的起始与结束标签后整体删除，再把删除处
+// 产生的多余空行规范化为一个，最后与构建产物比对。
+// 白名单本身仍受校验：任何非空白差异都会如实报错。
+const REMOVED_OVERLAY_IDS = ['hint', 'toast', 'fatal'];
+
+// 从 <div id="X"> 起，按 <div>/</div> 配对找到匹配的结束标签，返回整块 [start,end)。
+function findDivBlock(src, id) {
+  const open = src.indexOf(`<div id="${id}"`);
+  if (open < 0) return null;
+  let i = open, depth = 0;
+  const re = /<div\b|<\/div>/g;
+  re.lastIndex = open;
+  let m;
+  while ((m = re.exec(src))) {
+    if (m[0] === '<div') depth++;
+    else {
+      depth--;
+      if (depth === 0) return [open, m.index + m[0].length];
+    }
+  }
+  return null;
+}
+
+function stripOverlays(src) {
+  let out = src;
+  let count = 0;
+  for (const id of REMOVED_OVERLAY_IDS) {
+    const blk = findDivBlock(out, id);
+    if (!blk) continue;
+    // 连同块前的行内缩进、以及块后的一整段换行一起切除
+    let [s, e] = blk;
+    const lineStart = out.lastIndexOf('\n', s) + 1;
+    if (out.slice(lineStart, s).trim() === '') s = lineStart;
+    while (e < out.length && (out[e] === '\r' || out[e] === '\n')) e++;
+    out = out.slice(0, s) + out.slice(e);
+    count++;
+  }
+  // 首个被删元素若夹在空行之间（#hint 在 #hud 内即如此），切除后会留下
+  // 一个多余空行；把它与紧随其后的空行合并，与「本就没有该元素」等价。
+  if (count > 0) out = out.replace(/\n\n(?=[ \t]*\n*<\/div>\n\n<div id="params")/, '\n');
+  return { out, count };
+}
+
 const archiveFiles = [];
 const walk = (d) => {
   for (const name of readdirSync(d)) {
@@ -86,6 +135,7 @@ const aliased = [];
 const improved = [];
 const navChanged = [];
 const clockChanged = [];
+const overlayChanged = [];
 
 for (const af of archiveFiles) {
   let rel = relative(archive, af).replace(/\\/g, '/'); // e.g. en/article-agent.html
@@ -121,6 +171,12 @@ for (const af of archiveFiles) {
       clockStripped++;
     }
   }
+  let overlayStripped = 0;
+  {
+    const r = stripOverlays(stripped);
+    stripped = r.out;
+    overlayStripped = r.count;
+  }
   const orig = stripped;
 
   const reHead = /<head[^>]*>([\s\S]*?)<\/head>/i;
@@ -143,6 +199,7 @@ for (const af of archiveFiles) {
     passed++;
     if (strippedCount > 0) navChanged.push(rel);
     if (clockStripped > 0) clockChanged.push(rel);
+    if (overlayStripped > 0) overlayChanged.push(rel);
   } else if (
     KNOWN_HEAD_IMPROVED[rel] &&
     oHtml.trim() === bHtml.trim()
@@ -174,5 +231,10 @@ if (navChanged.length) {
 if (clockChanged.length) {
   console.log(`Clock intentionally removed ${clockChanged.length} page(s):`);
   console.log('  - pages below match the archive EXACTLY once the clock markup is discounted');
+}
+if (overlayChanged.length) {
+  console.log(`Homepage overlays intentionally removed ${overlayChanged.length} page(s):`);
+  for (const r of overlayChanged) console.log('  -', r);
+  console.log('  - match the archive EXACTLY once #hint / #toast / #fatal markup is discounted');
 }
 for (const f of failures) console.log(' -', f);

@@ -1,4 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>GEEKHERON — Schwarzschild Black Hole Raytracer</title>
+<meta name="description" content="Real-time relativistic raytracing of a Schwarzschild black hole: null-geodesic integration, gravitational lensing, relativistic accretion disk.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="site-nav.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/": "./vendor/jsm/"
+  }
+}
+</script>
+</head>
+<body>
 
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <img src="logo.png" alt="GeekHeron Logo" width="481" height="433">
+    <span>GEEKHERON</span>
+  </a>
+  <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <nav class="nav-links" id="primary-nav">
+    <ul>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="article.html">深度分析</a></li>
+      <li><a href="works.html">商业案例</a></li>
+      <li><a href="fuxi-engine.html">伏羲引擎</a></li>
+      <li><a href="about.html">关于我 &amp; 商业合作</a></li>
+    </ul>
+  </nav>
+  <div class="header-right">
+    <span id="clock">T+00: 00: 00</span>
+  </div>
+</header>
 
 <canvas id="view"></canvas>
 
@@ -36,6 +80,8 @@
     <button id="btn-sound" class="btn wide" aria-label="Toggle sound" aria-pressed="false">🔇 SOUND: OFF</button>
     <div id="deck-hint">1-4 VIEWS · C CINE · R ORBIT · P PARAMS · M SOUND · H HUD</div>
   </div>
+
+  <div id="hint">DRAG ORBIT · SCROLL/PINCH ZOOM · C CINEMATIC · M SOUND · 1-4 VIEWS · P PARAMS · H HUD</div>
 </div>
 
 <div id="params" class="hidden ctl">
@@ -44,6 +90,19 @@
     <button id="btn-reset" class="btn" aria-label="Reset all parameters">RESET</button>
   </div>
   <div id="p-rows"></div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<div id="fatal">
+  <div class="fatal-card">
+    <div class="fatal-title" id="fatal-title">SIGNAL LOST</div>
+    <div class="fatal-msg" id="fatal-msg"></div>
+    <div class="fatal-btns">
+      <button id="fatal-lower" class="btn">▼ LOWER QUALITY</button>
+      <button id="fatal-retry" class="btn">↻ RETRY</button>
+    </div>
+  </div>
 </div>
 
 <noscript><div style="position:fixed;inset:0;background:#000;color:#7fdcff;display:flex;align-items:center;justify-content:center;font-family:monospace;letter-spacing:.2em;">JAVASCRIPT REQUIRED</div></noscript>
@@ -62,3 +121,5 @@
 })();
 </script>
 <script type="module" src="js/main.js"></script>
+</body>
+</html>

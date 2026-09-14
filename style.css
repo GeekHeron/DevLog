@@ -1,0 +1,100 @@
+/* 重置与全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000; /* 纯黑背景 */
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* 背景画布全屏定位 */
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* 放在内容背后 */
+}
+
+/* --- 模块 1: 顶部导航栏 --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    font-size: 0.9rem;
+}
+
+.logo {
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #fff;
+}
+
+.timer {
+    font-family: 'Courier New', monospace; /* 等宽字体模拟代码感 */
+    color: #888;
+    font-size: 0.8rem;
+}
+
+/* --- 模块 2: 主视觉区域 --- */
+.hero-section {
+    height: 80vh; /* 占据视口高度的80% */
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    padding-left: 10%; /* 左侧留白 */
+}
+
+.headline {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.sub-text {
+    color: #aaa;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 3rem;
+}
+
+/* --- 模块 3: 按钮 --- */
+.cta-button {
+    display: inline-block;
+    padding: 12px 40px;
+    border: 1px solid #fff; /* 白色边框 */
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #fff;
+    color: #000;
+}

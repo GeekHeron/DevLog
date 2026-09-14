@@ -2,11 +2,14 @@
 /**
  * SiteHeader —— 全站公共顶部导航组件
  *
- * 这是全站 57 个页面顶部导航的唯一来源。改导航链接、品牌字、时钟、齿轮图标，
+ * 这是全站各页面顶部导航的唯一来源。改导航链接、品牌字、时钟、齿轮图标，
  * 只需改这一个文件，重新构建后全站生效。
  *
  * 本组件的输出经过 scripts/extract-header.mjs 的「回放校验」逐字节比对，
  * 与重构前各页面硬编码的区块完全一致 —— 抽取前后 dist 产物零差异。
+ *
+ * 注：默认中文导航已于后续迭代移除「伏羲引擎」一项（fuxi-engine.html），
+ *     故相关页面相对归档原文属「有意变更」，verify.mjs 中登记为 KNOWN_NAV_CHANGE。
  *
  * ── 常用参数 ─────────────────────────────────────────────
  *  variant     'zh'（默认）| 'en'   —— 中/英导航文字
@@ -14,7 +17,7 @@
  *  clock       时钟初始文本，默认 'T+00: 00: 00'
  *  tool        是否渲染齿轮图标，默认 true
  *  showClock   无齿轮但保留时钟（首页）
- *  navItems    自定义导航项，默认中文五项
+ *  navItems    自定义导航项，默认中文四项
  *  langHref/langLabel/langStyle  语言切换按钮
  *  chrome      'dark'（默认）| 'darkAria' | 'none'  —— 背景层
  *  leadBlank   header 前的空行数（默认 2）
@@ -48,14 +51,12 @@ const ZH_NAV = [
   ['index.html', '首页'],
   ['article.html', '深度分析'],
   ['works.html', '商业案例'],
-  ['fuxi-engine.html', '伏羲引擎'],
   ['about.html', '关于我 &amp; 商业合作'],
 ];
 const EN_NAV = [
   ['index.html', 'Home'],
   ['article.html', 'Deep Analysis'],
   ['works.html', 'Case Studies'],
-  ['fuxi-engine.html', 'Fuxi Engine'],
   ['about.html', 'About Me &amp; Business'],
 ];
 

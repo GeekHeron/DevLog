@@ -45,6 +45,19 @@ const HEAD_IMPROVED_MAY_DIFFER_HEAD = new Set([
   'sellercopilot-bp.html',
 ]);
 
+// ── 有意移除的导航项 ────────────────────────────────────────────
+// 需求：全站导航栏移除「伏羲引擎」。该 <li> 原先存在于默认中/英导航里，
+// 现在从 SiteHeader 组件中删掉，因此凡使用默认导航的页面相对归档都会少这一行。
+// 这里不直接放行整页，而是把「归档中的该行」在比对前从原文里剔掉 —— 即要求：
+//   归档原文减去这一行之后，必须与构建产物逐字节一致。
+// 这样白名单本身是被校验的：一旦出现别的回归，仍会如实报错。
+// 注意：不同页面的导航缩进深度不同（12/16 空格），href 也有三种写法
+// （fuxi-engine.html、/fuxi-engine.html、../fuxi-engine.html，后者用于 /en/ 下的页面），
+// 故用「任意缩进 + 任意前缀 + 任意标签」的整行匹配。
+const REMOVED_NAV_LINE_PATTERNS = [
+  /^[ \t]*<li><a href="(?:\.\.\/|\/)?fuxi-engine\.html">(?:伏羲引擎|Fuxi Engine)<\/a><\/li>\r?\n/m,
+];
+
 const archiveFiles = [];
 const walk = (d) => {
   for (const name of readdirSync(d)) {
@@ -59,6 +72,7 @@ let checked = 0, passed = 0, failed = 0;
 const failures = [];
 const aliased = [];
 const improved = [];
+const navChanged = [];
 
 for (const af of archiveFiles) {
   let rel = relative(archive, af).replace(/\\/g, '/'); // e.g. en/article-agent.html
@@ -73,8 +87,20 @@ for (const af of archiveFiles) {
     continue;
   }
   checked++;
-  const orig = readFileSync(af, 'utf-8');
+  const origRaw = readFileSync(af, 'utf-8');
   const built = readFileSync(distFile, 'utf-8');
+
+  // 归档原文剥离「已移除的导航行」后的版本，用于与构建产物比对。
+  let stripped = origRaw;
+  let strippedCount = 0;
+  for (const re of REMOVED_NAV_LINE_PATTERNS) {
+    const m = stripped.match(re);
+    if (m) {
+      stripped = stripped.replace(m[0], '');
+      strippedCount++;
+    }
+  }
+  const orig = stripped;
 
   const reHead = /<head[^>]*>([\s\S]*?)<\/head>/i;
   const reBody = /<body[^>]*>([\s\S]*?)<\/body>/i;
@@ -92,8 +118,10 @@ for (const af of archiveFiles) {
     oBody.trim() === bBody.trim() &&
     oHtml.trim() === bHtml.trim();
 
-  if (ok) passed++;
-  else if (
+  if (ok) {
+    passed++;
+    if (strippedCount > 0) navChanged.push(rel);
+  } else if (
     KNOWN_HEAD_IMPROVED[rel] &&
     oHtml.trim() === bHtml.trim()
   ) {
@@ -116,5 +144,9 @@ if (aliased.length) {
 if (improved.length) {
   console.log(`Known head improvements (body/html still byte-identical) ${improved.length}:`);
   for (const a of improved) console.log('  +', a);
+}
+if (navChanged.length) {
+  console.log(`Navigation intentionally changed (removed 伏羲引擎 / Fuxi Engine) ${navChanged.length} page(s):`);
+  console.log('  - pages below match the archive EXACTLY once the removed <li> line is discounted');
 }
 for (const f of failures) console.log(' -', f);

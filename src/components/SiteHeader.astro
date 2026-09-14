@@ -2,21 +2,22 @@
 /**
  * SiteHeader —— 全站公共顶部导航组件
  *
- * 这是全站各页面顶部导航的唯一来源。改导航链接、品牌字、时钟、齿轮图标，
+ * 这是全站各页面顶部导航的唯一来源。改导航链接、品牌字、齿轮图标，
  * 只需改这一个文件，重新构建后全站生效。
  *
  * 本组件的输出经过 scripts/extract-header.mjs 的「回放校验」逐字节比对，
  * 与重构前各页面硬编码的区块完全一致 —— 抽取前后 dist 产物零差异。
  *
- * 注：默认中文导航已于后续迭代移除「伏羲引擎」一项（fuxi-engine.html），
- *     故相关页面相对归档原文属「有意变更」，verify.mjs 中登记为 KNOWN_NAV_CHANGE。
+ * 注 1：默认中文导航已于后续迭代移除「伏羲引擎」一项（fuxi-engine.html）。
+ * 注 2：右侧时钟（<span id="clock">）已整体移除，连带移除的还有 index 页
+ *       那一份「只有时钟」的 header-right 容器。
+ *       上述两项相对归档原文属「有意变更」，verify.mjs 中分别登记为
+ *       REMOVED_NAV_LINE_PATTERNS / REMOVED_CLOCK_PATTERNS。
  *
  * ── 常用参数 ─────────────────────────────────────────────
  *  variant     'zh'（默认）| 'en'   —— 中/英导航文字
  *  brand       品牌字，默认 'GeekHeron'（首页为 'GEEKHERON'）
- *  clock       时钟初始文本，默认 'T+00: 00: 00'
  *  tool        是否渲染齿轮图标，默认 true
- *  showClock   无齿轮但保留时钟（首页）
  *  navItems    自定义导航项，默认中文四项
  *  langHref/langLabel/langStyle  语言切换按钮
  *  chrome      'dark'（默认）| 'darkAria' | 'none'  —— 背景层
@@ -26,14 +27,15 @@
  *  tailBlank   无 header-right 时 </nav> 后是否留空行
  *  indent      header 自身缩进（默认 4 空格；首页为 0）
  *  indentUnit  每级子缩进量（默认 4 空格；首页为 2）
+ *
+ * ── 已废弃参数（保留以免旧页面报错，传入后无效果）────────────
+ *  clock / showClock   时钟已移除
  */
 
 const {
   variant = 'zh',
   brand = 'GeekHeron',
-  clock = 'T+00: 00: 00',
   tool = true,
-  showClock = false,
   langHref = '',
   langLabel = '',
   langStyle = '',
@@ -102,17 +104,11 @@ if (langHref) {
 L.push(`${at(2)}</ul>`);
 L.push(`${at(1)}</nav>`);
 
-// 右侧时钟 / 工具图标
+// 右侧工具图标（时钟已于后续迭代整体移除）
 if (tool) {
   if (innerBlank) L.push('');
   L.push(`${at(1)}<div class="header-right">`);
-  L.push(`${at(2)}<span id="clock">${clock}</span>`);
   L.push(`${at(2)}<a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>`);
-  L.push(`${at(1)}</div>`);
-} else if (showClock) {
-  if (innerBlank) L.push('');
-  L.push(`${at(1)}<div class="header-right">`);
-  L.push(`${at(2)}<span id="clock">${clock}</span>`);
   L.push(`${at(1)}</div>`);
 } else if (tailBlank) {
   L.push('');

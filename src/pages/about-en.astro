@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import head from '../sources/about-en.head.html?raw';
 import body from '../sources/about-en.body.html?raw';
 
-const headerProps = { variant: 'en', clock: '', tool: false, chrome: 'darkAria', tailBlank: true, langHref: 'about.html', langLabel: '中文' };
+const headerProps = { variant: 'en', tool: false, chrome: 'darkAria', tailBlank: true, langHref: 'about.html', langLabel: '中文' };
 const htmlProps = { lang: "en" };
 ---
 <BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

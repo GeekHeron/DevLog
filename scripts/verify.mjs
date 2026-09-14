@@ -58,6 +58,18 @@ const REMOVED_NAV_LINE_PATTERNS = [
   /^[ \t]*<li><a href="(?:\.\.\/|\/)?fuxi-engine\.html">(?:伏羲引擎|Fuxi Engine)<\/a><\/li>\r?\n/m,
 ];
 
+// ── 有意移除的时钟 ──────────────────────────────────────────────
+// 需求：移除菜单栏时钟。除 <span id="clock"> 那一行外，index 页的
+// header-right 里只有时钟，整块容器随之消失，故一并剔除。
+// 同样采用「从原文减去已知差异后要求逐字节一致」的做法，白名单本身受校验。
+const REMOVED_CLOCK_PATTERNS = [
+  // 先进匹配「只剩时钟的 header-right 容器」（index 页，2 空格缩进）——
+  // 必须排在单行模式之前，否则先被单行模式吃掉 span，只剩一个空 div 对不上。
+  /^[ \t]*<div class="header-right">\r?\n[ \t]*<span id="clock">[^<]*<\/span>\r?\n[ \t]*<\/div>\r?\n/m,
+  // 普通页面：仅有该行时钟（⚙ 图标仍在容器内）
+  /^[ \t]*<span id="clock">[^<]*<\/span>\r?\n/m,
+];
+
 const archiveFiles = [];
 const walk = (d) => {
   for (const name of readdirSync(d)) {
@@ -73,6 +85,7 @@ const failures = [];
 const aliased = [];
 const improved = [];
 const navChanged = [];
+const clockChanged = [];
 
 for (const af of archiveFiles) {
   let rel = relative(archive, af).replace(/\\/g, '/'); // e.g. en/article-agent.html
@@ -90,14 +103,22 @@ for (const af of archiveFiles) {
   const origRaw = readFileSync(af, 'utf-8');
   const built = readFileSync(distFile, 'utf-8');
 
-  // 归档原文剥离「已移除的导航行」后的版本，用于与构建产物比对。
+  // 归档原文剥离「已移除的导航行 / 时钟」后的版本，用于与构建产物比对。
   let stripped = origRaw;
   let strippedCount = 0;
+  let clockStripped = 0;
   for (const re of REMOVED_NAV_LINE_PATTERNS) {
     const m = stripped.match(re);
     if (m) {
       stripped = stripped.replace(m[0], '');
       strippedCount++;
+    }
+  }
+  for (const re of REMOVED_CLOCK_PATTERNS) {
+    const m = stripped.match(re);
+    if (m) {
+      stripped = stripped.replace(m[0], '');
+      clockStripped++;
     }
   }
   const orig = stripped;
@@ -121,6 +142,7 @@ for (const af of archiveFiles) {
   if (ok) {
     passed++;
     if (strippedCount > 0) navChanged.push(rel);
+    if (clockStripped > 0) clockChanged.push(rel);
   } else if (
     KNOWN_HEAD_IMPROVED[rel] &&
     oHtml.trim() === bHtml.trim()
@@ -148,5 +170,9 @@ if (improved.length) {
 if (navChanged.length) {
   console.log(`Navigation intentionally changed (removed 伏羲引擎 / Fuxi Engine) ${navChanged.length} page(s):`);
   console.log('  - pages below match the archive EXACTLY once the removed <li> line is discounted');
+}
+if (clockChanged.length) {
+  console.log(`Clock intentionally removed ${clockChanged.length} page(s):`);
+  console.log('  - pages below match the archive EXACTLY once the clock markup is discounted');
 }
 for (const f of failures) console.log(' -', f);

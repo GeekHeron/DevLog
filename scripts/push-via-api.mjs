@@ -30,7 +30,10 @@ const H = {
 };
 
 // Paths that must never be uploaded.
-const EXCLUDE_DIRS = new Set(['.git', 'node_modules', 'dist', '.astro', '.workbuddy']);
+// 注意：这里必须与 .gitignore 保持一致 —— 本脚本走 REST API，不经过 git，
+// 因此 .gitignore 不会自动生效。若只改 .gitignore 而忘了这里，被忽略的目录
+// （archive/ 原始金标准、.header-backup/ 回滚快照）仍会被推上公开仓库。
+const EXCLUDE_DIRS = new Set(['.git', 'node_modules', 'dist', '.astro', '.workbuddy', 'archive', '.header-backup']);
 const EXCLUDE_FILES = new Set(['_push.log', '_install.log', '_build.log', '.DS_Store']);
 
 function walk(dir, base, acc) {

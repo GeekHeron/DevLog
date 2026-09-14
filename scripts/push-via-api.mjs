@@ -36,13 +36,37 @@ const H = {
 const EXCLUDE_DIRS = new Set(['.git', 'node_modules', 'dist', '.astro', '.workbuddy', 'archive', '.header-backup']);
 const EXCLUDE_FILES = new Set(['_push.log', '_install.log', '_build.log', '.DS_Store']);
 
-function walk(dir, base, acc) {
+// 「仅根目录」排除清单。
+//
+// 背景：真正的仓库工作副本是 Desktop/DevLog-astro（347 个文件），而当前工作区
+// DevLog-main 是它的严格超集（388 个），多出的 41 个全部是**根目录下的冗余副本** ——
+// 早前扁平布局的遗留，与 public/ 下同名文件逐字节相同（已用 sha256 逐一核对）。
+// Astro 只把 public/ 当静态根，根目录这些副本不参与构建，推上去只会把仓库根目录弄乱。
+//
+// ⚠️ 必须在**根目录层级**判断，不能塞进 EXCLUDE_DIRS —— 那里的判断是任意层级，
+// 加上 'js'/'css'/'vendor' 会把 public/js、public/css、public/vendor 一起干掉。
+const EXCLUDE_ROOT = new Set([
+  'audio', 'css', 'js', 'vendor',
+  'style.css', 'script.js', 'site-nav.css', 'logo.png', 'CNAME',
+  'robots.txt', 'sitemap.xml', 'feed.xml', 'llms.txt',
+  '47380971981cb5db97c8a52d0d919fed.txt',
+  'InfoFlow AI.pdf', 'InfoFlow-AI.pdf',
+  'SellerCopilot-商业计划书.pdf', 'SellerCopilot商业计划书.pdf',
+  'SellerCopilot#U5546#U4e1a#U8ba1#U5212#U4e66.pdf',
+  'WhatApp.png', 'ads_inventory_card.png',
+  'feishu_card_screenshot.png', 'feishu_card_screenshot1.png',
+  'image_3.png', 'jijia_review_card.png', 'logistics_risk_card.png',
+  'telegram.png', 'wechat.png',
+]);
+
+function walk(dir, base, acc, isRoot) {
   for (const name of readdirSync(dir)) {
     if (EXCLUDE_DIRS.has(name)) continue;
     if (EXCLUDE_FILES.has(name)) continue;
+    if (isRoot && EXCLUDE_ROOT.has(name)) continue;
     const p = join(dir, name);
     const st = statSync(p);
-    if (st.isDirectory()) walk(p, base, acc);
+    if (st.isDirectory()) walk(p, base, acc, false);
     else acc.push({ path: relative(base, p).replace(/\\/g, '/'), abs: p });
   }
   return acc;
@@ -81,7 +105,7 @@ async function api(method, path, body, attempt = 1) {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 (async () => {
-  const files = walk(root, root, []);
+  const files = walk(root, root, [], true);
   console.log(`files to push: ${files.length}`);
 
   if (dryRun) {

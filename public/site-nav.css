@@ -12,7 +12,8 @@ header.site-header {
     flex-direction: row !important;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 50px;
+    /* 右侧内边距收窄：让菜单更贴近右边缘（左侧 logo 保持 50px 视觉起点） */
+    padding: 20px 24px 20px 50px;
     z-index: 1000;
     font-size: 14px;
     font-weight: 700;
@@ -55,6 +56,18 @@ header.site-header .logo span {
     letter-spacing: 4px;
     font-weight: 800;
     text-transform: uppercase;
+}
+
+/* nav 自身显式声明为 flex 容器并顶到最右边缘。
+   这样即使某页内联 <style> 未给 .nav-links 声明 display:flex，
+   导航也不会退化成块级元素；配合 margin-left:auto 让菜单稳定贴右，
+   不再单纯依赖 header 的 justify-content: space-between。 */
+header.site-header nav,
+header.site-header .nav-links {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    flex: 0 0 auto;
 }
 
 header.site-header nav ul {
@@ -193,6 +206,9 @@ body.site-nav-open {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        /* 顶掉桌面端的贴右规则：抽屉是全屏浮层，不能被 margin-left:auto / flex 约束 */
+        margin-left: 0;
+        flex: 0 0 auto;
         transform: translateX(100%);
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }

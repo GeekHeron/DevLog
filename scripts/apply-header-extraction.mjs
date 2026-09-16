@@ -20,13 +20,20 @@ const BACKUP = path.join(ROOT, '.header-backup');
 const run = (rel, args = []) =>
   execFileSync(NODE, [path.join(ROOT, rel), ...args], { cwd: ROOT, stdio: 'inherit' });
 
-// 1) 还原
+// 1) 还原（递归，含 en/ 子目录）
 if (fs.existsSync(BACKUP)) {
   let n = 0;
-  for (const f of fs.readdirSync(BACKUP)) {
-    fs.copyFileSync(path.join(BACKUP, f), path.join(SRC, f));
-    n++;
-  }
+  const restore = (dir, base = '') => {
+    for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
+      const rel = base ? `${base}/${d.name}` : d.name;
+      if (d.isDirectory()) { restore(path.join(dir, d.name), rel); continue; }
+      const dst = path.join(SRC, rel);
+      fs.mkdirSync(path.dirname(dst), { recursive: true });
+      fs.copyFileSync(path.join(dir, d.name), dst);
+      n++;
+    }
+  };
+  restore(BACKUP);
   console.log(`[1/4] 已还原 ${n} 个 body 片段`);
 }
 

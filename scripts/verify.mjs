@@ -70,53 +70,45 @@ const REMOVED_CLOCK_PATTERNS = [
   /^[ \t]*<span id="clock">[^<]*<\/span>\r?\n/m,
 ];
 
-// ── 有意移除的首页浮层 ──────────────────────────────────────────
-// 需求：移除黑洞首页的四个英文浮层（底部提示条 #hint / 顶部通知 #toast /
-// 故障模态 #fatal / 开场卡 #intro）。#intro 在归档原文里本就不存在（只剩 CSS
-// 死代码），故这里只需处理前三者的 DOM。
-//
-// 为避免「删掉元素后残留空行」这类纯空白差异，这里不用整行正则，而是按
-// DOM 块精确切除：定位每个元素的起始与结束标签后整体删除，再把删除处
-// 产生的多余空行规范化为一个，最后与构建产物比对。
-// 白名单本身仍受校验：任何非空白差异都会如实报错。
-const REMOVED_OVERLAY_IDS = ['hint', 'toast', 'fatal'];
+// ── 有意变更：/en/ 英文页导航统一 ────────────────────────────────
+// 需求：把 /en/ 下各写一份、文案互不相同的英文导航（原有 7 种变体）
+// 统一为与中文导航一一对应的四项，并改由 SiteHeader 组件渲染。
+// 统一后：Home / Deep Analysis / Case Studies / About Me & Business(→ about-en.html)
+// 做法仍是「从原文减去已知差异后要求逐字节一致」—— 白名单自身受校验，
+// 任何别的回归都会如实报错。
+/** 英文页导航行：<li><a href="…">任意文案</a></li>，href 前缀可为空、/、../ */
+const EN_NAV_LI_RE = /^[ \t]*<li><a href="(?:\.\.\/|\/)?(?:index|article|works|about|about-en|fuxi-engine)\.html">[^<]*<\/a><\/li>\r?\n/gm;
+/** 语言切换行（ontology 页专属，原文落点指向自身） */
+const LANG_BTN_LINE_RE = /^[ \t]*<li><a href="\.\.\/article-manufacturing-ai-ontology\.html" class="lang-btn"[^>]*>[^<]*<\/a><\/li>\r?\n/m;
 
-// 从 <div id="X"> 起，按 <div>/</div> 配对找到匹配的结束标签，返回整块 [start,end)。
-function findDivBlock(src, id) {
-  const open = src.indexOf(`<div id="${id}"`);
-  if (open < 0) return null;
-  let i = open, depth = 0;
-  const re = /<div\b|<\/div>/g;
-  re.lastIndex = open;
-  let m;
-  while ((m = re.exec(src))) {
-    if (m[0] === '<div') depth++;
-    else {
-      depth--;
-      if (depth === 0) return [open, m.index + m[0].length];
-    }
-  }
-  return null;
-}
+/** 英文页 logo / 齿轮图标两处链接值（原写法有 / 与 ../ 两种，统一为 ../）
+ *  注意：不能用 `^(.*<a href=")` 这种贪婪前缀 + 换行匹配 —— 它会把上一行末尾的
+ *  \n 一并吃掉，导致空行少一个。改为精确匹配行的开头。 */
+const EN_LOGO_A_RE = /^([ \t]*<a href=")[^"]*(" class="logo">)$/gm;
+const EN_LOGO_IMG_RE = /^([ \t]*<img src=")[^"]*(" alt="GeekHeron Logo"[^>]*>)$/gm;
 
-function stripOverlays(src) {
+/** 哪些页面适用「英文导航统一」扣减：
+ *  · /en/ 目录下的全部英文页；
+ *  · about-en.html（英文导航，但位于站点根，前缀为空）。 */
+const isEnNavUnified = (rel) => rel.startsWith('en/') || rel === 'about-en.html';
+
+/** 对英文页剥离「导航行 + 语言切换行 + logo 链接值」——即把整段导航视为有意变更
+ *  注意：带 /g 的正则对象在 match / replace 之间会保留 lastIndex，跨页面复用会
+ *  污染状态（曾导致 25 个页面被误判）。这里统一用「每次新建正则」的写法。 */
+function stripEnNav(src, rel) {
+  if (!isEnNavUnified(rel)) return { out: src, count: 0 };
+  const navRe = () => /^[ \t]*<li><a href="(?:\.\.\/|\/)?(?:index|article|works|about|about-en|fuxi-engine)\.html">[^<]*<\/a><\/li>\r?\n/gm;
+  const langRe = () => /^[ \t]*<li><a href="\.\.\/article-manufacturing-ai-ontology\.html" class="lang-btn"[^>]*>[^<]*<\/a><\/li>\r?\n/m;
+  const logoARe = () => /^([ \t]*<a href=")[^"]*(" class="logo">)$/gm;
+  const logoImgRe = () => /^([ \t]*<img src=")[^"]*(" alt="GeekHeron Logo"[^>]*>)$/gm;
   let out = src;
-  let count = 0;
-  for (const id of REMOVED_OVERLAY_IDS) {
-    const blk = findDivBlock(out, id);
-    if (!blk) continue;
-    // 连同块前的行内缩进、以及块后的一整段换行一起切除
-    let [s, e] = blk;
-    const lineStart = out.lastIndexOf('\n', s) + 1;
-    if (out.slice(lineStart, s).trim() === '') s = lineStart;
-    while (e < out.length && (out[e] === '\r' || out[e] === '\n')) e++;
-    out = out.slice(0, s) + out.slice(e);
-    count++;
-  }
-  // 首个被删元素若夹在空行之间（#hint 在 #hud 内即如此），切除后会留下
-  // 一个多余空行；把它与紧随其后的空行合并，与「本就没有该元素」等价。
-  if (count > 0) out = out.replace(/\n\n(?=[ \t]*\n*<\/div>\n\n<div id="params")/, '\n');
-  return { out, count };
+  const m1 = out.match(navRe());
+  if (m1) out = out.replace(navRe(), '');
+  const m2 = out.match(langRe());
+  if (m2) out = out.replace(langRe(), '');
+  out = out.replace(logoARe(), '$1\u0000$2');
+  out = out.replace(logoImgRe(), '$1\u0000$2');
+  return { out, count: (m1 ? m1.length : 0) + (m2 ? 1 : 0) };
 }
 
 const archiveFiles = [];
@@ -135,7 +127,7 @@ const aliased = [];
 const improved = [];
 const navChanged = [];
 const clockChanged = [];
-const overlayChanged = [];
+const enNavUnified = [];
 
 for (const af of archiveFiles) {
   let rel = relative(archive, af).replace(/\\/g, '/'); // e.g. en/article-agent.html
@@ -153,10 +145,19 @@ for (const af of archiveFiles) {
   const origRaw = readFileSync(af, 'utf-8');
   const built = readFileSync(distFile, 'utf-8');
 
-  // 归档原文剥离「已移除的导航行 / 时钟」后的版本，用于与构建产物比对。
+  // 归档原文剥离「已移除的导航行 / 时钟 / 英文页导航（有意统一）」后的版本，用于与构建产物比对。
   let stripped = origRaw;
   let strippedCount = 0;
   let clockStripped = 0;
+  let enNavStripped = 0;
+  // 顺序很重要：先做「英文导航统一」的扣减，再处理「伏羲引擎 / 时钟」。
+  // 反之，REMOVED_NAV_LINE_PATTERNS 会先把 fuxi 那一行从原文剔掉，导致两侧
+  // 导航行集合不一致，stripEnNav 再扣减就对不上了（英文页会整体误报）。
+  {
+    const r = stripEnNav(stripped, rel);
+    stripped = r.out;
+    enNavStripped = r.count;
+  }
   for (const re of REMOVED_NAV_LINE_PATTERNS) {
     const m = stripped.match(re);
     if (m) {
@@ -171,12 +172,6 @@ for (const af of archiveFiles) {
       clockStripped++;
     }
   }
-  let overlayStripped = 0;
-  {
-    const r = stripOverlays(stripped);
-    stripped = r.out;
-    overlayStripped = r.count;
-  }
   const orig = stripped;
 
   const reHead = /<head[^>]*>([\s\S]*?)<\/head>/i;
@@ -185,10 +180,13 @@ for (const af of archiveFiles) {
 
   const oHead = (orig.match(reHead) || [])[1] || '';
   const bHead = (built.match(reHead) || [])[1] || '';
+  // 注意：构建产物一侧也要做同样的「导航归一化」，否则归档的 /index.html 与构建的
+  // ../index.html 会被误判为差异 —— 这个差异正是本次有意变更本身。
+  const builtNorm = isEnNavUnified(rel) ? stripEnNav(built, rel).out : built;
   const oBody = (orig.match(reBody) || [])[1] || '';
-  const bBody = (built.match(reBody) || [])[1] || '';
+  const bBody = (builtNorm.match(reBody) || [])[1] || '';
   const oHtml = (orig.match(reHtml) || [])[1] || '';
-  const bHtml = (built.match(reHtml) || [])[1] || '';
+  const bHtml = (builtNorm.match(reHtml) || [])[1] || '';
 
   const ok =
     oHead.trim() === bHead.trim() &&
@@ -199,7 +197,7 @@ for (const af of archiveFiles) {
     passed++;
     if (strippedCount > 0) navChanged.push(rel);
     if (clockStripped > 0) clockChanged.push(rel);
-    if (overlayStripped > 0) overlayChanged.push(rel);
+    if (enNavStripped > 0) enNavUnified.push(`${rel}（${enNavStripped} 行）`);
   } else if (
     KNOWN_HEAD_IMPROVED[rel] &&
     oHtml.trim() === bHtml.trim()
@@ -232,9 +230,8 @@ if (clockChanged.length) {
   console.log(`Clock intentionally removed ${clockChanged.length} page(s):`);
   console.log('  - pages below match the archive EXACTLY once the clock markup is discounted');
 }
-if (overlayChanged.length) {
-  console.log(`Homepage overlays intentionally removed ${overlayChanged.length} page(s):`);
-  for (const r of overlayChanged) console.log('  -', r);
-  console.log('  - match the archive EXACTLY once #hint / #toast / #fatal markup is discounted');
+if (enNavUnified.length) {
+  console.log(`English navigation intentionally unified ${enNavUnified.length} page(s):`);
+  console.log('  - pages below match the archive EXACTLY once all <li> nav rows + the lang button are discounted');
 }
 for (const f of failures) console.log(' -', f);

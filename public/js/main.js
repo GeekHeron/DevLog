@@ -68,6 +68,11 @@ const pRowsEl = document.getElementById('p-rows');
 const deckEl = document.getElementById('deck');
 const deckModeEl = document.getElementById('deck-mode');
 const deckHintEl = document.getElementById('deck-hint');
+const hintEl = document.getElementById('hint');
+const toastEl = document.getElementById('toast');
+const fatalEl = document.getElementById('fatal');
+const fatalTitleEl = document.getElementById('fatal-title');
+const fatalMsgEl = document.getElementById('fatal-msg');
 const btnCine = document.getElementById('btn-cine');
 const btnOrbit = document.getElementById('btn-orbit');
 const btnQuality = document.getElementById('btn-quality');
@@ -86,6 +91,28 @@ const clockVal = document.getElementById('clock-val');
 function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
 function easeCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 
+let toastTimer = 0;
+function toast(msg, ms = 4200) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), ms);
+}
+
+function showFatal(title, msg) {
+  fatalTitleEl.textContent = title;
+  fatalMsgEl.textContent = msg;
+  fatalEl.classList.add('show');
+}
+document.getElementById('fatal-retry').addEventListener('click', () => location.reload());
+document.getElementById('fatal-lower').addEventListener('click', () => {
+  const idx = TIER_ORDER.indexOf(tierName);
+  const lower = TIER_ORDER[Math.max(0, idx - 1)];
+  const p = new URLSearchParams(location.search);
+  p.set('q', lower);
+  location.search = p.toString();
+});
+
 /* ============================================================== runtime */
 let renderer, fsScene, fsCam, camera, controls, composer, bloomPass, compPass;
 let rayUni, compUni;
@@ -96,10 +123,11 @@ let tShader = 0;
 let rafId = 0;
 let shotDone = false;
 let readyFired = false;
+let hintBarShown = false;
 let deckHintShown = false;
 let contextLost = false;      // WebGL context lost — rendering halted until reload
 let contextRestored = false;  // restore handled exactly once (single reload)
-let renderFaulted = false;    // composer.render() threw — loop stopped, fault logged
+let renderFaulted = false;    // composer.render() threw — loop stopped, fatal shown
 const clock = new THREE.Clock();
 const bufSize = new THREE.Vector2();
 const tmpVec = new THREE.Vector3();
@@ -121,14 +149,15 @@ function initThree() {
   renderer.toneMapping = THREE.NoToneMapping;
   renderer.debug.onShaderError = (gl, program, vs, fs) => {
     const log = (gl.getShaderInfoLog(fs) || '') + '\n' + (gl.getShaderInfoLog(vs) || '');
-    console.error('SHADER COMPILE ERROR\n' + (log.trim() || 'Unknown shader error'));
+    showFatal('SHADER COMPILE ERROR', (log.trim() || 'Unknown shader error').slice(0, 900));
   };
 
   canvas.addEventListener('webglcontextlost', (e) => {
     e.preventDefault();
     contextLost = true;
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
-    console.error('WEBGL CONTEXT LOST: the GPU context was lost and rendering has stopped.');
+    showFatal('WEBGL CONTEXT LOST',
+      'The GPU context was lost and rendering has stopped. Press RETRY to reinitialize, or LOWER QUALITY to reduce the render load first.');
   });
   canvas.addEventListener('webglcontextrestored', () => {
     // Safe, deterministic recovery: rebuild renderer/composer/targets from scratch.
@@ -140,7 +169,7 @@ function initThree() {
   const gl = renderer.getContext();
   const halfOK = renderer.capabilities.isWebGL2 &&
     !!(gl.getExtension('EXT_color_buffer_float') || gl.getExtension('EXT_color_buffer_half_float'));
-  if (!halfOK) console.warn('HDR BUFFER UNAVAILABLE — LDR FALLBACK ACTIVE');
+  if (!halfOK) toast('HDR BUFFER UNAVAILABLE — LDR FALLBACK ACTIVE');
 
   // fullscreen ray scene: single 2x2 quad, orthographic camera
   fsCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -380,10 +409,11 @@ btnReset.addEventListener('click', () => {
   if (urlDebug !== null) { P.debug = urlDebug; urlOverrideKeys.add('debug'); }
   applyAllParams();
   updateHudTelemetry();
+  toast('PARAMETERS RESET');
 });
 
 /* ========================================================== quality tier */
-function setTier(name) {
+function setTier(name, announce = true) {
   tierName = name;
   const tier = TIERS[name];
   urlOverrideKeys.delete('steps'); // tier button owns steps from now on — persistable
@@ -394,6 +424,7 @@ function setTier(name) {
   onResize();
   updateHudTelemetry();
   saveStorage();
+  if (announce) toast('RENDER PROFILE — ' + tier.name + ' · ' + tier.steps + ' STEPS');
 }
 
 btnQuality.addEventListener('click', () => {
@@ -432,7 +463,7 @@ function trackFps(dt) {
       lowFpsSeconds++;
       if (lowFpsSeconds >= 5 && !lowFpsToasted && !shotMode) {
         lowFpsToasted = true;
-        console.warn('LOW FRAME RATE — CONSIDER LOWER QUALITY');
+        toast('LOW FRAME RATE — CONSIDER LOWER QUALITY');
       }
     } else lowFpsSeconds = 0;
     fpsFrames = 0; fpsTime = 0;
@@ -653,7 +684,6 @@ async function setSound(on) {
     const introVisible = !document.body.classList.contains('ready');
     try {
       if (introVisible && !stingPlayed && !stingBroken) {
-        // page still warming up: play the short intro sting first
         stingPlayed = true;
         introAud.currentTime = 0;
         await introAud.play();
@@ -711,10 +741,14 @@ document.addEventListener('visibilitychange', () => {
 let shotFrames = 0;
 
 function renderFault(err) {
-  if (renderFaulted) return; // log once; never respam per frame
+  if (renderFaulted) return; // never rethrow or respam the overlay per frame
   renderFaulted = true;
-  console.error('RENDER FAULT — the renderer reported an unrecoverable error: ' +
-    String((err && err.message) || err).slice(0, 400));
+  if (!fatalEl.classList.contains('show')) {
+    showFatal('RENDER FAULT',
+      'The renderer reported an unrecoverable error: ' +
+      String((err && err.message) || err).slice(0, 400) +
+      ' — Press RETRY to reinitialize, or LOWER QUALITY to reduce the render load first.');
+  }
 }
 
 function animate() {
@@ -744,6 +778,7 @@ function animate() {
   if (!readyFired) {
     readyFired = true;
     document.body.classList.add('ready');
+    scheduleHintBar();
   }
 
   if (shotMode) {
@@ -758,12 +793,21 @@ function animate() {
   }
 }
 
+function scheduleHintBar() {
+  if (hintBarShown || shotMode) return;
+  hintBarShown = true;
+  setTimeout(() => {
+    hintEl.classList.add('show');
+    setTimeout(() => hintEl.classList.remove('show'), 10000);
+  }, 2500);
+}
+
 /* ================================================================= boot */
 function boot() {
   try {
     initThree();
   } catch (e) {
-    console.error('WEBGL UNAVAILABLE: ' + String((e && e.message) || e));
+    showFatal('WEBGL UNAVAILABLE', String(e && e.message || e));
     return;
   }
 
@@ -800,11 +844,12 @@ function boot() {
   updateHudTelemetry();
   rafId = requestAnimationFrame(animate);
 
-  // safety net: mark the page ready even if no frame ever completes
+  // safety net: never leave the user on a black intro
   setTimeout(() => {
     if (!readyFired) {
       readyFired = true;
       document.body.classList.add('ready');
+      scheduleHintBar();
     }
   }, 9000);
 }

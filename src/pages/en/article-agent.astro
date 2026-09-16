@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import head from '../../sources/en/article-agent.head.html?raw';
 import body from '../../sources/en/article-agent.body.html?raw';
 
+const headerProps = { variant: 'en', hrefPrefix: '../', aboutHref: 'about-en.html' };
 const htmlProps = { lang: "en" };
 ---
-<BaseLayout htmlProps={htmlProps} head={head} body={body} />
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

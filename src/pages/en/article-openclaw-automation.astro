@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import head from '../../sources/en/article-openclaw-automation.head.html?raw';
 import body from '../../sources/en/article-openclaw-automation.body.html?raw';
 
+const headerProps = { variant: 'en', hrefPrefix: '../', aboutHref: 'about-en.html', leadBlank: 1, chromeBlank: 0 };
 const htmlProps = { lang: "en" };
 ---
-<BaseLayout htmlProps={htmlProps} head={head} body={body} />
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />

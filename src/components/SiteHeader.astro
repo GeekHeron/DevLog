@@ -13,11 +13,19 @@
  *       那一份「只有时钟」的 header-right 容器。
  *       上述两项相对归档原文属「有意变更」，verify.mjs 中分别登记为
  *       REMOVED_NAV_LINE_PATTERNS / REMOVED_CLOCK_PATTERNS。
+ * 注 3：/en/ 下的英文页（src/pages/en/*）原本各自内联一份导航，且文案互不相同
+ *       （7 种变体）。现已全部改走本组件，调用形式为：
+ *           { variant: 'en', hrefPrefix: '../', aboutHref: 'about-en.html' }
+ *       —— hrefPrefix 是因为这些页面位于 /en/ 子目录，站内链接必须带 ../；
+ *          aboutHref 是因为英文页的「About」应指向英文版关于页。
+ *       该统一属「有意变更」，verify.mjs 中登记为 EN_NAV_UNIFIED。
  *
  * ── 常用参数 ─────────────────────────────────────────────
  *  variant     'zh'（默认）| 'en'   —— 中/英导航文字
  *  brand       品牌字，默认 'GeekHeron'（首页为 'GEEKHERON'）
  *  tool        是否渲染齿轮图标，默认 true
+ *  hrefPrefix  站内相对链接前缀（默认 ''；/en/ 子目录页传 '../'）
+ *  aboutHref   variant='en' 时第 4 项 About 的链接，默认 'about.html'
  *  navItems    自定义导航项，默认中文四项
  *  langHref/langLabel/langStyle  语言切换按钮
  *  chrome      'dark'（默认）| 'darkAria' | 'none'  —— 背景层
@@ -28,14 +36,26 @@
  *  indent      header 自身缩进（默认 4 空格；首页为 0）
  *  indentUnit  每级子缩进量（默认 4 空格；首页为 2）
  *
+ * ── 已知例外（__frozen）─────────────────────────────────────
+ * en/article-manufacturing-ai-ontology 的顶部区块排版与其它页面都不同
+ * （汉堡三连 span 同行、logo 与按钮间无空行、带语言切换按钮），无法用上面的
+ * 通用模板表达。为不使该页成为「菜单栏的第二个来源」，这里保留一份显式的
+ * 「冻结」副本（FROZEN_EN_ONTOLOGY，与 scripts/frozen-header.en-ontology.html
+ * 保持一致，由 scripts/fix-en-ontology-shell.mjs 断言），调用方传
+ * __frozen="en-article-manufacturing-ai-ontology" 即输出该副本。
+ * 该页的导航文案已与全站统一，仅排版保留原样。
+ *
  * ── 已废弃参数（保留以免旧页面报错，传入后无效果）────────────
  *  clock / showClock   时钟已移除
+ *  abs                 已由 hrefPrefix 取代
  */
 
 const {
   variant = 'zh',
   brand = 'GeekHeron',
   tool = true,
+  hrefPrefix = '',
+  aboutHref = 'about.html',
   langHref = '',
   langLabel = '',
   langStyle = '',
@@ -47,7 +67,31 @@ const {
   tailBlank = false,
   indent = '    ',
   indentUnit = '    ',
+  __frozen = '',
 } = Astro.props;
+
+// 冻结副本：en/article-manufacturing-ai-ontology 专用（排版特殊，导航已统一）
+const FROZEN_EN_ONTOLOGY = `    <header class="site-header">
+        <a href="../index.html" class="logo">
+            <img src="../logo.png" alt="GeekHeron Logo" width="481" height="433">
+            <span>GeekHeron</span>
+        </a>
+        <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav-links" id="primary-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../article.html">Deep Analysis</a></li>
+                <li><a href="../works.html">Case Studies</a></li>
+                <li><a href="../about-en.html">About Me &amp; Business</a></li>
+                <li><a href="../article-manufacturing-ai-ontology.html" class="lang-btn" hreflang="zh-CN" lang="zh-CN" style="border:1px solid rgba(255,255,255,0.3);padding:4px 10px;border-radius:4px;font-size:12px;">中文</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>
+        </div>
+    </header>`;
 
 const ZH_NAV = [
   ['index.html', '首页'],
@@ -55,14 +99,20 @@ const ZH_NAV = [
   ['works.html', '商业案例'],
   ['about.html', '关于我 &amp; 商业合作'],
 ];
+// 英文导航与中文四项一一对应；第 4 项的落点由 aboutHref 决定
 const EN_NAV = [
   ['index.html', 'Home'],
   ['article.html', 'Deep Analysis'],
   ['works.html', 'Case Studies'],
-  ['about.html', 'About Me &amp; Business'],
+  [aboutHref, 'About Me & Business'],
 ];
 
 const items = navItems || (variant === 'en' ? EN_NAV : ZH_NAV);
+
+// hrefPrefix：给站内相对链接加前缀（/en/ 子目录下的页面传 '../'）。
+// 已带协议、//、#、/ 或 ../ 的写法原样保留，避免拼接出 /../ 之类的脏链接。
+const link = (h) =>
+  hrefPrefix && !/^(?:[a-z][a-z0-9+.-]*:|\/\/|#|\/|\.\.\/)/i.test(h) ? hrefPrefix + h : h;
 
 const at = (n) => indent + indentUnit.repeat(n);
 const L = [];
@@ -80,40 +130,48 @@ if (chrome === 'dark') {
 for (let i = 0; i < chromeBlank; i++) L.push('');
 
 // 顶栏
-L.push(`${indent}<header class="site-header">`);
-L.push(`${at(1)}<a href="index.html" class="logo">`);
-L.push(`${at(2)}<img src="logo.png" alt="GeekHeron Logo" width="481" height="433">`);
-L.push(`${at(2)}<span>${brand}</span>`);
-L.push(`${at(1)}</a>`);
-if (innerBlank) L.push('');
-L.push(`${at(1)}<button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">`);
-L.push(`${at(2)}<span></span>`);
-L.push(`${at(2)}<span></span>`);
-L.push(`${at(2)}<span></span>`);
-L.push(`${at(1)}</button>`);
-if (innerBlank) L.push('');
-L.push(`${at(1)}<nav class="nav-links" id="primary-nav">`);
-L.push(`${at(2)}<ul>`);
-for (const [href, label] of items) {
-  L.push(`${at(3)}<li><a href="${href}">${label}</a></li>`);
-}
-if (langHref) {
-  const styleAttr = langStyle ? ` style="${langStyle}"` : '';
-  L.push(`${at(3)}<li><a href="${langHref}" class="lang-btn" hreflang="en" lang="en"${styleAttr}>${langLabel}</a></li>`);
-}
-L.push(`${at(2)}</ul>`);
-L.push(`${at(1)}</nav>`);
-
-// 右侧工具图标（时钟已于后续迭代整体移除）
-if (tool) {
+if (__frozen === 'en-article-manufacturing-ai-ontology') {
+  // 冻结副本：排版与该页归档一致，导航文案已统一
+  L.push(FROZEN_EN_ONTOLOGY);
+} else {
+  L.push(`${indent}<header class="site-header">`);
+  L.push(`${at(1)}<a href="${link('index.html')}" class="logo">`);
+  L.push(`${at(2)}<img src="${link('logo.png')}" alt="GeekHeron Logo" width="481" height="433">`);
+  L.push(`${at(2)}<span>${brand}</span>`);
+  L.push(`${at(1)}</a>`);
   if (innerBlank) L.push('');
-  L.push(`${at(1)}<div class="header-right">`);
-  L.push(`${at(2)}<a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>`);
-  L.push(`${at(1)}</div>`);
-} else if (tailBlank) {
-  L.push('');
+  L.push(`${at(1)}<button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">`);
+  L.push(`${at(2)}<span></span>`);
+  L.push(`${at(2)}<span></span>`);
+  L.push(`${at(2)}<span></span>`);
+  L.push(`${at(1)}</button>`);
+  if (innerBlank) L.push('');
+  L.push(`${at(1)}<nav class="nav-links" id="primary-nav">`);
+  L.push(`${at(2)}<ul>`);
+  for (const [href, label] of items) {
+    L.push(`${at(3)}<li><a href="${link(href)}">${label}</a></li>`);
+  }
+  if (langHref) {
+    const styleAttr = langStyle ? ` style="${langStyle}"` : '';
+    L.push(`${at(3)}<li><a href="${link(langHref)}" class="lang-btn" hreflang="en" lang="en"${styleAttr}>${langLabel}</a></li>`);
+  }
+  L.push(`${at(2)}</ul>`);
+  L.push(`${at(1)}</nav>`);
+
+  // 右侧工具图标（时钟已于后续迭代整体移除）
+  // 注：齿轮链接保持归档原文的相对写法，不随 hrefPrefix 改写 —— 这意味着
+  //     /en/ 下的页面会解析到 /en/image-compressor.html（归档站同样如此，属既有缺陷）。
+  //     若日后要修，改这一行并同步登记到 verify.mjs 即可。
+  if (tool) {
+    if (innerBlank) L.push('');
+    L.push(`${at(1)}<div class="header-right">`);
+    L.push(`${at(2)}<a href="image-compressor.html" class="tool-icon" title="图片压缩工具" aria-label="图片压缩工具">⚙</a>`);
+    L.push(`${at(1)}</div>`);
+  } else if (tailBlank) {
+    L.push('');
+  }
+  L.push(`${indent}</header>`);
 }
-L.push(`${indent}</header>`);
 
 const html = L.join('\n');
 ---

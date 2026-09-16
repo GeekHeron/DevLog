@@ -11,12 +11,14 @@ src/
   layouts/BaseLayout.astro     # 渲染骨架：注入 <head>/<body> + 渲染导航组件
   pages/**/*.astro             # 各路由（薄壳，导入片段 + 传 headerProps）
   sources/**/*.{head,body}.html # 每页原始 head 片段 / 正文片段（?raw 导入）
-public/                        # 静态资源（图片、PDF、vendor/three、css、js、en/ 英文页、CNAME、robots.txt…）
+public/                        # 静态资源（图片、PDF、vendor/three、css、js、CNAME、robots.txt…）
 public-extra/                  # 带空格/中文名的遗留文件，构建后拷入 dist/
 scripts/
   migrate.mjs                  # 从原始 HTML 生成 Astro 页面（一次性）
-  extract-header.mjs           # 把各页硬编码的顶部区块替换为 <SiteHeader />（含回放校验）
+  extract-header.mjs           # 把各页硬编码的顶部区块替换为 <SiteHeader />（含回放校验 + 导航统一门禁）
   finalize-header.mjs          # 剥离标记 + 重写 page shell（注入 headerProps）
+  fix-en-ontology-nav.mjs      # 单独处理 en/article-manufacturing-ai-ontology 的导航项
+  fix-en-ontology-shell.mjs    # 单独处理该页 shell（冻结 header 模板）
   apply-header-extraction.mjs  # 一键跑完「还原 -> 抽取 -> 收尾 -> 构建 -> 校验」
   new-post.mjs                 # 新建文章骨架（npm run new-post）
   copy-extra.mjs               # 构建后拷贝 public-extra -> dist
@@ -28,18 +30,50 @@ scripts/
 
 ## 顶部导航（SiteHeader 组件）
 
-全站 55 个页面的顶部导航已抽成唯一组件 `src/components/SiteHeader.astro`。
-**改导航链接、品牌字、时钟、齿轮图标，只改这一个文件，重新构建后全站生效。**
+全站 79 个页面（中文 55 + 英文 24）的顶部导航已抽成唯一组件 `src/components/SiteHeader.astro`。
+**改导航链接、品牌字、齿轮图标，只改这一个文件，重新构建后全站生效。**
 
 页面 shell 通过 `headerProps` 传参（绝大多数页面用默认值即可）：
 
 ```astro
-const headerProps = {};                 // 用默认导航
-const headerProps = { variant: 'en' };  // 英文导航
+const headerProps = {};                                  // 中文导航（默认）
+const headerProps = { variant: 'en', hrefPrefix: '../' } // 英文导航（en/ 子目录）
 ```
 
-三个页面为特殊结构，**不**经过该组件（保持原样，勿手改）：
-`fuxiengine.html`、`tiangangame-bp.html`（header 嵌在 container 内）、`pricing.html`（自定义导航项）。
+### 中英文导航
+
+中英文两套导航条目在组件内以 `ZH_NAV` / `EN_NAV` 常量定义，**文案一一对应**：
+
+| 中文 | 英文 |
+|------|------|
+| 首页 | Home |
+| 深度分析 | Deep Analysis |
+| 商业案例 | Case Studies |
+| 关于我 &amp; 商业合作 | About Me &amp; Business |
+
+英文页位于 `src/pages/en/` 与 `src/pages/about-en.astro`，链接需带 `hrefPrefix: '../'`；
+第 4 项 About 指向同级 `about-en.html`（由 `aboutHref` 覆盖）。
+
+### 组件参数
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `variant` | `'zh'` | `'zh'` 中文导航 / `'en'` 英文导航 |
+| `brand` | `'GeekHeron'` | 品牌文字 |
+| `hrefPrefix` | `''` | 链接前缀，`en/` 下传 `'../'` |
+| `aboutHref` | `'about.html'` | 第 4 项 About 的链接 |
+| `tool` | `true` | 是否渲染右侧齿轮工具图标 |
+| `navItems` | `null` | 自定义导航项（传了就不看 variant） |
+| `__frozen` | `''` | 冻结页逃生舱，见下 |
+
+### 例外页面
+
+- `fuxiengine.html`、`tiangangame-bp.html`：header 嵌在 `<div class="container">` 内，
+  结构特殊，**不**经过组件（保持原样，勿手改）。
+- `pricing.html`：自定义导航项，走 `navItems` 传参。
+- `en/article-manufacturing-ai-ontology.html`：正文含 `<span></span><span></span><span></span>`
+  单行内联结构，无法通过回放校验。以 `__frozen="en-article-manufacturing-ai-ontology"`
+  在组件内输出逐字冻结模板（`FROZEN_EN_ONTOLOGY`），导航文案与其余英文页一致。
 
 ## 写一篇新文章
 

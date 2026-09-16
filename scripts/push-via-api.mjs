@@ -6,7 +6,13 @@
 //   3. create a commit whose parent is the current main head
 //   4. fast-forward/force-update refs/heads/main
 //
+// Files are selected by .gitignore (parsed at runtime), so local-only rollback
+// data such as .header-backup/ is never published. Because the tree is replaced
+// wholesale, anything present on the remote but absent locally WILL be deleted —
+// run with --dry-run and diff against the remote tree first.
+//
 // Usage: node scripts/push-via-api.mjs <owner> <repo> <branch> <token> [--dry-run]
+// Commit message: COMMIT_MESSAGE_FILE (path) > COMMIT_MESSAGE (env) > default.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,6 +27,19 @@ if (!owner || !repo || !branch || !token) {
   process.exit(1);
 }
 
+// Commit message: read _commit-msg.txt, else COMMIT_MESSAGE env, else default.
+const defaultMessage = 'chore: rebuild site (Astro, byte-identical output)';
+
+// Commit message resolution order: explicit file > env var > default.
+// Using a file avoids losing newlines to shell escaping.
+function readCommitMessage() {
+  if (process.env.COMMIT_MESSAGE_FILE) {
+    try { return readFileSync(process.env.COMMIT_MESSAGE_FILE, 'utf8').trim(); }
+    catch (e) { console.warn('could not read COMMIT_MESSAGE_FILE:', e.message); }
+  }
+  return process.env.COMMIT_MESSAGE || defaultMessage;
+}
+
 const API = 'https://api.github.com';
 const H = {
   Authorization: `Bearer ${token}`,
@@ -29,45 +48,58 @@ const H = {
   'Content-Type': 'application/json',
 };
 
-// Paths that must never be uploaded.
-// 注意：这里必须与 .gitignore 保持一致 —— 本脚本走 REST API，不经过 git，
-// 因此 .gitignore 不会自动生效。若只改 .gitignore 而忘了这里，被忽略的目录
-// （archive/ 原始金标准、.header-backup/ 回滚快照）仍会被推上公开仓库。
-const EXCLUDE_DIRS = new Set(['.git', 'node_modules', 'dist', '.astro', '.workbuddy', 'archive', '.header-backup']);
+// Paths that must never be uploaded. Kept in sync with .gitignore below —
+// the API push replaces the WHOLE tree, so any local-only artifact that slips
+// through here gets published to the repo (and would survive a `git status`
+// that reports it as ignored).
+const EXCLUDE_DIRS = new Set(['.git', 'node_modules', 'dist', '.astro', '.workbuddy', '.header-backup']);
 const EXCLUDE_FILES = new Set(['_push.log', '_install.log', '_build.log', '.DS_Store']);
 
-// 「仅根目录」排除清单。
-//
-// 背景：真正的仓库工作副本是 Desktop/DevLog-astro（347 个文件），而当前工作区
-// DevLog-main 是它的严格超集（388 个），多出的 41 个全部是**根目录下的冗余副本** ——
-// 早前扁平布局的遗留，与 public/ 下同名文件逐字节相同（已用 sha256 逐一核对）。
-// Astro 只把 public/ 当静态根，根目录这些副本不参与构建，推上去只会把仓库根目录弄乱。
-//
-// ⚠️ 必须在**根目录层级**判断，不能塞进 EXCLUDE_DIRS —— 那里的判断是任意层级，
-// 加上 'js'/'css'/'vendor' 会把 public/js、public/css、public/vendor 一起干掉。
-const EXCLUDE_ROOT = new Set([
-  'audio', 'css', 'js', 'vendor',
-  'style.css', 'script.js', 'site-nav.css', 'logo.png', 'CNAME',
-  'robots.txt', 'sitemap.xml', 'feed.xml', 'llms.txt',
-  '47380971981cb5db97c8a52d0d919fed.txt',
-  'InfoFlow AI.pdf', 'InfoFlow-AI.pdf',
-  'SellerCopilot-商业计划书.pdf', 'SellerCopilot商业计划书.pdf',
-  'SellerCopilot#U5546#U4e1a#U8ba1#U5212#U4e66.pdf',
-  'WhatApp.png', 'ads_inventory_card.png',
-  'feishu_card_screenshot.png', 'feishu_card_screenshot1.png',
-  'image_3.png', 'jijia_review_card.png', 'logistics_risk_card.png',
-  'telegram.png', 'wechat.png',
-]);
+// Parse .gitignore so the two lists can never drift apart silently.
+// Supports plain names, dir names, and * / ** globs; ignores negation and comments.
+function loadGitignore(base) {
+  let text;
+  try {
+    text = readFileSync(join(base, '.gitignore'), 'utf8');
+  } catch {
+    return [];
+  }
+  const rules = [];
+  for (let line of text.split('\n')) {
+    line = line.trim();
+    if (!line || line.startsWith('#') || line.startsWith('!')) continue;
+    const dirOnly = line.endsWith('/');
+    if (dirOnly) line = line.slice(0, -1);
+    const pattern = line
+      .replace(/[.+^${}()|[\]\\]/g, '\\$&')   // escape regex chars
+      .replace(/\*\*/g, '\u0000')             // protect **
+      .replace(/\*/g, '[^/]*')                // * => within one segment
+      .replace(/\u0000/g, '.*')               // ** => across segments
+      .replace(/\?/g, '[^/]');
+    rules.push({ re: new RegExp('^' + pattern + (dirOnly ? '(/|$)' : '$')), dirOnly, raw: line });
+  }
+  return rules;
+}
 
-function walk(dir, base, acc, isRoot) {
+const gitignoreRules = loadGitignore(root);
+
+function isIgnored(relPath, name) {
+  for (const rule of gitignoreRules) {
+    if (rule.re.test(relPath) || rule.re.test(name)) return true;
+  }
+  return false;
+}
+
+function walk(dir, base, acc) {
   for (const name of readdirSync(dir)) {
     if (EXCLUDE_DIRS.has(name)) continue;
     if (EXCLUDE_FILES.has(name)) continue;
-    if (isRoot && EXCLUDE_ROOT.has(name)) continue;
     const p = join(dir, name);
+    const rel = relative(base, p).replace(/\\/g, '/');
+    if (isIgnored(rel, name)) continue;
     const st = statSync(p);
-    if (st.isDirectory()) walk(p, base, acc, false);
-    else acc.push({ path: relative(base, p).replace(/\\/g, '/'), abs: p });
+    if (st.isDirectory()) walk(p, base, acc);
+    else acc.push({ path: rel, abs: p });
   }
   return acc;
 }
@@ -105,12 +137,12 @@ async function api(method, path, body, attempt = 1) {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 (async () => {
-  const files = walk(root, root, [], true);
+  const files = walk(root, root, []);
   console.log(`files to push: ${files.length}`);
 
   if (dryRun) {
-    console.log('DRY RUN — no writes performed. Sample paths:');
-    files.slice(0, 10).forEach((f) => console.log('  ' + f.path));
+    console.log('DRY RUN — no writes performed. All paths:');
+    files.forEach((f) => console.log('  ' + f.path));
     return;
   }
 
@@ -124,24 +156,35 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     console.log('no existing branch (will create):', e.status || e.message);
   }
 
-  // 2. upload blobs
-  const tree = [];
-  let i = 0;
-  for (const f of files) {
+  // 2. upload blobs — bounded concurrency. Uploading 300+ blobs serially with a
+  // deliberate delay exceeds the sandbox command timeout, so run CONC in flight
+  // and keep the per-request retry/backoff above for secondary rate limits.
+  const tree = new Array(files.length);
+  const CONC = 8;
+  let done = 0;
+  let next = 0;
+  async function uploadOne(idx) {
+    const f = files[idx];
     const buf = readFileSync(f.abs);
     const ext = f.path.slice(f.path.lastIndexOf('.')).toLowerCase();
-    let body;
-    if (BINARY_EXT.has(ext)) {
-      body = { content: buf.toString('base64'), encoding: 'base64' };
-    } else {
-      body = { content: buf.toString('utf-8'), encoding: 'utf-8' };
-    }
+    const body = BINARY_EXT.has(ext)
+      ? { content: buf.toString('base64'), encoding: 'base64' }
+      : { content: buf.toString('utf-8'), encoding: 'utf-8' };
     const blob = await api('POST', `/repos/${owner}/${repo}/git/blobs`, body);
-    tree.push({ path: f.path, mode: '100644', type: 'blob', sha: blob.sha });
-    i++;
-    if (i % 20 === 0) console.log(`  blobs: ${i}/${files.length}`);
-    await sleep(60); // be gentle with the proxy + secondary rate limits
+    tree[idx] = { path: f.path, mode: '100644', type: 'blob', sha: blob.sha };
+    done++;
+    if (done % 32 === 0 || done === files.length) {
+      console.log(`  blobs: ${done}/${files.length}`);
+    }
   }
+  await Promise.all(
+    Array.from({ length: CONC }, async () => {
+      while (next < files.length) {
+        const idx = next++;
+        await uploadOne(idx);
+      }
+    }),
+  );
   console.log(`uploaded ${tree.length} blobs`);
 
   // 3. build tree (no base_tree => replaces the whole tree)
@@ -150,7 +193,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   // 4. commit (carry old head as parent so history is preserved/force-able)
   const commit = await api('POST', `/repos/${owner}/${repo}/git/commits`, {
-    message: 'Rebuild site on Astro: byte-identical static output, componentized layout, GitHub Pages CI',
+    message: readCommitMessage(),
     tree: newTree.sha,
     parents: headSha ? [headSha] : [],
   });

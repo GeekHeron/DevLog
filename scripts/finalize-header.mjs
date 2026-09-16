@@ -66,7 +66,36 @@ function toLiteral(props) {
   return `{ ${parts.join(', ')} }`;
 }
 
-const bodies = fs.readdirSync(SRC).filter((f) => f.endsWith('.body.html')).sort();
+/** 生成 page shell 源码；保留原有 htmlProps（如英文页的 lang="en"） */
+function buildShell({ route, pagePath, props }) {
+  const depth = route.split('/').length - 1;
+  const prefix = '../'.repeat(depth + 1);
+  const oldShell = fs.readFileSync(pagePath, 'utf8');
+  const hp = oldShell.match(/const htmlProps = (\{[^}]*\});/);
+  const htmlPropsLit = hp ? hp[1] : '{ lang: "zh-CN" }';
+  return `---
+import BaseLayout from '${prefix}layouts/BaseLayout.astro';
+import head from '${prefix}sources/${route}.head.html?raw';
+import body from '${prefix}sources/${route}.body.html?raw';
+
+const headerProps = ${toLiteral(props)};
+const htmlProps = ${htmlPropsLit};
+---
+<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />
+`;
+}
+
+/** 递归列出 sources 下的 body 片段（相对路径，POSIX 分隔符）——含 en/ 子目录 */
+function listBodies(dir, base = '', acc = []) {
+  for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
+    const rel = base ? `${base}/${d.name}` : d.name;
+    if (d.isDirectory()) listBodies(path.join(dir, d.name), rel, acc);
+    else if (d.name.endsWith('.body.html')) acc.push(rel);
+  }
+  return acc;
+}
+
+const bodies = listBodies(SRC).sort();
 const report = { stripped: [], noMarker: [], missingShell: [] };
 const plan = [];
 
@@ -80,22 +109,7 @@ for (const f of bodies) {
   const newBody = text.slice(0, m.index) + text.slice(m.index + m[0].length);
   const pagePath = path.join(PAGES, route + '.astro');
   if (!fs.existsSync(pagePath)) { report.missingShell.push(route); continue; }
-  const depth = route.split('/').length - 1;
-  const prefix = '../'.repeat(depth + 1);
-  // 保留原有 htmlProps（如英文页的 lang="en"）
-  const oldShell = fs.readFileSync(pagePath, 'utf8');
-  const hp = oldShell.match(/const htmlProps = (\{[^}]*\});/);
-  const htmlPropsLit = hp ? hp[1] : '{ lang: "zh-CN" }';
-  const shell = `---
-import BaseLayout from '${prefix}layouts/BaseLayout.astro';
-import head from '${prefix}sources/${route}.head.html?raw';
-import body from '${prefix}sources/${route}.body.html?raw';
-
-const headerProps = ${toLiteral(props)};
-const htmlProps = ${htmlPropsLit};
----
-<BaseLayout htmlProps={htmlProps} head={head} body={body} headerProps={headerProps} />
-`;
+  const shell = buildShell({ route, pagePath, props });
   plan.push({ f, bodyPath, newBody, oldBody: text, pagePath, shell, props });
 }
 

@@ -36,6 +36,8 @@
     <button id="btn-sound" class="btn wide" aria-label="Toggle sound" aria-pressed="false">🔇 SOUND: OFF</button>
     <div id="deck-hint">1-4 VIEWS · C CINE · R ORBIT · P PARAMS · M SOUND · H HUD</div>
   </div>
+
+  <div id="hint">DRAG ORBIT · SCROLL/PINCH ZOOM · C CINEMATIC · M SOUND · 1-4 VIEWS · P PARAMS · H HUD</div>
 </div>
 
 <div id="params" class="hidden ctl">
@@ -44,6 +46,19 @@
     <button id="btn-reset" class="btn" aria-label="Reset all parameters">RESET</button>
   </div>
   <div id="p-rows"></div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<div id="fatal">
+  <div class="fatal-card">
+    <div class="fatal-title" id="fatal-title">SIGNAL LOST</div>
+    <div class="fatal-msg" id="fatal-msg"></div>
+    <div class="fatal-btns">
+      <button id="fatal-lower" class="btn">▼ LOWER QUALITY</button>
+      <button id="fatal-retry" class="btn">↻ RETRY</button>
+    </div>
+  </div>
 </div>
 
 <noscript><div style="position:fixed;inset:0;background:#000;color:#7fdcff;display:flex;align-items:center;justify-content:center;font-family:monospace;letter-spacing:.2em;">JAVASCRIPT REQUIRED</div></noscript>

@@ -92,6 +92,40 @@ const EN_LOGO_IMG_RE = /^([ \t]*<img src=")[^"]*(" alt="GeekHeron Logo"[^>]*>)$/
  *  · about-en.html（英文导航，但位于站点根，前缀为空）。 */
 const isEnNavUnified = (rel) => rel.startsWith('en/') || rel === 'about-en.html';
 
+// ── 有意变更：fuxiengine / tiangangame-bp 的 header 迁到组件 ──────
+// 需求：全站菜单栏统一为 SiteHeader 组件的唯一来源。
+// 这两页的 header 原先手写嵌在 <div class="container"> 内部（不在顶层），
+// 现改为与其它 81 页一样由组件在 <body> 顶层渲染。
+//
+// 相对归档有三处差异，全部为有意：
+//   1) header 区块从 .container 内**移到** <body> 顶层 → 位置变化（body 文本不同）
+//   2) 顶层元素的缩进规范化为 4 空格（原文是 8，且 </header> 缩进还错成 4）
+//   3) header 前导空行数由 1 行变为 2 行（组件 leadBlank=2 的约定）
+//
+// 仍按项目惯例用「减法」而非「整页放行」：
+// 把归档原文里的 header 整块抽出来（按 HTML 标签配对定位，不用行正则，
+// 因为这是多行元素且空行会互相干扰），再把剩下的部分与构建产物比对。
+// 注意构建产物一侧也要做同样的抽除 —— 因为 header 现在也还在 body 里，
+// 只是位置和缩进不同。两侧都抽掉后，正文必须逐字节一致。
+const HEADER_RELOCATED = new Set(['fuxiengine.html', 'tiangangame-bp.html']);
+
+/** 按标签配对找到 <header class="site-header"> … </header> 的字节区间。
+ *  header 内部不会嵌套 header，故简单的 indexOf 配对即可（已断言两处出现各一次）。 */
+function cutSiteHeader(src) {
+  const open = src.indexOf('<header class="site-header">');
+  if (open < 0) return { out: src, cut: 0 };
+  const close = src.indexOf('</header>', open);
+  if (close < 0) return { out: src, cut: 0 };
+  let end = close + '</header>'.length;
+  // 连同该行行首缩进一起吃掉
+  const lineStart = src.lastIndexOf('\n', open) + 1;
+  let s = lineStart;
+  // 连同其后的换行一起吃掉（保留一个 \n，别把相邻块粘死）
+  while (end < src.length && (src[end] === '\r' || src[end] === '\n')) end++;
+  return { out: src.slice(0, s) + src.slice(end), cut: 1 };
+}
+
+
 /** 对英文页剥离「导航行 + 语言切换行 + logo 链接值」——即把整段导航视为有意变更
  *  注意：带 /g 的正则对象在 match / replace 之间会保留 lastIndex，跨页面复用会
  *  污染状态（曾导致 25 个页面被误判）。这里统一用「每次新建正则」的写法。 */
@@ -128,6 +162,7 @@ const improved = [];
 const navChanged = [];
 const clockChanged = [];
 const enNavUnified = [];
+const headerRelocated = [];
 
 for (const af of archiveFiles) {
   let rel = relative(archive, af).replace(/\\/g, '/'); // e.g. en/article-agent.html
@@ -178,14 +213,28 @@ for (const af of archiveFiles) {
   const reBody = /<body[^>]*>([\s\S]*?)<\/body>/i;
   const reHtml = /<html([^>]*)>/i;
 
-  const oHead = (orig.match(reHead) || [])[1] || '';
-  const bHead = (built.match(reHead) || [])[1] || '';
+  // 归档侧：这两页的 header 位置/缩进与构建产物不同（有意迁到组件），
+  // 比对正文时两侧都抽掉 header 区块，其余部分仍要求逐字节一致。
+  let origCmp = orig;
+  let builtCmp0 = built;
+  let headerRelocatedHit = 0;
+  if (HEADER_RELOCATED.has(rel)) {
+    const a = cutSiteHeader(origCmp);
+    origCmp = a.out;
+    headerRelocatedHit = a.cut;
+  }
+
+  const oHead = (origCmp.match(reHead) || [])[1] || '';
+  const bHead = (builtCmp0.match(reHead) || [])[1] || '';
   // 注意：构建产物一侧也要做同样的「导航归一化」，否则归档的 /index.html 与构建的
   // ../index.html 会被误判为差异 —— 这个差异正是本次有意变更本身。
-  const builtNorm = isEnNavUnified(rel) ? stripEnNav(built, rel).out : built;
-  const oBody = (orig.match(reBody) || [])[1] || '';
+  let builtNorm = isEnNavUnified(rel) ? stripEnNav(builtCmp0, rel).out : builtCmp0;
+  if (HEADER_RELOCATED.has(rel)) {
+    builtNorm = cutSiteHeader(builtNorm).out;
+  }
+  const oBody = (origCmp.match(reBody) || [])[1] || '';
   const bBody = (builtNorm.match(reBody) || [])[1] || '';
-  const oHtml = (orig.match(reHtml) || [])[1] || '';
+  const oHtml = (origCmp.match(reHtml) || [])[1] || '';
   const bHtml = (builtNorm.match(reHtml) || [])[1] || '';
 
   const ok =
@@ -198,6 +247,7 @@ for (const af of archiveFiles) {
     if (strippedCount > 0) navChanged.push(rel);
     if (clockStripped > 0) clockChanged.push(rel);
     if (enNavStripped > 0) enNavUnified.push(`${rel}（${enNavStripped} 行）`);
+    if (headerRelocatedHit > 0) headerRelocated.push(rel);
   } else if (
     KNOWN_HEAD_IMPROVED[rel] &&
     oHtml.trim() === bHtml.trim()
@@ -233,5 +283,9 @@ if (clockChanged.length) {
 if (enNavUnified.length) {
   console.log(`English navigation intentionally unified ${enNavUnified.length} page(s):`);
   console.log('  - pages below match the archive EXACTLY once all <li> nav rows + the lang button are discounted');
+}
+if (headerRelocated.length) {
+  console.log(`Header intentionally relocated into SiteHeader ${headerRelocated.length} page(s):`);
+  console.log('  - pages below match the archive EXACTLY once the <header class="site-header"> block is discounted on both sides');
 }
 for (const f of failures) console.log(' -', f);

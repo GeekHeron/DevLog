@@ -6,6 +6,8 @@ archive/
 
 # 抽取 header 组件时的原始正文快照，仅用于本地回滚，不属于源码
 .header-backup/
+# 把 fuxiengine / tiangangame-bp 的 header 迁到组件时的回滚快照
+.header-backup2/
 
 # push-via-api.mjs 的提交信息临时文件
 _commit-msg.txt

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>导航栏布局修复对照 — DevLog</title>
+<link rel="stylesheet" href="site-nav.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#0b0d12;color:#e6e8ec;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 30px 80px;}
+  h2{font-size:20px;font-weight:600;margin:40px 0 8px;}
+  h2:first-of-type{margin-top:16px;}
+  .note{font-size:13px;color:#9aa1ad;line-height:1.7;margin:0 0 18px;}
+  .panel{border:1px solid #2a2f3a;border-radius:14px;overflow:hidden;margin-bottom:8px;background:#0f1115;}
+  .cap{font-size:12px;color:#9aa1ad;padding:9px 14px;border-bottom:1px solid #2a2f3a;background:#171a21;display:flex;justify-content:space-between;align-items:center;}
+  .cap b{color:#e6e8ec;font-weight:600;}
+  .tag{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid #2a2f3a;color:#9aa1ad;}
+  .tag.old{border-color:#7f1d1d;color:#f09595;}
+  .tag.new{border-color:#14532d;color:#86efac;}
+  .stage{padding:0;background:#05070a;position:relative;}
+  /* 模拟 header 的两种状态 */
+  .sim{position:relative;display:flex;flex-direction:row;justify-content:space-between;align-items:center;
+        font-size:14px;font-weight:700;text-transform:uppercase;
+        background:rgba(0,0,0,0.2);backdrop-filter:blur(2px);}
+  .sim .logo{display:flex;align-items:center;gap:15px;flex:0 0 auto;color:#fff;text-decoration:none;}
+  .sim .logo .mark{width:30px;height:27px;border-radius:4px;background:linear-gradient(135deg,#378ADD,#1D9E75);box-shadow:0 0 10px rgba(0,150,255,0.3);}
+  .sim .logo span{font-size:18px;letter-spacing:4px;font-weight:800;}
+  .sim nav{display:flex;align-items:center;margin-left:auto;flex:0 0 auto;}
+  .sim nav ul{display:flex;list-style:none;gap:30px;margin:0;padding:0;}
+  .sim nav ul li a{margin-left:0;font-size:13px;letter-spacing:1px;font-weight:600;color:#fff;text-decoration:none;}
+  .ruler{height:22px;position:relative;background:repeating-linear-gradient(90deg,#2a2f3a 0 1px,transparent 1px 10px);border-top:1px solid #2a2f3a;}
+  .ruler .lbl{position:absolute;top:3px;font-size:11px;color:#9aa1ad;font-family:ui-monospace,monospace;background:#0f1115;padding:0 5px;}
+  .gapband{position:absolute;top:0;bottom:0;background:rgba(226,75,74,0.18);border-left:1px solid #E24B4A;border-right:1px solid #E24B4A;}
+  .gapband.good{background:rgba(29,158,117,0.18);border-color:#5DCAA5;}
+  .layout{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  @media (max-width:900px){.layout{grid-template-columns:1fr;}}
+  code{font-family:ui-monospace,monospace;font-size:12px;background:#171a21;border:1px solid #2a2f3a;border-radius:5px;padding:1px 6px;color:#85B7EB;}
+  pre{background:#0d1017;border:1px solid #2a2f3a;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:ui-monospace,monospace;font-size:12px;line-height:1.7;color:#c9d1d9;margin:0;}
+  pre .add{color:#86efac;}
+  pre .del{color:#f09595;}
+  pre .cmt{color:#6b7280;}
+</style>
+</head>
+<body class="preview-page">
+<div class="wrap">
+
+  <h2>导航栏布局修复对照</h2>
+  <p class="note">改动只落在 <code>public/site-nav.css</code> 一个文件 —— 全站 83 个带导航的页面共用它。以下是菜单相对右边缘的实际位置对比（下方面板即真实渲染的 header）。</p>
+
+  <div class="layout">
+    <div>
+      <div class="panel">
+        <div class="cap"><b>修复前</b><span class="tag old">右侧 50px</span></div>
+        <div class="stage">
+          <div class="sim" style="padding:20px 50px;">
+            <a class="logo" href="#"><span class="mark"></span><span>GEEKHERON</span></a>
+            <nav><ul>
+              <li><a href="#">首页</a></li><li><a href="#">深度分析</a></li>
+              <li><a href="#">商业案例</a></li><li><a href="#">关于我 &amp; 商业合作</a></li>
+            </ul></nav>
+          </div>
+        </div>
+        <div class="ruler">
+          <div class="gapband" style="right:0;width:50px;"></div>
+          <span class="lbl" style="right:56px;">← 50px →</span>
+        </div>
+      </div>
+      <p class="note" style="margin-top:10px;font-size:12px;">padding <code>20px 50px</code>：左右都让 50px，菜单离右边缘较远。</p>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="cap"><b>修复后</b><span class="tag new">右侧 24px</span></div>
+        <div class="stage">
+          <div class="sim" style="padding:20px 24px 20px 50px;">
+            <a class="logo" href="#"><span class="mark"></span><span>GEEKHERON</span></a>
+            <nav><ul>
+              <li><a href="#">首页</a></li><li><a href="#">深度分析</a></li>
+              <li><a href="#">商业案例</a></li><li><a href="#">关于我 &amp; 商业合作</a></li>
+            </ul></nav>
+          </div>
+        </div>
+        <div class="ruler">
+          <div class="gapband good" style="right:0;width:24px;"></div>
+          <span class="lbl" style="right:30px;">← 24px →</span>
+        </div>
+      </div>
+      <p class="note" style="margin-top:10px;font-size:12px;">padding <code>20px 24px 20px 50px</code>：左侧 logo 起点不变，右侧收窄到 24px。</p>
+    </div>
+  </div>
+
+  <h2>实际改动</h2>
+  <p class="note">共 3 处，全部在 <code>public/site-nav.css</code>。远端提交 <code>8f20d39</code> 只含这一个文件（+17 / −1）。</p>
+  <pre><span class="cmt">/* 1) 新增：nav 自身成为 flex 容器并顶到最右 */</span>
+<span class="add">+ header.site-header nav,
++ header.site-header .nav-links {
++     display: flex;
++     align-items: center;
++     margin-left: auto;
++     flex: 0 0 auto;
++ }</span>
+
+<span class="cmt">/* 2) 右侧内边距收窄 50px -> 24px */</span>
+  header.site-header {
+<span class="del">-     padding: 20px 50px;</span>
+<span class="add">+     padding: 20px 24px 20px 50px;</span>
+  }
+
+<span class="cmt">/* 3) 移动端抽屉内抵消桌面规则（必须） */</span>
+  @media (max-width: 768px) {
+      header.site-header nav {
+          position: fixed; /* 全屏浮层 */
+<span class="add">+         margin-left: 0;
++         flex: 0 0 auto;</span>
+      }
+  }</pre>
+
+  <h2>为什么改一个文件就够</h2>
+  <p class="note">
+    <b>1. 公共表在同等特异性下稳定胜出。</b>遍历 86 个构建产物确认：<b>82 / 82</b> 页的内联 <code>&lt;style&gt;</code> 都排在 <code>site-nav.css</code> 之后被解析 —— 也就是公共表后加载。所以新规则能覆盖全站 7 种内联变体，无需逐页改动。<br>
+    <b>2. 原来的不一致有 7 种来源。</b>按顶层规则把 84 页分桶，得到 7 种布局签名：26 页 <code>.nav-links{display:flex}</code>、25 页只有 <code>.logo</code>、15 页多一条 <code>header{}</code>、9 页 padding 是 <code>30px 50px</code>、7 页完全没有顶层规则、另加 2 个单页变体。差异集中在 <b>padding 与是否声明 <code>.nav-links</code></b>，<b>不是</b> DOM 结构 —— 所有页面的 header 标记完全一致。<br>
+    <b>3. 「菜单在右上角」本来就是设计。</b>桌面端汉堡按钮 <code>display:none</code>，header 只剩 logo 与 nav 两个可见子项，<code>justify-content: space-between</code> 必然把 nav 顶到右边。本次做的是让这个「右」在全站一致，并且真正贴近边缘。
+  </p>
+
+  <h2>验证结果</h2>
+  <p class="note">
+    · <code>astro build</code> → 84 页构建成功。<br>
+    · 构建前后逐字节 diff：<b>0 个 HTML 被修改</b>（改动只在独立的 CSS 文件，未触及任何页面）。<br>
+    · <code>verify.mjs</code> → <b>Checked 90 pages | passed 90 | failed 0</b>，四条既有「有意变更」登记不变。<br>
+    · GitHub Pages 部署 <code>8f20d39</code> → <b>success</b>；<code>https://geekheron.space/site-nav.css</code> 与本地 <code>dist/</code> <b>逐字节一致</b>（4900 bytes）。<br>
+    · 范围：<code>image-compressor.html</code> 是无导航的独立工具页，有效范围 <b>83 页</b>。
+  </p>
+
+</div>
+</body>
+</html>

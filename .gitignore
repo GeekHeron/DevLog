@@ -6,3 +6,7 @@ archive/
 
 # 抽取 header 组件时的原始正文快照，仅用于本地回滚，不属于源码
 .header-backup/
+
+# push-via-api.mjs 的提交信息临时文件
+_commit-msg.txt
+_push.log

@@ -13,8 +13,7 @@
     "extract-header": "node scripts/apply-header-extraction.mjs"
   },
   "dependencies": {
-    "astro": "^4.16.0",
-    "geekheron-site": "file:../DevLog-main"
+    "astro": "^4.16.0"
   },
   "overrides": {
     "sharp": "file:./.stubs/sharp"

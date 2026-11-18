@@ -5,13 +5,22 @@
     <link>https://geekheron.space/</link>
     <description>GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 09 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 18 Nov 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geekheron.space/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://geekheron.space/logo.png</url>
       <title>GeekHeron DevLog</title>
       <link>https://geekheron.space/</link>
     </image>
+
+    <item>
+      <title>我们离真正的具身智能，到底还有多远？</title>
+      <link>https://geekheron.space/article-embodied-world-model.html</link>
+      <description>量产工业机器人仍是预编程自动化设备，不是具身智能。真正的具身智能需要大模型拆解目标、世界模型做物理校验，形成双向闭环；数据、长时序误差、端侧算力与工业安全是横在眼前的四道硬门槛。</description>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-embodied-world-model.html</guid>
+      <category>FRONTIER</category>
+    </item>
 
     <item>
       <title>制造业 AI 落地架构：别急着上 LangChain，先建好"企业数据能力层"</title>

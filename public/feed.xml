@@ -5,13 +5,22 @@
     <link>https://geekheron.space/</link>
     <description>GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 18 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Nov 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geekheron.space/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://geekheron.space/logo.png</url>
       <title>GeekHeron DevLog</title>
       <link>https://geekheron.space/</link>
     </image>
+
+    <item>
+      <title>AGI能否跨越世界模型，直接实现具身智能？</title>
+      <link>https://geekheron.space/article-agi-beyond-world-model.html</link>
+      <description>世界模型不一定是具身智能的前置条件，也可能是持续感知与交互中逐渐形成的结果。从实时感知、持续学习、隐式物理认知三个角度，重新思考通向具身 AGI 的路径。</description>
+      <pubDate>Thu, 19 Nov 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-agi-beyond-world-model.html</guid>
+      <category>FRONTIER</category>
+    </item>
 
     <item>
       <title>我们离真正的具身智能，到底还有多远？</title>

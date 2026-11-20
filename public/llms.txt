@@ -12,6 +12,7 @@
 
 ## 技术文章
 
+- [从「用 AI」到「与 AI 协同」：一套可落地的企业组织生产力升级方法论](https://geekheron.space/article-enterprise-ai-productivity.html): 一核、三重构、五步法、四个闭环的方法论体系，配套 90 天行动计划、场景价值评分与 ROI 模型，把 AI 转化为可衡量的经营成果
 - [DCAI：一种面向持续学习与自主结构演化的动态认知自适应智能架构](https://geekheron.space/article-dcai-architecture.html): 动态神经计算、局部自主学习、层级世界模型、持续记忆与全局认知协调五大系统，探索计算结构本身成为持续学习对象的理论框架
 - [AGI距离真正的人类智能，还缺少什么？](https://geekheron.space/article-agi-human-intelligence.html): 从经验积累、想象力、好奇心与自我认知出发，理解通向人类级智能的持续进化认知闭环
 - [AGI能否跨越世界模型，直接实现具身智能？](https://geekheron.space/article-agi-beyond-world-model.html): 从实时感知与持续学习出发，探讨世界模型作为交互演化结果而非前置模块的具身 AGI 路径

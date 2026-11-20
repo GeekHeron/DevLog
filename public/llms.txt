@@ -8,7 +8,6 @@
 
 - [关于我 & 业务合作](https://geekheron.space/about.html): GeekHeron 的技术背景、服务内容与真实项目案例
 - [About (English)](https://geekheron.space/about-en.html): English version of the about page
-- [商业案例](https://geekheron.space/works.html): AI Agent、跨境电商自动化、企业系统集成等真实落地项目
 - [获取伏羲引擎源码](https://geekheron.space/pricing.html): 伏羲引擎（Fuxi Engine）授权方案与合作方式
 
 ## 技术文章

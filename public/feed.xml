@@ -5,13 +5,22 @@
     <link>https://geekheron.space/</link>
     <description>GeekHeron 专注 AI 自动化系统交付，从 Agent Workflow、企业系统集成到私有化部署，帮助企业构建真正可运行、可维护、可持续演进的 AI 工作流。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 19 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Nov 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geekheron.space/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://geekheron.space/logo.png</url>
       <title>GeekHeron DevLog</title>
       <link>https://geekheron.space/</link>
     </image>
+
+    <item>
+      <title>DCAI：一种面向持续学习与自主结构演化的动态认知自适应智能架构</title>
+      <link>https://geekheron.space/article-dcai-architecture.html</link>
+      <description>提出 DCAI 动态认知自适应智能架构：以动态神经计算、局部自主学习、层级世界模型、持续记忆和全局认知协调为核心，探索持续学习与自主结构演化的统一认知计算框架。</description>
+      <pubDate>Fri, 20 Nov 2026 00:00:00 +0000</pubDate>
+      <guid>https://geekheron.space/article-dcai-architecture.html</guid>
+      <category>FRONTIER</category>
+    </item>
 
     <item>
       <title>AGI距离真正的人类智能，还缺少什么？</title>

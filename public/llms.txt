@@ -13,6 +13,7 @@
 
 ## 技术文章
 
+- [DCAI：一种面向持续学习与自主结构演化的动态认知自适应智能架构](https://geekheron.space/article-dcai-architecture.html): 动态神经计算、局部自主学习、层级世界模型、持续记忆与全局认知协调五大系统，探索计算结构本身成为持续学习对象的理论框架
 - [AGI距离真正的人类智能，还缺少什么？](https://geekheron.space/article-agi-human-intelligence.html): 从经验积累、想象力、好奇心与自我认知出发，理解通向人类级智能的持续进化认知闭环
 - [AGI能否跨越世界模型，直接实现具身智能？](https://geekheron.space/article-agi-beyond-world-model.html): 从实时感知与持续学习出发，探讨世界模型作为交互演化结果而非前置模块的具身 AGI 路径
 - [我们离真正的具身智能，到底还有多远？](https://geekheron.space/article-embodied-world-model.html): 大模型与世界模型的双向闭环，以及数据、长时序误差、端侧算力、工业安全四道落地门槛

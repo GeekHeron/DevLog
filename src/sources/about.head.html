@@ -47,33 +47,23 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "支持私有化部署吗？",
-          "acceptedAnswer": { "@type": "Answer", "text": "支持。可部署到企业服务器、云服务器或本地网络环境，业务数据不经过第三方平台。" }
+          "name": "AI Agent 和普通 ChatGPT 有什么区别？",
+          "acceptedAnswer": { "@type": "Answer", "text": "普通 AI 主要负责回答问题。企业 AI Agent 可以连接企业内部数据、理解业务规则、调用系统工具执行任务、自动生成报告、触发审批流程，构建可以执行工作的系统。" }
         },
         {
           "@type": "Question",
-          "name": "需要更换 ERP 吗？",
-          "acceptedAnswer": { "@type": "Answer", "text": "不需要。优先与现有 ERP、飞书、企业微信等系统集成，减少业务改造成本。" }
+          "name": "数据比较分散，还能接入 AI 吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "可以。企业通常都是 ERP、CRM、Excel、飞书、数据库等多个系统并存。先做数据接入、清洗治理、业务建模，再落到 AI 应用，不要求一开始拥有完美数据。" }
         },
         {
           "@type": "Question",
-          "name": "交付周期多久？",
-          "acceptedAnswer": { "@type": "Answer", "text": "根据项目复杂度，一般 2～8 周。需求确认后会提供阶段性交付计划。" }
+          "name": "企业数据会不会泄露？",
+          "acceptedAnswer": { "@type": "Answer", "text": "支持私有化部署、企业服务器部署、本地模型部署与权限控制，核心业务数据可以不经过第三方公共平台。" }
         },
         {
           "@type": "Question",
-          "name": "是否签 NDA？",
-          "acceptedAnswer": { "@type": "Answer", "text": "支持。涉及商业数据或业务流程的项目，可签署保密协议。" }
-        },
-        {
-          "@type": "Question",
-          "name": "是否提供售后？",
-          "acceptedAnswer": { "@type": "Answer", "text": "提供部署支持、Bug 修复及按约定的维护服务，可根据项目提供长期技术支持。" }
-        },
-        {
-          "@type": "Question",
-          "name": "如何收费？",
-          "acceptedAnswer": { "@type": "Answer", "text": "根据需求复杂度、系统规模及交付内容评估报价，可通过页面联系方式沟通具体场景。" }
+          "name": "为什么不直接购买 SaaS 软件？",
+          "acceptedAnswer": { "@type": "Answer", "text": "SaaS 解决通用需求，但企业实际流程存在大量个性化。企业 AI 落地需要结合现有系统，而不是再增加一个孤立工具。" }
         }
       ]
     }
@@ -783,7 +773,6 @@
             /* 移动端：flow-wrap SVG溢出隐藏 */
             .flow-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
             
-            /* 移动端：合作流程标签间距 */
             .section-block .flex-wrap-tags { gap: 6px; }
             
             /* 移动端：section 09 服务卡片紧凑 */

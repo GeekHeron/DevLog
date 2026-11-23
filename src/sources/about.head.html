@@ -440,7 +440,7 @@
             font-size: 12px; color: var(--text-muted); margin-top: 16px; line-height: 1.7;
         }
 
-        /* 分层架构图（卡片式，宽屏三列 / 窄屏自动堆叠） */
+        /* Layered architecture — grouped bands + clear arrows */
         .arch-diagram {
             margin: 8px 0 20px;
             padding: 22px;
@@ -448,7 +448,7 @@
             border-radius: 10px;
             background: rgba(255,255,255,0.015);
         }
-        .arch-title-block { text-align: center; margin-bottom: 22px; }
+        .arch-title-block { text-align: center; margin-bottom: 24px; }
         .arch-kicker {
             font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             font-size: 10px; letter-spacing: 2px; color: var(--gold); margin-bottom: 6px;
@@ -456,47 +456,76 @@
         .arch-title-main { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
         .arch-title-sub { font-size: 11px; color: #777; line-height: 1.6; }
 
+        /* Group bands */
+        .arch-group { --gc: #666; --gb: rgba(255,255,255,0.02); }
+        .arch-group--app  { --gc: #7aa2f7; --gb: rgba(122,162,247,0.06); }
+        .arch-group--core { --gc: #ffd700; --gb: rgba(255,215,0,0.05); }
+        .arch-group--cap  { --gc: #9d7cd8; --gb: rgba(157,124,216,0.06); }
+        .arch-group--data { --gc: #4ec9b0; --gb: rgba(78,201,176,0.06); }
+        .arch-group-label {
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--gc);
+            border-radius: 0 4px 4px 0;
+            background: var(--gb);
+            color: var(--gc);
+            font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+        }
+        .arch-group-label em {
+            font-style: normal; font-weight: 400; font-size: 10px;
+            letter-spacing: 1px; opacity: 0.65;
+        }
+        .arch-group-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--gc); flex-shrink: 0;
+        }
+
+        /* Tier card with colored left edge = its group */
         .arch-tier {
             display: flex; align-items: center; gap: 14px;
             padding: 13px 16px;
-            border: 1px solid #333;
-            border-radius: 8px;
+            border: 1px solid #2f2f2f;
+            border-left: 3px solid var(--gc, #555);
+            border-radius: 0 8px 8px 0;
             background: rgba(255,255,255,0.03);
         }
-        .arch-tier--gold { border-color: rgba(255,215,0,0.32); background: rgba(255,215,0,0.05); }
-        .arch-tier--soft { border-style: dashed; border-color: #2c2c2c; }
-        .arch-tier-num {
+        .arch-tier--gold { background: rgba(255,215,0,0.05); border-color: rgba(255,215,0,0.16); border-left-color: var(--gold); }
+        .arch-num {
             flex-shrink: 0;
             width: 30px; height: 30px;
             display: flex; align-items: center; justify-content: center;
-            border: 1px solid #444; border-radius: 50%;
-            color: #999; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            border: 1px solid var(--gc, #444); border-radius: 50%;
+            color: var(--gc, #999);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             font-size: 11px; font-weight: 700;
         }
-        .arch-tier--gold .arch-tier-num { color: var(--gold); border-color: rgba(255,215,0,0.45); }
         .arch-tier-body { flex: 1; min-width: 0; }
         .arch-tier-body strong { display: block; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px; }
         .arch-tier-body span { display: block; font-size: 12px; color: #888; line-height: 1.5; }
-        .arch-tier-tag {
+        .arch-badge {
             flex-shrink: 0;
-            font-size: 10px; letter-spacing: 1px; color: #777;
-            border: 1px solid #333; border-radius: 20px; padding: 3px 10px;
+            font-size: 10px; letter-spacing: 1px; color: var(--gold);
+            border: 1px solid rgba(255,215,0,0.4); border-radius: 20px; padding: 3px 10px;
         }
-        .arch-tier-tag--gold { color: var(--gold); border-color: rgba(255,215,0,0.4); }
 
-        .arch-link {
-            position: relative;
-            height: 26px;
-            display: flex; align-items: center; justify-content: center;
+        /* Clear downward arrow between layers */
+        .arch-arrow { position: relative; height: 32px; display: flex; align-items: center; justify-content: center; }
+        .arch-arrow::before {
+            content: ''; position: absolute; left: 50%; top: 0; bottom: 7px;
+            width: 2px; background: linear-gradient(#444, #777);
         }
-        .arch-link::before {
-            content: ''; position: absolute; top: 0; bottom: 0; left: 50%;
-            width: 1px; background: #333;
+        .arch-arrow::after {
+            content: ''; position: absolute; left: 50%; bottom: 5px;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #888;
         }
-        .arch-link span {
-            position: relative;
-            font-size: 10px; letter-spacing: 1px; color: #666;
-            background: #000; padding: 4px 10px;
+        .arch-arrow span {
+            position: relative; z-index: 1;
+            font-size: 10px; letter-spacing: 1px; color: #999;
+            background: #050505; padding: 3px 10px; border: 1px solid #2a2a2a; border-radius: 10px;
         }
 
         .arch-triad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -514,7 +543,7 @@
             .arch-tier { padding: 11px 12px; gap: 10px; }
             .arch-tier-body strong { font-size: 13px; }
             .arch-tier-body span { font-size: 11px; }
-            .arch-tier-tag { display: none; }
+            .arch-badge { display: none; }
             .arch-triad { grid-template-columns: 1fr; }
         }
 

@@ -141,59 +141,67 @@
                         The methodology needs a stable technical foundation to land: the data governance layer comes before the knowledge layer; tools and MCP come before reliable Agent execution.
                     </p>
                 </div>
-                <div class="arch-diagram">
+                                <div class="arch-diagram">
                     <div class="arch-title-block">
                         <div class="arch-kicker">TECH FOUNDATION</div>
                         <div class="arch-title-main">Enterprise AI Layered Architecture</div>
-                        <div class="arch-title-sub">Bottom-up: Sources → Governance → Knowledge → Tools → Agents → Interface</div>
+                        <div class="arch-title-sub">Each layer calls the one below; data flows upward — from sources to decisions</div>
                     </div>
 
-                    <div class="arch-tier arch-tier--soft">
-                        <div class="arch-tier-num">01</div>
-                        <div class="arch-tier-body"><strong>User Interface</strong><span>Web Dashboard · Feishu Cards · Telegram Bot</span></div>
-                        <div class="arch-tier-tag">REACH</div>
+                    <div class="arch-group arch-group--app">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>Application <em>APPLICATION</em></div>
+                        <div class="arch-tier">
+                            <span class="arch-num">01</span>
+                            <div class="arch-tier-body"><strong>User Interface</strong><span>Web Dashboard · Feishu Cards · Telegram Bot</span></div>
+                        </div>
                     </div>
-                    <div class="arch-link"><span>USE</span></div>
 
-                    <div class="arch-tier arch-tier--gold">
-                        <div class="arch-tier-num">02</div>
-                        <div class="arch-tier-body"><strong>Agent Orchestration</strong><span>Multi-Agent Orchestration · Task Routing · State Management</span></div>
-                        <div class="arch-tier-tag arch-tier-tag--gold">CORE</div>
+                    <div class="arch-arrow"><span>USE</span></div>
+
+                    <div class="arch-group arch-group--core">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>Intelligence <em>INTELLIGENCE</em></div>
+                        <div class="arch-tier arch-tier--gold">
+                            <span class="arch-num">02</span>
+                            <div class="arch-tier-body"><strong>Agent Orchestration</strong><span>Multi-Agent Orchestration · Task Routing · State Management</span></div>
+                            <span class="arch-badge">CORE</span>
+                        </div>
+                        <div class="arch-arrow"><span>ORCHESTRATE</span></div>
+                        <div class="arch-tier arch-tier--gold">
+                            <span class="arch-num">03</span>
+                            <div class="arch-tier-body"><strong>Tool / MCP Layer</strong><span>Tool Registry · MCP Protocol · API Gateway</span></div>
+                        </div>
+                        <div class="arch-arrow"><span>RETRIEVE</span></div>
+                        <div class="arch-tier arch-tier--gold">
+                            <span class="arch-num">04</span>
+                            <div class="arch-tier-body"><strong>Knowledge Layer</strong><span>RAG · Vector DB · Knowledge Graph · Business Ontology</span></div>
+                            <span class="arch-badge">SEMANTIC</span>
+                        </div>
                     </div>
-                    <div class="arch-link"><span>ORCHESTRATE</span></div>
 
-                    <div class="arch-tier">
-                        <div class="arch-tier-num">03</div>
-                        <div class="arch-tier-body"><strong>Tool / MCP Layer</strong><span>Tool Registry · MCP Protocol · API Gateway</span></div>
-                        <div class="arch-tier-tag">EXECUTE</div>
+                    <div class="arch-arrow"><span>AGGREGATE</span></div>
+
+                    <div class="arch-group arch-group--cap">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>Capability <em>CAPABILITY</em></div>
+                        <div class="arch-triad">
+                            <div class="arch-triad-item"><strong>Tool / API</strong><span>ERP · CRM · Feishu · E-commerce</span></div>
+                            <div class="arch-triad-item"><strong>Knowledge Base</strong><span>Docs · Manuals · Cases</span></div>
+                            <div class="arch-triad-item"><strong>External Data</strong><span>Crawlers · 3rd-party APIs · Competitor watch</span></div>
+                        </div>
                     </div>
-                    <div class="arch-link"><span>RETRIEVE</span></div>
 
-                    <div class="arch-tier arch-tier--gold">
-                        <div class="arch-tier-num">04</div>
-                        <div class="arch-tier-body"><strong>Knowledge Layer</strong><span>RAG · Vector DB · Knowledge Graph · Business Ontology</span></div>
-                        <div class="arch-tier-tag arch-tier-tag--gold">SEMANTIC</div>
-                    </div>
-                    <div class="arch-link"><span>AGGREGATE</span></div>
+                    <div class="arch-arrow"><span>DEPENDS ON</span></div>
 
-                    <div class="arch-triad">
-                        <div class="arch-triad-item"><strong>Tool / API</strong><span>ERP · CRM · Feishu · E-commerce</span></div>
-                        <div class="arch-triad-item"><strong>Knowledge Base</strong><span>Docs · Manuals · Cases</span></div>
-                        <div class="arch-triad-item"><strong>External Data</strong><span>Crawlers · 3rd-party APIs · Competitor watch</span></div>
-                    </div>
-                    <div class="arch-link"><span>DEPEND</span></div>
-
-                    <div class="arch-tier">
-                        <div class="arch-tier-num">05</div>
-                        <div class="arch-tier-body"><strong>Data Governance</strong><span>Cleansing · Standardization · Metric alignment · Update strategy</span></div>
-                        <div class="arch-tier-tag">GOVERN</div>
-                    </div>
-                    <div class="arch-link"><span>INGEST</span></div>
-
-                    <div class="arch-tier arch-tier--soft">
-                        <div class="arch-tier-num">06</div>
-                        <div class="arch-tier-body"><strong>Data Sources</strong><span>ERP · CRM · E-commerce · Logs · Files · Databases</span></div>
-                        <div class="arch-tier-tag">BASE</div>
+                    <div class="arch-group arch-group--data">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>Data <em>DATA</em></div>
+                        <div class="arch-tier">
+                            <span class="arch-num">05</span>
+                            <div class="arch-tier-body"><strong>Data Governance</strong><span>Cleansing · Standardization · Metric alignment · Update strategy</span></div>
+                        </div>
+                        <div class="arch-arrow"><span>INGEST</span></div>
+                        <div class="arch-tier">
+                            <span class="arch-num">06</span>
+                            <div class="arch-tier-body"><strong>Data Sources</strong><span>ERP · CRM · E-commerce · Logs · Files · Databases</span></div>
+                        </div>
                     </div>
                 </div>
                 <p class="flow-caption">Data ingestion, governance, knowledge management, tool integration, Agent orchestration, and user interface — the full pipeline from data to decision.</p>

@@ -194,59 +194,67 @@
                         方法论要落地，需要一套稳定的技术底座：先有数据治理，才有知识与本体；先有工具与 MCP，才有可靠的 Agent 执行。
                     </p>
                 </div>
-                <div class="arch-diagram">
+                                <div class="arch-diagram">
                     <div class="arch-title-block">
                         <div class="arch-kicker">TECH FOUNDATION / 技术底座</div>
                         <div class="arch-title-main">企业 AI 完整分层架构</div>
-                        <div class="arch-title-sub">自下而上：数据源 → 治理 → 知识 → 工具 → Agent → 界面</div>
+                        <div class="arch-title-sub">自上而下层层调用，数据自下而上汇聚 —— 从数据源到决策的完整链路</div>
                     </div>
 
-                    <div class="arch-tier arch-tier--soft">
-                        <div class="arch-tier-num">01</div>
-                        <div class="arch-tier-body"><strong>用户界面层</strong><span>Web 仪表盘 · 飞书交互卡片 · Telegram Bot</span></div>
-                        <div class="arch-tier-tag">触达</div>
+                    <div class="arch-group arch-group--app">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>应用层 <em>APPLICATION</em></div>
+                        <div class="arch-tier">
+                            <span class="arch-num">01</span>
+                            <div class="arch-tier-body"><strong>用户界面层</strong><span>Web 仪表盘 · 飞书交互卡片 · Telegram Bot</span></div>
+                        </div>
                     </div>
-                    <div class="arch-link"><span>调用</span></div>
 
-                    <div class="arch-tier arch-tier--gold">
-                        <div class="arch-tier-num">02</div>
-                        <div class="arch-tier-body"><strong>Agent 编排层</strong><span>多 Agent 编排 · 任务路由 · 状态管理</span></div>
-                        <div class="arch-tier-tag arch-tier-tag--gold">核心</div>
+                    <div class="arch-arrow"><span>调用</span></div>
+
+                    <div class="arch-group arch-group--core">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>智能层 <em>INTELLIGENCE</em></div>
+                        <div class="arch-tier arch-tier--gold">
+                            <span class="arch-num">02</span>
+                            <div class="arch-tier-body"><strong>Agent 编排层</strong><span>多 Agent 编排 · 任务路由 · 状态管理</span></div>
+                            <span class="arch-badge">核心</span>
+                        </div>
+                        <div class="arch-arrow"><span>编排</span></div>
+                        <div class="arch-tier arch-tier--gold">
+                            <span class="arch-num">03</span>
+                            <div class="arch-tier-body"><strong>Tool / MCP 层</strong><span>工具注册 · MCP 协议 · API 网关</span></div>
+                        </div>
+                        <div class="arch-arrow"><span>检索</span></div>
+                        <div class="arch-tier arch-tier--gold">
+                            <span class="arch-num">04</span>
+                            <div class="arch-tier-body"><strong>知识层</strong><span>RAG · 向量库 · 知识图谱 · 业务本体</span></div>
+                            <span class="arch-badge">语义</span>
+                        </div>
                     </div>
-                    <div class="arch-link"><span>编排</span></div>
 
-                    <div class="arch-tier">
-                        <div class="arch-tier-num">03</div>
-                        <div class="arch-tier-body"><strong>Tool / MCP 层</strong><span>工具注册 · MCP 协议 · API 网关</span></div>
-                        <div class="arch-tier-tag">执行</div>
+                    <div class="arch-arrow"><span>汇聚</span></div>
+
+                    <div class="arch-group arch-group--cap">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>能力支撑 <em>CAPABILITY</em></div>
+                        <div class="arch-triad">
+                            <div class="arch-triad-item"><strong>Tool / API</strong><span>ERP · CRM · 飞书 · 电商平台</span></div>
+                            <div class="arch-triad-item"><strong>知识库</strong><span>业务文档 · 操作手册 · 案例</span></div>
+                            <div class="arch-triad-item"><strong>外部数据</strong><span>爬虫 · 三方 API · 竞品监控</span></div>
+                        </div>
                     </div>
-                    <div class="arch-link"><span>检索</span></div>
 
-                    <div class="arch-tier arch-tier--gold">
-                        <div class="arch-tier-num">04</div>
-                        <div class="arch-tier-body"><strong>知识层</strong><span>RAG · 向量库 · 知识图谱 · 业务本体</span></div>
-                        <div class="arch-tier-tag arch-tier-tag--gold">语义</div>
-                    </div>
-                    <div class="arch-link"><span>汇聚</span></div>
+                    <div class="arch-arrow"><span>依赖</span></div>
 
-                    <div class="arch-triad">
-                        <div class="arch-triad-item"><strong>Tool / API</strong><span>ERP · CRM · 飞书 · 电商平台</span></div>
-                        <div class="arch-triad-item"><strong>知识库</strong><span>业务文档 · 操作手册 · 案例</span></div>
-                        <div class="arch-triad-item"><strong>外部数据</strong><span>爬虫 · 三方 API · 竞品监控</span></div>
-                    </div>
-                    <div class="arch-link"><span>依赖</span></div>
-
-                    <div class="arch-tier">
-                        <div class="arch-tier-num">05</div>
-                        <div class="arch-tier-body"><strong>数据治理层</strong><span>清洗 · 标准化 · 口径统一 · 更新策略</span></div>
-                        <div class="arch-tier-tag">治理</div>
-                    </div>
-                    <div class="arch-link"><span>接入</span></div>
-
-                    <div class="arch-tier arch-tier--soft">
-                        <div class="arch-tier-num">06</div>
-                        <div class="arch-tier-body"><strong>数据源层</strong><span>ERP · CRM · 电商后台 · 日志 · 文件 · 数据库</span></div>
-                        <div class="arch-tier-tag">基础</div>
+                    <div class="arch-group arch-group--data">
+                        <div class="arch-group-label"><span class="arch-group-dot"></span>数据层 <em>DATA</em></div>
+                        <div class="arch-tier">
+                            <span class="arch-num">05</span>
+                            <div class="arch-tier-body"><strong>数据治理层</strong><span>清洗 · 标准化 · 口径统一 · 更新策略</span></div>
+                        </div>
+                        <div class="arch-arrow"><span>接入</span></div>
+                        <div class="arch-tier">
+                            <span class="arch-num">06</span>
+                            <div class="arch-tier-body"><strong>数据源层</strong><span>ERP · CRM · 电商后台 · 日志 · 文件 · 数据库</span></div>
+                        </div>
                     </div>
                 </div>
                 <p class="flow-caption">数据接入、治理、知识管理、工具集成、Agent 编排与用户界面，从数据到决策的完整链路。</p>

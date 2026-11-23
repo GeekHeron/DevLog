@@ -178,30 +178,33 @@
             <!-- ==================== 04 / Technical Areas ==================== -->
             <section class="section-block">
                 <h3 class="section-title">04 / Technical Areas</h3>
-                <div class="tech-grid">
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">LLM Engineering</div>
-                        <p class="service-desc">OpenAI / Claude / DeepSeek and other model APIs, plus on-premise deployment with Ollama / vLLM.</p>
+                <p class="bio-text">
+                    Every technical capability has a full write-up behind it. This is an index from capability to article.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 16px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px;">
+                        <div><strong style="color: #fff; font-size: 14px;">LLM Engineering</strong><p style="font-size: 12px; color: #888; margin-top: 3px;">Model APIs and on-premise deployment</p></div>
+                        <a href="en/article-private-llm.html" style="font-size: 12px; color: var(--gold); white-space: nowrap;">Private deployment →</a>
                     </div>
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Agent Workflow Design</div>
-                        <p class="service-desc">Encapsulating business capabilities on a private AI hub — scenarios like competitor monitoring, operations analytics, and inventory health.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 16px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px;">
+                        <div><strong style="color: #fff; font-size: 14px;">Agent Workflow Design</strong><p style="font-size: 12px; color: #888; margin-top: 3px;">Production-grade automation architecture</p></div>
+                        <a href="en/article-agent-workflow.html" style="font-size: 12px; color: var(--gold); white-space: nowrap;">Agent workflows →</a>
                     </div>
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RPA &amp; System Integration</div>
-                        <p class="service-desc">Playwright browser automation + AdsPower / Ziniao to reach systems without APIs. Integration with Feishu Base, Interactive Cards, Kingdee ERP, Shopify.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 16px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px;">
+                        <div><strong style="color: #fff; font-size: 14px;">RPA &amp; System Integration</strong><p style="font-size: 12px; color: #888; margin-top: 3px;">Reaching systems without APIs</p></div>
+                        <a href="en/article-openclaw-automation.html" style="font-size: 12px; color: var(--gold); white-space: nowrap;">Automation in practice →</a>
                     </div>
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">RAG Knowledge Base</div>
-                        <p class="service-desc">Document parsing → chunking → embedding → vector search → hybrid retrieval → reranking → knowledge-augmented generation.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 16px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px;">
+                        <div><strong style="color: #fff; font-size: 14px;">RAG Knowledge Base</strong><p style="font-size: 12px; color: #888; margin-top: 3px;">Retrieval, reranking and accuracy</p></div>
+                        <a href="en/article-rag-pitfalls.html" style="font-size: 12px; color: var(--gold); white-space: nowrap;">RAG pitfalls →</a>
                     </div>
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Business Ontology Modeling</div>
-                        <p class="service-desc">Modeling entities, attributes, relationships, and business rules so Agents can follow the full chain from customer → order → product → process → equipment with traceable reasoning.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 16px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px;">
+                        <div><strong style="color: #fff; font-size: 14px;">Business Ontology Modeling</strong><p style="font-size: 12px; color: #888; margin-top: 3px;">Helping AI understand the full business chain</p></div>
+                        <a href="en/article-manufacturing-ai-ontology.html" style="font-size: 12px; color: var(--gold); white-space: nowrap;">Ontology modeling →</a>
                     </div>
-                    <div class="service-card" style="padding: 20px 24px;">
-                        <div class="service-name" style="font-size: 15px; margin-bottom: 8px;">Full-Stack Engineering</div>
-                        <p class="service-desc">Next.js / Python Flask front end and back end, covering the full loop from requirements to documented delivery.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 16px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 6px;">
+                        <div><strong style="color: #fff; font-size: 14px;">Full-Stack Engineering</strong><p style="font-size: 12px; color: #888; margin-top: 3px;">From requirements to documented delivery</p></div>
+                        <a href="article-enterprise-ai-productivity.html" style="font-size: 12px; color: var(--gold); white-space: nowrap;">Delivery methodology →</a>
                     </div>
                 </div>
             </section>
@@ -210,10 +213,13 @@
             <section class="section-block" id="faq-full">
                 <h3 class="section-title">05 / FAQ</h3>
                 <div class="faq-list">
-                    <details class="faq-item"><summary class="faq-question">How is an AI Agent different from ChatGPT?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">A general AI mainly answers questions. An enterprise AI Agent can connect to internal data, understand business rules, call system tools to execute tasks, generate reports, trigger approval flows, and improve through feedback. The goal is a system that does work, not a chatbot.</p></details>
-                    <details class="faq-item"><summary class="faq-question">Our data is scattered — can AI still be connected?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Yes. Most enterprises run ERP, CRM, spreadsheets, Feishu, and databases side by side. The work starts with data ingestion → cleansing → business modeling → AI applications. Perfect data is not a prerequisite.</p></details>
-                    <details class="faq-item"><summary class="faq-question">Will our business data leak?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Private deployment, on-premise servers, local models, and access controls are all supported. Core business data does not have to pass through third-party public platforms.</p></details>
-                    <details class="faq-item"><summary class="faq-question">Why not just buy SaaS software?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">SaaS solves generic needs, but real enterprise processes are full of variation — different ERPs, approval flows, and business rules. Enterprise AI needs to work with existing systems rather than add another isolated tool.</p></details>
+                    <details class="faq-item"><summary class="faq-question">How is an AI Agent different from ChatGPT?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">A general AI mainly answers questions. An enterprise AI Agent connects to internal data, understands business rules, calls tools, generates reports, and triggers approval flows — a system that does work. See <a href="en/article-agent.html" style="color: var(--gold);">AI Agent: From Tool to Digital Species</a>.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Our data is scattered — can AI still be connected?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Yes. Most enterprises run ERP, CRM, spreadsheets, Feishu, and databases side by side. Start with data ingestion, cleansing, and business modeling, then AI applications. See <a href="en/article-manufacturing-ai-ontology.html" style="color: var(--gold);">Build the Data Capability Layer First</a>.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Will our business data leak?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Private deployment, on-premise servers, local models, and access controls are supported. Core data does not have to pass through third-party platforms. See <a href="en/article-private-llm.html" style="color: var(--gold);">Enterprise Private LLM Deployment</a>.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Why not just buy SaaS software?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">SaaS solves generic needs, but real enterprise processes are full of variation. Enterprise AI needs to work with existing systems rather than add another isolated tool. See <a href="en/article-saas-vs-private.html" style="color: var(--gold);">Private AI vs SaaS</a>.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Where does a project start and how long does it take?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Typically a 90-day pilot: diagnose and select scenarios, prepare the organization and knowledge, run one to three real scenarios, then evaluate and replicate. The goal is not company-wide AI from day one. Full plan in <a href="article-enterprise-ai-productivity.html" style="color: var(--gold);">Enterprise Productivity Methodology</a>.</p></details>
+                    <details class="faq-item"><summary class="faq-question">How is the effort estimated and value measured?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Based on system count, data complexity, and delivery scope. Track four layers — efficiency, quality, business, and financial — and verify with ROI. Calculation details in <a href="en/article-llm-roi.html" style="color: var(--gold);">Private LLM Cost Breakdown</a>.</p></details>
+                    <details class="faq-item"><summary class="faq-question">Who from the enterprise needs to be involved?<span class="faq-icon" aria-hidden="true">+</span></summary><p class="faq-answer">Business scenario owners provide requirements and acceptance; knowledge and process owners maintain standards; tech and data teams handle systems and security; leadership owns goals and resources — it is not just an IT project. See <a href="article-enterprise-ai-productivity.html" style="color: var(--gold);">Enterprise Productivity Methodology</a>.</p></details>
                 </div>
             </section>
 

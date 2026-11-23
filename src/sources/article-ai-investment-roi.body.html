@@ -1,0 +1,350 @@
+
+    <main class="container">
+        <article>
+            <header class="article-header">
+                <span class="tag">AI ROI</span>
+                <span class="tag">INVESTMENT</span>
+                <span class="tag">DECISION</span>
+                <span class="tag">METHOD</span>
+                <h1 class="article-title">AI 项目到底值不值得做？<br>一套可落地的投资回报评估模型</h1>
+                <div class="article-meta">
+                    <span>DATE: 2026.11.23</span>
+                    <span>AUTHOR: GEEKHERON</span>
+                    <span>CATEGORY: BUSINESS / METHOD</span>
+                </div>
+            </header>
+
+            <div class="article-body">
+
+                <blockquote>很多企业不是不知道 AI 有价值，而是不知道：第一个项目该投多少钱、能省多少钱、多久回本、什么该继续、什么该停止。不要用技术预算的方法估算 AI 投入，而要用投资项目的方法评估 AI。</blockquote>
+
+                <p>企业 AI 落地走到深水区后，最先暴露的往往不是技术问题，而是一个商业问题：<strong>这笔投入到底值不值？</strong></p>
+
+                <p>过去谈 AI，大家习惯从模型、RAG、Agent 这些技术名词出发，预算也常常按「买多少个 Token、几台服务器」来估。但真正决定一个 AI 项目成败的，是它能否被当成一笔投资来审视——投入、收益、风险、回报周期被放在同一张表上衡量。</p>
+
+                <p>这篇文章把这套「AI 投资评估模型」拆成四个部分：<strong>投入估算、收益测算、投资决策、投资组合</strong>，并在文末放一个可以直接试算的回报计算器。</p>
+
+                <h2>一、AI 项目到底要投入多少钱？</h2>
+
+                <p>首先要改变一个认知：<strong>AI 项目的成本不等于模型 API 费用。</strong>真正的成本通常有六类。</p>
+
+                <table class="data-table">
+                    <thead><tr><th>成本项目</th><th>具体内容</th><th>是否容易被低估</th></tr></thead>
+                    <tbody>
+                        <tr><td>场景与咨询</td><td>业务调研、流程梳理、需求设计</td><td>高</td></tr>
+                        <tr><td>数据治理</td><td>数据清洗、接口、知识整理</td><td>很高</td></tr>
+                        <tr><td>AI 技术</td><td>模型调用、RAG、Agent 开发</td><td>中</td></tr>
+                        <tr><td>系统集成</td><td>ERP、CRM、MES、OA 对接</td><td>很高</td></tr>
+                        <tr><td>运营维护</td><td>监控、评测、优化、人工审核</td><td>很高</td></tr>
+                        <tr><td>组织变革</td><td>培训、岗位调整、流程变更</td><td>很高</td></tr>
+                    </tbody>
+                </table>
+
+                <p>有两个坑尤其要注意。</p>
+
+                <p><strong>第一，数据治理往往是隐性大头。</strong>企业可能有 ERP、CRM、MES，但数据并不意味着能直接被 AI 使用：同一个客户在不同系统里编码不同、产品名称和物料编码不统一、指标口径不一致、业务知识散落在员工经验里。这些都要投入。</p>
+
+                <p><strong>第二，不能只算开发费用，忽略长期运营费用。</strong>AI 应用不是传统软件，通常需要持续评测、优化和维护，这部分成本会一直发生。</p>
+
+                <h3>投入估算公式</h3>
+
+                <div class="math-block">\[ I_{total}=I_{initial}+I_{operation}+I_{change} \]</div>
+
+                <p>进一步拆解：</p>
+
+                <div class="math-block">\[ I_{initial}=C_{consult}+C_{data}+C_{dev}+C_{integration} \]</div>
+                <div class="math-block">\[ I_{operation}=C_{model}+C_{infra}+C_{maintain}+C_{human} \]</div>
+
+                <p class="formula-note">一个重要原则：一定要把企业内部员工投入的工时折算成成本。否则很多项目表面上很便宜，实际上消耗了大量业务、IT 和管理人员的时间。</p>
+
+                <h2>二、AI 项目的收益应该怎么算？</h2>
+
+                <p>收益不要只盯着「节省人工」，建议分成五类：</p>
+
+                <table class="data-table">
+                    <thead><tr><th>收益类型</th><th>计算方式</th><th>典型场景</th></tr></thead>
+                    <tbody>
+                        <tr><td>人力成本节约</td><td>实际减少的人工支出</td><td>客服、审核、录入</td></tr>
+                        <tr><td>人效提升</td><td>释放工时 × 可实现价值</td><td>研发、销售、运营</td></tr>
+                        <tr><td>质量改善</td><td>减少错误、返工、损失</td><td>质检、风控、财务</td></tr>
+                        <tr><td>收入增长</td><td>新增业务量 × 单位贡献毛利</td><td>销售、营销、客户运营</td></tr>
+                        <tr><td>风险降低</td><td>风险发生概率 × 预期损失减少额</td><td>合规、安全、供应链</td></tr>
+                    </tbody>
+                </table>
+
+                <p><strong>最容易犯的错误，是把节省的时间直接当成节省的现金。</strong></p>
+
+                <p>比如 AI 让一个员工每天节省 2 小时，公司 100 名员工：</p>
+
+                <div class="math-block">\[ 100 \times 2 \times 22 = 4400 \text{ 小时/月} \]</div>
+
+                <p>这代表每月释放了 4400 小时的产能，但<strong>不等于</strong>企业每月省下了这 4400 小时对应的工资。只有当这些时间真正转化为减少加班、减少外包、避免新增招聘、减少岗位配置，或增加可产生收入的业务产出时，才能计入财务收益。</p>
+
+                <p>所以收益核算要设三个层级，且必须分开呈现：</p>
+
+                <div class="framework">
+                    <div class="row"><span class="lbl">效率收益</span><span>节省了多少时间</span></div>
+                    <div class="row"><span class="lbl">产能收益</span><span>多完成了多少有效工作</span></div>
+                    <div class="row"><span class="lbl">财务收益</span><span>实际减少了多少成本或增加了多少利润</span></div>
+                </div>
+
+                <h2>三、用一个实际案例算一遍</h2>
+
+                <p class="paper-note">以下数据全部为演示计算方法而假设，不是行业报价。重点是计算方法，不是具体数字。</p>
+
+                <h3>当前业务情况</h3>
+                <table class="data-table">
+                    <thead><tr><th>指标</th><th>当前情况</th></tr></thead>
+                    <tbody>
+                        <tr><td>客服人数</td><td>20 人</td></tr>
+                        <tr><td>月均处理量</td><td>10,000 单</td></tr>
+                        <tr><td>平均处理时间</td><td>12 分钟</td></tr>
+                        <tr><td>综合人工成本</td><td>80 元/小时</td></tr>
+                        <tr><td>月度人工成本</td><td>160,000 元</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>AI 建设投入（假设，人民币）</h3>
+                <table class="data-table">
+                    <thead><tr><th>投入项目</th><th>金额</th></tr></thead>
+                    <tbody>
+                        <tr><td>业务调研与流程设计</td><td>20,000</td></tr>
+                        <tr><td>知识库建设</td><td>30,000</td></tr>
+                        <tr><td>AI 应用开发</td><td>50,000</td></tr>
+                        <tr><td>系统集成</td><td>50,000</td></tr>
+                        <tr><td>测试与培训</td><td>30,000</td></tr>
+                        <tr><td><strong>一次性投入</strong></td><td><strong>180,000</strong></td></tr>
+                    </tbody>
+                </table>
+                <p>每月持续运营：模型与平台 8,000、系统维护 6,000、人工审核 4,000，合计<strong>每月运营成本 18,000 元</strong>。</p>
+
+                <h3>AI 带来的收益</h3>
+                <p>假设 70% 的工单适合 AI 辅助、处理时间下降 25%、释放产能中 40% 能转化为实际经济价值：</p>
+                <div class="math-block">\[ 10000 \times 12/60 = 2000 \text{ 小时} \]</div>
+                <div class="math-block">\[ 2000 \times 70\% \times 25\% = 350 \text{ 小时/月} \]</div>
+                <div class="math-block">\[ 350 \times 40\% \times 80 = 11200 \text{ 元/月} \]</div>
+                <p>再加上减少加班与外包支出 10,000 元/月、减少错误与返工损失 5,000 元/月：</p>
+
+                <div class="framework">
+                    <div class="row"><span class="lbl">产能转化价值</span><span>¥11,200 / 月</span></div>
+                    <div class="row"><span class="lbl">加班与外包节省</span><span>¥10,000 / 月</span></div>
+                    <div class="row"><span class="lbl">质量改善收益</span><span>¥5,000 / 月</span></div>
+                    <div class="row"><span class="lbl"><b>月度总收益</b></span><span><b>¥26,200</b></span></div>
+                    <div class="row"><span class="lbl">月度运营成本</span><span>¥18,000</span></div>
+                    <div class="row"><span class="lbl"><b>月度净收益</b></span><span><b>¥8,200</b></span></div>
+                </div>
+
+                <h3>投资回报结果</h3>
+                <div class="math-block">\[ \text{投资回收期} = \frac{180000}{26200 - 18000} \approx 22 \text{ 个月} \]</div>
+                <p>两年累计成本 = 180,000 + 18,000 × 24 = 612,000 元；两年累计收益 = 26,200 × 24 = 628,800 元：</p>
+                <div class="math-block">\[ ROI = \frac{628800 - 612000}{612000} \approx 2.7\% \]</div>
+
+                <blockquote>这个项目技术上可能做得出来，但从当前假设看，经济吸引力并不强。不能因为 AI 节省了 350 小时，就直接宣布项目每月创造了 28,000 元收益。只有提高覆盖率、降低审核成本，或把系统复制到更多团队，投资价值才可能明显改善。</blockquote>
+
+                <h2>四、怎样判断一个项目值不值得做？</h2>
+
+                <p>建议建立一个五维投资决策模型：</p>
+
+                <table class="data-table">
+                    <thead><tr><th>维度</th><th>关键问题</th><th>权重建议</th></tr></thead>
+                    <tbody>
+                        <tr><td>业务价值</td><td>是否解决真实经营问题？</td><td>30%</td></tr>
+                        <tr><td>投入产出</td><td>ROI 和回收周期是否合理？</td><td>30%</td></tr>
+                        <tr><td>技术可行性</td><td>数据、模型、系统能否支撑？</td><td>15%</td></tr>
+                        <tr><td>落地难度</td><td>组织是否愿意改变流程？</td><td>15%</td></tr>
+                        <tr><td>战略价值</td><td>是否形成长期能力和复制效应？</td><td>10%</td></tr>
+                    </tbody>
+                </table>
+
+                <p>每项打 1～5 分计算加权得分。但有个重要原则：<strong>综合评分不能替代财务门槛。</strong>某个项目战略价值很高，但财务回报差、技术风险大，就不能因为综合评分高而直接批准。</p>
+
+                <h3>项目决策分级</h3>
+                <p>以下是建议在企业内部使用的管理规则，具体门槛应按资本成本和业务特点调整：</p>
+
+                <div class="framework">
+                    <div class="row"><span class="lbl"><b>A 类</b></span><span>优先投资：业务价值明确、数据基础好、回收期原则上 ≤ 12 个月、可复制</span></div>
+                    <div class="row"><span class="lbl"><b>B 类</b></span><span>验证后投资：价值较大但条件不成熟、回收期 12～24 个月、需 PoC 验证</span></div>
+                    <div class="row"><span class="lbl"><b>C 类</b></span><span>战略储备：短期收益不明确但有战略价值、设探索预算和退出条件</span></div>
+                    <div class="row"><span class="lbl"><b>D 类</b></span><span>暂缓或放弃：无业务负责人、收益无法测量、数据严重不足、自动化成本高于人工</span></div>
+                </div>
+
+                <p>还有一个判断很关键：<strong>不要把所有 AI 项目都要求在一年内回本。</strong>企业知识底座、统一语义层、权限体系，可能是多个应用共享的基础设施，应评估它们对整个应用组合的贡献，而不是强行要求某个应用独立承担全部成本。</p>
+
+                <h2>五、真正成熟的企业 AI 投资，应该分阶段投钱</h2>
+
+                <p>不建议一次性批准一个庞大的 AI 预算，更好的方式是四阶段投资机制：</p>
+
+                <table class="data-table">
+                    <thead><tr><th>阶段</th><th>投入</th><th>目标与动作</th><th>输出</th></tr></thead>
+                    <tbody>
+                        <tr><td>1 · 场景验证</td><td>小额</td><td>证明问题真实存在、AI 能解决；测基线、验技术、初算收益、明确负责人</td><td>验证报告、投资初算</td></tr>
+                        <tr><td>2 · MVP</td><td>有限</td><td>证明真实流程能跑通；接真实数据、通业务系统、验准确率与任务完成率</td><td>MVP、试点效果报告</td></tr>
+                        <tr><td>3 · 生产化</td><td>正式</td><td>证明稳定运行且收益可核算；安全权限审计、监控评测、流程重构、培训运营</td><td>生产系统、财务验收报告</td></tr>
+                        <tr><td>4 · 规模化</td><td>规模</td><td>从单点走向组织级收益；跨部门复制、共享能力、统一平台、岗位优化</td><td>应用组合、年度经营收益</td></tr>
+                    </tbody>
+                </table>
+
+                <p>每个阶段都要设置<strong>投资闸门（Stage Gate）</strong>：没有达到约定的业务、技术和风险指标，就不进入下一阶段。组织变革、维护和风险管理这些隐性投入，不能从预算中遗漏。</p>
+
+                <h2>六、AI 项目投资回报计算器</h2>
+
+                <p>把上面的方法做成一张可直接试算的表。修改假设，结果即时更新；默认值就是前面 AI 客服案例的数据。</p>
+
+                <div class="calc" id="roi-calc">
+                    <div class="calc-head">
+                        <div>
+                            <div class="calc-head-title">AI 项目投资回报计算器</div>
+                            <div class="calc-head-sub">金额单位：人民币 · 可修改假设，即时计算</div>
+                        </div>
+                        <button class="calc-reset" type="button" id="calc-reset">恢复案例数据</button>
+                    </div>
+                    <div class="calc-body">
+                        <div class="calc-inputs">
+                            <div class="calc-field">
+                                <label class="calc-label" for="init-cost"><span>一次性建设投入（元）</span><span class="val" id="init-cost-val">180,000</span></label>
+                                <input type="range" id="init-cost" min="0" max="1000000" step="10000" value="180000">
+                            </div>
+                            <div class="calc-field">
+                                <label class="calc-label" for="monthly-gain"><span>预计每月总收益（元）</span><span class="val" id="monthly-gain-val">26,200</span></label>
+                                <input type="range" id="monthly-gain" min="0" max="200000" step="1000" value="26200">
+                            </div>
+                            <div class="calc-field">
+                                <label class="calc-label" for="monthly-cost"><span>每月运营成本（元）</span><span class="val" id="monthly-cost-val">18,000</span></label>
+                                <input type="range" id="monthly-cost" min="0" max="100000" step="1000" value="18000">
+                            </div>
+                            <div class="calc-field">
+                                <label class="calc-label" for="realize"><span>收益实现比例</span><span class="val" id="realize-val">100%</span></label>
+                                <input type="range" id="realize" min="0" max="100" step="5" value="100">
+                            </div>
+                            <div class="calc-field">
+                                <div class="calc-label"><span>投资测算周期</span><span class="val" id="period-val">24 个月</span></div>
+                                <div class="calc-seg" id="period-seg">
+                                    <button type="button" data-m="12">12 个月</button>
+                                    <button type="button" data-m="24" class="active">24 个月</button>
+                                    <button type="button" data-m="36">36 个月</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calc-results">
+                            <div class="res-row"><span class="res-key">累计投资成本</span><span class="res-val" id="r-cost">¥612,000</span></div>
+                            <div class="res-row"><span class="res-key">累计收益</span><span class="res-val" id="r-gain">¥628,800</span></div>
+                            <div class="res-row"><span class="res-key">累计净收益</span><span class="res-val" id="r-net">¥16,800</span></div>
+                            <div class="res-row hero"><span class="res-key">累计 ROI</span><span class="res-val" id="r-roi">2.7%</span></div>
+                            <div class="res-row hero"><span class="res-key">静态投资回收期</span><span class="res-val" id="r-payback">22.0 个月</span></div>
+                        </div>
+                    </div>
+                    <div class="calc-note" id="calc-note">当前假设下累计收益大于成本。<br>按月度净收益为正计算，未考虑上线爬坡、资金时间价值及税费。正式投资评审还应增加现金流爬坡、折现率、风险调整、税费与共享平台成本分摊。</div>
+                </div>
+
+                <h2>七、再向前一步：从单项目 ROI 走向企业 AI 投资组合</h2>
+
+                <p>企业不应该只问「这个项目值不值得做」，还应该问：<strong>有限的 AI 预算，应该优先投在哪些场景，才能产生最大的整体价值？</strong></p>
+
+                <table class="data-table">
+                    <thead><tr><th>项目</th><th>投资属性</th><th>投资策略</th></tr></thead>
+                    <tbody>
+                        <tr><td>智能客服</td><td>短期收益</td><td>优先规模化</td></tr>
+                        <tr><td>智能质检</td><td>降本增质</td><td>优先试点</td></tr>
+                        <tr><td>智能问数</td><td>共享能力</td><td>平台化投资</td></tr>
+                        <tr><td>企业知识库</td><td>基础设施</td><td>分阶段建设</td></tr>
+                        <tr><td>自主生产调度</td><td>战略创新</td><td>小额探索</td></tr>
+                    </tbody>
+                </table>
+
+                <p>基础设施类项目不能只看单点 ROI。假设一个企业知识平台投入 100 万元，单独看知识问答应用可能无法回本，但如果后续 20 个业务 Agent 都能复用这个平台，整体投资价值就完全不同。因此要同时建立：<strong>单场景 ROI、共享能力 ROI、企业 AI 投资组合 ROI</strong>。</p>
+
+                <h2>结语：把验收标准从「上线」改成「收益兑现」</h2>
+
+                <p>如果把这套方法升级成能服务企业客户的体系，建议增加一个独立模块——<strong>AI 投资决策方法论</strong>，包含四个核心交付物：</p>
+
+                <div class="framework">
+                    <div class="row"><span class="lbl">交付物 1</span><span>AI 投资机会清单：按价值和可行性排序的场景</span></div>
+                    <div class="row"><span class="lbl">交付物 2</span><span>AI 项目成本模型：建设、运营、组织与隐性成本</span></div>
+                    <div class="row"><span class="lbl">交付物 3</span><span>AI 投资回报模型：效率/财务/风险收益、ROI、回收期</span></div>
+                    <div class="row"><span class="lbl">交付物 4</span><span>AI 投资组合路线图：先后、共享、暂缓</span></div>
+                </div>
+
+                <blockquote>AI 项目不是以技术可行为立项依据，而是以业务价值可验证为立项依据；不是以系统上线为验收依据，而是以经营收益兑现为验收依据。</blockquote>
+
+                <p>这句话把方法论从「AI 怎么落地」提升到了「企业如何投资 AI、管理 AI、获取经营回报」。前者偏实施咨询，后者有机会发展成企业 AI 转型的完整管理体系——两者的商业价值并不一样。</p>
+
+                <p class="formula-note">本文的投入估算与成本分类，延续自我在 <a href="article-llm-roi.html" class="inline">《大模型私有化部署成本拆解》</a> 中的成本口径；决策框架则与 <a href="article-enterprise-ai-productivity.html" class="inline">《从「用 AI」到「与 AI 协同」：组织生产力升级方法论》</a> 一脉相承。关于 ROI 投入估算的更多背景，也可参见 <a href="about.html#faq-full" class="inline">关于页的常见问题</a>。</p>
+
+                <a class="back-btn" href="article.html">← 返回深度分析</a>
+            </div>
+        </article>
+    </main>
+
+    <script>
+    (function () {
+        var DEFAULTS = { init: 180000, gain: 26200, cost: 18000, realize: 100, months: 24 };
+        var $ = function (id) { return document.getElementById(id); };
+        var fmt = function (n) { return '¥' + Math.round(n).toLocaleString('zh-CN'); };
+        var el = {
+            init: $('init-cost'), gain: $('monthly-gain'), cost: $('monthly-cost'), realize: $('realize')
+        };
+        var months = DEFAULTS.months;
+        var valIds = { init: 'init-cost-val', gain: 'monthly-gain-val', cost: 'monthly-cost-val', realize: 'realize-val' };
+
+        function render() {
+            var init = +el.init.value, gain = +el.gain.value, cost = +el.cost.value, realize = +el.realize.value;
+            $('init-cost-val').textContent = init.toLocaleString('zh-CN');
+            $('monthly-gain-val').textContent = gain.toLocaleString('zh-CN');
+            $('monthly-cost-val').textContent = cost.toLocaleString('zh-CN');
+            $('realize-val').textContent = realize + '%';
+            $('period-val').textContent = months + ' 个月';
+
+            var effectiveGain = gain * realize / 100;
+            var netMonthly = effectiveGain - cost;
+            var totalCost = init + cost * months;
+            var totalGain = effectiveGain * months;
+            var net = totalGain - totalCost;
+            var roi = totalCost > 0 ? (net / totalCost * 100) : 0;
+
+            $('r-cost').textContent = fmt(totalCost);
+            $('r-gain').textContent = fmt(totalGain);
+            $('r-net').textContent = fmt(net);
+            $('r-roi').textContent = (roi >= 0 ? '' : '') + roi.toFixed(1) + '%';
+
+            if (netMonthly <= 0) {
+                $('r-payback').textContent = '无法回本';
+            } else {
+                $('r-payback').textContent = (init / netMonthly).toFixed(1) + ' 个月';
+            }
+
+            var note = $('calc-note');
+            if (net > 0) {
+                note.innerHTML = '<strong>当前假设下累计收益大于成本。</strong><br>按月度净收益为正计算，未考虑上线爬坡、资金时间价值及税费。正式投资评审还应增加现金流爬坡、折现率、风险调整、税费与共享平台成本分摊。';
+            } else {
+                note.innerHTML = '<strong>当前假设下累计收益未覆盖成本。</strong><br>应重新审视场景价值、提高有效收益或降低运营与审核成本，并考虑复制到更多团队以摊薄一次性投入。';
+            }
+        }
+
+        Object.keys(el).forEach(function (k) { el[k].addEventListener('input', render); });
+
+        var seg = $('period-seg');
+        seg.querySelectorAll('button').forEach(function (b) {
+            b.addEventListener('click', function () {
+                seg.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
+                b.classList.add('active');
+                months = +b.getAttribute('data-m');
+                render();
+            });
+        });
+
+        $('calc-reset').addEventListener('click', function () {
+            el.init.value = DEFAULTS.init;
+            el.gain.value = DEFAULTS.gain;
+            el.cost.value = DEFAULTS.cost;
+            el.realize.value = DEFAULTS.realize;
+            months = DEFAULTS.months;
+            seg.querySelectorAll('button').forEach(function (x) {
+                x.classList.toggle('active', +x.getAttribute('data-m') === months);
+            });
+            render();
+        });
+
+        render();
+    })();
+    </script>
+    <script src="site-nav.js"></script>

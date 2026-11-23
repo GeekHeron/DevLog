@@ -12,6 +12,8 @@ archive/
 # push-via-api.mjs 的提交信息临时文件
 _commit-msg.txt
 _push.log
+_diff.mjs
+_push.mjs
 
 # WorkBuddy 本地工作数据（非站点源码）
 .workbuddy/
